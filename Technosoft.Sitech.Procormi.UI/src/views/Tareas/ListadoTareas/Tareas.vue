@@ -1,0 +1,1259 @@
+<template>
+    <div class="vistaPrincipal">
+        <!--<HeaderPrincipal :cuadroLoaderPrincipal="$refs.cuadroLoader" />-->
+        <HeaderPrincipal />
+
+        <div class="posicion0" v-on:click="cerrarMenu()">
+            <div class="d-flex">
+
+                <!------------------------------------------------Modales------------------------------------------------>
+
+                <!--Modal crear Tarea-->
+
+                <div class="modal fade" id="staticBackdrop" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="exampleModalLabel">Crear Tarea</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div>
+                                    <label>Nombre</label>
+                                    <br />
+                                    <div style="margin-top: 15px;">
+                                        <input required style="border-radius: 5px;" type="text" placeholder="Nombre">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div>
+                                            <label class="margin-15px-bottom text-black">Descripción</label>
+                                            <div>
+                                                <div ref="Quill" style="border: 1px solid gray; min-height: 200px; border-bottom-left-radius: 15px; border-bottom-right-radius: 15px;"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                                <button type="button" class="btn btn-success">Aceptar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--Modal crear Tarea-->
+
+                <!--Modal editar Tarea-->
+
+                <div class="modal fade" id="editarTarea" tabindex="-1" aria-labelledby="editarTarea" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="exampleModalLabel">Editar Tarea</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div>
+                                    <label>Nombre</label>
+                                    <br />
+                                    <div style="margin-top: 15px;">
+                                        <input required style="border-radius: 5px;" type="text" placeholder="Nombre">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div>
+                                            <label class="margin-15px-bottom text-black">Descripción</label>
+                                            <div>
+                                                <div ref="Quill" style="border: 1px solid gray; min-height: 200px; border-bottom-left-radius: 15px; border-bottom-right-radius: 15px;"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br />
+                                <div>
+                                    <label>Estado</label>
+                                    <br />
+                                    <div class="left-content" style="margin-top: 15px;">
+                                        <select required name="estado" id="estado" class="form-select text-black inputsGeneral" style="min-height: 48px;">
+                                            <option value="1">Pendiente</option>
+                                            <option value="2">En Proceso</option>
+                                            <option value="3">Finalizada</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                                <button type="button" class="btn btn-success">Aceptar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--Modal editar Tarea-->
+
+                <!--Modal eliminar Tarea-->
+
+                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="exampleModalLabel">Eliminar Tarea</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div>
+                                    <p>¿Está seguro de que desea eliminar la tarea?</p>
+                                </div>
+                                <div>
+                                    <label>Digite su contraseña</label>
+                                    <br />
+                                    <div class="row" style="margin-top: 15px;">
+                                        <input class="col-10" style="margin-left: 10px; border-radius: 5px;" type="text" required placeholder="Contraseña">
+                                        <button class="btn btn-success col-1" style="margin-left: 5px;"><span class="fas fa-check"></span></button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                                <button type="button" class="btn btn-success">Aceptar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--Modal eliminar Tarea-->
+
+                <!--Modal Ver Tarea-->
+
+                <div class="modal fade" id="verTarea" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="verTarea" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-scrollable modal-xl">
+                        <div class="modal-content bg-gradient-gray">
+                            <div class="modal-header">
+                                <div class="col-12">
+                                    <div class="row" style="text-align: right;">
+                                        <div class="col-md-12 col-xs-12">
+                                            <button style="border: none; background-color: transparent; min-height: 15px; min-width: 25px; font-size: 30px;" type="button" data-bs-dismiss="modal">&times;</button>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                    </div>
+                                </div>
+                            </div>
+                            <br />
+                            <div class="modal-body">
+                                <div class="col-md-12 col-xs-12" style="min-height: 350px; max-height: 400px">
+                                    <div>
+                                        <div class="col-12">
+                                            <h1 style="text-align:center"><strong>Crear login</strong></h1>
+                                        </div>
+                                    </div>
+                                    <br />
+                                    <div class="col-md-12 col-xs-12" style="min-height: 350px; max-height: 400px">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <h4 class="modal-title" style="text-align: center"><strong>Descripción</strong></h4>
+                                            </div>
+                                        </div>
+                                        <br />
+                                        <br />
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="col-md-12 col-xs-12">
+                                                    <div style="text-align: justify;">What is Lorem Ipsum?
+                                                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+
+                                                    Why do we use it?
+                                                    It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).
+
+                                                    Where does it come from?
+                                                    Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.
+
+                                                    The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from "de Finibus Bonorum et Malorum" by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.
+
+                                                    Where can I get some?
+                                                    There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc.
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <br>
+
+                                        <div class="row justify-content-center" style="position: relative;">
+
+                                        </div>
+
+                                        <br />
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--Modal Ver Tarea-->
+
+                <!--Modal crear Subtarea-->
+
+                <div class="modal fade" id="crearSubtarea" tabindex="-1" aria-labelledby="crearSubtarea" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="exampleModalLabel">Crear Subtarea</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div>
+                                    <label>Título</label>
+                                    <br />
+                                    <div style="margin-top: 15px;">
+                                        <input required style="border-radius: 5px;" type="text" placeholder="Nombre">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div>
+                                            <label class="margin-15px-bottom text-black">Descripción</label>
+                                            <div>
+                                                <div ref="Quill" style="border: 1px solid gray; min-height: 200px; border-bottom-left-radius: 15px; border-bottom-right-radius: 15px;"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br />
+                                <div>
+                                    <label>Estado</label>
+                                    <br />
+                                    <div class="left-content" style="margin-top: 15px;">
+                                        <select required name="estado" id="estado" class="form-select text-black inputsGeneral" style="min-height: 48px;">
+                                            <option value="1">Pendiente</option>
+                                            <option value="2">En Proceso</option>
+                                            <option value="3">Finalizada</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <br />
+                                <div>
+                                    <label>Tiempo requerido</label>
+                                    <br />
+                                    <div style="margin-top: 15px;">
+                                        <input required style="border-radius: 5px;" type="number" placeholder="1">
+                                    </div>
+                                </div>
+                                <br />
+                                <div>
+                                    <label>Prioridad</label>
+                                    <br />
+                                    <div class="left-content" style="margin-top: 15px;">
+                                        <select required name="estado" id="estado" class="form-select text-black inputsGeneral" style="min-height: 48px;">
+                                            <option value="1">Alta</option>
+                                            <option value="2">Media</option>
+                                            <option value="3">Baja</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                                <button type="button" class="btn btn-success">Aceptar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--Modal crear Subtarea-->
+
+                <!--Modal editar Subtarea-->
+
+                <div class="modal fade" id="editarSubtarea" tabindex="-1" aria-labelledby="editarSubtarea" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="exampleModalLabel">Editar Subtarea</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div>
+                                    <label>Título</label>
+                                    <br />
+                                    <div style="margin-top: 15px;">
+                                        <input required style="border-radius: 5px;" type="text" placeholder="Nombre">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div>
+                                            <label class="margin-15px-bottom text-black">Descripción</label>
+                                            <div>
+                                                <div ref="Quill" style="border: 1px solid gray; min-height: 200px; border-bottom-left-radius: 15px; border-bottom-right-radius: 15px;"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br />
+                                <div>
+                                    <label>Estado</label>
+                                    <br />
+                                    <div class="left-content" style="margin-top: 15px;">
+                                        <select required name="estado" id="estado" class="form-select text-black inputsGeneral" style="min-height: 48px;">
+                                            <option value="1">Pendiente</option>
+                                            <option value="2">En Proceso</option>
+                                            <option value="3">Finalizada</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <br />
+                                <div>
+                                    <label>Tiempo requerido</label>
+                                    <br />
+                                    <div style="margin-top: 15px;">
+                                        <input required style="border-radius: 5px;" type="number" placeholder="1">
+                                    </div>
+                                </div>
+                                <br />
+                                <div>
+                                    <label>Prioridad</label>
+                                    <br />
+                                    <div class="left-content" style="margin-top: 15px;">
+                                        <select required name="estado" id="estado" class="form-select text-black inputsGeneral" style="min-height: 48px;">
+                                            <option value="1">Alta</option>
+                                            <option value="2">Media</option>
+                                            <option value="3">Baja</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                                <button type="button" class="btn btn-success">Aceptar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--Modal editar Subtarea-->
+
+                <!--Modal eliminar Subtarea-->
+
+                <div class="modal fade" id="eliminarSubtarea" tabindex="-1" aria-labelledby="eliminarSubtarea" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="exampleModalLabel">Eliminar Subtarea</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div>
+                                    <p>¿Está seguro de que desea eliminar la subtarea?</p>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                                <button type="button" class="btn btn-success">Aceptar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--Modal eliminar Subtarea-->
+
+                <!------------------------------------------------Modales------------------------------------------------>
+
+                <!--Menú Lateral /-->
+
+                <div class="posicion1">
+                    <div class="d-flex col-3">
+                        <div class="col-8" style="min-width: 15em;">
+                            <br />
+                            <div style="margin-left: 15px;">
+                                <div class="col-11 ml-4">
+                                    <div>
+                                        <div style="text-align: center;">
+                                            <div style="text-align: center;">
+                                                <a class="text-white fas fa-calendar-alt"></a>
+                                                <label class="text-white p-3 Td">Fecha inicio</label>
+                                            </div>
+                                            <input type="date" id="fechaInicio" class="diseñoSelectLateral" style="cursor: pointer; border-radius: 5px;" v-model="Filtros.fechaI">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-11 ml-4" style="margin-top: 5px;">
+                                    <div>
+                                        <div style="text-align: center;">
+                                            <div style="text-align: center;">
+                                                <a class="text-white fas fa-calendar-alt"></a>
+                                                <label class="text-white p-3 Td">Fecha Fin</label>
+                                            </div>
+                                            <input type="date" id="fechaFin" class="diseñoSelectLateral" style="cursor: pointer; border-radius: 5px;" v-model="Filtros.fechaF">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-11 ml-4" style="margin-top: 5px;">
+                                    <div>
+                                        <div style="text-align: center;">
+                                            <div style="text-align: center;">
+                                                <a class="text-white fas fa-check-square"></a>
+                                                <label class="text-white p-3 Td">Estado</label>
+                                            </div>
+                                            <select class="form-select diseñoSelectLateral" v-model="Filtros.estado">
+                                                <option value="">Todos</option>
+                                                <!--<option v-bind:value="Estado.gen_EstadoCodigo"
+                                                        v-for="Estado in ListaEstados"
+                                                        v-bind:key="Estado.gen_EstadoID">
+                                                    {{Estado.gen_EstadoDescripcion}}
+                                                </option>-->
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-11 ml-4" style="margin-top: 5px;">
+                                    <div>
+                                        <div v-if="recuperarUsuTipo() == 'Administrador'" style="text-align: center;">
+                                            <div style="text-align: center;">
+                                                <a class="text-white fas fa-user-check"></a>
+                                                <label class="text-white p-3 Td">Usuario</label>
+                                            </div>
+                                            <select class="form-select diseñoSelectLateral" v-model="Filtros.usuario">
+                                                <option value="">Todos</option>
+                                                <!--<option v-bind:value="Usuario.usu_Login"
+                                                        v-for="Usuario in ListaUsuarios"
+                                                        v-bind:key="Usuario.usu_Login">
+                                                    {{Usuario.usu_Login}}
+                                                </option>-->
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br />
+                                <br />
+                                <div class="col-11 ml-4">
+                                    <div class="col-12">
+                                        <div class="col-12 filtro">
+                                            <button style="padding-top: 10px" class="col-12" role="button" v-on:click="FiltrarBoletas(Filtros.fechaI, Filtros.fechaF, Filtros.estado, Filtros.usuario)">
+                                                <b class="text-gradient-yellow-orange-black">
+                                                    <i class="text-gradient-yellow-orange-black fas fa-filter"></i> 
+                                                    Aplicar Filtro
+                                                </b>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row textoBlanco" style="padding-top: 25px;">
+                                    <div class="col-11" style="color: white;"><hr /></div>
+                                </div>
+                                <div class="row justify-content-center">
+                                    <li class="col-8 textoBlanco botonEncuestas">
+                                        <router-link role="button" :to="{ name: 'Inicio' }" class="textoBlanco textoEncuestas">Proyectos&nbsp;&nbsp;<i class="text-white fas fa-chart-line" style="cursor: pointer;"></i></router-link>
+                                    </li>
+                                </div>
+                                <br />
+                                <div class="row justify-content-center">
+                                    <li class="col-8 textoBlanco botonEncuestas">
+                                        <router-link role="button" :to="{ name: 'Encuestas' }" class="textoBlanco textoEncuestas">Encuestas&nbsp;&nbsp;<i class="text-white fas fa-chart-line" style="cursor: pointer;"></i></router-link>
+                                    </li>
+                                </div>
+                                <br />
+                                <div class="row justify-content-center">
+                                    <li class="col-8 textoBlanco botonEncuestas">
+                                        <router-link role="button" :to="{ name: 'Reportes' }" class="textoBlanco textoEncuestas">Reportes&nbsp;&nbsp;<i class="text-white fas fa-chart-line" style="cursor: pointer;"></i></router-link>
+                                    </li>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--Menú Lateral /-->
+
+                <div class="w-100 listadoGeneral">
+
+                    <!--Filtros responsive /-->
+
+                    <div class="row justify-content-center filtrosCelularBotones">
+                        <div class="col-5"></div>
+                        <div class="col-1 filtrosCelularBoton" style="margin-right: 1px;" v-if="!filtroDesplegar" v-on:click="desplegarFiltros()">
+                            <a class="text-gradient-yellow-orange-black fas fa-filter"></a>
+                        </div>
+                        <router-link :to="{ name: 'Encuestas' }" class="col-1 filtrosCelularBoton" v-if="!filtroDesplegar" v-on:click="desplegarFiltros()">
+                            <a class="text-gradient-yellow-orange-black fas fa-chart-line"></a>
+                        </router-link>
+                        <div class="col-5"></div>
+                    </div>
+
+                    <div class="filtrosCelular w-100 vld-parent col-12" v-if="filtroDesplegar">
+                        <div>
+                            <div class="col-12" style="margin-top: 15px;">
+                                <div style="text-align: center; font-size: medium;">
+                                    <div style="text-align: center;">
+                                        <div style="text-align: center;">
+                                            <a class="text-white fas fa-calendar-alt"></a>
+                                            <label class="text-white p-3 Td">Fecha inicio</label>
+                                        </div>
+                                        <input type="date" id="fechaInicio" class="diseñoSelect" style="cursor: pointer; border-radius: 5px;" v-model="Filtros.fechaI">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div style="text-align: center; font-size: medium;">
+                                    <div style="text-align: center;">
+                                        <div style="text-align: center;">
+                                            <a class="text-white fas fa-calendar-alt"></a>
+                                            <label class="text-white p-3 Td">Fecha Fin</label>
+                                        </div>
+                                        <input type="date" id="fechaFin" class="diseñoSelect" style="cursor: pointer; border-radius: 5px;" v-model="Filtros.fechaF">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div>
+                                    <div style="text-align: center; font-size: medium;">
+                                        <div style="text-align: center;">
+                                            <a class="text-white fas fa-check-square"></a>
+                                            <label class="text-white p-3 Td">Estado</label>
+                                        </div>
+                                        <select class="form-select diseñoSelect" v-model="Filtros.estado" style="min-height: 35px; font-size: medium;">
+                                            <option value="">Todos</option>
+                                            <!--<option v-bind:value="Estado.gen_EstadoCodigo"
+                                                    v-for="Estado in ListaEstados"
+                                                    v-bind:key="Estado.gen_EstadoID">
+                                                {{Estado.gen_EstadoDescripcion}}
+                                            </option>-->
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div>
+                                    <div v-if="recuperarUsuTipo() == 'Administrador'" style="text-align: center; font-size: medium;">
+                                        <div style="text-align: center;">
+                                            <a class="text-white fas fa-user-check"></a>
+                                            <label class="text-white p-3 Td">Usuario</label>
+                                        </div>
+                                        <select class="form-select diseñoSelect" v-model="Filtros.usuario" style="min-height: 35px; font-size: medium;">
+                                            <option value="">Todos</option>
+                                            <!--<option v-bind:value="Usuario.usu_Login"
+                                                    v-for="Usuario in ListaUsuarios"
+                                                    v-bind:key="Usuario.usu_Login">
+                                                {{Usuario.usu_Login}}
+                                            </option>-->
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <br />
+                            <br />
+                            <div class="col-12">
+                                <div class="col-12">
+                                    <div class="col-12 filtro" style="font-size: medium;">
+                                        <button style="padding-top: 10px" class="col-12" role="button" v-on:click="FiltrarBoletas(Filtros.fechaI, Filtros.fechaF, Filtros.estado, Filtros.usuario)">
+                                            <b class="text-gradient-yellow-orange-black">
+                                                <i class="text-gradient-yellow-orange-black fas fa-filter"></i> 
+                                                Aplicar Filtro
+                                            </b>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="text-align: center; font-size: large; padding-top: 25px; cursor: pointer;" v-if="filtroDesplegar" v-on:click="desplegarFiltros()">
+                            <a class="text-gradient-yellow-orange-black fas fa-angle-up"></a>
+                        </div>
+
+                    </div>
+
+                    <div class="w-100 vld-parent col-12" style="min-height: 85vh;">
+
+                        <!--Lista de Tareas /-->
+
+                        <div class="row">
+                            <div class="col-md-12" style="padding:15px;">
+                                <div class="card" style="border: none;" ref="cuadroLoader">
+                                    <div class="encabezado">
+                                        <ul style="text-align: left;">
+                                            <router-link class="li agregarBlt" role="button" :to="{ name: 'Sprints' }"><span class="fas fa-arrow-left"></span></router-link>
+                                        </ul>
+                                        <div style="text-align: center; padding-top: 10px; cursor: default;">
+                                            <h4>Listado de Tareas</h4>
+                                        </div>
+                                        <ul style="text-align: right;">
+                                            <a class="li agregarBlt agregarResponsive" role="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop"><span class="fas fa-plus"></span> Crear Tarea</a>
+                                            <a class="li agregarBlt agregarResponsivePlus" role="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop"><span class="fas fa-plus"></span></a>
+                                        </ul>
+                                    </div>
+                                    <!--<div class="sinResultadosAct">
+                                        <p>No hay tareas para mostrar</p>
+                                    </div>-->
+                                    <div class="contenidoTabla">
+                                        <!--<table class="table table-stryped" style="text-align: center;">
+                                            <thead>
+                                                <tr>
+                                                    <th class="col-1" style="min-width: 75px;"># Tarea</th>
+                                                    <th class="col-4" style="min-width: 150px;">Nombre</th>
+                                                    <th class="col-1" style="min-width: 125px;">Estado</th>
+                                                    <th class="col-2" style="min-width: 125px;">Opciones</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody style="font-size: large;">
+                                                <tr>
+                                                    <td @click="mostrarSubtareas" class="claseTD">1</td>
+                                                    <td @click="mostrarSubtareas" class="claseTD">Crear Login</td>
+                                                    <td @click="mostrarSubtareas" class="claseTD">En proceso</td>
+                                                    <td class="text-white">
+                                                        <button class="btn btn-primary" role="button" @click="verTareas">
+                                                            <span class="fas fa-eye" b-tooltip.hover title="Ver Tarea"></span>
+                                                        </button>
+                                                        <button style="margin-left: 5px;" type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#editarTarea">
+                                                            <span class="fas fa-pen" b-tooltip.hover title="Editar Tarea"></span>
+                                                        </button>
+                                                        <button type="button" class="btn btn-danger" style="margin-left: 5px;" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                                            <span class="fas fa-trash" b-tooltip.hover title="Eliminar Tarea"></span>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                                <tr class="collapse" id="collapseExample" :class="{ 'show': subtareas }">
+                                                    <td colspan="4">
+                                                        <div>
+                                                            <table class="table" style="text-align: center;">
+                                                                <tbody style="font-size: medium;">
+                                                                    <tr class="listaSubtareas">
+                                                                        <td>Diseño de la pantalla del login responsive</td>
+                                                                    </tr>
+                                                                    <tr class="listaSubtareas">
+                                                                        <td>Validación de los campos</td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>-->
+
+                                        <div class="tablaPersonalizada">
+                                            <div>
+                                                <h6 style="cursor: default; min-width: 40px;"><b># Tarea</b></h6>
+                                                <hr>
+                                            </div>
+                                            <div>
+                                                <h6 style="cursor: default; color: white">.</h6>
+                                                <hr>
+                                            </div>
+                                            <div>
+                                                <h6 style="cursor: default;"><b>Nombre</b></h6>
+                                                <hr>
+                                            </div>
+                                            <div>
+                                                <h6 style="cursor: default;"><b>Estado</b></h6>
+                                                <hr>
+                                            </div>
+                                            <div>
+                                                <h6 style="cursor: default;"><b>Opciones</b></h6>
+                                                <hr>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="tablaPersonalizada">
+                                                <div>
+                                                    <div class="tablaPersonalizadaRow" @click="mostrarSubtareas">1</div>
+                                                </div>
+                                                <div>
+                                                    <div class="tablaPersonalizadaRow"><a style="text-decoration: none;" class="fas fa-plus" data-bs-toggle="modal" data-bs-target="#crearSubtarea"></a></div>
+                                                </div>
+                                                <div>
+                                                    <div class="tablaPersonalizadaRow" @click="mostrarSubtareas">Crear login</div>
+                                                </div>
+                                                <div>
+                                                    <div class="tablaPersonalizadaRow" @click="mostrarSubtareas">Pendiente</div>
+                                                </div>
+                                                <div>
+                                                    <div class="tablaPersonalizadaRow" style="min-width: 150px;">
+                                                        <button class="btn btn-primary" role="button" data-bs-toggle="modal" data-bs-target="#verTarea">
+                                                            <span class="fas fa-eye" b-tooltip.hover title="Ver Tarea"></span>
+                                                        </button>
+                                                        <button style="margin-left: 5px;" type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#editarTarea">
+                                                            <span class="fas fa-pen" b-tooltip.hover title="Editar Tarea"></span>
+                                                        </button>
+                                                        <button type="button" class="btn btn-danger" style="margin-left: 5px;" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                                            <span class="fas fa-trash" b-tooltip.hover title="Eliminar Tarea"></span>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <br/>
+                                            <div class="collapse" id="collapseExample" :class="{ 'show': subtareas }">
+                                                <div class="tablaPersonalizadaSubtareas listadoSubtareas" style="margin-bottom: 15px;">
+                                                    <div>
+                                                        <div class="tablaPersonalizadaRow"></div>
+                                                    </div>
+                                                    <div>
+                                                        <div class="tablaPersonalizadaRow"></div>
+                                                    </div>
+                                                    <div>
+                                                        <div class="tablaPersonalizadaRowSubTareas">Diseñar la pantalla de login, debe ser responsive</div>
+                                                    </div>
+                                                    <div>
+                                                        <div class="tablaPersonalizadaRow">
+                                                            <p class="fas fa-check-circle" style="color: rgb(90, 180, 0)"></p>
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        <div class="tablaPersonalizadaRow">
+                                                            <a style="text-decoration: none; margin-right: 20px;" class="fas fa-pen" data-bs-toggle="modal" data-bs-target="#editarSubtarea"></a>
+                                                            <a style="text-decoration: none;" class="fas fa-trash" data-bs-toggle="modal" data-bs-target="#eliminarSubtarea"></a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="tablaPersonalizadaSubtareas listadoSubtareas" style="margin-bottom: 15px;">
+                                                    <div>
+                                                        <div class="tablaPersonalizadaRow"></div>
+                                                    </div>
+                                                    <div>
+                                                        <div class="tablaPersonalizadaRow"></div>
+                                                    </div>
+                                                    <div>
+                                                        <div class="tablaPersonalizadaRowSubTareas">Validar los campos</div>
+                                                    </div>
+                                                    <div>
+                                                        <div class="tablaPersonalizadaRow">
+                                                            <p class="fas fa-exclamation-circle" style="color: tomato"></p>
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        <div class="tablaPersonalizadaRow">
+                                                            <a style="text-decoration: none; margin-right: 20px;" class="fas fa-pen" data-bs-toggle="modal" data-bs-target="#editarSubtarea"></a>
+                                                            <a style="text-decoration: none;" class="fas fa-trash" data-bs-toggle="modal" data-bs-target="#eliminarSubtarea"></a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <hr>
+                                            </div>
+                                        </div>
+
+                                        <div>
+                                            <div class="tablaPersonalizada">
+                                                <div>
+                                                    <div class="tablaPersonalizadaRow" @click="mostrarSubtareas">2</div>
+                                                </div>
+                                                <div>
+                                                    <div class="tablaPersonalizadaRow"><a style="text-decoration: none;" class="fas fa-plus" data-bs-toggle="modal" data-bs-target="#crearSubtarea"></a></div>
+                                                </div>
+                                                <div>
+                                                    <div class="tablaPersonalizadaRow" @click="mostrarSubtareas">Diseño de página de inicio</div>
+                                                </div>
+                                                <div>
+                                                    <div class="tablaPersonalizadaRow" @click="mostrarSubtareas">Pendiente</div>
+                                                </div>
+                                                <div>
+                                                    <div class="tablaPersonalizadaRow" style="min-width: 150px;">
+                                                        <button class="btn btn-primary" role="button" data-bs-toggle="modal" data-bs-target="#verTarea">
+                                                            <span class="fas fa-eye" b-tooltip.hover title="Ver Tarea"></span>
+                                                        </button>
+                                                        <button style="margin-left: 5px;" type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#editarTarea">
+                                                            <span class="fas fa-pen" b-tooltip.hover title="Editar Tarea"></span>
+                                                        </button>
+                                                        <button type="button" class="btn btn-danger" style="margin-left: 5px;" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                                            <span class="fas fa-trash" b-tooltip.hover title="Eliminar Tarea"></span>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <br/>
+                                            <div class="collapse" id="collapseExample" :class="{ 'show': subtareas }">
+                                                <div class="tablaPersonalizadaSubtareas listadoSubtareas" style="margin-bottom: 15px;">
+                                                    <div>
+                                                        <div class="tablaPersonalizadaRow"></div>
+                                                    </div>
+                                                    <div>
+                                                        <div class="tablaPersonalizadaRow"></div>
+                                                    </div>
+                                                    <div>
+                                                        <div class="tablaPersonalizadaRowSubTareas">Diseñar la pantalla de inicio, debe ser responsive</div>
+                                                    </div>
+                                                    <div>
+                                                        <div class="tablaPersonalizadaRow">
+                                                            <p class="fas fa-exclamation-circle" style="color: tomato"></p>
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        <div class="tablaPersonalizadaRow">
+                                                            <a style="text-decoration: none; margin-right: 20px;" class="fas fa-pen" data-bs-toggle="modal" data-bs-target="#editarSubtarea"></a>
+                                                            <a style="text-decoration: none;" class="fas fa-trash" data-bs-toggle="modal" data-bs-target="#eliminarSubtarea"></a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <hr>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <nav aria-label="Page navigation example" style="position: absolute; bottom: 0px; margin-left: 15px;">
+                            <ul class="pagination">
+                                <li class="page-item"><a class="page-link" href="#">Anterior</a></li>
+                                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                <li class="page-item"><a class="page-link" href="#">Siguiente</a></li>
+                            </ul>
+                        </nav>
+
+                        <!--Lista de proyectos /-->
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script>
+import Cookies from 'js-cookie';
+import HeaderPrincipal from '@/components/HeaderPrincipal.vue'
+import Quill from 'quill'
+//import AdminApi from '@/Api/Api';
+
+export default {
+
+    components: {
+        /* eslint-disable */
+        HeaderPrincipal, Quill
+        /* eslint-disable */
+    },
+
+    data() {
+        return {
+            filtroDesplegar: false,
+
+            Filtros: {
+            fechaI: "",
+            fechaF: "",
+            estado: "",
+            usuario: "",
+            },
+
+            subtareas: false,
+
+        }
+    },
+
+    methods: {
+
+        EditarTarea: function(TareaID) {
+            this.$router.push({
+                name: "EditarTarea",
+                params: {
+                    id: TareaID,
+                }
+            })
+        },
+
+        mostrarSubtareas: function() {
+            this.subtareas = !this.subtareas;
+        },
+
+        desplegarFiltros: function () {
+            this.filtroDesplegar = !this.filtroDesplegar;
+        },
+
+        cerrarFiltros: function () {
+            this.filtroDesplegar = false;
+        },
+
+        seleccionarAplicacion: async function() {
+            await this.$root.designarAplicacionHeaderPrincipal.call();
+        },
+
+        cerrarMenu: async function () {
+            await this.$root.CerrarMenu.call();
+            await this.$root.CerrarMenuAplicaciones.call();
+        },
+
+        recuperarUsuLog() {
+            return Cookies.get("usuarioLogin")
+        },
+
+        recuperarUsuTipo() {
+            return Cookies.get("tipoU")
+        },
+
+        recuperarUsuNombre() {
+            return Cookies.get("nombreUsu")
+        },
+
+        verificarLog: function () {
+            let login = this.recuperarUsuLog()
+            let nombre = this.recuperarUsuNombre()
+            if (login == null || (nombre == undefined || nombre == null || nombre == '')) {
+                this.$router.push("/");
+                this.$swal({ icon: 'warning', text: 'Aún no ha iniciado sesión, por favor verifique' });
+            }
+
+        },
+
+    },
+
+    mounted: async function() {
+        this.$root.cerrarMenuFiltros = this.cerrarFiltros;
+        let loader = this.$loading.show({
+            container: this.$refs.cuadroLoader,
+            opacity: 1
+        })
+                
+        setTimeout(() => {
+            loader.hide()
+        }, 500)
+
+        this.quill = new Quill(this.$refs.Quill, {
+            theme: 'snow'
+        })
+    },
+
+    created: async function () {
+        await this.verificarLog();
+        await this.$root.validarLoginFooter.call();
+    }
+
+}
+
+</script>
+
+<style>
+</style>
+
+<style scoped>
+
+#header {
+    margin: auto;
+    width: 500px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+ul, ol {
+    list-style: none;
+}
+
+.nav > li {
+    float: left;
+}
+
+.nav li a {
+    background-color: #262b35;
+    color: #fff;
+    text-decoration: none;
+    padding: 10px 12px;
+    display: block;
+}
+
+    .nav li a:hover {
+        color: #808080;
+        background-color: #262b35;
+    }
+
+.nav li ul {
+    display: none;
+    position: absolute;
+    min-width: 140px;
+}
+
+.nav li:hover > ul {
+    display: block;
+}
+
+.nav li ul li {
+    position: relative;
+}
+
+.nav li ul li ul {
+    right: -140px;
+    top: 0px;
+}
+
+.filtro {
+    height: 3em;
+    background: #000;
+    border-radius: 0.5em;
+}
+
+    .filtro button {
+        background-color: #000;
+        border-radius: 0.5em;
+        border: none;
+    }
+
+    .filtro button:hover {
+        background-color: #000;
+        border-radius: 0.5em;
+        border: none;
+        font-size: 15px;
+    }
+
+/*Select*/
+
+.diseñoSelectLateral{
+    height: 30px;
+}
+
+.diseñoSelect{
+    height: 35px;
+}
+
+/*Select*/
+
+.posicion0 {
+    z-index: 0;
+}
+
+.posicion1 {
+    z-index: 1;
+    max-width: 280px;
+    min-height: 95vh;
+    background-color: #0a3a66;
+    min-width: 15em;
+    border-bottom: 1px solid white;
+}
+
+@media screen and (max-width: 900px) {
+    .posicion1{
+        display: none;
+    }
+}
+
+@media screen and (max-width: 700px) {
+
+    .responsiveCelular {
+        min-height: 500px;
+    }
+
+    .menuLateralCelular{
+        display: none;
+    }
+}
+
+.filtrosCelular{
+    padding-top: 20px;
+    padding-left: 50px;
+    padding-right: 50px;
+    padding-bottom: 20px;
+    background: rgba(10,58,102,1);
+}
+
+@media screen and (min-width: 901px) {
+
+    .filtrosCelular{
+        display: none;
+    }
+}
+
+.encabezado {
+    display: grid;
+    grid-template-columns: 25% 50% 25%;
+    background-color: #ffffff;
+    color: rgb(0, 0, 0);
+    min-height: 50px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    max-width: 1800px;;
+}
+
+    .encabezado ul {
+            padding-top: 14px;
+        }
+
+    .li {
+        font-family: sans-serif;
+        color: black;
+        text-decoration: none;
+    }
+
+    .encabezado div {
+        text-align: center;
+    }
+
+.sinResultadosAct{
+    width: 100%;
+    text-align: center;
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+.contenidoTabla {
+    max-width: 2100px;
+    overflow-x: auto;
+}
+
+.botones{
+    min-height: 40px;
+    min-width: 150px;
+}
+
+.agregarBlt{
+    font-family: sans-serif;
+    font-size: 18px;
+    text-decoration: none;
+    padding-right: 10px;
+    position: relative;
+    top: -5px;
+    color: rgb(0, 0, 0);
+}
+
+@media screen and (max-width: 975px) {
+    .agregarResponsive{
+        display: none;
+    }
+}
+
+@media screen and (min-width: 975px) {
+    .agregarResponsivePlus{
+        display: none;
+    }
+}
+
+@media screen and (min-width: 901px) {
+    .linkResponsive{
+        display: none;
+    }
+}
+
+@media screen and (max-width: 610px) {
+    .linkResponsiveCelular{
+        display: none;
+    }
+}
+
+.filtrosCelularBoton{
+    text-align: center;
+    font-size: large;
+    cursor: pointer;
+    background-color: rgba(10,58,102,1);
+    height: 30px;
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    max-width: 50px;
+}
+
+@media screen and (min-width: 901px) {
+    .filtrosCelularBotones{
+        display: none;
+    }
+
+    .filtrosCelularBoton{
+        display: none;
+    }
+}
+
+.vistaPrincipal{
+    min-height: 85vh;
+}
+
+@media screen and (max-width: 900px) {
+    .vistaPrincipal{
+        min-height: 98vh;
+    }
+}
+
+@media screen and (max-width: 400px) {
+    .vistaPrincipal{
+        min-height: 100vh;
+    }
+}
+
+.botonEncuestas{
+    margin-left: -15px;
+    min-width: 12.4rem;
+    background-color: #114677;;
+    min-height: 35px;
+    border-radius: 5px;
+    padding-top: 20px;
+    list-style: none;
+}
+
+.textoEncuestas{
+    margin-left: 25px;
+    margin-top: -15px;
+    font-size: 17px;
+    text-decoration: none;
+    color: white;
+    display: block;
+    position: relative;
+}
+
+.adjuntosJ {
+    max-height: 240px;
+    overflow-y: scroll;
+    margin-bottom: 12px;
+    margin-right: 1px;
+    margin-left: 5px;
+}
+
+.inputsGeneral{
+    border-radius: 15px;
+}
+
+.listaSubtareas{
+    border: 1px solid #c5c5c5;
+    border-radius: 15px;
+}
+
+.listaSubtareas:hover{
+    background-color: #c5c5c5;
+    cursor: pointer;
+}
+
+.tablaPersonalizada{
+    display: grid;
+    grid-template-columns: 10% 2% 48% 15% 25%;
+}
+
+.tablaPersonalizadaSubtareas{
+    display: grid;
+    grid-template-columns: 10% 2% 48% 15% 25%;
+}
+
+@media screen and (max-width: 900px){
+    .tablaPersonalizada{
+        display: grid;
+        grid-template-columns: 10% 3% 42% 20% 25%;
+    }
+
+    .tablaPersonalizadaSubtareas{
+        display: grid;
+        grid-template-columns: 10% 3% 42% 20% 25%;
+    }
+}
+
+.tablaPersonalizada div {
+    text-align: center;
+}
+
+.tablaPersonalizadaSubtareas{
+    text-align: center;
+}
+
+.tablaPersonalizadaRow{
+    font-size: large;
+    cursor: pointer;
+}
+
+.tablaPersonalizadaRowSubTareas{
+    font-size: medium;
+    cursor: pointer;
+}
+
+.listadoSubtareas{
+    background-color: #e7f3ff;
+}
+
+.listadoSubtareas:hover{
+    background-color: #c7e0f7;
+}
+
+</style>

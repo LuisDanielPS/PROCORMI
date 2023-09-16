@@ -1,0 +1,55 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.32228.343
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Technosoft.Sitech.Procormi.DAO", "Technosoft.Sitech.Procormi.DAO\Technosoft.Sitech.Procormi.DAO.vbproj", "{62A140F7-5827-42B8-85F2-2A29B0A93D16}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Technosoft.Sitech.Procormi.BLL", "Technosoft.Sitech.Procormi.BLL\Technosoft.Sitech.Procormi.BLL.vbproj", "{C8C3558F-57E6-4649-978F-40C366B97BAE}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Technosoft.Sitech.Procormi.EN", "Technosoft.Sitech.Procormi.EN\Technosoft.Sitech.Procormi.EN.vbproj", "{18ED5C90-98CC-4C73-83C8-FFF5EE57AAFE}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Technosoft.Sitech.Procormi.UT", "Technosoft.Sitech.Procormi.UT\Technosoft.Sitech.Procormi.UT.vbproj", "{DB2607BD-3239-4D92-A619-AD8B9498ADAE}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Technosoft.Sitech.Procormi.WebAPI", "Technosoft.Sitech.Procormi.WebAPI\Technosoft.Sitech.Procormi.WebAPI.vbproj", "{F289645F-5D49-4C75-B607-191F976C6B9C}"
+EndProject
+Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "Technosoft.Sitech.Procormi.UI", "Technosoft.Sitech.Procormi.UI\Technosoft.Sitech.Procormi.UI.njsproj", "{6C75BBD1-3041-4078-8511-954E594E84C2}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{62A140F7-5827-42B8-85F2-2A29B0A93D16}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{62A140F7-5827-42B8-85F2-2A29B0A93D16}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{62A140F7-5827-42B8-85F2-2A29B0A93D16}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{62A140F7-5827-42B8-85F2-2A29B0A93D16}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C8C3558F-57E6-4649-978F-40C366B97BAE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C8C3558F-57E6-4649-978F-40C366B97BAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C8C3558F-57E6-4649-978F-40C366B97BAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C8C3558F-57E6-4649-978F-40C366B97BAE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{18ED5C90-98CC-4C73-83C8-FFF5EE57AAFE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{18ED5C90-98CC-4C73-83C8-FFF5EE57AAFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{18ED5C90-98CC-4C73-83C8-FFF5EE57AAFE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{18ED5C90-98CC-4C73-83C8-FFF5EE57AAFE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DB2607BD-3239-4D92-A619-AD8B9498ADAE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DB2607BD-3239-4D92-A619-AD8B9498ADAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DB2607BD-3239-4D92-A619-AD8B9498ADAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DB2607BD-3239-4D92-A619-AD8B9498ADAE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F289645F-5D49-4C75-B607-191F976C6B9C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F289645F-5D49-4C75-B607-191F976C6B9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F289645F-5D49-4C75-B607-191F976C6B9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F289645F-5D49-4C75-B607-191F976C6B9C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6C75BBD1-3041-4078-8511-954E594E84C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6C75BBD1-3041-4078-8511-954E594E84C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6C75BBD1-3041-4078-8511-954E594E84C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6C75BBD1-3041-4078-8511-954E594E84C2}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3FF9D0AB-97F1-4C76-B9E0-B858981C7F30}
+	EndGlobalSection
+EndGlobal
