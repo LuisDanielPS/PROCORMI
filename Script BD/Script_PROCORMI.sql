@@ -21,15 +21,15 @@ USE `procormi`;
 -- Table structure for table `encuesta`
 --
 
-DROP TABLE IF EXISTS `encuesta`;
+DROP TABLE IF EXISTS `poll`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `encuesta` (
-  `Id_Encuesta` int NOT NULL,
-  `Nombre` varchar(45) DEFAULT NULL,
-  `Descripcion` varchar(45) DEFAULT NULL,
-  `Fecha_Creacion` datetime DEFAULT NULL,
-  PRIMARY KEY (`Id_Encuesta`)
+CREATE TABLE `poll` (
+  `Id_Poll` int NOT NULL,
+  `Name` varchar(45) DEFAULT NULL,
+  `Description` varchar(45) DEFAULT NULL,
+  `Creation_Date` datetime DEFAULT NULL,
+  PRIMARY KEY (`Id_poll`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -37,22 +37,22 @@ CREATE TABLE `encuesta` (
 -- Dumping data for table `encuesta`
 --
 
-LOCK TABLES `encuesta` WRITE;
-/*!40000 ALTER TABLE `encuesta` DISABLE KEYS */;
-/*!40000 ALTER TABLE `encuesta` ENABLE KEYS */;
+LOCK TABLES `poll` WRITE;
+/*!40000 ALTER TABLE `poll` DISABLE KEYS */;
+/*!40000 ALTER TABLE `poll` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
 -- Table structure for table `estado`
 --
 
-DROP TABLE IF EXISTS `estado`;
+DROP TABLE IF EXISTS `state`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `estado` (
-  `Id_Estado` int NOT NULL,
-  `Nombre_Estado` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`Id_Estado`)
+CREATE TABLE `state` (
+  `Id_State` int NOT NULL,
+  `State_Name` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`Id_State`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -60,23 +60,23 @@ CREATE TABLE `estado` (
 -- Dumping data for table `estado`
 --
 
-LOCK TABLES `estado` WRITE;
-/*!40000 ALTER TABLE `estado` DISABLE KEYS */;
-/*!40000 ALTER TABLE `estado` ENABLE KEYS */;
+LOCK TABLES `state` WRITE;
+/*!40000 ALTER TABLE `state` DISABLE KEYS */;
+/*!40000 ALTER TABLE `state` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
 -- Table structure for table `pregunta`
 --
 
-DROP TABLE IF EXISTS `pregunta`;
+DROP TABLE IF EXISTS `question`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `pregunta` (
-  `Id_Pregunta` int NOT NULL,
-  `TextoPregunta` varchar(600) DEFAULT NULL,
-  `Tipo_Pregunta` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`Id_Pregunta`)
+CREATE TABLE `question` (
+  `Id_Question` int NOT NULL,
+  `TextQuestion` varchar(600) DEFAULT NULL,
+  `TypeQuestion` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`Id_Question`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -84,22 +84,22 @@ CREATE TABLE `pregunta` (
 -- Dumping data for table `pregunta`
 --
 
-LOCK TABLES `pregunta` WRITE;
-/*!40000 ALTER TABLE `pregunta` DISABLE KEYS */;
-/*!40000 ALTER TABLE `pregunta` ENABLE KEYS */;
+LOCK TABLES `question` WRITE;
+/*!40000 ALTER TABLE `question` DISABLE KEYS */;
+/*!40000 ALTER TABLE `question` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
 -- Table structure for table `prioridad`
 --
 
-DROP TABLE IF EXISTS `prioridad`;
+DROP TABLE IF EXISTS `priority`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `prioridad` (
-  `Id_Prioridad` int NOT NULL,
-  `Nombre_Prioridad` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`Id_Prioridad`)
+CREATE TABLE `priority` (
+  `Id_Priority` int NOT NULL,
+  `Priority_Name` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`Id_Priority`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -107,23 +107,23 @@ CREATE TABLE `prioridad` (
 -- Dumping data for table `prioridad`
 --
 
-LOCK TABLES `prioridad` WRITE;
-/*!40000 ALTER TABLE `prioridad` DISABLE KEYS */;
-/*!40000 ALTER TABLE `prioridad` ENABLE KEYS */;
+LOCK TABLES `priority` WRITE;
+/*!40000 ALTER TABLE `priority` DISABLE KEYS */;
+/*!40000 ALTER TABLE `priority` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
 -- Table structure for table `proyecto`
 --
 
-DROP TABLE IF EXISTS `proyecto`;
+DROP TABLE IF EXISTS `project`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `proyecto` (
-  `Id_Proyecto` int NOT NULL,
-  `Nombre_Proyecto` varchar(100) DEFAULT NULL,
-  `Descripcion_Proyecto` varchar(1000) DEFAULT NULL,
-  PRIMARY KEY (`Id_Proyecto`)
+CREATE TABLE `project` (
+  `Id_Project` int NOT NULL,
+  `Project_Name` varchar(100) DEFAULT NULL,
+  `Description_Project` varchar(1000) DEFAULT NULL,
+  PRIMARY KEY (`Id_Project`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -131,22 +131,22 @@ CREATE TABLE `proyecto` (
 -- Dumping data for table `proyecto`
 --
 
-LOCK TABLES `proyecto` WRITE;
-/*!40000 ALTER TABLE `proyecto` DISABLE KEYS */;
-/*!40000 ALTER TABLE `proyecto` ENABLE KEYS */;
+LOCK TABLES `project` WRITE;
+/*!40000 ALTER TABLE `project` DISABLE KEYS */;
+/*!40000 ALTER TABLE `project` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
 -- Table structure for table `respuesta`
 --
 
-DROP TABLE IF EXISTS `respuesta`;
+DROP TABLE IF EXISTS `answer`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `respuesta` (
-  `Id_Respuesta` int NOT NULL,
-  `Texto` varchar(300) DEFAULT NULL,
-  PRIMARY KEY (`Id_Respuesta`)
+CREATE TABLE `answer` (
+  `Id_Answer` int NOT NULL,
+  `Text` varchar(300) DEFAULT NULL,
+  PRIMARY KEY (`Id_Answer`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -154,9 +154,9 @@ CREATE TABLE `respuesta` (
 -- Dumping data for table `respuesta`
 --
 
-LOCK TABLES `respuesta` WRITE;
-/*!40000 ALTER TABLE `respuesta` DISABLE KEYS */;
-/*!40000 ALTER TABLE `respuesta` ENABLE KEYS */;
+LOCK TABLES `answer` WRITE;
+/*!40000 ALTER TABLE `answer` DISABLE KEYS */;
+/*!40000 ALTER TABLE `answer` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -168,8 +168,8 @@ DROP TABLE IF EXISTS `sprint`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `sprint` (
   `Id_Sprint` int NOT NULL,
-  `Nombre_Sprint` varchar(45) DEFAULT NULL,
-  `Fecha_Inicio` datetime DEFAULT NULL,
+  `Sprint_Name` varchar(45) DEFAULT NULL,
+  `Start_Date` datetime DEFAULT NULL,
   PRIMARY KEY (`Id_Sprint`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -187,15 +187,15 @@ UNLOCK TABLES;
 -- Table structure for table `sub_tarea`
 --
 
-DROP TABLE IF EXISTS `sub_tarea`;
+DROP TABLE IF EXISTS `sub_task`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `sub_tarea` (
-  `Id_Sub_Tarea` int NOT NULL,
-  `Titulo` varchar(45) DEFAULT NULL,
-  `Descripcion` varchar(300) DEFAULT NULL,
-  `Tiempo_Requerido` int DEFAULT NULL,
-  PRIMARY KEY (`Id_Sub_Tarea`)
+CREATE TABLE `sub_task` (
+  `Id_Sub_Task` int NOT NULL,
+  `Titule` varchar(45) DEFAULT NULL,
+  `Description` varchar(300) DEFAULT NULL,
+  `Requirid_Time` int DEFAULT NULL,
+  PRIMARY KEY (`Id_Sub_Task`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -203,23 +203,23 @@ CREATE TABLE `sub_tarea` (
 -- Dumping data for table `sub_tarea`
 --
 
-LOCK TABLES `sub_tarea` WRITE;
-/*!40000 ALTER TABLE `sub_tarea` DISABLE KEYS */;
-/*!40000 ALTER TABLE `sub_tarea` ENABLE KEYS */;
+LOCK TABLES `sub_task` WRITE;
+/*!40000 ALTER TABLE `sub_task` DISABLE KEYS */;
+/*!40000 ALTER TABLE `sub_task` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
 -- Table structure for table `tarea`
 --
 
-DROP TABLE IF EXISTS `tarea`;
+DROP TABLE IF EXISTS `task`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `tarea` (
-  `Id_Tarea` int NOT NULL,
-  `Nombre_Tarea` varchar(45) DEFAULT NULL,
-  `Descripcion_Tarea` varchar(300) DEFAULT NULL,
-  PRIMARY KEY (`Id_Tarea`)
+CREATE TABLE `task` (
+  `Id_Task` int NOT NULL,
+  `Task_Name` varchar(45) DEFAULT NULL,
+  `Description_Task` varchar(300) DEFAULT NULL,
+  PRIMARY KEY (`Id_Task`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -227,9 +227,9 @@ CREATE TABLE `tarea` (
 -- Dumping data for table `tarea`
 --
 
-LOCK TABLES `tarea` WRITE;
-/*!40000 ALTER TABLE `tarea` DISABLE KEYS */;
-/*!40000 ALTER TABLE `tarea` ENABLE KEYS */;
+LOCK TABLES `task` WRITE;
+/*!40000 ALTER TABLE `task` DISABLE KEYS */;
+/*!40000 ALTER TABLE `task` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
