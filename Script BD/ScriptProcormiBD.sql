@@ -26,48 +26,22 @@ DROP TABLE IF EXISTS `answer`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `answer` (
   `Id_Answer` int(11) NOT NULL,
-  `Text` varchar(300) DEFAULT NULL,
-  `Id_Answer_Type` int(11) NOT NULL,
-  `Id_Poll` int(11) NOT NULL,
+  `Text` varchar(400) NOT NULL,
+  `Id_Question` int(11) NOT NULL,
   PRIMARY KEY (`Id_Answer`),
-  KEY `Fk_Answer_Type_idx` (`Id_Answer_Type`),
-  KEY `Fk_Poll_idx` (`Id_Poll`),
-  CONSTRAINT `Fk_Answer_Type` FOREIGN KEY (`Id_Answer_Type`) REFERENCES `answer_type` (`Id_Answer_Type`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `Fk_Poll` FOREIGN KEY (`Id_Poll`) REFERENCES `poll` (`Id_Poll`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  KEY `Fk_Question_Answer_idx` (`Id_Question`),
+  CONSTRAINT `Fk_Question_Answer` FOREIGN KEY (`Id_Question`) REFERENCES `question` (`Id_Question`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `answer_options`
+-- Dumping data for table `answer`
 --
 
-DROP TABLE IF EXISTS `answer_options`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `answer_options` (
-  `Id_Option` int(11) NOT NULL,
-  `Id_Answer` int(11) NOT NULL,
-  `Option_Text` int(11) NOT NULL,
-  `Option_Counter` int(11) DEFAULT NULL,
-  PRIMARY KEY (`Id_Option`),
-  KEY `Fk_Answer_idx` (`Id_Answer`),
-  CONSTRAINT `Fk_Answer` FOREIGN KEY (`Id_Answer`) REFERENCES `answer` (`Id_Answer`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `answer_type`
---
-
-DROP TABLE IF EXISTS `answer_type`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `answer_type` (
-  `Id_Answer_Type` int(11) NOT NULL,
-  `Answer_Type_Name` varchar(50) NOT NULL,
-  PRIMARY KEY (`Id_Answer_Type`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
+LOCK TABLES `answer` WRITE;
+/*!40000 ALTER TABLE `answer` DISABLE KEYS */;
+/*!40000 ALTER TABLE `answer` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `poll`
@@ -86,6 +60,15 @@ CREATE TABLE `poll` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `poll`
+--
+
+LOCK TABLES `poll` WRITE;
+/*!40000 ALTER TABLE `poll` DISABLE KEYS */;
+/*!40000 ALTER TABLE `poll` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `priority`
 --
 
@@ -98,6 +81,15 @@ CREATE TABLE `priority` (
   PRIMARY KEY (`Id_Priority`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `priority`
+--
+
+LOCK TABLES `priority` WRITE;
+/*!40000 ALTER TABLE `priority` DISABLE KEYS */;
+/*!40000 ALTER TABLE `priority` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `project`
@@ -119,6 +111,15 @@ CREATE TABLE `project` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `project`
+--
+
+LOCK TABLES `project` WRITE;
+/*!40000 ALTER TABLE `project` DISABLE KEYS */;
+/*!40000 ALTER TABLE `project` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `question`
 --
 
@@ -129,9 +130,74 @@ CREATE TABLE `question` (
   `Id_Question` int(11) NOT NULL,
   `TextQuestion` varchar(600) DEFAULT NULL,
   `TypeQuestion` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`Id_Question`)
+  `Id_Poll` int(11) NOT NULL,
+  `Id_Question_Type` int(11) NOT NULL,
+  PRIMARY KEY (`Id_Question`),
+  KEY `Fk_Poll_idx` (`Id_Poll`),
+  KEY `Fk_Question_Type_idx` (`Id_Question_Type`),
+  CONSTRAINT `Fk_Poll` FOREIGN KEY (`Id_Poll`) REFERENCES `poll` (`Id_Poll`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `Fk_Question_Type` FOREIGN KEY (`Id_Question_Type`) REFERENCES `question_type` (`Id_Question_Type`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `question`
+--
+
+LOCK TABLES `question` WRITE;
+/*!40000 ALTER TABLE `question` DISABLE KEYS */;
+/*!40000 ALTER TABLE `question` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `question_options`
+--
+
+DROP TABLE IF EXISTS `question_options`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `question_options` (
+  `Id_Question_Option` int(11) NOT NULL,
+  `Id_Question` int(11) NOT NULL,
+  `Option_Text` int(11) NOT NULL,
+  `Option_Counter` int(11) DEFAULT NULL,
+  PRIMARY KEY (`Id_Question_Option`),
+  KEY `Fk_Answer_idx` (`Id_Question`),
+  CONSTRAINT `Fk_Question` FOREIGN KEY (`Id_Question`) REFERENCES `question` (`Id_Question`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `question_options`
+--
+
+LOCK TABLES `question_options` WRITE;
+/*!40000 ALTER TABLE `question_options` DISABLE KEYS */;
+/*!40000 ALTER TABLE `question_options` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `question_type`
+--
+
+DROP TABLE IF EXISTS `question_type`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `question_type` (
+  `Id_Question_Type` int(11) NOT NULL,
+  `Question_Type_Name` varchar(50) NOT NULL,
+  PRIMARY KEY (`Id_Question_Type`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `question_type`
+--
+
+LOCK TABLES `question_type` WRITE;
+/*!40000 ALTER TABLE `question_type` DISABLE KEYS */;
+/*!40000 ALTER TABLE `question_type` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `seg_usu`
@@ -153,6 +219,16 @@ CREATE TABLE `seg_usu` (
   PRIMARY KEY (`usu_Login`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `seg_usu`
+--
+
+LOCK TABLES `seg_usu` WRITE;
+/*!40000 ALTER TABLE `seg_usu` DISABLE KEYS */;
+INSERT INTO `seg_usu` VALUES ('jaguilar','Johan Aguilar','12345','Administrador','2023/07/26',9999,'jaguilar@technosoftcr.com',1,1);
+/*!40000 ALTER TABLE `seg_usu` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `sprint`
@@ -180,6 +256,15 @@ CREATE TABLE `sprint` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `sprint`
+--
+
+LOCK TABLES `sprint` WRITE;
+/*!40000 ALTER TABLE `sprint` DISABLE KEYS */;
+/*!40000 ALTER TABLE `sprint` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `state`
 --
 
@@ -192,6 +277,15 @@ CREATE TABLE `state` (
   PRIMARY KEY (`Id_State`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `state`
+--
+
+LOCK TABLES `state` WRITE;
+/*!40000 ALTER TABLE `state` DISABLE KEYS */;
+/*!40000 ALTER TABLE `state` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `sub_task`
@@ -219,6 +313,15 @@ CREATE TABLE `sub_task` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `sub_task`
+--
+
+LOCK TABLES `sub_task` WRITE;
+/*!40000 ALTER TABLE `sub_task` DISABLE KEYS */;
+/*!40000 ALTER TABLE `sub_task` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `task`
 --
 
@@ -238,6 +341,15 @@ CREATE TABLE `task` (
   CONSTRAINT `Fk_State_Task` FOREIGN KEY (`Id_State`) REFERENCES `state` (`Id_State`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `task`
+--
+
+LOCK TABLES `task` WRITE;
+/*!40000 ALTER TABLE `task` DISABLE KEYS */;
+/*!40000 ALTER TABLE `task` ENABLE KEYS */;
+UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -248,4 +360,4 @@ CREATE TABLE `task` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-09-19 11:47:47
+-- Dump completed on 2023-09-19 19:19:42
