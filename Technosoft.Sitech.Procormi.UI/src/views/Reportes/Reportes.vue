@@ -5,14 +5,54 @@
 
         <div class="posicion0" v-on:click="cerrarMenu()">
             <div class="d-flex">
+                <MenuLateral />
 
-                <div class="row w-100 listadoGeneral">
+                <div class="w-100 listadoGeneral">
+
+                    <!--Filtros responsive /-->
+
+                    <div class="row justify-content-center filtrosCelularBotones">
+                        <div class="col-5"></div>
+                        <div class="col-2 filtrosCelularBoton" v-if="!filtroDesplegar" v-on:click="desplegarFiltros()">
+                            <a class="text-gradient-yellow-orange-black fas fa-bars"></a>
+                        </div>
+                        <div class="col-5"></div>
+                    </div>
+
+                    <div class="filtrosCelular row justify-content-center" v-if="filtroDesplegar">
+
+                        <div class="col-lg-4 col-md-4 col-sm-12 row justify-content-center" style="margin-top: 40px;">
+                            <div class="col-8 textoBlanco" style="text-align: center;">
+                                <router-link role="button" :to="{ name: 'Inicio' }" class="textoBlanco textoEncuestas" style="text-decoration: none;" exact-active-class="active-link">Proyectos&nbsp;&nbsp;<i class="text-white fas fa-project-diagram" style="cursor: pointer; font-size: 14px;"></i></router-link>
+                            </div>
+                        </div>
+                        
+                        <div class="col-lg-4 col-md-4 col-sm-12 row justify-content-center" style="margin-top: 40px;">
+                            <div class="col-8 textoBlanco" style="text-align: center;">
+                                <router-link role="button" :to="{ name: 'Encuestas' }" class="textoBlanco textoEncuestas" style="text-decoration: none;" exact-active-class="active-link">Encuestas&nbsp;&nbsp;<i class="text-white fas fa-chart-line" style="cursor: pointer;"></i></router-link>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4 col-md-4 col-sm-12 row justify-content-center" style="margin-top: 40px;">
+                            <div class="col-8 textoBlanco" style="text-align: center;">
+                                <router-link role="button" :to="{ name: 'Reportes' }" class="textoBlanco textoEncuestas" style="text-decoration: none;" exact-active-class="active-link">Reportes&nbsp;&nbsp;<i class="text-white far fa-file-alt" style="cursor: pointer;"></i></router-link>
+                            </div>
+                        </div>
+
+                        <div style="text-align: center; font-size: large; padding-top: 40px; cursor: pointer; margin-left: 20px;" v-if="filtroDesplegar" v-on:click="desplegarFiltros()">
+                            <a class="text-white fas fa-angle-up" style="text-decoration: none;"></a>
+                        </div>
+
+                    </div>
+
+                    <!--Filtros responsive /-->
+
                     <div class="w-100 vld-parent col-12" style="min-height: 85vh;">
 
                         <!--Lista de reportes /-->
 
-                        <div class="row">
-                            <div class="col-md-12" style="padding:15px;">
+                        <div class="row" style="padding:15px; min-height: 95vh; padding-right: 45px;">
+                            <div class="col-12 estiloTabla" style="padding:15px;">
                                 <div class="card" style="border: none;" ref="cuadroLoader">
                                     <div class="encabezado">
                                         <ul style="text-align: left;">
@@ -119,21 +159,26 @@
 <script>
 import Cookies from 'js-cookie';
 import HeaderPrincipal from '@/components/HeaderPrincipal.vue'
+import MenuLateral from '@/components/MenuLateral.vue'
 //import AdminApi from '@/Api/Api';
 
 export default {
 
     components: {
-        HeaderPrincipal//, MenuLateral
+        HeaderPrincipal, MenuLateral
     },
 
     data() {
         return {
-
+            filtroDesplegar: false,
         }
     },
 
     methods: {
+
+        desplegarFiltros: function () {
+            this.filtroDesplegar = !this.filtroDesplegar;
+        },
 
         cerrarMenu: async function () {
             await this.$root.CerrarMenu.call();
@@ -299,19 +344,19 @@ ul, ol {
 
 .filtrosCelular{
     padding-top: 20px;
-    padding-left: 50px;
-    padding-right: 50px;
+    padding-left: 10px;
+    padding-right: 10px;
     padding-bottom: 20px;
-    background: rgb(2,15,41);
-    background: linear-gradient(90deg, rgba(2,15,41,1) 0%, rgba(2,15,41,1) 50%, rgba(10,58,102,1) 100%);
+    background-color: rgba(10,58,102,1);
+    text-align: center;
 }
 
-/*@media screen and (min-width: 901px) {
+@media screen and (min-width: 901px) {
 
     .filtrosCelular{
         display: none;
     }
-}*/
+}
 
 .encabezado {
     display: grid;
@@ -394,7 +439,7 @@ ul, ol {
     text-align: center;
     font-size: large;
     cursor: pointer;
-    background-color: #020f29;
+    background-color: rgba(10,58,102,1);
     height: 30px;
     border-bottom-right-radius: 10px;
     border-bottom-left-radius: 10px;

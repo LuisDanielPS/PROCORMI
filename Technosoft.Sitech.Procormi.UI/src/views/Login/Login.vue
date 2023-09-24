@@ -7,26 +7,64 @@
             <div class="col-12 sm-margin-40px-bottom">
                 <div class="contentBX" style="padding-top: 100px;">
                     <div class="formBx">
-                        <form>
+                        <form v-if="!formRegistrarse">
                             <a style="text-align: center;">
                                 <img src="images/MilleniumLogoBlanco.png" class="default-logo" height="200" width="200">
                             </a>
                             <br />
                             <br />
                             <br />
-                            <h5 class="alt-font font-weight-500 text-gradient-yellow-orange-black" align="center">Iniciar Sesión</h5>
+                            <h5 class="alt-font font-weight-500 text-gradient-yellow-orange-black" align="center">Inicio de Sesión</h5>
                             <br />
                             <label class="margin-15px-bottom text text-white">Usuario</label>
-                            <input maxlength="20" class="small-input bg-white margin-20px-bottom required" type="text" placeholder="Digite su usuario" v-model="Usuario">
+                            <input maxlength="20" class="small-input bg-white margin-20px-bottom required" style="border-radius: 10px;" type="text" placeholder="Digite su usuario" v-model="Usuario">
                             <label class="margin-15px-bottom text-white">Contraseña</label>
                             <div class="wrap-input">
                                 <span class="icon-eye" id="ojo" style="font-size: 20px" v-on:click="mostrarContrasena"><i class="fas fa-eye-slash" id="ojoTechado"></i></span>
-                                <input maxlength="20" class="small-input bg-white margin-20px-bottom required" type="password" placeholder="Digiste su contraseña" v-model="Clave" @keydown.enter="RealizarLogin">
+                                <input maxlength="20" class="small-input bg-white margin-20px-bottom required" style="border-radius: 10px;" type="password" placeholder="Digiste su contraseña" v-model="Clave" @keydown.enter="RealizarLogin">
                             </div>
                             <br />
-                            <div style="text-align:center" class="CentrarLogin">
-                                <div class="row" style="text-align:center">
-                                    <a class="btn btn-success btn-azul" role="button" v-on:click="RealizarLogin">Ingresar</a>
+                            <div style="text-align: center">
+                                <div class="row justify-content-center" style="text-align: center">
+                                    <a class="btn btn-success" style="border-radius: 10px; max-width: 110px;" role="button" v-on:click="RealizarLogin">Ingresar</a>
+                                </div>
+                                <!--br />
+                                <br />
+                                <div class="row justify-content-center" style="text-align: center">
+                                    <a style="border-radius: 10px; max-width: 110px; color: rgb(201, 201, 201); font-size: 15px;" role="button" v-on:click="Registrarse">Registrarse</a>
+                                </div>-->
+                            </div>
+                        </form>
+                        <form v-if="formRegistrarse">
+                            <a style="text-align: center;">
+                                <img src="images/MilleniumLogoBlanco.png" class="default-logo" height="200" width="200">
+                            </a>
+                            <br />
+                            <br />
+                            <br />
+                            <h5 class="alt-font font-weight-500 text-gradient-yellow-orange-black" align="center">Registro de Usuario</h5>
+                            <br />
+                            <label class="margin-15px-bottom text text-white">Usuario</label>
+                            <input maxlength="20" class="small-input bg-white margin-20px-bottom required" style="border-radius: 10px;" type="text" placeholder="Digite su usuario" v-model="UsuarioReg">
+                            <label class="margin-15px-bottom text-white">Contraseña</label>
+                            <div class="wrap-input">
+                                <span class="icon-eye" id="ojo2" style="font-size: 20px" v-on:click="mostrarContrasena2"><i class="fas fa-eye-slash" id="ojoTechado2"></i></span>
+                                <input maxlength="20" class="small-input bg-white margin-20px-bottom required" style="border-radius: 10px;" type="password" placeholder="Digiste su contraseña" v-model="ClaveReg">
+                            </div>
+                            <label class="margin-15px-bottom text-white">Confirmar contraseña</label>
+                            <div class="wrap-input">
+                                <span class="icon-eye" id="ojo3" style="font-size: 20px" v-on:click="mostrarContrasena3"><i class="fas fa-eye-slash" id="ojoTechado3"></i></span>
+                                <input maxlength="20" class="small-input bg-white margin-20px-bottom required" style="border-radius: 10px;" type="password" placeholder="Digiste su contraseña" v-model="ClaveRegConfirmar" @keydown.enter="RealizarRegistro">
+                            </div>
+                            <br />
+                            <div style="text-align: center">
+                                <div class="row justify-content-center" style="text-align: center">
+                                    <a class="btn btn-success" style="border-radius: 10px; max-width: 110px;" role="button" v-on:click="RealizarRegistro">Registrarse</a>
+                                </div>
+                                <br />
+                                <br />
+                                <div class="row justify-content-center" style="text-align: center">
+                                    <a style="border-radius: 10px; max-width: 110px; color: rgb(201, 201, 201); font-size: 15px;" role="button" v-on:click="IniciarSesion">Iniciar Sesión</a>
                                 </div>
                             </div>
                         </form>
@@ -34,40 +72,6 @@
                 </div>
             </div>
         </div>
-
-        <button hidden type="button" id="abrirModal" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalAplicaciones">Open modal</button>
-
-        <!--Modal aplicación-->
-
-        <div class="modal fade" id="modalAplicaciones" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style="padding-top: 200px;">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-body">
-                        <form>
-                            <div class="mb-3" style="font-size: large;">
-                                <label for="message-text" class="col-form-label">Listado de aplicaciones disponibles</label>
-                                <br />
-                                <br />
-                                <select id="sitio" v-model="sitioNombre">
-                                    <option value="">Seleccione o indique por voz una aplicación</option>
-                                    <option value="CM Conocimientos">CM Conocimientos</option>
-                                    <option value="CM Activos">CM Activos</option>
-                                    <option value="CM Informativo">CM Informativo</option>
-                                </select>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button hidden id="reconocimientoVoz" type="button" class="btn btn-primary" @click.prevent="activarReconocimientoVoz">Activar reconocimiento de voz</button>
-                        <button type="button" class="btn btn-primary" @click.prevent="designarAplicacionLogin(sitioNombre)">Listo</button>
-                        <button hidden id="cerrarModal" type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!--Modal aplicación-->
-
     </div>
 </template>
 
@@ -76,6 +80,7 @@
 import AdminApi from '@/Api/Api';
 import Cookies from 'js-cookie';
 import router from '@/router/index'
+import CryptoJS from 'crypto-js';
 
 export default {
 
@@ -89,16 +94,111 @@ export default {
             LoginUsu: "",
             nombreUsu: "",
             sitioNombre: "",
+
+            UsuarioReg: "",
+            ClaveReg: "",
+            ClaveRegConfirmar: "",
+
+            formRegistrarse: false,
         }
     },
 
     methods: {
+
+        RealizarRegistro: function () {
+            if (this.UsuarioReg == "" || this.UsuarioReg == undefined || this.UsuarioReg == null){
+                return this.$swal.fire({
+                            position: 'top-end',
+                            text: 'Debe digitar el usuario',
+                            showConfirmButton: false,
+                            timer: 3000
+                        })
+            } else if ((this.ClaveReg == "" || this.ClaveReg == undefined || this.ClaveReg == null)
+                || (this.ClaveRegConfirmar == "" || this.ClaveRegConfirmar == undefined || this.ClaveRegConfirmar == null)){
+                return this.$swal.fire({
+                            position: 'top-end',
+                            text: 'Debe digitar y confirmar la contraseña',
+                            showConfirmButton: false,
+                            timer: 3000
+                        })
+            } else if (this.ClaveReg.length < 6 || this.ClaveRegConfirmar.length < 6) {
+                return this.$swal.fire({
+                            position: 'top-end',
+                            text: 'La contraseña debe tener mínimo 6 caracteres',
+                            showConfirmButton: false,
+                            timer: 3000
+                        })
+            } else if (this.ClaveReg !== this.ClaveRegConfirmar) {
+                return this.$swal.fire({
+                            position: 'top-end',
+                            text: 'Las contraseñas no coinciden, por favor verifique',
+                            showConfirmButton: false,
+                            timer: 3000
+                        })
+            }
+        },
+
+        Registrarse: function () {
+            let loader = this.$loading.show({
+                container: this.$refs.cuadroLoader,
+                opacity: 0.8
+            })
+            this.formRegistrarse = true;
+            setTimeout(() => {
+                loader.hide()
+            }, 500)
+        },
+
+        IniciarSesion: function () {
+            let loader = this.$loading.show({
+                container: this.$refs.cuadroLoader,
+                opacity: 0.8
+            })
+            this.formRegistrarse = false;
+            setTimeout(() => {
+                loader.hide()
+            }, 500)
+        },
 
         mostrarContrasena: function () {
 
             var ojo = document.getElementById("ojo")
             var next = ojo.nextSibling
             var ojoTechado = document.getElementById("ojoTechado")
+            if (next.type === 'password') {
+                next.type = 'text';
+                ojoTechado.classList.remove("fa-eye-slash");
+                ojoTechado.classList.add("fa-eye");
+            } else if (next.type === 'text') {
+                next.type = 'password'
+                ojoTechado.classList.remove("fa-eye");
+                ojoTechado.classList.add("fa-eye-slash");
+            }
+
+        },
+
+        mostrarContrasena2: function () {
+
+            var ojo = document.getElementById("ojo2")
+            var next = ojo.nextSibling
+            var ojoTechado = document.getElementById("ojoTechado2")
+            if (next.type === 'password') {
+                next.type = 'text';
+                ojoTechado.classList.remove("fa-eye-slash");
+                ojoTechado.classList.add("fa-eye");
+            } else if (next.type === 'text') {
+                next.type = 'password'
+                ojoTechado.classList.remove("fa-eye");
+                ojoTechado.classList.add("fa-eye-slash");
+        }
+
+            },
+
+            mostrarContrasena3: function () {
+
+            var ojo = document.getElementById("ojo3")
+            var next = ojo.nextSibling
+            var ojoTechado = document.getElementById("ojoTechado3")
             if (next.type === 'password') {
                 next.type = 'text';
                 ojoTechado.classList.remove("fa-eye-slash");
@@ -141,7 +241,8 @@ export default {
                         timer: 3000
                     })
             } else {
-                const response = await AdminApi.GetLogin(this.Usuario, this.Clave);
+                let claveEncriptada = this.encriptarContraseña(this.Clave)
+                const response = await AdminApi.GetLogin(this.Usuario, claveEncriptada);
                 if (response.data.ok == true) {
                     this.guardarUsuLog(this.Usuario);
                     var usuario = await this.validarTipo(response.data.obj.usu_Tipo);
@@ -153,6 +254,11 @@ export default {
                     mensaje.text = 'Bienvenido a Procormi';
                     mensaje.voice = speechSynthesis.getVoices()[9];
                     speechSynthesis.speak(mensaje);
+
+                    setTimeout(() => {
+                        this.$root.cerrarSesionGeneral.call();
+                    }, (((1000 * 60) * 60)*24));
+
                 } else {
                     await this.$swal.fire({
                         //icon: 'error',
@@ -165,73 +271,15 @@ export default {
             }
         },
 
-        abrirModal: async function() {
-            var boton = document.getElementById('abrirModal')
-            await boton.click();
-        },
+        encriptarContraseña(contraseña) {
+            const clave = CryptoJS.enc.Base64.parse("prmDMvIvPNlrmcsgLM1/c34GHjA7D2P2");
+            const iv = CryptoJS.enc.Utf8.parse("cmprmasr");
 
-        designarAplicacionLogin: async function(sitioNombre) {
-            var sitioId = ""
-            if(sitioNombre.toLowerCase() == "cm conocimiento" || sitioNombre.toLowerCase() == "cm conocimientos"
-            || sitioNombre.toLowerCase() == "c m conocimiento" || sitioNombre.toLowerCase() == "c m conocimientos"){
-                sitioNombre = "C M Conocimientos"
-                sitioId = "CMC"
-            } else if (sitioNombre.toLowerCase() == "cm activo" || sitioNombre.toLowerCase() == "cm activos"
-            || sitioNombre.toLowerCase() == "c m activo" || sitioNombre.toLowerCase() == "c m activos"){
-                sitioNombre = "C M Activos"
-                sitioId = "CMA"
-            } else if (sitioNombre.toLowerCase() == "cm informativo" || sitioNombre.toLowerCase() == "cm informativos"
-            || sitioNombre.toLowerCase() == "c m informativo" || sitioNombre.toLowerCase() == "c m informativos"){
-                sitioNombre = "C M Informativo"
-                sitioId = "CMI"
-            } else {
-                sitioNombre = ""
-            }
-            var botonCerrar = document.getElementById('cerrarModal')
-            if (sitioNombre == "" || sitioNombre == null ||sitioNombre == undefined) {
-                await this.$swal.fire({
-                    position: 'top-end',
-                    text: 'Por favor, indique una aplicación válida',
-                    showConfirmButton: false,
-                    timer: 3000
-                })
-                await this.activarReconocimientoVoz();
+            const encrypted = CryptoJS.TripleDES.encrypt(contraseña, clave, {
+                iv: iv
+            });
 
-            } else {
-                const response = await AdminApi.GetLogin(this.Usuario, this.Clave);
-                localStorage.setItem("aplicacionActiva", sitioId)
-                this.guardarUsuLog(this.Usuario);
-                var usuario = await this.validarTipo(response.data.obj.usu_Tipo);
-                this.guardarUsuTipo(usuario);
-                this.guardarUsuNombre(response.data.obj.usu_Nombre);
-                this.btnDesactivar = false;
-                await botonCerrar.click();
-                var mensaje = new SpeechSynthesisUtterance();
-                mensaje.text = 'Bienvenido a ' + sitioNombre;
-                mensaje.voice = speechSynthesis.getVoices()[9];
-                speechSynthesis.speak(mensaje);
-                router.push({ name: 'Inicio' })
-            }
-        },
-
-        activarReconocimientoVoz: function(){
-            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-            if (SpeechRecognition) {
-                const recognition = new SpeechRecognition();
-
-                recognition.lang = 'es';
-
-                recognition.onresult = event => {
-                    const result = event.results[0][0].transcript;
-                    if(result.length < 20){
-                        this.designarAplicacionLogin(result);
-                    }
-                };
-
-                recognition.start();
-            } else {
-                alert('El reconocimiento de voz no es compatible con este navegador.');
-            }
+            return encrypted.toString();
         },
 
         recuperarUsuLog() {

@@ -1,30 +1,24 @@
 <template>
     <div>
         <header class="header bg-azul">
-            <nav class="row">
-                <div class="col-2" style="padding-top: 10px; text-align: center;" v-on:click="CerrarMenus()">
+            <nav class="gridEncabezado">
+                <div style="padding-top: 10px; text-align: center; max-width: 17em; min-width: 15em;" v-on:click="CerrarMenus()">
                     <router-link :to="{ name: 'Inicio' }">
                         <img src="/images/MilleniumLogoBlanco.png" class="default-logo ml-4 imagenResponsive" height="60" width="60">
                     </router-link>
                 </div>
-                <ul class="col-10">
+                <ul>
                     <li class="row">
 
-                        <!--<FiltroSuperior :cuadroLoaderPrincipal="cuadroLoaderPrincipal" class="aBuscadorFiltro"/>
-                        <FiltroSuperior class="row col-8 justify-content-center buscador" v-on:click="CerrarMenus()"/>-->
-                        <div class="row col-8 justify-content-center">
-                            <FiltroSuperior v-if="mostrarFiltro" class="row col-12 justify-content-center" v-on:click="CerrarMenus()"/>
-                        </div>
-
-                        <div class="row col-4 justify-content-end botonesSesion">
-                            <div class="col-2">
+                        <div class="row col-12 justify-content-end botonesSesion">
+                            <div class="col-1">
                                 <button style="float: right; position: relative;" class="nav-toggle" @click.prevent="DesplegarMenuAplicaciones()">
                                     <i class="fas fa-bell"></i>
                                     <span class="notification-badge">1</span>
                                 </button>
                             </div>
 
-                            <div class="col-2 botonAplicaciones">
+                            <div class="col-1 botonAplicaciones">
                                 <button style="float: right;" class="nav-toggle nav-toggleColor" @click.prevent="DesplegarMenu()">
                                     <i class="fas fa-user-circle"></i>
                                 </button>
@@ -83,14 +77,12 @@
 import { /*mapState, */mapActions } from 'vuex';
 import AdminApi from '@/Api/Api';
 import Cookies from 'js-cookie';
-import FiltroSuperior from '@/components/FiltroSuperior.vue'
 import router from '@/router/index'
 
 export default {
     name: 'HeaderPrincipal',
 
     components: {
-        FiltroSuperior
     },
 
     /*props: {
@@ -192,12 +184,7 @@ export default {
             Cookies.remove("usuarioLogin");
             Cookies.remove("tipoU");
             Cookies.remove("nombreUsu")
-            Cookies.remove("dpto")
-            Cookies.remove("cat")
-            Cookies.remove("sCat")
-            Cookies.remove("filtro")
             Cookies.remove("palabraClave")
-            localStorage.removeItem("aplicacionActiva")
             this.$root.validarLoginFooter.call();
             router.push({ name: 'Login' })
         },
@@ -243,13 +230,6 @@ export default {
             }
             if (login == null || (nombre == undefined || nombre == null || nombre == '')) {
                 this.Login = true
-            }
-        },
-
-        verificarLogIncormi: function () {
-            let Roll = this.recuperarUsuTipo()
-            if (Roll == "Administrador" || Roll == "Publicador" || Roll == "Supervisor"){
-                this.BtnAdministrador = true
             }
         },
 
@@ -393,6 +373,7 @@ export default {
         this.$root.limpiarFiltro = this.limpiarFiltro;
         this.$root.CerrarMenu = this.CerrarMenu;
         this.$root.CerrarMenuAplicaciones = this.CerrarMenuAplicaciones;
+        this.$root.cerrarSesionGeneral = this.cerrarSesion;
         //this.$root.designarAplicacionHeaderPrincipal = this.designarAplicacion;
     },
 
@@ -497,6 +478,8 @@ export default {
         overflow-y: auto;
         z-index: 3;
         display: none;
+        border-bottom-left-radius: 10px;
+        border-bottom-right-radius: 10px;
     }
 
     .nav-menuAplicaciones {
@@ -513,6 +496,8 @@ export default {
         overflow-y: auto;
         z-index: 3;
         display: none;
+        border-bottom-left-radius: 10px;
+        border-bottom-right-radius: 10px;
     }
 
     @media screen and (max-width: 900px) {
@@ -529,6 +514,8 @@ export default {
             overflow-y: auto;
             z-index: 3;
             display: none;
+            border-bottom-left-radius: 10px;
+            border-bottom-right-radius: 10px;
         }
 
         .nav-menuAplicaciones {
@@ -544,6 +531,8 @@ export default {
             overflow-y: auto;
             z-index: 3;
             display: none;
+            border-bottom-left-radius: 10px;
+            border-bottom-right-radius: 10px;
         }
     }
 

@@ -1,6 +1,6 @@
 <template>
     <div class="wrap-input">
-        <input autocomplete="off" maxlength="70" class="small-input bg-white margin-20px-bottom inpuFiltro" type="search" id="pClaveInput" placeholder="Buscar" v-model.trim="pClave">
+        <input autocomplete="off" maxlength="70" class="small-input bg-white margin-20px-bottom inputFiltro" type="search" id="pClaveInput" placeholder="Buscar" v-model.trim="pClave">
     </div>
 </template>
 
@@ -441,24 +441,24 @@
             border-radius: 5px;
         }
 
-    .inpuFiltro{
+    .inputFiltro{
         max-width: 300px;
     }
 
     @media screen and (max-width: 920px) {
-        .inpuFiltro{
+        .inputFiltro{
             max-width: 280px;
         }
     }
 
     @media screen and (max-width: 800px) {
-        .inpuFiltro{
+        .inputFiltro{
             max-width: 200px;
         }
     }
 
     @media screen and (max-width: 400px) {
-        .inpuFiltro{
+        .inputFiltro{
             max-width: 150px;
         }
     }

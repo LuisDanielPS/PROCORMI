@@ -1,4 +1,7 @@
-﻿Imports System.Reflection
+﻿Imports System.Configuration
+Imports System.Reflection
+Imports System.Security.Cryptography
+Imports System.Text
 Imports MySql.Data.MySqlClient
 Imports Technosoft.Sitech.Procormi.EN
 Imports Technosoft.Sitech.Procormi.UT
@@ -19,11 +22,13 @@ Public Class LoginDAO
         Dim reply As New Reply(Of UsuarioEN)
         Dim dr As MySqlDataReader
 
+        Dim pClave = DesencriptarContraseña(pPass)
+
         Try
 
             sentencia = "SELECT * FROM seg_usu WHERE usu_Login = @filtro1 And usu_Password = @filtro2"
 
-            dr = ConexionDAO.Instancia.EjecutarConsultaLogin(sentencia, pUsu, pPass)
+            dr = ConexionDAO.Instancia.EjecutarConsultaLogin(sentencia, pUsu, pClave)
 
             While dr.Read
                 Dim usu As New UsuarioEN
@@ -61,6 +66,16 @@ Public Class LoginDAO
         Return reply
 
 
+    End Function
+
+    Public Function DesencriptarContraseña(ByVal contraseñaEncriptada As String) As String
+        Dim EncryptionKey() As Byte = Convert.FromBase64String("prmDMvIvPNlrmcsgLM1/c34GHjA7D2P2")
+        Dim IV() As Byte = ASCIIEncoding.ASCII.GetBytes("cmprmasr")
+        Dim buffer() As Byte = Convert.FromBase64String(contraseñaEncriptada)
+        Dim des As TripleDESCryptoServiceProvider = New TripleDESCryptoServiceProvider
+        des.Key = EncryptionKey
+        des.IV = IV
+        Return Encoding.UTF8.GetString(des.CreateDecryptor().TransformFinalBlock(buffer, 0, buffer.Length()))
     End Function
 
 End Class

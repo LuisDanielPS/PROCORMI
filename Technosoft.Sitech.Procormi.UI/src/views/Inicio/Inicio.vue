@@ -121,39 +121,92 @@
 
                 <!--Menú Lateral /-->
 
-                <div class="posicion1 menuLateralCelular">
-                    <div class="d-flex col-3">
-                        <div class="col-8" style="min-width: 15em;">
-                            <br />
-                            <div style="margin-left: 15px;">
-                                <div class="col-11 ml-4">
-                                    <div>
-                                        <div style="text-align: center;">
-                                            <div style="text-align: center;">
-                                                <a class="text-white fas fa-calendar-alt"></a>
-                                                <label class="text-white p-3 Td">Fecha inicio</label>
+                <MenuLateral />
+
+                <!--Menú Lateral /-->
+
+                <div class="w-100 listadoGeneral">
+
+                    <!--Filtros responsive /-->
+
+                    <div class="row justify-content-center filtrosCelularBotones">
+                        <div class="col-5"></div>
+                        <div class="col-2 filtrosCelularBoton" v-if="!filtroDesplegar" v-on:click="desplegarFiltros()">
+                            <a class="text-gradient-yellow-orange-black fas fa-bars"></a>
+                        </div>
+                        <div class="col-5"></div>
+                    </div>
+
+                    <div class="filtrosCelular row justify-content-center" v-if="filtroDesplegar">
+
+                        <div class="col-lg-4 col-md-4 col-sm-12 row justify-content-center" style="margin-top: 40px;">
+                            <div class="col-8 textoBlanco" style="text-align: center;">
+                                <router-link role="button" :to="{ name: 'Inicio' }" class="textoBlanco textoEncuestas" style="text-decoration: none;" exact-active-class="active-link">Proyectos&nbsp;&nbsp;<i class="text-white fas fa-project-diagram" style="cursor: pointer; font-size: 14px;"></i></router-link>
+                            </div>
+                        </div>
+                        
+                        <div class="col-lg-4 col-md-4 col-sm-12 row justify-content-center" style="margin-top: 40px;">
+                            <div class="col-8 textoBlanco" style="text-align: center;">
+                                <router-link role="button" :to="{ name: 'Encuestas' }" class="textoBlanco textoEncuestas" style="text-decoration: none;" exact-active-class="active-link">Encuestas&nbsp;&nbsp;<i class="text-white fas fa-chart-line" style="cursor: pointer;"></i></router-link>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4 col-md-4 col-sm-12 row justify-content-center" style="margin-top: 40px;">
+                            <div class="col-8 textoBlanco" style="text-align: center;">
+                                <router-link role="button" :to="{ name: 'Reportes' }" class="textoBlanco textoEncuestas" style="text-decoration: none;" exact-active-class="active-link">Reportes&nbsp;&nbsp;<i class="text-white far fa-file-alt" style="cursor: pointer;"></i></router-link>
+                            </div>
+                        </div>
+
+                        <div style="text-align: center; font-size: large; padding-top: 40px; cursor: pointer; margin-left: 20px;" v-if="filtroDesplegar" v-on:click="desplegarFiltros()">
+                            <a class="text-white fas fa-angle-up" style="text-decoration: none;"></a>
+                        </div>
+
+                    </div>
+
+                    <!--Filtros responsive /-->
+
+                    <div class="w-100 vld-parent col-12" style="min-height: 85vh;">
+
+                        <!--Lista de proyectos /-->
+
+                        <div class="row" style="padding:15px; min-height: 95vh; padding-right: 45px;">
+                            <div class="col-12 estiloTabla">
+                                <div class="card" style="border: none;" ref="cuadroLoader">
+
+                                    <div class="encabezado">
+                                        <div style="text-align: left;">
+                                            <FiltroSuperior class="justify-content-center buscador" />
+                                        </div>
+                                        <div style="text-align: center; padding-top: 10px; cursor: default;">
+                                            <h4>Listado de Proyectos</h4>
+                                        </div>
+                                        <ul style="text-align: right;">
+                                            <router-link class="li agregarBlt agregarResponsive" role="button" :to="{ name: 'CrearProyecto' }"><span class="fas fa-plus"></span> Crear Proyecto</router-link>
+                                            <router-link class="li agregarBlt agregarResponsivePlus" role="button" :to="{ name: 'CrearProyecto' }"><span class="fas fa-plus"></span></router-link>
+                                        </ul>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-3">
+                                            <div>
+                                                <a class="text-black fas fa-calendar-alt"></a>
+                                                <label class="text-black p-3 Td">Fecha inicio</label>
                                             </div>
                                             <input type="date" id="fechaInicio" class="diseñoSelectLateral" style="cursor: pointer; border-radius: 5px;" v-model="Filtros.fechaI">
                                         </div>
-                                    </div>
-                                </div>
-                                <div class="col-11 ml-4" style="margin-top: 5px;">
-                                    <div>
-                                        <div style="text-align: center;">
-                                            <div style="text-align: center;">
-                                                <a class="text-white fas fa-calendar-alt"></a>
-                                                <label class="text-white p-3 Td">Fecha Fin</label>
+
+                                        <div class="col-3">
+                                            <div>
+                                                <a class="text-black fas fa-calendar-alt"></a>
+                                                <label class="text-black p-3 Td">Fecha Fin</label>
                                             </div>
                                             <input type="date" id="fechaFin" class="diseñoSelectLateral" style="cursor: pointer; border-radius: 5px;" v-model="Filtros.fechaF">
                                         </div>
-                                    </div>
-                                </div>
-                                <div class="col-11 ml-4" style="margin-top: 5px;">
-                                    <div>
-                                        <div style="text-align: center;">
-                                            <div style="text-align: center;">
-                                                <a class="text-white fas fa-check-square"></a>
-                                                <label class="text-white p-3 Td">Estado</label>
+                                        
+                                        <div class="col-3">
+                                            <div>
+                                                <a class="text-black fas fa-check-square" style="text-decoration: none;"></a>
+                                                <label class="text-black p-3 Td">Estado</label>
                                             </div>
                                             <select class="form-select diseñoSelectLateral" v-model="Filtros.estado">
                                                 <option value="">Todos</option>
@@ -164,14 +217,11 @@
                                                 </option>-->
                                             </select>
                                         </div>
-                                    </div>
-                                </div>
-                                <div class="col-11 ml-4" style="margin-top: 5px;">
-                                    <div>
-                                        <div v-if="recuperarUsuTipo() == 'Administrador'" style="text-align: center;">
-                                            <div style="text-align: center;">
-                                                <a class="text-white fas fa-user-check"></a>
-                                                <label class="text-white p-3 Td">Usuario</label>
+
+                                        <div v-if="recuperarUsuTipo() == 'Administrador'" class="col-3">
+                                            <div>
+                                                <a class="text-black fas fa-user"></a>
+                                                <label class="text-black p-3 Td">Usuario</label>
                                             </div>
                                             <select class="form-select diseñoSelectLateral" v-model="Filtros.usuario">
                                                 <option value="">Todos</option>
@@ -183,158 +233,11 @@
                                             </select>
                                         </div>
                                     </div>
-                                </div>
-                                <br />
-                                <br />
-                                <div class="col-11 ml-4">
-                                    <div class="col-12">
-                                        <div class="col-12 filtro">
-                                            <button style="padding-top: 10px" class="col-12" role="button" v-on:click="FiltrarBoletas(Filtros.fechaI, Filtros.fechaF, Filtros.estado, Filtros.usuario)">
-                                                <b class="text-gradient-yellow-orange-black">
-                                                    <i class="text-gradient-yellow-orange-black fas fa-filter"></i> 
-                                                    Aplicar Filtro
-                                                </b>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row textoBlanco" style="padding-top: 25px;">
-                                    <div class="col-11" style="color: white;"><hr /></div>
-                                </div>
-                                <div class="row justify-content-center">
-                                    <li class="col-8 textoBlanco botonEncuestas">
-                                        <router-link role="button" :to="{ name: 'Encuestas' }" class="textoBlanco textoEncuestas">Encuestas&nbsp;&nbsp;<i class="text-white fas fa-chart-line" style="cursor: pointer;"></i></router-link>
-                                    </li>
-                                </div>
-                                <br />
-                                <div class="row justify-content-center">
-                                    <li class="col-8 textoBlanco botonEncuestas">
-                                        <router-link role="button" :to="{ name: 'Reportes' }" class="textoBlanco textoEncuestas">Reportes&nbsp;&nbsp;<i class="text-white fas fa-chart-line" style="cursor: pointer;"></i></router-link>
-                                    </li>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
-                <!--Menú Lateral /-->
-
-                <div class="w-100 listadoGeneral">
-
-                    <!--Filtros responsive /-->
-
-                    <div class="row justify-content-center filtrosCelularBotones">
-                        <div class="col-5"></div>
-                        <div class="col-2 filtrosCelularBoton" v-if="!filtroDesplegar" v-on:click="desplegarFiltros()">
-                            <a class="text-gradient-yellow-orange-black fas fa-filter"></a>
-                        </div>
-                        <div class="col-5"></div>
-                    </div>
-
-                    <div class="filtrosCelular w-100 vld-parent col-12" v-if="filtroDesplegar">
-                        <div>
-                            <div class="col-12" style="margin-top: 15px;">
-                                <div style="text-align: center; font-size: medium;">
-                                    <div style="text-align: center;">
-                                        <div style="text-align: center;">
-                                            <a class="text-white fas fa-calendar-alt"></a>
-                                            <label class="text-white p-3 Td">Fecha inicio</label>
-                                        </div>
-                                        <input type="date" id="fechaInicio" class="diseñoSelect" style="cursor: pointer; border-radius: 5px;" v-model="Filtros.fechaI">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <div style="text-align: center; font-size: medium;">
-                                    <div style="text-align: center;">
-                                        <div style="text-align: center;">
-                                            <a class="text-white fas fa-calendar-alt"></a>
-                                            <label class="text-white p-3 Td">Fecha Fin</label>
-                                        </div>
-                                        <input type="date" id="fechaFin" class="diseñoSelect" style="cursor: pointer; border-radius: 5px;" v-model="Filtros.fechaF">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <div>
-                                    <div style="text-align: center; font-size: medium;">
-                                        <div style="text-align: center;">
-                                            <a class="text-white fas fa-check-square"></a>
-                                            <label class="text-white p-3 Td">Estado</label>
-                                        </div>
-                                        <select class="form-select diseñoSelect" v-model="Filtros.estado" style="min-height: 35px; font-size: medium;">
-                                            <option value="">Todos</option>
-                                            <!--<option v-bind:value="Estado.gen_EstadoCodigo"
-                                                    v-for="Estado in ListaEstados"
-                                                    v-bind:key="Estado.gen_EstadoID">
-                                                {{Estado.gen_EstadoDescripcion}}
-                                            </option>-->
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <div>
-                                    <div v-if="recuperarUsuTipo() == 'Administrador'" style="text-align: center; font-size: medium;">
-                                        <div style="text-align: center;">
-                                            <a class="text-white fas fa-user-check"></a>
-                                            <label class="text-white p-3 Td">Usuario</label>
-                                        </div>
-                                        <select class="form-select diseñoSelect" v-model="Filtros.usuario" style="min-height: 35px; font-size: medium;">
-                                            <option value="">Todos</option>
-                                            <!--<option v-bind:value="Usuario.usu_Login"
-                                                    v-for="Usuario in ListaUsuarios"
-                                                    v-bind:key="Usuario.usu_Login">
-                                                {{Usuario.usu_Login}}
-                                            </option>-->
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <br />
-                            <br />
-                            <div class="col-12">
-                                <div class="col-12">
-                                    <div class="col-12 filtro" style="font-size: medium;">
-                                        <button style="padding-top: 10px" class="col-12" role="button" v-on:click="FiltrarBoletas(Filtros.fechaI, Filtros.fechaF, Filtros.estado, Filtros.usuario)">
-                                            <b class="text-gradient-yellow-orange-black">
-                                                <i class="text-gradient-yellow-orange-black fas fa-filter"></i> 
-                                                Aplicar Filtro
-                                            </b>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div style="text-align: center; font-size: large; padding-top: 25px; cursor: pointer;" v-if="filtroDesplegar" v-on:click="desplegarFiltros()">
-                            <a class="text-gradient-yellow-orange-black fas fa-angle-up"></a>
-                        </div>
-
-                        </div>
-
-                    <div class="w-100 vld-parent col-12" style="min-height: 85vh;">
-
-                        <!--Lista de proyectos /-->
-
-                        <div class="row">
-                            <div class="col-md-12" style="padding:15px;">
-                                <div class="card" style="border: none;" ref="cuadroLoader">
-                                    <div class="encabezado">
-                                        <ul style="text-align: left;">
-                                            <router-link class="li agregarBlt linkResponsive" role="button" :to="{ name: 'Encuestas' }"><span class="fas fa-chart-line"></span> <span class="linkResponsiveCelular">Encuestas</span></router-link>
-                                        </ul>
-                                        <div style="text-align: center; padding-top: 10px; cursor: default;">
-                                            <h4>Listado de Proyectos</h4>
-                                        </div>
-                                        <ul style="text-align: right;">
-                                            <router-link class="li agregarBlt agregarResponsive" role="button" :to="{ name: 'CrearProyecto' }"><span class="fas fa-plus"></span> Crear Proyecto</router-link>
-                                            <router-link class="li agregarBlt agregarResponsivePlus" role="button" :to="{ name: 'CrearProyecto' }"><span class="fas fa-plus"></span></router-link>
-                                        </ul>
-                                    </div>
                                     <!--<div class="sinResultadosAct">
                                         <p>No hay proyectos para mostrar</p>
                                     </div>-->
+
                                     <div class="contenidoTabla">
                                         <table class="table table-stryped" style="text-align: center;">
                                             <thead>
@@ -370,17 +273,16 @@
                                     </div>
                                 </div>
                             </div>
+                            <nav aria-label="Page navigation example" style="position: absolute; bottom: 25px; margin-left: 25px;">
+                                <ul class="pagination">
+                                    <li class="page-item"><a class="page-link" href="#">Anterior</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">Siguiente</a></li>
+                                </ul>
+                            </nav>
                         </div>
-
-                        <nav aria-label="Page navigation example" style="position: absolute; bottom: 0px; margin-left: 15px;">
-                            <ul class="pagination">
-                                <li class="page-item"><a class="page-link" href="#">Anterior</a></li>
-                                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                <li class="page-item"><a class="page-link" href="#">Siguiente</a></li>
-                            </ul>
-                        </nav>
 
                         <!--Lista de proyectos /-->
 
@@ -394,12 +296,14 @@
 <script>
 import Cookies from 'js-cookie';
 import HeaderPrincipal from '@/components/HeaderPrincipal.vue'
+import MenuLateral from '@/components/MenuLateral.vue'
+import FiltroSuperior from '@/components/FiltroSuperior.vue'
 //import AdminApi from '@/Api/Api';
 
 export default {
 
     components: {
-        HeaderPrincipal//, MenuLateral
+        HeaderPrincipal, MenuLateral, FiltroSuperior
     },
 
     data() {
@@ -612,10 +516,11 @@ ul, ol {
 
 .filtrosCelular{
     padding-top: 20px;
-    padding-left: 50px;
-    padding-right: 50px;
+    padding-left: 10px;
+    padding-right: 10px;
     padding-bottom: 20px;
     background-color: rgba(10,58,102,1);
+    text-align: center;
 }
 
 @media screen and (min-width: 901px) {
@@ -633,7 +538,8 @@ ul, ol {
     min-height: 50px;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
-    max-width: 1800px;;
+    max-width: 1800px;
+    margin-top: 25px;
 }
 
     .encabezado ul {
@@ -658,6 +564,7 @@ ul, ol {
 }
 
 .contenidoTabla {
+    margin-top: 25px;
     max-width: 2100px;
     overflow-x: auto;
 }
@@ -738,8 +645,7 @@ ul, ol {
     }
 }
 
-.botonEncuestas{
-    margin-left: -15px;
+.botonRouter{
     min-width: 12.4rem;
     background-color: #114677;
     min-height: 35px;
@@ -748,15 +654,14 @@ ul, ol {
     list-style: none;
 }
 
-.textoEncuestas{
-    margin-left: 25px;
-    margin-top: -15px;
-    font-size: 17px;
-    text-decoration: none;
-    color: white;
-    display: block;
-    position: relative;
-}
+    .botonRouter:hover{
+        min-width: 12.4rem;
+        background-color: #15518a;
+        min-height: 35px;
+        border-radius: 5px;
+        padding-top: 20px;
+        list-style: none;
+    }
 
 .adjuntosJ {
     max-height: 240px;
