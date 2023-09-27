@@ -43,7 +43,7 @@ Namespace Controllers
             Return reply
 
         End Function
-
+        'hola'
         <HttpDelete>
         Public Function DeleteProject(pIdProject As String) As Reply(Of ProjectEN)
             Dim reply As Reply(Of ProjectEN) = New Reply(Of ProjectEN)
