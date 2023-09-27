@@ -8,3 +8,13 @@ C:\VSProjects\PROCORMI\Technosoft.Sitech.Procormi\Technosoft.Sitech.Procormi.EN\
 C:\VSProjects\PROCORMI\Technosoft.Sitech.Procormi\Technosoft.Sitech.Procormi.EN\obj\Debug\Technosoft.Sitech.Procormi.EN.dll
 C:\VSProjects\PROCORMI\Technosoft.Sitech.Procormi\Technosoft.Sitech.Procormi.EN\obj\Debug\Technosoft.Sitech.Procormi.EN.xml
 C:\VSProjects\PROCORMI\Technosoft.Sitech.Procormi\Technosoft.Sitech.Procormi.EN\obj\Debug\Technosoft.Sitech.Procormi.EN.pdb
+C:\Users\crist\Source\Repos\LuisDanielPS\PROCORMI\Technosoft.Sitech.Procormi.EN\bin\Debug\Technosoft.Sitech.Procormi.EN.dll
+C:\Users\crist\Source\Repos\LuisDanielPS\PROCORMI\Technosoft.Sitech.Procormi.EN\bin\Debug\Technosoft.Sitech.Procormi.EN.pdb
+C:\Users\crist\Source\Repos\LuisDanielPS\PROCORMI\Technosoft.Sitech.Procormi.EN\bin\Debug\Technosoft.Sitech.Procormi.EN.xml
+C:\Users\crist\Source\Repos\LuisDanielPS\PROCORMI\Technosoft.Sitech.Procormi.EN\obj\Debug\Technosoft.Sitech.Procormi.EN.vbproj.AssemblyReference.cache
+C:\Users\crist\Source\Repos\LuisDanielPS\PROCORMI\Technosoft.Sitech.Procormi.EN\obj\Debug\Technosoft.Sitech.Procormi.EN.Resources.resources
+C:\Users\crist\Source\Repos\LuisDanielPS\PROCORMI\Technosoft.Sitech.Procormi.EN\obj\Debug\Technosoft.Sitech.Procormi.EN.vbproj.GenerateResource.cache
+C:\Users\crist\Source\Repos\LuisDanielPS\PROCORMI\Technosoft.Sitech.Procormi.EN\obj\Debug\Technosoft.Sitech.Procormi.EN.vbproj.CoreCompileInputs.cache
+C:\Users\crist\Source\Repos\LuisDanielPS\PROCORMI\Technosoft.Sitech.Procormi.EN\obj\Debug\Technosoft.Sitech.Procormi.EN.dll
+C:\Users\crist\Source\Repos\LuisDanielPS\PROCORMI\Technosoft.Sitech.Procormi.EN\obj\Debug\Technosoft.Sitech.Procormi.EN.xml
+C:\Users\crist\Source\Repos\LuisDanielPS\PROCORMI\Technosoft.Sitech.Procormi.EN\obj\Debug\Technosoft.Sitech.Procormi.EN.pdb

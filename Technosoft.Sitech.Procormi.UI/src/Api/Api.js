@@ -14,4 +14,13 @@ export default {
         })
     },
 
+    GetAllProject()
+    {
+        return apicliente.get('Project/GetALLProjects' , {
+            withCredentials: false,
+            headers: { 'Content-Type': 'application/json; charset=UTF-8' }
+        })
+
+    }
+
 }

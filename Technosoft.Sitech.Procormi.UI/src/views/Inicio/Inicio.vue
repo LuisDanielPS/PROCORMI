@@ -8,14 +8,17 @@
 
                 <!--Modal Ver Proyecto-->
 
-                <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+                    aria-labelledby="staticBackdropLabel" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-scrollable modal-xl">
                         <div class="modal-content bg-gradient-gray">
                             <div class="modal-header">
                                 <div class="col-12">
                                     <div class="row" style="text-align: right;">
                                         <div class="col-md-12 col-xs-12">
-                                            <button style="border: none; background-color: transparent; min-height: 15px; min-width: 25px; font-size: 30px;" type="button" data-bs-dismiss="modal">&times;</button>
+                                            <button
+                                                style="border: none; background-color: transparent; min-height: 15px; min-width: 25px; font-size: 30px;"
+                                                type="button" data-bs-dismiss="modal">&times;</button>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -41,7 +44,8 @@
                                     <div class="col-md-12 col-xs-12" style="min-height: 350px; max-height: 400px">
                                         <div class="row">
                                             <div class="col-12">
-                                                <h4 class="modal-title" style="text-align: center"><strong>Descripción</strong></h4>
+                                                <h4 class="modal-title" style="text-align: center">
+                                                    <strong>Descripción</strong></h4>
                                             </div>
                                         </div>
                                         <br />
@@ -50,19 +54,62 @@
                                             <div class="col-12">
                                                 <div class="col-md-12 col-xs-12">
                                                     <div style="text-align: justify;">What is Lorem Ipsum?
-                                                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+                                                        Lorem Ipsum is simply dummy text of the printing and typesetting
+                                                        industry. Lorem Ipsum has been the industry's standard dummy text
+                                                        ever since the 1500s, when an unknown printer took a galley of type
+                                                        and scrambled it to make a type specimen book. It has survived not
+                                                        only five centuries, but also the leap into electronic typesetting,
+                                                        remaining essentially unchanged. It was popularised in the 1960s
+                                                        with the release of Letraset sheets containing Lorem Ipsum passages,
+                                                        and more recently with desktop publishing software like Aldus
+                                                        PageMaker including versions of Lorem Ipsum.
 
-                                                    Why do we use it?
-                                                    It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).
+                                                        Why do we use it?
+                                                        It is a long established fact that a reader will be distracted by
+                                                        the readable content of a page when looking at its layout. The point
+                                                        of using Lorem Ipsum is that it has a more-or-less normal
+                                                        distribution of letters, as opposed to using 'Content here, content
+                                                        here', making it look like readable English. Many desktop publishing
+                                                        packages and web page editors now use Lorem Ipsum as their default
+                                                        model text, and a search for 'lorem ipsum' will uncover many web
+                                                        sites still in their infancy. Various versions have evolved over the
+                                                        years, sometimes by accident, sometimes on purpose (injected humour
+                                                        and the like).
 
 
-                                                    Where does it come from?
-                                                    Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.
+                                                        Where does it come from?
+                                                        Contrary to popular belief, Lorem Ipsum is not simply random text.
+                                                        It has roots in a piece of classical Latin literature from 45 BC,
+                                                        making it over 2000 years old. Richard McClintock, a Latin professor
+                                                        at Hampden-Sydney College in Virginia, looked up one of the more
+                                                        obscure Latin words, consectetur, from a Lorem Ipsum passage, and
+                                                        going through the cites of the word in classical literature,
+                                                        discovered the undoubtable source. Lorem Ipsum comes from sections
+                                                        1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes
+                                                        of Good and Evil) by Cicero, written in 45 BC. This book is a
+                                                        treatise on the theory of ethics, very popular during the
+                                                        Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit
+                                                        amet..", comes from a line in section 1.10.32.
 
-                                                    The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from "de Finibus Bonorum et Malorum" by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.
+                                                        The standard chunk of Lorem Ipsum used since the 1500s is reproduced
+                                                        below for those interested. Sections 1.10.32 and 1.10.33 from "de
+                                                        Finibus Bonorum et Malorum" by Cicero are also reproduced in their
+                                                        exact original form, accompanied by English versions from the 1914
+                                                        translation by H. Rackham.
 
-                                                    Where can I get some?
-                                                    There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc.
+                                                        Where can I get some?
+                                                        There are many variations of passages of Lorem Ipsum available, but
+                                                        the majority have suffered alteration in some form, by injected
+                                                        humour, or randomised words which don't look even slightly
+                                                        believable. If you are going to use a passage of Lorem Ipsum, you
+                                                        need to be sure there isn't anything embarrassing hidden in the
+                                                        middle of text. All the Lorem Ipsum generators on the Internet tend
+                                                        to repeat predefined chunks as necessary, making this the first true
+                                                        generator on the Internet. It uses a dictionary of over 200 Latin
+                                                        words, combined with a handful of model sentence structures, to
+                                                        generate Lorem Ipsum which looks reasonable. The generated Lorem
+                                                        Ipsum is therefore always free from repetition, injected humour, or
+                                                        non-characteristic words etc.
                                                     </div>
                                                 </div>
                                             </div>
@@ -79,7 +126,8 @@
                                 </div>
                             </div>
                             <div class="modal-footer row justify-content-center">
-                                <button type="button" class="btn btn-primary col-3" style="text-align: center;">Ver archivos adjuntos</button>
+                                <button type="button" class="btn btn-primary col-3" style="text-align: center;">Ver archivos
+                                    adjuntos</button>
                             </div>
                         </div>
                     </div>
@@ -89,7 +137,8 @@
 
                 <!--Modal eliminar Proyecto-->
 
-                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                    aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -104,8 +153,10 @@
                                     <label>Digite su contraseña</label>
                                     <br />
                                     <div class="row" style="margin-top: 15px;">
-                                        <input class="col-10" style="margin-left: 10px; border-radius: 5px;" type="text" required placeholder="Contraseña">
-                                        <button class="btn btn-success col-1" style="margin-left: 5px;"><span class="fas fa-check"></span></button>
+                                        <input class="col-10" style="margin-left: 10px; border-radius: 5px;" type="text"
+                                            required placeholder="Contraseña">
+                                        <button class="btn btn-success col-1" style="margin-left: 5px;"><span
+                                                class="fas fa-check"></span></button>
                                     </div>
                                 </div>
                             </div>
@@ -141,23 +192,31 @@
 
                         <div class="col-lg-4 col-md-4 col-sm-12 row justify-content-center" style="margin-top: 40px;">
                             <div class="col-8 textoBlanco" style="text-align: center;">
-                                <router-link role="button" :to="{ name: 'Inicio' }" class="textoBlanco textoEncuestas" style="text-decoration: none;" exact-active-class="active-link">Proyectos&nbsp;&nbsp;<i class="text-white fas fa-project-diagram" style="cursor: pointer; font-size: 14px;"></i></router-link>
-                            </div>
-                        </div>
-                        
-                        <div class="col-lg-4 col-md-4 col-sm-12 row justify-content-center" style="margin-top: 40px;">
-                            <div class="col-8 textoBlanco" style="text-align: center;">
-                                <router-link role="button" :to="{ name: 'Encuestas' }" class="textoBlanco textoEncuestas" style="text-decoration: none;" exact-active-class="active-link">Encuestas&nbsp;&nbsp;<i class="text-white fas fa-chart-line" style="cursor: pointer;"></i></router-link>
+                                <router-link role="button" :to="{ name: 'Inicio' }" class="textoBlanco textoEncuestas"
+                                    style="text-decoration: none;" exact-active-class="active-link">Proyectos&nbsp;&nbsp;<i
+                                        class="text-white fas fa-project-diagram"
+                                        style="cursor: pointer; font-size: 14px;"></i></router-link>
                             </div>
                         </div>
 
                         <div class="col-lg-4 col-md-4 col-sm-12 row justify-content-center" style="margin-top: 40px;">
                             <div class="col-8 textoBlanco" style="text-align: center;">
-                                <router-link role="button" :to="{ name: 'Reportes' }" class="textoBlanco textoEncuestas" style="text-decoration: none;" exact-active-class="active-link">Reportes&nbsp;&nbsp;<i class="text-white far fa-file-alt" style="cursor: pointer;"></i></router-link>
+                                <router-link role="button" :to="{ name: 'Encuestas' }" class="textoBlanco textoEncuestas"
+                                    style="text-decoration: none;" exact-active-class="active-link">Encuestas&nbsp;&nbsp;<i
+                                        class="text-white fas fa-chart-line" style="cursor: pointer;"></i></router-link>
                             </div>
                         </div>
 
-                        <div style="text-align: center; font-size: large; padding-top: 40px; cursor: pointer; margin-left: 20px;" v-if="filtroDesplegar" v-on:click="desplegarFiltros()">
+                        <div class="col-lg-4 col-md-4 col-sm-12 row justify-content-center" style="margin-top: 40px;">
+                            <div class="col-8 textoBlanco" style="text-align: center;">
+                                <router-link role="button" :to="{ name: 'Reportes' }" class="textoBlanco textoEncuestas"
+                                    style="text-decoration: none;" exact-active-class="active-link">Reportes&nbsp;&nbsp;<i
+                                        class="text-white far fa-file-alt" style="cursor: pointer;"></i></router-link>
+                            </div>
+                        </div>
+
+                        <div style="text-align: center; font-size: large; padding-top: 40px; cursor: pointer; margin-left: 20px;"
+                            v-if="filtroDesplegar" v-on:click="desplegarFiltros()">
                             <a class="text-white fas fa-angle-up" style="text-decoration: none;"></a>
                         </div>
 
@@ -181,8 +240,12 @@
                                             <h4>Listado de Proyectos</h4>
                                         </div>
                                         <ul style="text-align: right;">
-                                            <router-link class="li agregarBlt agregarResponsive" role="button" :to="{ name: 'CrearProyecto' }"><span class="fas fa-plus"></span> Crear Proyecto</router-link>
-                                            <router-link class="li agregarBlt agregarResponsivePlus" role="button" :to="{ name: 'CrearProyecto' }"><span class="fas fa-plus"></span></router-link>
+                                            <router-link class="li agregarBlt agregarResponsive" role="button"
+                                                :to="{ name: 'CrearProyecto' }"><span class="fas fa-plus"></span> Crear
+                                                Proyecto</router-link>
+                                            <router-link class="li agregarBlt agregarResponsivePlus" role="button"
+                                                :to="{ name: 'CrearProyecto' }"><span
+                                                    class="fas fa-plus"></span></router-link>
                                         </ul>
                                     </div>
 
@@ -192,7 +255,8 @@
                                                 <a class="text-black fas fa-calendar-alt"></a>
                                                 <label class="text-black p-3 Td">Fecha inicio</label>
                                             </div>
-                                            <input type="date" id="fechaInicio" class="diseñoSelectLateral" style="cursor: pointer; border-radius: 5px;" v-model="Filtros.fechaI">
+                                            <input type="date" id="fechaInicio" class="diseñoSelectLateral"
+                                                style="cursor: pointer; border-radius: 5px;" v-model="Filtros.fechaI">
                                         </div>
 
                                         <div class="col-3">
@@ -200,12 +264,14 @@
                                                 <a class="text-black fas fa-calendar-alt"></a>
                                                 <label class="text-black p-3 Td">Fecha Fin</label>
                                             </div>
-                                            <input type="date" id="fechaFin" class="diseñoSelectLateral" style="cursor: pointer; border-radius: 5px;" v-model="Filtros.fechaF">
+                                            <input type="date" id="fechaFin" class="diseñoSelectLateral"
+                                                style="cursor: pointer; border-radius: 5px;" v-model="Filtros.fechaF">
                                         </div>
-                                        
+
                                         <div class="col-3">
                                             <div>
-                                                <a class="text-black fas fa-check-square" style="text-decoration: none;"></a>
+                                                <a class="text-black fas fa-check-square"
+                                                    style="text-decoration: none;"></a>
                                                 <label class="text-black p-3 Td">Estado</label>
                                             </div>
                                             <select class="form-select diseñoSelectLateral" v-model="Filtros.estado">
@@ -244,26 +310,32 @@
                                                 <tr>
                                                     <th class="col-1" style="min-width: 75px;"># Proyecto</th>
                                                     <th class="col-4" style="min-width: 150px;">Nombre</th>
-                                                    <th class="col-3" style="min-width: 125px;">Fecha de creación</th>
+                                                    <th class="col-3" style="min-width: 125px;">Fecha Creacion</th>
                                                     <th class="col-2" style="min-width: 125px;">Estado</th>
                                                     <th class="col-2" style="min-width: 125px;">Opciones</th>
                                                 </tr>
                                             </thead>
                                             <tbody style="font-size: large;">
-                                                <tr>
-                                                    <td @click="verSprints" class="claseTD">1</td>
-                                                    <td @click="verSprints" class="claseTD">Procormi</td>
-                                                    <td @click="verSprints" class="claseTD">01/05/2023</td>
-                                                    <td @click="verSprints" class="claseTD">Pendiente</td>
+                                                <tr v-for="proyecto in proyectos" :key="proyecto.Id_project" >
+                                                    <td @click="verSprints" class="claseTD">{{ proyecto.Id_project }}</td>
+                                                    <td @click="verSprints" class="claseTD">{{ proyecto.Project_Name }}</td>
+                                                    <td @click="verSprints" class="claseTD">{{ proyecto.Creation_Date }}</td>
+                                                    <td @click="verSprints" class="claseTD">{{ proyecto.Id_State == 1 ? "Activo" : "Inactivo"}}</td>
                                                     <td class="text-white">
                                                         <button class="btn btn-primary" role="button" @click="verSprints">
-                                                            <span class="fas fa-eye" b-tooltip.hover title="Ver Proyecto"></span>
+                                                            <span class="fas fa-eye" b-tooltip.hover
+                                                                title="Ver Proyecto"></span>
                                                         </button>
-                                                        <button style="margin-left: 5px;" type="button" class="btn btn-success" @click="EditarProyecto(1)">
-                                                            <span class="fas fa-pen" b-tooltip.hover title="Editar Proyecto"></span>
+                                                        <button style="margin-left: 5px;" type="button"
+                                                            class="btn btn-success" @click="editarProyecto(proyecto.Id_project)">
+                                                            <span class="fas fa-pen" b-tooltip.hover
+                                                                title="Editar Proyecto"></span>
                                                         </button>
-                                                        <button type="button" class="btn btn-danger" style="margin-left: 5px;" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                                                            <span class="fas fa-trash" b-tooltip.hover title="Eliminar Proyecto"></span>
+                                                        <button type="button" class="btn btn-danger"
+                                                            style="margin-left: 5px;" data-bs-toggle="modal"
+                                                            data-bs-target="#exampleModal">
+                                                            <span class="fas fa-trash" b-tooltip.hover
+                                                                title="Eliminar Proyecto"></span>
                                                         </button>
                                                     </td>
                                                 </tr>
@@ -273,7 +345,8 @@
                                     </div>
                                 </div>
                             </div>
-                            <nav aria-label="Page navigation example" style="position: absolute; bottom: 25px; margin-left: 25px;">
+                            <nav aria-label="Page navigation example"
+                                style="position: absolute; bottom: 25px; margin-left: 25px;">
                                 <ul class="pagination">
                                     <li class="page-item"><a class="page-link" href="#">Anterior</a></li>
                                     <li class="page-item"><a class="page-link" href="#">1</a></li>
@@ -294,11 +367,12 @@
 </template>
 
 <script>
+
 import Cookies from 'js-cookie';
 import HeaderPrincipal from '@/components/HeaderPrincipal.vue'
 import MenuLateral from '@/components/MenuLateral.vue'
 import FiltroSuperior from '@/components/FiltroSuperior.vue'
-//import AdminApi from '@/Api/Api';
+import AdminApi from '@/Api/Api';
 
 export default {
 
@@ -314,10 +388,10 @@ export default {
             filtroDesplegar: false,
 
             Filtros: {
-            fechaI: "",
-            fechaF: "",
-            estado: "",
-            usuario: "",
+                fechaI: "",
+                fechaF: "",
+                estado: "",
+                usuario: "",
             },
 
         }
@@ -325,7 +399,7 @@ export default {
 
     methods: {
 
-        EditarProyecto: function(ProyectoID) {
+        EditarProyecto: function (ProyectoID) {
             this.$router.push({
                 name: "CrearProyectoEdit",
                 params: {
@@ -334,7 +408,7 @@ export default {
             })
         },
 
-        verSprints: function() {
+        verSprints: function () {
             this.$router.push({
                 name: "Sprints"
             })
@@ -348,7 +422,7 @@ export default {
             this.filtroDesplegar = false;
         },
 
-        seleccionarAplicacion: async function() {
+        seleccionarAplicacion: async function () {
             await this.$root.designarAplicacionHeaderPrincipal.call();
         },
 
@@ -379,45 +453,61 @@ export default {
 
         },
 
+
+        async getProyectosDesdeAPI() {
+            try {
+                const response = await AdminApi.GetAllProject();
+                const Projectlist=response.data.obj;
+                this.proyectos = Projectlist;
+            } catch (error) {
+                console.error('Error al cargar los proyectos desde la API:', error);
+            }
+        }
+
     },
 
-    mounted: async function() {
+    mounted: async function () {
+        
         this.$root.cerrarMenuFiltros = this.cerrarFiltros;
         let loader = this.$loading.show({
             container: this.$refs.cuadroLoader,
             opacity: 1
         })
-                
+
         setTimeout(() => {
             loader.hide()
         }, 500)
     },
 
     created: async function () {
+        await this.getProyectosDesdeAPI();
         await this.verificarLog();
         await this.$root.validarLoginFooter.call();
     }
+     
+
+
+
 
 }
 
 </script>
 
-<style>
-</style>
+<style></style>
 
 <style scoped>
-
 #header {
     margin: auto;
     width: 500px;
     font-family: Arial, Helvetica, sans-serif;
 }
 
-ul, ol {
+ul,
+ol {
     list-style: none;
 }
 
-.nav > li {
+.nav>li {
     float: left;
 }
 
@@ -429,10 +519,10 @@ ul, ol {
     display: block;
 }
 
-    .nav li a:hover {
-        color: #808080;
-        background-color: #262b35;
-    }
+.nav li a:hover {
+    color: #808080;
+    background-color: #262b35;
+}
 
 .nav li ul {
     display: none;
@@ -440,7 +530,7 @@ ul, ol {
     min-width: 140px;
 }
 
-.nav li:hover > ul {
+.nav li:hover>ul {
     display: block;
 }
 
@@ -459,26 +549,26 @@ ul, ol {
     border-radius: 0.5em;
 }
 
-    .filtro button {
-        background-color: #000;
-        border-radius: 0.5em;
-        border: none;
-    }
+.filtro button {
+    background-color: #000;
+    border-radius: 0.5em;
+    border: none;
+}
 
-    .filtro button:hover {
-        background-color: #000;
-        border-radius: 0.5em;
-        border: none;
-        font-size: 15px;
-    }
+.filtro button:hover {
+    background-color: #000;
+    border-radius: 0.5em;
+    border: none;
+    font-size: 15px;
+}
 
 /*Select*/
 
-.diseñoSelectLateral{
+.diseñoSelectLateral {
     height: 30px;
 }
 
-.diseñoSelect{
+.diseñoSelect {
     height: 35px;
 }
 
@@ -498,7 +588,7 @@ ul, ol {
 }
 
 @media screen and (max-width: 900px) {
-    .posicion1{
+    .posicion1 {
         display: none;
     }
 }
@@ -509,23 +599,23 @@ ul, ol {
         min-height: 500px;
     }
 
-    .menuLateralCelular{
+    .menuLateralCelular {
         display: none;
     }
 }
 
-.filtrosCelular{
+.filtrosCelular {
     padding-top: 20px;
     padding-left: 10px;
     padding-right: 10px;
     padding-bottom: 20px;
-    background-color: rgba(10,58,102,1);
+    background-color: rgba(10, 58, 102, 1);
     text-align: center;
 }
 
 @media screen and (min-width: 901px) {
 
-    .filtrosCelular{
+    .filtrosCelular {
         display: none;
     }
 }
@@ -542,21 +632,21 @@ ul, ol {
     margin-top: 25px;
 }
 
-    .encabezado ul {
-            padding-top: 14px;
-        }
+.encabezado ul {
+    padding-top: 14px;
+}
 
-    .li {
-        font-family: sans-serif;
-        color: black;
-        text-decoration: none;
-    }
+.li {
+    font-family: sans-serif;
+    color: black;
+    text-decoration: none;
+}
 
-    .encabezado div {
-        text-align: center;
-    }
+.encabezado div {
+    text-align: center;
+}
 
-.sinResultadosAct{
+.sinResultadosAct {
     width: 100%;
     text-align: center;
     margin-top: 30px;
@@ -569,12 +659,12 @@ ul, ol {
     overflow-x: auto;
 }
 
-.botones{
+.botones {
     min-height: 40px;
     min-width: 150px;
 }
 
-.agregarBlt{
+.agregarBlt {
     font-family: sans-serif;
     font-size: 18px;
     text-decoration: none;
@@ -585,34 +675,34 @@ ul, ol {
 }
 
 @media screen and (max-width: 975px) {
-    .agregarResponsive{
+    .agregarResponsive {
         display: none;
     }
 }
 
 @media screen and (min-width: 975px) {
-    .agregarResponsivePlus{
+    .agregarResponsivePlus {
         display: none;
     }
 }
 
 @media screen and (min-width: 901px) {
-    .linkResponsive{
+    .linkResponsive {
         display: none;
     }
 }
 
 @media screen and (max-width: 610px) {
-    .linkResponsiveCelular{
+    .linkResponsiveCelular {
         display: none;
     }
 }
 
-.filtrosCelularBoton{
+.filtrosCelularBoton {
     text-align: center;
     font-size: large;
     cursor: pointer;
-    background-color: rgba(10,58,102,1);
+    background-color: rgba(10, 58, 102, 1);
     height: 30px;
     border-bottom-right-radius: 10px;
     border-bottom-left-radius: 10px;
@@ -620,32 +710,32 @@ ul, ol {
 }
 
 @media screen and (min-width: 901px) {
-    .filtrosCelularBotones{
+    .filtrosCelularBotones {
         display: none;
     }
 
-    .filtrosCelularBoton{
+    .filtrosCelularBoton {
         display: none;
     }
 }
 
-.vistaPrincipal{
+.vistaPrincipal {
     min-height: 85vh;
 }
 
 @media screen and (max-width: 900px) {
-    .vistaPrincipal{
+    .vistaPrincipal {
         min-height: 98vh;
     }
 }
 
 @media screen and (max-width: 400px) {
-    .vistaPrincipal{
+    .vistaPrincipal {
         min-height: 100vh;
     }
 }
 
-.botonRouter{
+.botonRouter {
     min-width: 12.4rem;
     background-color: #114677;
     min-height: 35px;
@@ -654,14 +744,14 @@ ul, ol {
     list-style: none;
 }
 
-    .botonRouter:hover{
-        min-width: 12.4rem;
-        background-color: #15518a;
-        min-height: 35px;
-        border-radius: 5px;
-        padding-top: 20px;
-        list-style: none;
-    }
+.botonRouter:hover {
+    min-width: 12.4rem;
+    background-color: #15518a;
+    min-height: 35px;
+    border-radius: 5px;
+    padding-top: 20px;
+    list-style: none;
+}
 
 .adjuntosJ {
     max-height: 240px;
@@ -669,6 +759,4 @@ ul, ol {
     margin-bottom: 12px;
     margin-right: 1px;
     margin-left: 5px;
-}
-
-</style>
+}</style>
