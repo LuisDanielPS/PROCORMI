@@ -327,7 +327,7 @@
                                                                 title="Ver Proyecto"></span>
                                                         </button>
                                                         <button style="margin-left: 5px;" type="button"
-                                                            class="btn btn-success" @click="editarProyecto(proyecto.Id_project)">
+                                                            class="btn btn-success" @click="EditarProyecto(proyecto.Id_project)">
                                                             <span class="fas fa-pen" b-tooltip.hover
                                                                 title="Editar Proyecto"></span>
                                                         </button>
@@ -382,6 +382,7 @@ export default {
 
     data() {
         return {
+            proyectos:[],
             esConocormi: false,
             esActicormi: false,
             esIncormi: false,
@@ -453,8 +454,7 @@ export default {
 
         },
 
-
-        async getProyectosDesdeAPI() {
+        getProyectosDesdeAPI: async function () {
             try {
                 const response = await AdminApi.GetAllProject();
                 const Projectlist=response.data.obj;
@@ -462,11 +462,15 @@ export default {
             } catch (error) {
                 console.error('Error al cargar los proyectos desde la API:', error);
             }
-        }
 
+        }
+        , 
+    
+        
     },
 
     mounted: async function () {
+
         
         this.$root.cerrarMenuFiltros = this.cerrarFiltros;
         let loader = this.$loading.show({
@@ -480,6 +484,7 @@ export default {
     },
 
     created: async function () {
+   
         await this.getProyectosDesdeAPI();
         await this.verificarLog();
         await this.$root.validarLoginFooter.call();

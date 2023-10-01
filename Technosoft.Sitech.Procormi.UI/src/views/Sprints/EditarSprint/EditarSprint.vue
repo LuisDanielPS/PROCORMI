@@ -51,8 +51,8 @@
         </div>
     </div>
 </template>
-
 <script>
+
 import HeaderPrincipal from '@/components/HeaderPrincipal.vue'
 import 'quill/dist/quill.snow.css'
 import Cookies from 'js-cookie';
@@ -130,8 +130,7 @@ export default {
     width: 100%;
     align-content: center;
 }
-
-    .BotonesJ div {
+ .BotonesJ div {
         margin-left: 10px;
         min-width: 80px;
     }

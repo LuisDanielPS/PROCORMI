@@ -51,30 +51,19 @@ Public Class ProjectEN
         End Set
     End Property
 
-    Private _Users As String
+
+
+    Private _Creation_Date As DateTime
 
     <DataMember()>
-    Public Property Users() As String
-        Get
-            Return _Users
-        End Get
-        Set(value As String)
-            _Users = value
-        End Set
-    End Property
-
-
-    Private _Creation_Date As String
-    <DataMember()>
-    Public Property Creation_Date() As String
+    Public Property Creation_Date() As Date
         Get
             Return _Creation_Date
         End Get
-        Set(value As String)
+        Set(value As Date)
             _Creation_Date = value
         End Set
     End Property
-
 
 
 

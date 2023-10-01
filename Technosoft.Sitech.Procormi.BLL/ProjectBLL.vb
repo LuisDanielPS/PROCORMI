@@ -35,6 +35,7 @@ Public Class ProjectBLL
     End Function
 
 
+
     Public Function GetProjectBLL(ByVal pIdProject As String) As Reply(Of ProjectEN)
 
 
@@ -59,6 +60,55 @@ Public Class ProjectBLL
 
     End Function
 
+    Public Function GetUserListProjectBLL(ByVal pIdProject As Integer) As Reply(Of List(Of UserListProjectVM))
+
+
+        Dim reply As Reply(Of List(Of UserListProjectVM)) = Nothing
+
+        Try
+            If pIdProject <> 0 Then
+
+
+                reply = ProjectDAO.Instance.GetUserListProjectDAO(pIdProject)
+
+
+            End If
+
+        Catch ex As Exception
+            EscritorVisorEventos.Instancia().EscribirEvento(nameClass, MethodBase.GetCurrentMethod().Name, ex)
+            reply.ok = False
+            reply.msg = "Error al tratar de buscar la lista de usuarios en el proyecto"
+        End Try
+
+        Return reply
+
+    End Function
+
+    Public Function GetFileListProjectBLL(ByVal pIdProject As Integer) As Reply(Of List(Of FileEN))
+
+
+        Dim reply As Reply(Of List(Of FileEN)) = Nothing
+
+        Try
+            If pIdProject <> 0 Then
+
+
+                reply = ProjectDAO.Instance.GetFileListProjectDAO(pIdProject)
+
+
+            End If
+
+        Catch ex As Exception
+            EscritorVisorEventos.Instancia().EscribirEvento(nameClass, MethodBase.GetCurrentMethod().Name, ex)
+            reply.ok = False
+            reply.msg = "Error al tratar de buscar la lista de archivo en el proyecto"
+        End Try
+
+        Return reply
+
+    End Function
+
+
 
     Public Function PostProjectBLL(ByVal pProject As ProjectEN) As Reply(Of ProjectEN)
 
@@ -77,6 +127,73 @@ Public Class ProjectBLL
             EscritorVisorEventos.Instancia().EscribirEvento(nameClass, MethodBase.GetCurrentMethod().Name, ex)
             reply.ok = False
             reply.msg = "Error al crear proyecto"
+        End Try
+
+        Return reply
+
+    End Function
+
+    Public Function PostAddUserProjectBLL(ByVal pAddUserProject As SegUsuProjectEN) As Reply(Of SegUsuProjectEN)
+
+
+        Dim reply As Reply(Of SegUsuProjectEN) = Nothing
+
+        Try
+            If pAddUserProject IsNot Nothing Then
+
+                reply = ProjectDAO.Instance.PostAddUserProjectDAO(pAddUserProject)
+                reply.ok = True
+                reply.msg = "Se agrego el usuario ala lista del proyecto "
+            End If
+
+        Catch ex As Exception
+            EscritorVisorEventos.Instancia().EscribirEvento(nameClass, MethodBase.GetCurrentMethod().Name, ex)
+            reply.ok = False
+            reply.msg = "Error al  agregar el usuario a la lista del proyecto "
+        End Try
+
+        Return reply
+
+    End Function
+
+    Public Function PostAddFileProjectBLL(ByVal pAddFileProject As ProjectFileEN) As Reply(Of ProjectFileEN)
+
+
+        Dim reply As Reply(Of ProjectFileEN) = Nothing
+
+        Try
+            If pAddFileProject IsNot Nothing Then
+
+                reply = ProjectDAO.Instance.PostAddFileProjectDAO(pAddFileProject)
+                reply.ok = True
+                reply.msg = "Se agrego un archivo ala lista del proyecto "
+            End If
+
+        Catch ex As Exception
+            EscritorVisorEventos.Instancia().EscribirEvento(nameClass, MethodBase.GetCurrentMethod().Name, ex)
+            reply.ok = False
+            reply.msg = "Error al  agregar un archivo a la lista del proyecto "
+        End Try
+
+        Return reply
+
+    End Function
+
+
+
+    Public Function GetLastInsertIdBLL() As Reply(Of Integer)
+
+
+        Dim reply As Reply(Of Integer) = Nothing
+
+        Try
+
+            reply = ProjectDAO.Instance.GetLastInsertIdDAO()
+
+        Catch ex As Exception
+            EscritorVisorEventos.Instancia().EscribirEvento(nameClass, MethodBase.GetCurrentMethod().Name, ex)
+            reply.ok = False
+            reply.msg = "Error al tratar el ultimo id insertado"
         End Try
 
         Return reply
@@ -133,5 +250,52 @@ Public Class ProjectBLL
 
     End Function
 
+    Public Function DeleteProjectFileBLL(ByVal pIdProject As Integer) As Reply(Of ProjectFileEN)
+
+
+        Dim reply As Reply(Of ProjectFileEN) = Nothing
+
+        Try
+            If pIdProject <> 0 Then
+
+
+                reply = ProjectDAO.Instance.DeleteProjectFileDAO(pIdProject)
+
+
+            End If
+
+        Catch ex As Exception
+            EscritorVisorEventos.Instancia().EscribirEvento(nameClass, MethodBase.GetCurrentMethod().Name, ex)
+            reply.ok = False
+            reply.msg = "Error al tratar de eliminar "
+        End Try
+
+        Return reply
+
+    End Function
+
+    Public Function DeleteSegUsuBLL(ByVal pIdProject As Integer) As Reply(Of SegUsuProjectEN)
+
+
+        Dim reply As Reply(Of SegUsuProjectEN) = Nothing
+
+        Try
+            If pIdProject <> 0 Then
+
+
+                reply = ProjectDAO.Instance.DeleteSegUsuDAO(pIdProject)
+
+
+            End If
+
+        Catch ex As Exception
+            EscritorVisorEventos.Instancia().EscribirEvento(nameClass, MethodBase.GetCurrentMethod().Name, ex)
+            reply.ok = False
+            reply.msg = "Error al tratar de eliminar "
+        End Try
+
+        Return reply
+
+    End Function
 
 End Class
