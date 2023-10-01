@@ -65,6 +65,10 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Modelos\FileEN.vb" />
+    <Compile Include="Modelos\ProjectFileEN.vb" />
+    <Compile Include="Modelos\SegUsuProjectEN.vb" />
+    <Compile Include="Modelos\UserListProjectVM.vb" />
     <Compile Include="Modelos\UsuarioEN.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">

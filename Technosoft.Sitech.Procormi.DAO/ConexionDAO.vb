@@ -116,6 +116,30 @@ Public Class ConexionDAO
         Return cmd
     End Function
 
+    'Users Script'
+    Public Function ExecuteConsultGetAllUsers(ByVal psSql As String
+                                             ) As MySqlDataReader
+        Try
+            If dr IsNot Nothing Then dr.Close()
+
+            conn = New MySqlConnection(conStr)
+            sql = New MySqlCommand(psSql, conn)
+            sql.CommandType = CommandType.Text
+            conn.Open()
+            dr = sql.ExecuteReader(CommandBehavior.CloseConnection)
+            sql.Dispose()
+            sql = Nothing
+            Return dr
+
+        Catch ex As MySqlException
+            EscritorVisorEventos.Instancia().EscribirEvento(nombreClase, MethodBase.GetCurrentMethod().Name, ex)
+            Throw New Exception("Error al ejecutar la consulta")
+        End Try
+
+    End Function
+
+
+
     'Project Script
     Public Function ExecuteConsultGetAllProjects(ByVal psSql As String
                                              ) As MySqlDataReader
@@ -139,6 +163,28 @@ Public Class ConexionDAO
     End Function
 
     Public Function ExecuteConsultGetProject(ByVal psSql As String,
+                                             ByVal param1 As Integer) As MySqlDataReader
+        Try
+            If dr IsNot Nothing Then dr.Close()
+
+            conn = New MySqlConnection(conStr)
+            sql = New MySqlCommand(psSql, conn)
+            sql.Parameters.AddWithValue("@filtro1", param1)
+            sql.CommandType = CommandType.Text
+            conn.Open()
+            dr = sql.ExecuteReader(CommandBehavior.CloseConnection)
+            sql.Dispose()
+            sql = Nothing
+            Return dr
+
+        Catch ex As MySqlException
+            EscritorVisorEventos.Instancia().EscribirEvento(nombreClase, MethodBase.GetCurrentMethod().Name, ex)
+            Throw New Exception("Error al ejecutar la consulta")
+        End Try
+
+    End Function
+
+    Public Function ExecuteConsultJoinSegUsuProject(ByVal psSql As String,
                                              ByVal param1 As String) As MySqlDataReader
         Try
             If dr IsNot Nothing Then dr.Close()
@@ -160,17 +206,104 @@ Public Class ConexionDAO
 
     End Function
 
+    Public Function ExecuteConsultJoinFileProject(ByVal psSql As String,
+                                             ByVal param1 As String) As MySqlDataReader
+        Try
+            If dr IsNot Nothing Then dr.Close()
+
+            conn = New MySqlConnection(conStr)
+            sql = New MySqlCommand(psSql, conn)
+            sql.Parameters.AddWithValue("@filtro1", param1)
+            sql.CommandType = CommandType.Text
+            conn.Open()
+            dr = sql.ExecuteReader(CommandBehavior.CloseConnection)
+            sql.Dispose()
+            sql = Nothing
+            Return dr
+
+        Catch ex As MySqlException
+            EscritorVisorEventos.Instancia().EscribirEvento(nombreClase, MethodBase.GetCurrentMethod().Name, ex)
+            Throw New Exception("Error al ejecutar la consulta")
+        End Try
+
+    End Function
 
     Public Sub ExecuteInsertProject(ByVal psSql As String, ByVal Pproject As ProjectEN)
         Try
             conn = New MySqlConnection(conStr)
             sql = New MySqlCommand(psSql, conn)
-            sql.Parameters.AddWithValue("@parameter1", Pproject.Id_project)
-            sql.Parameters.AddWithValue("@parameter2", Pproject.Project_Name)
-            sql.Parameters.AddWithValue("@parameter3", Pproject.Description_Project)
-            sql.Parameters.AddWithValue("@parameter4", Pproject.Id_State)
-            sql.Parameters.AddWithValue("@parameter5", Pproject.Users)
-            sql.Parameters.AddWithValue("@parameter6", Pproject.Creation_Date)
+            sql.Parameters.AddWithValue("@parameter1", Pproject.Project_Name)
+            sql.Parameters.AddWithValue("@parameter2", Pproject.Description_Project)
+            sql.Parameters.AddWithValue("@parameter3", 1)
+            sql.CommandType = CommandType.Text
+            conn.Open()
+            sql.ExecuteNonQuery()
+            conn.Close()
+        Catch ex As MySqlException
+            EscritorVisorEventos.Instancia().EscribirEvento(nombreClase, MethodBase.GetCurrentMethod().Name, ex)
+            Throw New Exception("Error al ejecutar la inserción")
+        End Try
+    End Sub
+
+    Public Sub ExecuteInsertFile(ByVal psSql As String, ByVal Pfile As FileEN)
+        Try
+            conn = New MySqlConnection(conStr)
+            sql = New MySqlCommand(psSql, conn)
+            sql.Parameters.AddWithValue("@parameter1", Pfile.File_Name)
+            sql.Parameters.AddWithValue("@parameter2", Pfile.File_Type)
+            sql.Parameters.AddWithValue("@parameter3", Pfile.File_Size)
+            sql.CommandType = CommandType.Text
+            conn.Open()
+            sql.ExecuteNonQuery()
+            conn.Close()
+        Catch ex As MySqlException
+            EscritorVisorEventos.Instancia().EscribirEvento(nombreClase, MethodBase.GetCurrentMethod().Name, ex)
+            Throw New Exception("Error al ejecutar la inserción")
+        End Try
+    End Sub
+    Public Function ExecuteConsultLastInsertId(ByVal psSql As String
+                                             ) As MySqlDataReader
+        Try
+            If dr IsNot Nothing Then dr.Close()
+
+            conn = New MySqlConnection(conStr)
+            sql = New MySqlCommand(psSql, conn)
+            sql.CommandType = CommandType.Text
+            conn.Open()
+            dr = sql.ExecuteReader(CommandBehavior.CloseConnection)
+            sql.Dispose()
+            sql = Nothing
+            Return dr
+
+        Catch ex As MySqlException
+            EscritorVisorEventos.Instancia().EscribirEvento(nombreClase, MethodBase.GetCurrentMethod().Name, ex)
+            Throw New Exception("Error al ejecutar la consulta")
+        End Try
+
+    End Function
+
+    Public Sub ExecuteInsertSegUsuProject(ByVal psSql As String, ByVal PSegUsuProject As SegUsuProjectEN)
+        Try
+            conn = New MySqlConnection(conStr)
+            sql = New MySqlCommand(psSql, conn)
+            sql.Parameters.AddWithValue("@parameter1", PSegUsuProject.User_Login)
+            sql.Parameters.AddWithValue("@parameter2", PSegUsuProject.Id_Project)
+            sql.CommandType = CommandType.Text
+            conn.Open()
+            sql.ExecuteNonQuery()
+            conn.Close()
+        Catch ex As MySqlException
+            EscritorVisorEventos.Instancia().EscribirEvento(nombreClase, MethodBase.GetCurrentMethod().Name, ex)
+            Throw New Exception("Error al ejecutar la inserción")
+        End Try
+    End Sub
+
+    Public Sub ExecuteInsertProjectFile(ByVal psSql As String, ByVal pProjectFile As ProjectFileEN)
+        Try
+            conn = New MySqlConnection(conStr)
+            sql = New MySqlCommand(psSql, conn)
+            sql.Parameters.AddWithValue("@parameter1", pProjectFile.Id_Project)
+            sql.Parameters.AddWithValue("@parameter2", pProjectFile.File_ID)
             sql.CommandType = CommandType.Text
             conn.Open()
             sql.ExecuteNonQuery()
@@ -188,9 +321,6 @@ Public Class ConexionDAO
             sql.Parameters.AddWithValue("@Condition", Pproject.Id_project)
             sql.Parameters.AddWithValue("@parameter1", Pproject.Project_Name)
             sql.Parameters.AddWithValue("@parameter2", Pproject.Description_Project)
-            sql.Parameters.AddWithValue("@parameter3", Pproject.Id_State)
-            sql.Parameters.AddWithValue("@parameter4", Pproject.Users)
-            sql.Parameters.AddWithValue("@parameter5", Pproject.Creation_Date)
             sql.CommandType = CommandType.Text
             conn.Open()
             sql.ExecuteNonQuery()
@@ -216,7 +346,20 @@ Public Class ConexionDAO
             Throw New Exception("Error al ejecutar la inserción")
         End Try
     End Sub
-
+    Public Sub ExecuteDeleteListUserFileProject(ByVal psSql As String, ByVal pIdProject As Integer)
+        Try
+            conn = New MySqlConnection(conStr)
+            sql = New MySqlCommand(psSql, conn)
+            sql.Parameters.AddWithValue("@Condition", pIdProject)
+            sql.CommandType = CommandType.Text
+            conn.Open()
+            sql.ExecuteNonQuery()
+            conn.Close()
+        Catch ex As MySqlException
+            EscritorVisorEventos.Instancia().EscribirEvento(nombreClase, MethodBase.GetCurrentMethod().Name, ex)
+            Throw New Exception("Error al ejecutar la inserción")
+        End Try
+    End Sub
 
     Public Sub Cerrar()
         If dr IsNot Nothing Then dr.Close()

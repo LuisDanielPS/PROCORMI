@@ -1,10 +1,13 @@
 {
   "ExpandedNodes": [
     "",
+    "\\Technosoft.Sitech.Procormi.BLL",
     "\\Technosoft.Sitech.Procormi.DAO",
     "\\Technosoft.Sitech.Procormi.EN",
-    "\\Technosoft.Sitech.Procormi.EN\\Modelos"
+    "\\Technosoft.Sitech.Procormi.EN\\Modelos",
+    "\\Technosoft.Sitech.Procormi.WebAPI",
+    "\\Technosoft.Sitech.Procormi.WebAPI\\Controllers"
   ],
-  "SelectedNode": "\\Technosoft.Sitech.Procormi.EN\\Modelos\\ProjectEN.vb",
+  "SelectedNode": "\\Technosoft.Sitech.Procormi.EN\\Modelos\\UserListProjectVM.vb",
   "PreviewInSolutionExplorer": false
 }
