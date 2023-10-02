@@ -225,7 +225,54 @@ Public Class ProjectBLL
 
     End Function
 
+    Public Function PutDisableStatusBLL(ByVal pIdProject As Integer) As Reply(Of ProjectEN)
 
+
+        Dim reply As Reply(Of ProjectEN) = Nothing
+
+        Try
+            If pIdProject <> 0 Then
+
+                reply = ProjectDAO.Instance.PutDisableStatusDAO(pIdProject)
+                reply.ok = True
+                reply.msg = "Se ha eliminado el proyecto"
+
+            End If
+
+        Catch ex As Exception
+            EscritorVisorEventos.Instancia().EscribirEvento(nameClass, MethodBase.GetCurrentMethod().Name, ex)
+            reply.ok = False
+            reply.msg = "Error al eliminar proyecto"
+        End Try
+
+        Return reply
+
+    End Function
+
+    Public Function GetPasswordVerifyDeleteRowBLL(ByVal pUsuario As String, ByVal pPass As String) As Reply(Of UsuarioEN)
+
+        Dim Usuario As String = ""
+        Dim Password As String = ""
+        Dim reply As Reply(Of UsuarioEN) = Nothing
+
+        Try
+            If pUsuario IsNot Nothing And pPass IsNot Nothing Then
+                Usuario = pUsuario
+                Password = pPass
+
+                reply = ProjectDAO.Instance.GetPasswordVerifyDeleteRowDAO(Usuario, Password)
+
+            End If
+
+        Catch ex As Exception
+            EscritorVisorEventos.Instancia().EscribirEvento(nameClass, MethodBase.GetCurrentMethod().Name, ex)
+            reply.ok = False
+            reply.msg = "Error al tratar de eliminar"
+        End Try
+
+        Return reply
+
+    End Function
     Public Function DeleteProjectBLL(ByVal pIdProject As String) As Reply(Of ProjectEN)
 
 

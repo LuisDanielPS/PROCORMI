@@ -153,16 +153,16 @@
                                     <label>Digite su contraseña</label>
                                     <br />
                                     <div class="row" style="margin-top: 15px;">
-                                        <input class="col-10" style="margin-left: 10px; border-radius: 5px;" type="text"
+                                        <input v-model="verifyPassword" class="col-10" style="margin-left: 10px; border-radius: 5px;" type="text"
                                             required placeholder="Contraseña">
-                                        <button class="btn btn-success col-1" style="margin-left: 5px;"><span
+                                        <button @click="getPasswordVerifyDeleteRow()" type="button" class="btn btn-success col-1" style="margin-left: 5px;"><span
                                                 class="fas fa-check"></span></button>
                                     </div>
                                 </div>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
-                                <button type="button" class="btn btn-success">Aceptar</button>
+                                <button @click="deleteRowList()"  class="btn btn-success">Aceptar</button>
                             </div>
                         </div>
                     </div>
@@ -331,7 +331,7 @@
                                                             <span class="fas fa-pen" b-tooltip.hover
                                                                 title="Editar Proyecto"></span>
                                                         </button>
-                                                        <button type="button" class="btn btn-danger"
+                                                        <button @click="saveIdProjectDelete(proyecto.Id_project)" type="button" class="btn btn-danger"
                                                             style="margin-left: 5px;" data-bs-toggle="modal"
                                                             data-bs-target="#exampleModal">
                                                             <span class="fas fa-trash" b-tooltip.hover
@@ -382,6 +382,9 @@ export default {
 
     data() {
         return {
+            confimPassworsDelete:false,
+            idProjectDeleteVerify:0,
+            verifyPassword:"",
             proyectos:[],
             esConocormi: false,
             esActicormi: false,
@@ -465,6 +468,58 @@ export default {
 
         }
         , 
+        getPasswordVerifyDeleteRow: async function () {
+            let login = this.recuperarUsuLog()
+            try {
+                const response = await AdminApi.GetPasswordVerifyDeleteRow(login, this.verifyPassword);
+                const mensage=response.data.ok;
+                console.log( mensage == true ? "Se verifico" : "No se verifico")
+
+                if(mensage==true){
+
+                this.confimPassworsDelete=true
+                this.$swal({ icon: 'success', text: 'Se verifico correctamente la contraseña' });
+                    
+                }
+                else{
+                    this.$swal({ icon: 'warning', text: 'La contraseña que insertaste no es correcta' });
+
+                }
+
+            } catch (error) {
+                console.error('Error al cargar los proyectos desde la API:', error);
+            }
+
+        }
+        ,
+        deleteRowList: async function () {
+          
+            try {
+
+                if(this.confimPassworsDelete){
+                const response = await AdminApi.PutDisableStatus(this.idProjectDeleteVerify);
+                const mensage=response.data.ok;
+                console.log(mensage)
+                location.reload()
+                    
+                }
+                else
+                {
+                    this.$swal({ icon: 'warning', text: 'La contraseña que insertaste no es correcta' });
+                }
+
+            } catch (error) {
+                console.error('Error al cargar los proyectos desde la API:', error);
+            }
+
+        }
+        ,
+        saveIdProjectDelete:  function (idProject) {
+           this.idProjectDeleteVerify=idProject
+
+        }
+        , 
+        
     
         
     },

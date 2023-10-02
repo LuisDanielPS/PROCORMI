@@ -332,12 +332,12 @@ export default {
                     const idProject = await AdminApi.GetLastInsertId();
                     const idInsert = idProject.data.obj;
                     console.log(idInsert)
-                
-                    const response2 = await AdminApi.DeleteFileProject(this.idProyecto);
+
+                    const response2 = await AdminApi.DeleteFileProject(this.$route.params.id);
                     const mensaje2 = response2.data.obj;
                     console.log(mensaje2)
 
-                    const response3 = await AdminApi.DeleteUserListProject(this.idProyecto);
+                    const response3 = await AdminApi.DeleteUserListProject(this.$route.params.id);
                     const mensaje3 = response3.data.obj;
                     console.log(mensaje3)
 
@@ -348,7 +348,7 @@ export default {
                         const addUser = {
                             "Id": 0,
                             "User_Login": item.usu_Login,
-                            "Id_Project": idInsert
+                            "Id_Project": this.idProyecto,
                         };
 
                         try {
@@ -385,16 +385,19 @@ export default {
 
                             const FileProject = {
                                 "ID_Project_File": 0,
-                                "Id_Project": idInsert,
+                                "Id_Project": this.idProyecto,
                                 "File_ID": idFileLastInsertObj
                             };
 
                             const response2 = await AdminApi.PostAddFileProject(FileProject);
                             const mensaje2 = response2.data.obj;
                             console.log(mensaje2)
+                            this.$swal({ icon: 'success', text: 'Se actualizó correctamente el proyecto' });
+                            setTimeout(() => {
+                               this.$router.push({ name: 'Inicio' })
+                            }, 10000);
 
-                            this.$swal({ icon: 'success', text: 'Se actualizo el correctamente el proyecto' });
-                            this.$router.push({ name: 'Inicio' })
+                            
 
                         } catch (error) {
                             console.error('Error al agregar usuario al proyecto:', error);

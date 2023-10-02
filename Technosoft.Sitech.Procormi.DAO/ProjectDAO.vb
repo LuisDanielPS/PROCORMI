@@ -22,7 +22,7 @@ Public Class ProjectDAO
 
         Try
 
-            sentence = "SELECT * FROM project"
+            sentence = "SELECT * FROM project WHERE Id_Status = 1"
 
             dr = ConexionDAO.Instancia.ExecuteConsultGetAllProjects(sentence)
 
@@ -222,7 +222,7 @@ Public Class ProjectDAO
 
 
             ElseIf pProjectEn IsNot Nothing Then
-                sentence = "INSERT INTO project (Project_Name, Description_Project, Id_State, Date_Creation) VALUES (@parameter1, @parameter2, @parameter3, NOW())"
+                sentence = "INSERT INTO project (Project_Name, Description_Project, Id_Status, Date_Creation) VALUES (@parameter1, @parameter2, @parameter3, NOW())"
 
                 ConexionDAO.Instancia.ExecuteInsertProject(sentence, pProjectEn)
                 reply.ok = True
@@ -397,6 +397,40 @@ Public Class ProjectDAO
 
     End Function
 
+    Public Function PutDisableStatusDAO(ByVal pIdProject As Integer) As Reply(Of ProjectEN)
+
+        Dim reply As New Reply(Of ProjectEN)
+
+        Try
+            If pIdProject = 0 Then
+                reply.ok = False
+                reply.msg = "El objeto del projecto esta Vacio"
+
+
+            ElseIf pIdProject <> 0 Then
+                sentence = "UPDATE project SET Id_Status = 2  WHERE Id_project = @Condition"
+
+                ConexionDAO.Instancia.ExecuteDisableStatus(sentence, pIdProject)
+                reply.ok = True
+                reply.msg = "Se ha eliminado el proyecto"
+
+            End If
+
+
+
+        Catch ex As Exception
+            EscritorVisorEventos.Instancia().EscribirEvento(nameClass, MethodBase.GetCurrentMethod().Name, ex)
+            reply.ok = False
+            reply.msg = "No fue posible ejecutar la consulta: " & ex.Message
+            Return reply
+        End Try
+
+
+        Return reply
+
+
+    End Function
+
     Public Function DeleteProjectDAO(ByVal pIdProject As String) As Reply(Of ProjectEN)
 
         Dim reply As New Reply(Of ProjectEN)
@@ -408,7 +442,7 @@ Public Class ProjectDAO
 
 
             ElseIf pIdProject IsNot Nothing Then
-                sentence = "DELETE FROM project WHERE Id_project = @Condition"
+                sentence = "DELETE FROM project WHERE Id_Project = @Condition"
 
                 ConexionDAO.Instancia.ExecuteDeleteProject(sentence, pIdProject)
                 reply.ok = True
@@ -470,12 +504,12 @@ Public Class ProjectDAO
         Dim reply As New Reply(Of SegUsuProjectEN)
 
         Try
-            If pIdProject <> 0 Then
+            If pIdProject = 0 Then
                 reply.ok = False
                 reply.msg = "No se encontro usuarios relacionados"
 
 
-            ElseIf pIdProject = 0 Then
+            ElseIf pIdProject <> 0 Then
                 sentence = "DELETE FROM seg_usu_project WHERE Id_Project = @Condition"
 
                 ConexionDAO.Instancia.ExecuteDeleteListUserFileProject(sentence, pIdProject)
@@ -499,5 +533,47 @@ Public Class ProjectDAO
 
     End Function
 
+    Public Function GetPasswordVerifyDeleteRowDAO(ByVal pUsu As String, ByVal pPass As String) As Reply(Of UsuarioEN)
+
+        Dim reply As New Reply(Of UsuarioEN)
+        Dim dr As MySqlDataReader
+
+
+
+        Try
+
+            sentence = "SELECT usu_Login , usu_Password FROM seg_usu WHERE usu_Login = @filtro1 And usu_Password = @filtro2"
+
+            dr = ConexionDAO.Instancia.ExecuteVerifyDeleteRow(sentence, pUsu, pPass)
+
+            While dr.Read
+                Dim usu As New UsuarioEN
+                usu.usu_Login = dr(0)
+                usu.usu_Password = dr(1)
+                reply.obj = usu
+            End While
+
+            If reply.obj IsNot Nothing Then
+                reply.ok = True
+                reply.msg = "Usuario verificado para eliminar"
+            ElseIf reply.obj Is Nothing Then
+                reply.ok = False
+                reply.msg = "Usuario o contraseña incorrectos"
+            End If
+
+        Catch ex As Exception
+            EscritorVisorEventos.Instancia().EscribirEvento(nameClass, MethodBase.GetCurrentMethod().Name, ex)
+            reply.ok = False
+            reply.msg = "No fue posible ejecutar la consulta: " & ex.Message
+            Return reply
+        End Try
+
+        dr.Close()
+        dr.Dispose()
+
+        Return reply
+
+
+    End Function
 
 End Class
