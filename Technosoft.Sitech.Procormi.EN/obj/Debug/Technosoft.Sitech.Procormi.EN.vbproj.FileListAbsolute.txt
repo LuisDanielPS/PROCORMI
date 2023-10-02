@@ -18,3 +18,13 @@ C:\Users\crist\Source\Repos\LuisDanielPS\PROCORMI\Technosoft.Sitech.Procormi.EN\
 C:\Users\crist\Source\Repos\LuisDanielPS\PROCORMI\Technosoft.Sitech.Procormi.EN\obj\Debug\Technosoft.Sitech.Procormi.EN.dll
 C:\Users\crist\Source\Repos\LuisDanielPS\PROCORMI\Technosoft.Sitech.Procormi.EN\obj\Debug\Technosoft.Sitech.Procormi.EN.xml
 C:\Users\crist\Source\Repos\LuisDanielPS\PROCORMI\Technosoft.Sitech.Procormi.EN\obj\Debug\Technosoft.Sitech.Procormi.EN.pdb
+D:\Proyectos Github\PROCORMI\Technosoft.Sitech.Procormi.EN\bin\Debug\Technosoft.Sitech.Procormi.EN.dll
+D:\Proyectos Github\PROCORMI\Technosoft.Sitech.Procormi.EN\bin\Debug\Technosoft.Sitech.Procormi.EN.pdb
+D:\Proyectos Github\PROCORMI\Technosoft.Sitech.Procormi.EN\bin\Debug\Technosoft.Sitech.Procormi.EN.xml
+D:\Proyectos Github\PROCORMI\Technosoft.Sitech.Procormi.EN\obj\Debug\Technosoft.Sitech.Procormi.EN.vbproj.AssemblyReference.cache
+D:\Proyectos Github\PROCORMI\Technosoft.Sitech.Procormi.EN\obj\Debug\Technosoft.Sitech.Procormi.EN.Resources.resources
+D:\Proyectos Github\PROCORMI\Technosoft.Sitech.Procormi.EN\obj\Debug\Technosoft.Sitech.Procormi.EN.vbproj.GenerateResource.cache
+D:\Proyectos Github\PROCORMI\Technosoft.Sitech.Procormi.EN\obj\Debug\Technosoft.Sitech.Procormi.EN.vbproj.CoreCompileInputs.cache
+D:\Proyectos Github\PROCORMI\Technosoft.Sitech.Procormi.EN\obj\Debug\Technosoft.Sitech.Procormi.EN.dll
+D:\Proyectos Github\PROCORMI\Technosoft.Sitech.Procormi.EN\obj\Debug\Technosoft.Sitech.Procormi.EN.xml
+D:\Proyectos Github\PROCORMI\Technosoft.Sitech.Procormi.EN\obj\Debug\Technosoft.Sitech.Procormi.EN.pdb

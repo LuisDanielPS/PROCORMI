@@ -489,10 +489,6 @@ export default {
         await this.verificarLog();
         await this.$root.validarLoginFooter.call();
     }
-     
-
-
-
 
 }
 

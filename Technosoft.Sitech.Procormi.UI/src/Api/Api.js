@@ -121,5 +121,14 @@ export default {
         })
 
     }
+    ,
+    GetAllSprint()
+    {
+        return apicliente.get('Sprint/GetALLSprints' , {
+            withCredentials: false,
+            headers: { 'Content-Type': 'application/json; charset=UTF-8' }
+        })
+
+    }
 
 }

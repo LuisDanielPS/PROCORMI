@@ -34,3 +34,21 @@ C:\Users\crist\Source\Repos\LuisDanielPS\PROCORMI\Technosoft.Sitech.Procormi.UT\
 C:\Users\crist\Source\Repos\LuisDanielPS\PROCORMI\Technosoft.Sitech.Procormi.UT\obj\Debug\Technosoft.Sitech.Procormi.UT.dll
 C:\Users\crist\Source\Repos\LuisDanielPS\PROCORMI\Technosoft.Sitech.Procormi.UT\obj\Debug\Technosoft.Sitech.Procormi.UT.xml
 C:\Users\crist\Source\Repos\LuisDanielPS\PROCORMI\Technosoft.Sitech.Procormi.UT\obj\Debug\Technosoft.Sitech.Procormi.UT.pdb
+D:\Proyectos Github\PROCORMI\Technosoft.Sitech.Procormi.UT\bin\Debug\Technosoft.Sitech.Procormi.UT.dll.config
+D:\Proyectos Github\PROCORMI\Technosoft.Sitech.Procormi.UT\bin\Debug\Technosoft.Sitech.Procormi.UT.dll
+D:\Proyectos Github\PROCORMI\Technosoft.Sitech.Procormi.UT\bin\Debug\Technosoft.Sitech.Procormi.UT.pdb
+D:\Proyectos Github\PROCORMI\Technosoft.Sitech.Procormi.UT\bin\Debug\Technosoft.Sitech.Procormi.UT.xml
+D:\Proyectos Github\PROCORMI\Technosoft.Sitech.Procormi.UT\bin\Debug\EntityFramework.dll
+D:\Proyectos Github\PROCORMI\Technosoft.Sitech.Procormi.UT\bin\Debug\EntityFramework.SqlServer.dll
+D:\Proyectos Github\PROCORMI\Technosoft.Sitech.Procormi.UT\bin\Debug\Newtonsoft.Json.dll
+D:\Proyectos Github\PROCORMI\Technosoft.Sitech.Procormi.UT\bin\Debug\EntityFramework.xml
+D:\Proyectos Github\PROCORMI\Technosoft.Sitech.Procormi.UT\bin\Debug\EntityFramework.SqlServer.xml
+D:\Proyectos Github\PROCORMI\Technosoft.Sitech.Procormi.UT\bin\Debug\Newtonsoft.Json.xml
+D:\Proyectos Github\PROCORMI\Technosoft.Sitech.Procormi.UT\obj\Debug\Technosoft.Sitech.Procormi.UT.vbproj.AssemblyReference.cache
+D:\Proyectos Github\PROCORMI\Technosoft.Sitech.Procormi.UT\obj\Debug\Technosoft.Sitech.Procormi.UT.Resources.resources
+D:\Proyectos Github\PROCORMI\Technosoft.Sitech.Procormi.UT\obj\Debug\Technosoft.Sitech.Procormi.UT.vbproj.GenerateResource.cache
+D:\Proyectos Github\PROCORMI\Technosoft.Sitech.Procormi.UT\obj\Debug\Technosoft.Sitech.Procormi.UT.vbproj.CoreCompileInputs.cache
+D:\Proyectos Github\PROCORMI\Technosoft.Sitech.Procormi.UT\obj\Debug\Technosoft.Sitech.Procormi.UT.vbproj.CopyComplete
+D:\Proyectos Github\PROCORMI\Technosoft.Sitech.Procormi.UT\obj\Debug\Technosoft.Sitech.Procormi.UT.dll
+D:\Proyectos Github\PROCORMI\Technosoft.Sitech.Procormi.UT\obj\Debug\Technosoft.Sitech.Procormi.UT.xml
+D:\Proyectos Github\PROCORMI\Technosoft.Sitech.Procormi.UT\obj\Debug\Technosoft.Sitech.Procormi.UT.pdb

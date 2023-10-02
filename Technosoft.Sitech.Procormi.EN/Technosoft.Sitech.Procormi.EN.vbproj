@@ -66,6 +66,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Modelos\FileEN.vb" />
+    <Compile Include="Modelos\SprintEN.vb" />
     <Compile Include="Modelos\ProjectFileEN.vb" />
     <Compile Include="Modelos\SegUsuProjectEN.vb" />
     <Compile Include="Modelos\UserListProjectVM.vb" />

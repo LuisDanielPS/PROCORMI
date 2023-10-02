@@ -225,12 +225,12 @@
                                                 </tr>
                                             </thead>
                                             <tbody style="font-size: large;">
-                                                <tr>
-                                                    <td @click="verTareas" class="claseTD">1</td>
-                                                    <td @click="verTareas" class="claseTD">Procormi</td>
-                                                    <td @click="verTareas" class="claseTD">01/05/2023</td>
-                                                    <td @click="verTareas" class="claseTD">16/05/2023</td>
-                                                    <td @click="verTareas" class="claseTD">En proceso</td>
+                                                <tr v-for="sprint in sprints" :key="sprint.Id_Sprint">
+                                                    <td @click="verTareas" class="claseTD">{{sprint.Id_Sprint}}</td>
+                                                    <td @click="verTareas" class="claseTD">{{sprint.Sprint_Name}}</td>
+                                                    <td @click="verTareas" class="claseTD">{{sprint.Start_Date}}</td>
+                                                    <td @click="verTareas" class="claseTD">{{sprint.End_Date}}</td>
+                                                    <td @click="verTareas" class="claseTD">{{sprint.Id_Status == 1 ? "Activo" : "Inactivo"}}</td>
                                                     <td class="text-white">
                                                         <button class="btn btn-primary" role="button" @click="verTareas">
                                                             <span class="fas fa-eye" b-tooltip.hover title="Ver Sprint"></span>
@@ -274,7 +274,7 @@ import Cookies from 'js-cookie';
 import HeaderPrincipal from '@/components/HeaderPrincipal.vue'
 import MenuLateral from '@/components/MenuLateral.vue'
 //import FiltroSuperior from '@/components/FiltroSuperior.vue'
-//import AdminApi from '@/Api/Api';
+import AdminApi from '@/Api/Api';
 
 export default {
 
@@ -283,9 +283,10 @@ export default {
     },
 
     data() {
+        
         return {
+            sprints:[],
             filtroDesplegar: false,
-
             Filtros: {
             fechaI: "",
             fechaF: "",
@@ -298,6 +299,18 @@ export default {
 
     methods: {
 
+        getSprintsDesdeAPI: async function () {
+            try {
+                const response = await AdminApi.GetAllSprint();
+                const Sprintlist=response.data.obj;
+                this.sprints = Sprintlist;
+            } catch (error) {
+                console.error('Error al cargar los sprints desde la API:', error);
+            }
+
+        }
+        , 
+        
         EditarSprint: function(SprintID) {
             this.$router.push({
                 name: "EditarSprint",
@@ -367,6 +380,7 @@ export default {
     },
 
     created: async function () {
+        await this.getSprintsDesdeAPI();
         await this.verificarLog();
         await this.$root.validarLoginFooter.call();
     }

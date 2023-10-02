@@ -222,7 +222,7 @@ Public Class ProjectDAO
 
 
             ElseIf pProjectEn IsNot Nothing Then
-                sentence = "INSERT INTO project (Project_Name, Description_Project, Id_State, Date_Creation) VALUES (@parameter1, @parameter2, @parameter3, NOW())"
+                sentence = "INSERT INTO project (Project_Name, Description_Project, Id_Status, Date_Creation) VALUES (@parameter1, @parameter2, @parameter3, NOW())"
 
                 ConexionDAO.Instancia.ExecuteInsertProject(sentence, pProjectEn)
                 reply.ok = True
