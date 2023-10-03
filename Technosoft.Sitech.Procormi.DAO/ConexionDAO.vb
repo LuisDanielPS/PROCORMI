@@ -95,6 +95,29 @@ Public Class ConexionDAO
 
     End Function
 
+    Public Function ExecuteVerifyDeleteRow(ByVal psSql As String,
+                                             ByVal param1 As String,
+                                             ByVal param2 As String) As MySqlDataReader
+        Try
+            If dr IsNot Nothing Then dr.Close()
+
+            conn = New MySqlConnection(conStr)
+            sql = New MySqlCommand(psSql, conn)
+            sql.Parameters.AddWithValue("@filtro1", param1)
+            sql.Parameters.AddWithValue("@filtro2", param2)
+            sql.CommandType = CommandType.Text
+            conn.Open()
+            dr = sql.ExecuteReader(CommandBehavior.CloseConnection)
+            sql.Dispose()
+            sql = Nothing
+            Return dr
+
+        Catch ex As MySqlException
+            EscritorVisorEventos.Instancia().EscribirEvento(nombreClase, MethodBase.GetCurrentMethod().Name, ex)
+            Throw New Exception("Error al ejecutar la consulta")
+        End Try
+
+    End Function
 
     Private Function CrearCommand(ByVal p_strConsulta As String,
                                   ByVal p_modo As CommandType,
@@ -331,7 +354,20 @@ Public Class ConexionDAO
         End Try
     End Sub
 
-
+    Public Sub ExecuteDisableStatus(ByVal psSql As String, ByVal PidProject As Integer)
+        Try
+            conn = New MySqlConnection(conStr)
+            sql = New MySqlCommand(psSql, conn)
+            sql.Parameters.AddWithValue("@Condition", PidProject)
+            sql.CommandType = CommandType.Text
+            conn.Open()
+            sql.ExecuteNonQuery()
+            conn.Close()
+        Catch ex As MySqlException
+            EscritorVisorEventos.Instancia().EscribirEvento(nombreClase, MethodBase.GetCurrentMethod().Name, ex)
+            Throw New Exception("Error al ejecutar la inserción")
+        End Try
+    End Sub
     Public Sub ExecuteDeleteProject(ByVal psSql As String, ByVal pIdProject As String)
         Try
             conn = New MySqlConnection(conStr)

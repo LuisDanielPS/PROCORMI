@@ -54,6 +54,14 @@ Namespace Controllers
 
         End Function
 
+        <HttpGet>
+        Public Function GetPasswordVerifyDeleteRow(Usu As String, Pass As String) As Reply(Of UsuarioEN)
+
+            Dim reply As Reply(Of UsuarioEN) = New Reply(Of UsuarioEN)()
+            reply = ProjectBLL.Instance.GetPasswordVerifyDeleteRowBLL(Usu, Pass)
+            Return reply
+
+        End Function
         <HttpPost>
         Public Function PostProject(pProject As ProjectEN) As Reply(Of ProjectEN)
 
@@ -91,6 +99,16 @@ Namespace Controllers
 
         End Function
 
+
+        <HttpPut>
+        Public Function PutDisableStatus(pIdProject As Integer) As Reply(Of ProjectEN)
+
+            Dim reply As Reply(Of ProjectEN) = New Reply(Of ProjectEN)
+            reply = ProjectBLL.Instance.PutDisableStatusBLL(pIdProject)
+            Return reply
+
+        End Function
+
         <HttpDelete>
         Public Function DeleteProject(pIdProject As String) As Reply(Of ProjectEN)
             Dim reply As Reply(Of ProjectEN) = New Reply(Of ProjectEN)
@@ -111,6 +129,7 @@ Namespace Controllers
             reply = ProjectBLL.Instance.DeleteSegUsuBLL(pIdProject)
             Return reply
         End Function
+
 
 
     End Class

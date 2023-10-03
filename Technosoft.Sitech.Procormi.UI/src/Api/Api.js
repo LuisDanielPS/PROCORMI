@@ -69,6 +69,13 @@ export default {
 
     }
     ,
+    GetPasswordVerifyDeleteRow(Usuario, Clave) {
+        return apicliente.get('Project/GetPasswordVerifyDeleteRow?Usu=' + Usuario + '&Pass=' + Clave, {
+            withCredentials: false,
+            headers: { 'Content-Type': 'application/json; charset=UTF-8' }
+        })
+    },
+    
     PostProject(project){
         return apicliente.post('Project/PostProject' ,project,{
             withCredentials: false,
@@ -102,6 +109,15 @@ export default {
             withCredentials: false,
             headers: { 'Content-Type': 'application/json; charset=UTF-8' }
         })
+    }
+    ,
+    PutDisableStatus(IdProject)
+    {
+        return apicliente.put('Project/PutDisableStatus?pIdProject='+ IdProject, {
+            withCredentials: false,
+            headers: { 'Content-Type': 'application/json; charset=UTF-8' }
+        })
+
     }   
     ,
     DeleteFileProject(IdProject)
@@ -121,5 +137,7 @@ export default {
         })
 
     }
+    ,
+    
 
 }
