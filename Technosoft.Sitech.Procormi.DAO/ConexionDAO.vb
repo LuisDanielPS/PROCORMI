@@ -2,6 +2,8 @@
 Imports MySql.Data.MySqlClient
 Imports Technosoft.Sitech.Procormi.UT.Technosoft.Sitech.Procormi.UT
 Imports Technosoft.Sitech.Procormi.EN
+Imports System.Data.SqlClient
+
 Public Class ConexionDAO
 
     Private nombreClase As String = MethodBase.GetCurrentMethod().DeclaringType.Name
@@ -397,7 +399,113 @@ Public Class ConexionDAO
         End Try
     End Sub
 
+    Public Function ExecuteConsultGetAllSprints(ByVal psSql As String) As MySqlDataReader
+        Try
+            If dr IsNot Nothing Then dr.Close()
 
+            conn = New MySqlConnection(conStr)
+            sql = New MySqlCommand(psSql, conn)
+            sql.CommandType = CommandType.Text
+            conn.Open()
+            dr = sql.ExecuteReader(CommandBehavior.CloseConnection)
+            sql.Dispose()
+            sql = Nothing
+            Return dr
+
+        Catch ex As MySqlException
+            EscritorVisorEventos.Instancia().EscribirEvento(nombreClase, MethodBase.GetCurrentMethod().Name, ex)
+            Throw New Exception("Error al ejecutar la consulta")
+        End Try
+
+    End Function
+
+    Public Function ExecuteConsultGetSprint(ByVal psSql As String,
+                                             ByVal param1 As Integer) As MySqlDataReader
+        Try
+            If dr IsNot Nothing Then dr.Close()
+
+            conn = New MySqlConnection(conStr)
+            sql = New MySqlCommand(psSql, conn)
+            sql.Parameters.AddWithValue("@filtro1", param1)
+            sql.CommandType = CommandType.Text
+            conn.Open()
+            dr = sql.ExecuteReader(CommandBehavior.CloseConnection)
+            sql.Dispose()
+            sql = Nothing
+            Return dr
+
+        Catch ex As MySqlException
+            EscritorVisorEventos.Instancia().EscribirEvento(nombreClase, MethodBase.GetCurrentMethod().Name, ex)
+            Throw New Exception("Error al ejecutar la consulta")
+        End Try
+
+    End Function
+
+    Public Sub ExecuteInsertSprint(ByVal psSql As String, ByVal Psprint As SprintEN)
+        Try
+            conn = New MySqlConnection(conStr)
+            sql = New MySqlCommand(psSql, conn)
+            sql.Parameters.AddWithValue("@parameter1", Psprint.Sprint_Name)
+            sql.Parameters.AddWithValue("@parameter2", Psprint.Start_Date)
+            sql.Parameters.AddWithValue("@parameter3", Psprint.End_Date)
+            sql.Parameters.AddWithValue("@parameter4", 1)
+            sql.CommandType = CommandType.Text
+            conn.Open()
+            sql.ExecuteNonQuery()
+            conn.Close()
+        Catch ex As MySqlException
+            EscritorVisorEventos.Instancia().EscribirEvento(nombreClase, MethodBase.GetCurrentMethod().Name, ex)
+            Throw New Exception("Error al ejecutar la inserción")
+        End Try
+    End Sub
+
+    Public Sub ExecuteInsertSprint2(ByVal psSql As String, ByVal parametros As List(Of IDataParameter))
+        Try
+            conn = New MySqlConnection(conStr)
+            sql = CrearCommand(psSql, CommandType.Text, conn, parametros)
+            sql.CommandType = CommandType.Text
+            conn.Open()
+            sql.ExecuteNonQuery()
+            sql.Dispose()
+            conn.Close()
+        Catch ex As MySqlException
+            EscritorVisorEventos.Instancia().EscribirEvento(nombreClase, MethodBase.GetCurrentMethod().Name, ex)
+            Throw New Exception("Error al ejecutar la inserción")
+        End Try
+    End Sub
+
+    Public Sub ExecuteUpdateSprint(ByVal psSql As String, ByVal Psprint As SprintEN)
+        Try
+            conn = New MySqlConnection(conStr)
+            sql = New MySqlCommand(psSql, conn)
+            sql.Parameters.AddWithValue("@Condition", Psprint.Id_Sprint)
+            sql.Parameters.AddWithValue("@parameter1", Psprint.Start_Date)
+            sql.Parameters.AddWithValue("@parameter2", Psprint.End_Date)
+            sql.Parameters.AddWithValue("@parameter3", Psprint.User_Login)
+            sql.CommandType = CommandType.Text
+            conn.Open()
+            sql.ExecuteNonQuery()
+            conn.Close()
+        Catch ex As MySqlException
+            EscritorVisorEventos.Instancia().EscribirEvento(nombreClase, MethodBase.GetCurrentMethod().Name, ex)
+            Throw New Exception("Error al ejecutar la inserción")
+        End Try
+    End Sub
+
+    Public Sub ExecuteDeleteSprint(ByVal psSql As String, ByVal pIdSprint As String)
+        Try
+            conn = New MySqlConnection(conStr)
+            sql = New MySqlCommand(psSql, conn)
+            sql.Parameters.AddWithValue("@Condition", pIdSprint)
+            sql.CommandType = CommandType.Text
+            conn.Open()
+            sql.ExecuteNonQuery()
+            conn.Close()
+        Catch ex As MySqlException
+            EscritorVisorEventos.Instancia().EscribirEvento(nombreClase, MethodBase.GetCurrentMethod().Name, ex)
+            Throw New Exception("Error al ejecutar la inserción")
+        End Try
+    End Sub
 
     Public Function ExecuteConsultGetAllTasks(ByVal psSql As String, ByVal param1 As String
                                              ) As MySqlDataReader
@@ -530,10 +638,6 @@ Public Class ConexionDAO
             Throw New Exception("Error al ejecutar el delete")
         End Try
     End Sub
-
-
-
-
     Public Sub Cerrar()
         If dr IsNot Nothing Then dr.Close()
         If conn IsNot Nothing Then

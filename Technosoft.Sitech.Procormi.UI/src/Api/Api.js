@@ -23,6 +23,24 @@ export default {
 
     }
     ,
+    GetAllSprint()
+    {
+        return apicliente.get('Sprint/GetALLSprints' , {
+            withCredentials: false,
+            headers: { 'Content-Type': 'application/json; charset=UTF-8' }
+        })
+
+    }
+    ,
+    GetAllTasks()
+    {
+        return apicliente.get('Task/GetALLTasks' , {
+            withCredentials: false,
+            headers: { 'Content-Type': 'application/json; charset=UTF-8' }
+        })
+    }
+    ,
+
     GetALLUsers()
     {
         return apicliente.get('User/GetALLUsers' , {
@@ -32,6 +50,7 @@ export default {
 
     }
     ,
+
     GetLastInsertId()
     {
         return apicliente.get('Project/GetLastInsertId' , {
@@ -83,6 +102,22 @@ export default {
         })
     }
     ,
+    PostSprint(sprint) {
+        return apicliente.post('Sprint/PostSprint' ,
+        sprint,
+        {
+            withCredentials: false,
+            headers: { 'Content-Type': 'application/json; charset=UTF-8' },
+        })
+    },
+    PostTask(task) {
+        return apicliente.post('Task/PostTask' ,
+        task,
+        {
+            withCredentials: false,
+            headers: { 'Content-Type': 'application/json; charset=UTF-8' },
+        })
+    },
     PostAddUserProject(adduser){
         return apicliente.post('Project/PostAddUserProject' ,adduser,{
             withCredentials: false,
@@ -111,6 +146,19 @@ export default {
         })
     }
     ,
+    PutSprint(sprint){
+        return apicliente.put('Sprint/PutSprint' ,sprint,{
+            withCredentials: false,
+            headers: { 'Content-Type': 'application/json; charset=UTF-8' }
+        })
+    }
+    ,
+    PutTask(task) {
+        return apicliente.put('Task/PutTask' ,task,{
+            withCredentials: false,
+            headers: { 'Content-Type': 'application/json; charset=UTF-8' },
+        })
+    },
     PutDisableStatus(IdProject)
     {
         return apicliente.put('Project/PutDisableStatus?pIdProject='+ IdProject, {
@@ -120,6 +168,23 @@ export default {
 
     }   
     ,
+    DeleteSprint(IdSprint)
+    {
+        return apicliente.put('Sprint/DeleteSprint?pIdSprint='+ IdSprint, {
+            withCredentials: false,
+            headers: { 'Content-Type': 'application/json; charset=UTF-8' }
+        })
+
+    }   
+    ,
+    DeleteTask(taskId) {
+        return apicliente.delete(`Task/DeleteTask?pIdTask=${taskId}`,
+        {
+            withCredentials: false,
+            headers: { 'Content-Type': 'application/json; charset=UTF-8' },
+        })
+    },
+
     DeleteFileProject(IdProject)
     {
         return apicliente.delete('Project/DeleteFileProject?pIdProject='+ IdProject, {
@@ -137,41 +202,4 @@ export default {
         })
 
     }
-    ,
-    
-    GetAllTasks()
-    {
-        return apicliente.get('Task/GetALLTasks' , {
-            withCredentials: false,
-            headers: { 'Content-Type': 'application/json; charset=UTF-8' }
-        })
-    },
-    
-    PostTask(task) {
-        return apicliente.post('Task/PostTask' ,
-        task,
-        {
-            withCredentials: false,
-            headers: { 'Content-Type': 'application/json; charset=UTF-8' },
-        })
-    },
-
-    PutTask(task) {
-        return apicliente.put('Task/PutTask' ,
-        task,
-        {
-            withCredentials: false,
-            headers: { 'Content-Type': 'application/json; charset=UTF-8' },
-        })
-    },
-
-    DeleteTask(taskId) {
-        return apicliente.delete(`Task/DeleteTask?pIdTask=${taskId}`,
-        {
-            withCredentials: false,
-            headers: { 'Content-Type': 'application/json; charset=UTF-8' },
-        })
-    },
-
-
 }

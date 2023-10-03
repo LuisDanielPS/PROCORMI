@@ -226,7 +226,6 @@ export default {
 
         },
 
-
         loadUserSelect: async function () {
             try {
                 const response = await AdminApi.GetALLUsers();
@@ -280,11 +279,7 @@ export default {
                             "Creation_Date": "2023-09-30T13:47:37.9361279-06:00"
                         };
 
-
                         try {
-
-
-
 
                             const response = await AdminApi.PostFile(addFile);
                             const idFileLastInsert = await AdminApi.GetLastInsertId();
@@ -341,9 +336,6 @@ export default {
                     const mensaje3 = response3.data.obj;
                     console.log(mensaje3)
 
-
-
-
                     for (const item of this.UserlistAdd) {
                         const addUser = {
                             "Id": 0,
@@ -374,9 +366,6 @@ export default {
 
                         try {
 
-
-
-
                             const response = await AdminApi.PostFile(addFile);
                             const idFileLastInsert = await AdminApi.GetLastInsertId();
                             const idFileLastInsertObj = idFileLastInsert.data.obj;
@@ -396,13 +385,11 @@ export default {
                             setTimeout(() => {
                                this.$router.push({ name: 'Inicio' })
                             }, 10000);
-
                             
 
                         } catch (error) {
                             console.error('Error al agregar usuario al proyecto:', error);
                         }
-
 
                     }
 
@@ -474,7 +461,6 @@ export default {
                 try {
                     const response = await AdminApi.GetProject(this.idProyecto);
                     const projectData = response.data.obj;
-
 
                     this.project = {
                         Id_project: projectData.Id_project,

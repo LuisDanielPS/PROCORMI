@@ -29,8 +29,9 @@
                                     <br />
                                     <div class="left-content" style="margin-top: 15px;">
                                         <select required name="usuarios" id="usuarios" class="form-select text-black inputsGeneral" style="min-height: 48px;">
-                                            <option value="1">Johan Aguilar</option>
-                                            <option value="2">Luis Fallas</option>
+                                            <option :value="null">Seleccione una opción</option>
+                                            <option v-for="item in listUsers" :key="item.usu_Login"
+                                                :value="item.usu_Login">{{ item.usu_Nombre }}</option>
                                         </select>
                                     </div>
                                 </div>
@@ -65,7 +66,20 @@ export default {
 
     data() {
         return {
-            
+
+            EditarSprint: {
+                Id_Project : "",
+                Sprint_Name : "",
+                Start_Date : "",
+                End_Date : "",
+                User_Login: "",
+            },
+
+            SprintIdEdit : null,
+            SprintNameEdit : '',
+            SprintEditStartDate: '',
+            SprintEditEndDate: '',
+            SprintEditUserLogin: '',
         }
     },
 

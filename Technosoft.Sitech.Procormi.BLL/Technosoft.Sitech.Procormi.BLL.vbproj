@@ -82,6 +82,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="ProjectBLL.vb" />
+    <Compile Include="SprintBLL.vb" />
     <Compile Include="TaskBLL.vb" />
     <Compile Include="UsuarioBLL.vb" />
   </ItemGroup>

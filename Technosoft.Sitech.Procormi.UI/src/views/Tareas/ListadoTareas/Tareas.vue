@@ -23,14 +23,16 @@
                                     <br />
                                     <div style="margin-top: 15px;">
                                         <input v-model="taskName" required style="border-radius: 5px;" type="text" placeholder="Nombre">
+                                    
                                     </div>
+                                    <br>
                                 </div>
                                 <div class="row">
                                     <div class="col-12">
                                         <div>
                                             <label class="margin-15px-bottom text-black">Descripción</label>
                                             <div style="margin-top: 15px;">
-                                                <input v-model="taskDescription" required style="border-radius: 5px;" type="textarea" placeholder="Describe tu tarea...">
+                                                <input v-model="taskDescription" required style="border-radius: 5px;" type="textarea" placeholder="Descripción">
                                             </div>
                                         </div>
                                     </div>
@@ -38,7 +40,7 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
-                                <button @click="createTask" type="button" class="btn btn-success" data-bs-dismiss="modal">Aceptar</button>
+                                <button @click="createTask" type="button" class="btn btn-success" data-bs-dismiss="modal">Guardar</button>
                             </div>
                         </div>
                     </div>

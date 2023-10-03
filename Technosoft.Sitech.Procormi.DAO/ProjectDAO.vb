@@ -226,7 +226,7 @@ Public Class ProjectDAO
 
                 ConexionDAO.Instancia.ExecuteInsertProject(sentence, pProjectEn)
                 reply.ok = True
-                reply.msg = "Se ha creado Correctamente  encontrado"
+                reply.msg = "Se ha creado Correctamente el proyecto"
 
             End If
 

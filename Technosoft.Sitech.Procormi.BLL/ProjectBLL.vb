@@ -108,8 +108,6 @@ Public Class ProjectBLL
 
     End Function
 
-
-
     Public Function PostProjectBLL(ByVal pProject As ProjectEN) As Reply(Of ProjectEN)
 
 
@@ -179,8 +177,6 @@ Public Class ProjectBLL
 
     End Function
 
-
-
     Public Function GetLastInsertIdBLL() As Reply(Of Integer)
 
 
@@ -199,7 +195,6 @@ Public Class ProjectBLL
         Return reply
 
     End Function
-
 
     Public Function PutProjectBLL(ByVal pProject As ProjectEN) As Reply(Of ProjectEN)
 

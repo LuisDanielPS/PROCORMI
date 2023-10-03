@@ -317,12 +317,12 @@
                                             </thead>
                                             <tbody style="font-size: large;">
                                                 <tr v-for="proyecto in proyectos" :key="proyecto.Id_project" >
-                                                    <td @click="verSprints" class="claseTD">{{ proyecto.Id_project }}</td>
-                                                    <td @click="verSprints" class="claseTD">{{ proyecto.Project_Name }}</td>
-                                                    <td @click="verSprints" class="claseTD">{{ proyecto.Creation_Date }}</td>
-                                                    <td @click="verSprints" class="claseTD">{{ proyecto.Id_State == 1 ? "Activo" : "Inactivo"}}</td>
+                                                    <td @click="verSprints(proyecto.Id_project)" class="claseTD">{{ proyecto.Id_project }}</td>
+                                                    <td @click="verSprints(proyecto.Id_project)" class="claseTD">{{ proyecto.Project_Name }}</td>
+                                                    <td @click="verSprints(proyecto.Id_project)" class="claseTD">{{ $filters.FormatearFecha(proyecto.Creation_Date) }}</td>
+                                                    <td @click="verSprints(proyecto.Id_project)" class="claseTD">{{ proyecto.Id_State == 1 ? "Activo" : "Inactivo"}}</td>
                                                     <td class="text-white">
-                                                        <button class="btn btn-primary" role="button" @click="verSprints">
+                                                        <button class="btn btn-primary" role="button" @click="verSprints(proyecto.Id_project)">
                                                             <span class="fas fa-eye" b-tooltip.hover
                                                                 title="Ver Proyecto"></span>
                                                         </button>
@@ -412,7 +412,8 @@ export default {
             })
         },
 
-        verSprints: function () {
+        verSprints: function (idProyect) {
+            localStorage.setItem("currentProjectId", idProyect)
             this.$router.push({
                 name: "Sprints"
             })
@@ -519,8 +520,6 @@ export default {
 
         }
         , 
-        
-    
         
     },
 

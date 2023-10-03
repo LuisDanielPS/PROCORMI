@@ -20,7 +20,7 @@
                                     <label>Nombre</label>
                                     <br />
                                     <div style="margin-top: 15px;">
-                                        <input required style="border-radius: 5px;" type="text" placeholder="Nombre">
+                                        <input v-model="sprint.Sprint_Name" required style="border-radius: 5px;" type="text" placeholder="Nombre">
                                     </div>
                                 </div>
                                 <br />
@@ -28,7 +28,7 @@
                                     <label>Inicia</label>
                                     <br />
                                     <div style="margin-top: 15px;">
-                                        <input required style="border-radius: 5px;" type="date">
+                                        <input v-model="sprint.Start_Date" required style="border-radius: 5px;" type="date">
                                     </div>
                                 </div>
                                 <br />
@@ -36,7 +36,7 @@
                                     <label>Finaliza</label>
                                     <br />
                                     <div style="margin-top: 15px;">
-                                        <input required style="border-radius: 5px;" type="date">
+                                        <input v-model="sprint.End_Date" required style="border-radius: 5px;" type="date">
                                     </div>
                                 </div>
                                 <br />
@@ -44,17 +44,18 @@
                                     <label>Usario asignado</label>
                                     <br />
                                     <div class="left-content" style="margin-top: 15px;">
-                                        <select required name="usuarios" id="usuarios" class="form-select text-black" style="min-height: 48px;">
-                                            <option value="">Seleccione un usuario</option>
-                                            <option value="1">Johan Aguilar</option>
-                                            <option value="2">Luis Fallas</option>
+                                        <select v-model="sprint.User_Login" required name="usuarios" id="usuarios"
+                                                class="form-select text-black inputsGeneral" style="min-height: 48px;">
+                                                <option :value="null">Seleccione una opción</option>
+                                                <option v-for="item in listUsers" :key="item.usu_Login"
+                                                    :value="item.usu_Login">{{ item.usu_Nombre }}</option>
                                         </select>
                                     </div>
                                 </div>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
-                                <button type="button" class="btn btn-success">Aceptar</button>
+                                <button @click="createSprint" type="button" class="btn btn-success" data-bs-dismiss="modal">Guardar</button>
                             </div>
                         </div>
                     </div>
@@ -225,12 +226,12 @@
                                                 </tr>
                                             </thead>
                                             <tbody style="font-size: large;">
-                                                <tr>
-                                                    <td @click="verTareas" class="claseTD">1</td>
-                                                    <td @click="verTareas" class="claseTD">Procormi</td>
-                                                    <td @click="verTareas" class="claseTD">01/05/2023</td>
-                                                    <td @click="verTareas" class="claseTD">16/05/2023</td>
-                                                    <td @click="verTareas" class="claseTD">En proceso</td>
+                                                <tr v-for="sprint in sprints" :key="sprint.Id_Sprint">
+                                                    <td @click="verTareas(sprint.Id_Sprint)" class="claseTD">{{sprint.Id_Sprint}}</td>
+                                                    <td @click="verTareas(sprint.Id_Sprint)" class="claseTD">{{sprint.Sprint_Name}}</td>
+                                                    <td @click="verTareas(sprint.Id_Sprint)" class="claseTD">{{$filters.FormatearFecha(sprint.Start_Date)}}</td>
+                                                    <td @click="verTareas(sprint.Id_Sprint)" class="claseTD">{{$filters.FormatearFecha(sprint.End_Date)}}</td>
+                                                    <td @click="verTareas(sprint.Id_Sprint)" class="claseTD">{{sprint.Id_Status == 1 ? "Activo" : "Inactivo"}}</td>
                                                     <td class="text-white">
                                                         <button class="btn btn-primary" role="button" @click="verTareas">
                                                             <span class="fas fa-eye" b-tooltip.hover title="Ver Sprint"></span>
@@ -274,7 +275,7 @@ import Cookies from 'js-cookie';
 import HeaderPrincipal from '@/components/HeaderPrincipal.vue'
 import MenuLateral from '@/components/MenuLateral.vue'
 //import FiltroSuperior from '@/components/FiltroSuperior.vue'
-//import AdminApi from '@/Api/Api';
+import AdminApi from '@/Api/Api';
 
 export default {
 
@@ -284,8 +285,12 @@ export default {
 
     data() {
         return {
-            filtroDesplegar: false,
+            selectedUser: null,
+            UserlistAdd: [],
+            listUsers: [],
+            sprints:[],
 
+            filtroDesplegar: false,
             Filtros: {
             fechaI: "",
             fechaF: "",
@@ -293,11 +298,85 @@ export default {
             usuario: "",
             },
 
+            sprint: {
+                Id_Project : "",
+                Sprint_Name : "",
+                Start_Date : "",
+                End_Date : "",
+                User_Login: "",
+            },
+
         }
     },
 
     methods: {
+        
+        async getSprintsDesdeAPI() {
+            try {
+                const response = await AdminApi.GetAllSprint();
+                const Sprintlist=response.data.obj;
+                this.sprints = Sprintlist;
+            } catch (error) {
+                console.error('Error al cargar los sprints desde la API:', error);
+            }
+        }
+        , 
 
+        loadUserSelect: async function () {
+            try {
+                const response = await AdminApi.GetALLUsers();
+                const userList = response.data.obj;
+                this.listUsers = userList;
+            } catch (error) {
+                console.error('Error al cargar los sprints desde la API:', error);
+            }
+
+        }
+        ,
+
+        async postSprintToAPI(sprint) {
+            try {
+                const response = await AdminApi.PostSprint(sprint);
+                if (response.data.ok) {                    
+                    this.getSprintsDesdeAPI();
+                } else {
+                    console.log({ error : 'Error al crear el sprint' , response});
+                }
+            } catch (error) {
+                console.error('Error al crear sprint', error);
+            }
+        },
+
+        async createSprint() {
+            const currentProjectId = localStorage.getItem("currentProjectId");
+            this.sprint.Id_Project = currentProjectId
+            
+            await AdminApi.PostSprint(this.sprint)
+                    .then(response => {
+                        if (response.data.ok == true) {
+                            this.$swal(response.data.msg, '', 'success')
+                            this.limpiarContenido()
+                            this.getSprintsDesdeAPI()
+                        } else {
+                            this.$swal(response.data.msg, '', 'error')
+                        }
+                    })
+        },
+
+        limpiarContenido: function () {
+            this.sprint = {
+                Id_Project : "",
+                Sprint_Name : "",
+                Start_Date : "",
+                End_Date : "",
+                User_Login: "",
+            }
+        },
+
+        selectCurrentSprint(sprint) {
+            this.currentSprint = sprint;
+        },
+        
         EditarSprint: function(SprintID) {
             this.$router.push({
                 name: "EditarSprint",
@@ -305,15 +384,12 @@ export default {
                     id: SprintID,
                 }
             })
-        },  
-            
-        
+        },
 
-    verTareas: function() {
-           //cambiar el 1 por Sprint.Id_Sprint
-            localStorage.setItem("currentSprintId", 1);
+         verTareas: function(Id_Sprint) {
+            localStorage.setItem("currentSprintId", Id_Sprint);
             this.$router.push({
-                name: "Tareas"
+            name: "Tareas"
             })
         },
 
@@ -371,6 +447,8 @@ export default {
     },
 
     created: async function () {
+        await this.getSprintsDesdeAPI();
+        await this.loadUserSelect();
         await this.verificarLog();
         await this.$root.validarLoginFooter.call();
     }
