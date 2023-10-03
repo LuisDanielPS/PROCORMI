@@ -397,6 +397,143 @@ Public Class ConexionDAO
         End Try
     End Sub
 
+
+
+    Public Function ExecuteConsultGetAllTasks(ByVal psSql As String, ByVal param1 As String
+                                             ) As MySqlDataReader
+        Try
+            If dr IsNot Nothing Then dr.Close()
+
+            conn = New MySqlConnection(conStr)
+            sql = New MySqlCommand(psSql, conn)
+            sql.Parameters.AddWithValue("@filtro1", param1)
+            sql.CommandType = CommandType.Text
+            conn.Open()
+            dr = sql.ExecuteReader(CommandBehavior.CloseConnection)
+            sql.Dispose()
+            sql = Nothing
+            Return dr
+
+        Catch ex As MySqlException
+            EscritorVisorEventos.Instancia().EscribirEvento(nombreClase, MethodBase.GetCurrentMethod().Name, ex)
+            Throw New Exception("Error al ejecutar la consulta")
+        End Try
+
+    End Function
+
+    Public Function ExecuteStateById(ByVal idState As String) As MySqlDataReader
+        Try
+            If dr IsNot Nothing Then dr.Close()
+
+            conn = New MySqlConnection(conStr)
+            sql = New MySqlCommand("SELECT Status_Name from status where Id_Status=@filtro1", conn)
+            sql.Parameters.AddWithValue("@filtro1", idState)
+            sql.CommandType = CommandType.Text
+            conn.Open()
+            dr = sql.ExecuteReader(CommandBehavior.CloseConnection)
+            sql.Dispose()
+            sql = Nothing
+            Return dr
+
+        Catch ex As MySqlException
+            EscritorVisorEventos.Instancia().EscribirEvento(nombreClase, MethodBase.GetCurrentMethod().Name, ex)
+            Throw New Exception("Error al ejecutar la consulta")
+        End Try
+
+    End Function
+
+    Public Function ExecuteStateByName(ByVal stateName As String) As MySqlDataReader
+        Try
+            If dr IsNot Nothing Then dr.Close()
+
+            conn = New MySqlConnection(conStr)
+            sql = New MySqlCommand("SELECT Id_Status from status where Status_Name=@filtro1", conn)
+            sql.Parameters.AddWithValue("@filtro1", stateName)
+            sql.CommandType = CommandType.Text
+            conn.Open()
+            dr = sql.ExecuteReader(CommandBehavior.CloseConnection)
+            sql.Dispose()
+            sql = Nothing
+            Return dr
+
+        Catch ex As MySqlException
+            EscritorVisorEventos.Instancia().EscribirEvento(nombreClase, MethodBase.GetCurrentMethod().Name, ex)
+            Throw New Exception("Error al ejecutar la consulta")
+        End Try
+
+    End Function
+
+    Public Sub ExecuteInsertTask(ByVal psSql As String, ByVal Ptask As TaskEN)
+        Try
+            conn = New MySqlConnection(conStr)
+            sql = New MySqlCommand(psSql, conn)
+            sql.Parameters.AddWithValue("@parameter2", Ptask.Task_Name)
+            sql.Parameters.AddWithValue("@parameter3", Ptask.Description_Task)
+            sql.Parameters.AddWithValue("@parameter4", Ptask.Id_Sprint)
+
+
+
+            Dim dr1 As MySqlDataReader
+            dr1 = ConexionDAO.Instancia.ExecuteStateByName("Activo")
+            If (dr1.Read) Then
+                sql.Parameters.AddWithValue("@parameter5", dr1(0))
+            End If
+
+            sql.CommandType = CommandType.Text
+            conn.Open()
+            sql.ExecuteNonQuery()
+            conn.Close()
+        Catch ex As MySqlException
+            EscritorVisorEventos.Instancia().EscribirEvento(nombreClase, MethodBase.GetCurrentMethod().Name, ex)
+            Throw New Exception("Error al ejecutar la inserción")
+        End Try
+    End Sub
+
+    Public Sub ExecuteUpdateTask(ByVal psSql As String, ByVal Ptask As TaskEN)
+        Try
+            conn = New MySqlConnection(conStr)
+            sql = New MySqlCommand(psSql, conn)
+            sql.Parameters.AddWithValue("@Condition", Ptask.Id_Task)
+            sql.Parameters.AddWithValue("@parameter1", Ptask.Task_Name)
+            sql.Parameters.AddWithValue("@parameter2", Ptask.Description_Task)
+            sql.Parameters.AddWithValue("@parameter3", Ptask.Id_Sprint)
+
+            Dim dr1 As MySqlDataReader
+            dr1 = ConexionDAO.Instancia.ExecuteStateByName(Ptask.Id_State)
+            If (dr1.Read) Then
+                sql.Parameters.AddWithValue("@parameter4", dr1(0))
+            End If
+
+            sql.Parameters.AddWithValue("@parameter5", Ptask.Task_State)
+            sql.CommandType = CommandType.Text
+            conn.Open()
+            sql.ExecuteNonQuery()
+            conn.Close()
+        Catch ex As MySqlException
+            EscritorVisorEventos.Instancia().EscribirEvento(nombreClase, MethodBase.GetCurrentMethod().Name, ex)
+            Throw New Exception("Error al ejecutar la inserción")
+        End Try
+    End Sub
+
+
+    Public Sub ExecuteDeleteTask(ByVal psSql As String, ByVal pIdTask As String)
+        Try
+            conn = New MySqlConnection(conStr)
+            sql = New MySqlCommand(psSql, conn)
+            sql.Parameters.AddWithValue("@Condition", pIdTask)
+            sql.CommandType = CommandType.Text
+            conn.Open()
+            sql.ExecuteNonQuery()
+            conn.Close()
+        Catch ex As MySqlException
+            EscritorVisorEventos.Instancia().EscribirEvento(nombreClase, MethodBase.GetCurrentMethod().Name, ex)
+            Throw New Exception("Error al ejecutar el delete")
+        End Try
+    End Sub
+
+
+
+
     Public Sub Cerrar()
         If dr IsNot Nothing Then dr.Close()
         If conn IsNot Nothing Then

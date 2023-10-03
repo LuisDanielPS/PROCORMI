@@ -22,15 +22,15 @@
                                     <label>Nombre</label>
                                     <br />
                                     <div style="margin-top: 15px;">
-                                        <input required style="border-radius: 5px;" type="text" placeholder="Nombre">
+                                        <input v-model="taskName" required style="border-radius: 5px;" type="text" placeholder="Nombre">
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-12">
                                         <div>
                                             <label class="margin-15px-bottom text-black">Descripción</label>
-                                            <div>
-                                                <div ref="Quill" style="border: 1px solid gray; min-height: 200px; border-bottom-left-radius: 15px; border-bottom-right-radius: 15px;"></div>
+                                            <div style="margin-top: 15px;">
+                                                <input v-model="taskDescription" required style="border-radius: 5px;" type="textarea" placeholder="Describe tu tarea...">
                                             </div>
                                         </div>
                                     </div>
@@ -38,16 +38,13 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
-                                <button type="button" class="btn btn-success">Aceptar</button>
+                                <button @click="createTask" type="button" class="btn btn-success" data-bs-dismiss="modal">Aceptar</button>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!--Modal crear Tarea-->
-
                 <!--Modal editar Tarea-->
-
                 <div class="modal fade" id="editarTarea" tabindex="-1" aria-labelledby="editarTarea" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
@@ -60,7 +57,7 @@
                                     <label>Nombre</label>
                                     <br />
                                     <div style="margin-top: 15px;">
-                                        <input required style="border-radius: 5px;" type="text" placeholder="Nombre">
+                                        <input v-model="taskNameUnderEdit" required style="border-radius: 5px;" type="text" placeholder="Nombre">
                                     </div>
                                 </div>
                                 <div class="row">
@@ -68,7 +65,7 @@
                                         <div>
                                             <label class="margin-15px-bottom text-black">Descripción</label>
                                             <div>
-                                                <div ref="Quill" style="border: 1px solid gray; min-height: 200px; border-bottom-left-radius: 15px; border-bottom-right-radius: 15px;"></div>
+                                                <input v-model="taskDescriptionUnderEdit" required style="border-radius: 5px;" type="textarea" placeholder="Descripcion...">
                                             </div>
                                         </div>
                                     </div>
@@ -77,18 +74,19 @@
                                 <div>
                                     <label>Estado</label>
                                     <br />
+                                    <!--:selected="currentTask?.Task_State === 'Finalizada'" -->
                                     <div class="left-content" style="margin-top: 15px;">
-                                        <select required name="estado" id="estado" class="form-select text-black inputsGeneral" style="min-height: 48px;">
-                                            <option value="1">Pendiente</option>
-                                            <option value="2">En Proceso</option>
-                                            <option value="3">Finalizada</option>
+                                        <select v-model="taskStateUnderEdit" required name="estado" id="estado" class="form-select text-black inputsGeneral" style="min-height: 48px;">
+                                            <option value="Pendiente" >Pendiente</option>
+                                            <option value="En Proceso" >En Proceso</option>
+                                            <option value="Finalizada" >Finalizada</option>
                                         </select>
                                     </div>
                                 </div>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
-                                <button type="button" class="btn btn-success">Aceptar</button>
+                                <button @click="editCurrentTask" type="button" class="btn btn-success" data-bs-dismiss="modal">Aceptar</button>
                             </div>
                         </div>
                     </div>
@@ -149,7 +147,7 @@
                                 <div class="col-md-12 col-xs-12" style="min-height: 350px; max-height: 400px">
                                     <div>
                                         <div class="col-12">
-                                            <h1 style="text-align:center"><strong>Crear login</strong></h1>
+                                            <h1 style="text-align:center"><strong>{{ currentTask ? currentTask.Task_Name : '' }}</strong></h1>
                                         </div>
                                     </div>
                                     <br />
@@ -164,19 +162,8 @@
                                         <div class="row">
                                             <div class="col-12">
                                                 <div class="col-md-12 col-xs-12">
-                                                    <div style="text-align: justify;">What is Lorem Ipsum?
-                                                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-
-                                                    Why do we use it?
-                                                    It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).
-
-                                                    Where does it come from?
-                                                    Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.
-
-                                                    The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from "de Finibus Bonorum et Malorum" by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.
-
-                                                    Where can I get some?
-                                                    There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc.
+                                                    <div style="text-align: justify;">
+                                                        {{ currentTask ? currentTask.Description_Task : '' }}
                                                     </div>
                                                 </div>
                                             </div>
@@ -551,139 +538,38 @@
                                             </div>
                                         </div>
                                         <div>
-                                            <div class="tablaPersonalizada">
+
+                                            <div class="tablaPersonalizada" v-for="tarea in tareas" :key="tarea.Id_Task">
                                                 <div>
-                                                    <div class="tablaPersonalizadaRow" @click="mostrarSubtareas">1</div>
+                                                    <div class="tablaPersonalizadaRow" @click="mostrarSubtareas">{{ tarea.Id_Task }}</div>
                                                 </div>
                                                 <div>
                                                     <div class="tablaPersonalizadaRow"><a style="text-decoration: none;" class="fas fa-plus" data-bs-toggle="modal" data-bs-target="#crearSubtarea"></a></div>
                                                 </div>
                                                 <div>
-                                                    <div class="tablaPersonalizadaRow" @click="mostrarSubtareas">Crear login</div>
+                                                    <div class="tablaPersonalizadaRow" @click="mostrarSubtareas">{{ tarea.Task_Name }}</div>
                                                 </div>
                                                 <div>
-                                                    <div class="tablaPersonalizadaRow" @click="mostrarSubtareas">Pendiente</div>
+                                                    
+                                                    <div class="tablaPersonalizadaRow" @click="mostrarSubtareas">{{ tarea.Task_State }}</div> 
+                                                    
                                                 </div>
                                                 <div>
                                                     <div class="tablaPersonalizadaRow" style="min-width: 150px;">
-                                                        <button class="btn btn-primary" role="button" data-bs-toggle="modal" data-bs-target="#verTarea">
+                                                        <button  @click="() => selectCurrentTask(tarea)" class="btn btn-primary" role="button" data-bs-toggle="modal" data-bs-target="#verTarea">
                                                             <span class="fas fa-eye" b-tooltip.hover title="Ver Tarea"></span>
                                                         </button>
-                                                        <button style="margin-left: 5px;" type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#editarTarea">
+                                                        <button @click="() => startTaskEditing(tarea)" style="margin-left: 5px;" type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#editarTarea">
                                                             <span class="fas fa-pen" b-tooltip.hover title="Editar Tarea"></span>
                                                         </button>
-                                                        <button type="button" class="btn btn-danger" style="margin-left: 5px;" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                                        <button @click="() => deleteTask(tarea)" type="button" class="btn btn-danger" style="margin-left: 5px;" data-bs-toggle="modal" data-bs-target="#exampleModal" disabled>
                                                             <span class="fas fa-trash" b-tooltip.hover title="Eliminar Tarea"></span>
                                                         </button>
                                                     </div>
                                                 </div>
                                             </div>
                                             <br/>
-                                            <div class="collapse" id="collapseExample" :class="{ 'show': subtareas }">
-                                                <div class="tablaPersonalizadaSubtareas listadoSubtareas" style="margin-bottom: 15px;">
-                                                    <div>
-                                                        <div class="tablaPersonalizadaRow"></div>
-                                                    </div>
-                                                    <div>
-                                                        <div class="tablaPersonalizadaRow"></div>
-                                                    </div>
-                                                    <div>
-                                                        <div class="tablaPersonalizadaRowSubTareas">Diseñar la pantalla de login, debe ser responsive</div>
-                                                    </div>
-                                                    <div>
-                                                        <div class="tablaPersonalizadaRow">
-                                                            <p class="fas fa-check-circle" style="color: rgb(90, 180, 0)"></p>
-                                                        </div>
-                                                    </div>
-                                                    <div>
-                                                        <div class="tablaPersonalizadaRow">
-                                                            <a style="text-decoration: none; margin-right: 20px;" class="fas fa-pen" data-bs-toggle="modal" data-bs-target="#editarSubtarea"></a>
-                                                            <a style="text-decoration: none;" class="fas fa-trash" data-bs-toggle="modal" data-bs-target="#eliminarSubtarea"></a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="tablaPersonalizadaSubtareas listadoSubtareas" style="margin-bottom: 15px;">
-                                                    <div>
-                                                        <div class="tablaPersonalizadaRow"></div>
-                                                    </div>
-                                                    <div>
-                                                        <div class="tablaPersonalizadaRow"></div>
-                                                    </div>
-                                                    <div>
-                                                        <div class="tablaPersonalizadaRowSubTareas">Validar los campos</div>
-                                                    </div>
-                                                    <div>
-                                                        <div class="tablaPersonalizadaRow">
-                                                            <p class="fas fa-exclamation-circle" style="color: tomato"></p>
-                                                        </div>
-                                                    </div>
-                                                    <div>
-                                                        <div class="tablaPersonalizadaRow">
-                                                            <a style="text-decoration: none; margin-right: 20px;" class="fas fa-pen" data-bs-toggle="modal" data-bs-target="#editarSubtarea"></a>
-                                                            <a style="text-decoration: none;" class="fas fa-trash" data-bs-toggle="modal" data-bs-target="#eliminarSubtarea"></a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <hr>
-                                            </div>
                                         </div>
-
-                                        <div>
-                                            <div class="tablaPersonalizada">
-                                                <div>
-                                                    <div class="tablaPersonalizadaRow" @click="mostrarSubtareas">2</div>
-                                                </div>
-                                                <div>
-                                                    <div class="tablaPersonalizadaRow"><a style="text-decoration: none;" class="fas fa-plus" data-bs-toggle="modal" data-bs-target="#crearSubtarea"></a></div>
-                                                </div>
-                                                <div>
-                                                    <div class="tablaPersonalizadaRow" @click="mostrarSubtareas">Diseño de página de inicio</div>
-                                                </div>
-                                                <div>
-                                                    <div class="tablaPersonalizadaRow" @click="mostrarSubtareas">Pendiente</div>
-                                                </div>
-                                                <div>
-                                                    <div class="tablaPersonalizadaRow" style="min-width: 150px;">
-                                                        <button class="btn btn-primary" role="button" data-bs-toggle="modal" data-bs-target="#verTarea">
-                                                            <span class="fas fa-eye" b-tooltip.hover title="Ver Tarea"></span>
-                                                        </button>
-                                                        <button style="margin-left: 5px;" type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#editarTarea">
-                                                            <span class="fas fa-pen" b-tooltip.hover title="Editar Tarea"></span>
-                                                        </button>
-                                                        <button type="button" class="btn btn-danger" style="margin-left: 5px;" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                                                            <span class="fas fa-trash" b-tooltip.hover title="Eliminar Tarea"></span>
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <br/>
-                                            <div class="collapse" id="collapseExample" :class="{ 'show': subtareas }">
-                                                <div class="tablaPersonalizadaSubtareas listadoSubtareas" style="margin-bottom: 15px;">
-                                                    <div>
-                                                        <div class="tablaPersonalizadaRow"></div>
-                                                    </div>
-                                                    <div>
-                                                        <div class="tablaPersonalizadaRow"></div>
-                                                    </div>
-                                                    <div>
-                                                        <div class="tablaPersonalizadaRowSubTareas">Diseñar la pantalla de inicio, debe ser responsive</div>
-                                                    </div>
-                                                    <div>
-                                                        <div class="tablaPersonalizadaRow">
-                                                            <p class="fas fa-exclamation-circle" style="color: tomato"></p>
-                                                        </div>
-                                                    </div>
-                                                    <div>
-                                                        <div class="tablaPersonalizadaRow">
-                                                            <a style="text-decoration: none; margin-right: 20px;" class="fas fa-pen" data-bs-toggle="modal" data-bs-target="#editarSubtarea"></a>
-                                                            <a style="text-decoration: none;" class="fas fa-trash" data-bs-toggle="modal" data-bs-target="#eliminarSubtarea"></a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <hr>
-                                            </div>
-                                        </div>
-
                                     </div>
                                 </div>
                             </div>
@@ -712,7 +598,7 @@ import Cookies from 'js-cookie';
 import HeaderPrincipal from '@/components/HeaderPrincipal.vue'
 import Quill from 'quill'
 import MenuLateral from '@/components/MenuLateral.vue'
-//import AdminApi from '@/Api/Api';
+import AdminApi from '@/Api/Api';
 
 export default {
 
@@ -734,7 +620,17 @@ export default {
             },
 
             subtareas: false,
+            tareas : [],
+            currentTask: null,
 
+            taskName: '',
+            taskDescription: '',
+
+            // campos de edicion
+            taskNameUnderEdit : '',
+            taskDescriptionUnderEdit : '',
+            taskStateUnderEdit : '',
+            taskIdUnderEdit : null,
         }
     },
 
@@ -747,6 +643,43 @@ export default {
                     id: TareaID,
                 }
             })
+        },
+
+        async editCurrentTask() {
+            let modifiedTask = {
+                Task_Name : this.taskNameUnderEdit,
+                Description_Task : this.taskDescriptionUnderEdit,
+                Task_State : this.taskStateUnderEdit,
+                // los que no cambian
+                Id_Task : this.taskIdUnderEdit,
+                Id_Sprint: this.currentTask.Id_Sprint,
+                Id_State: this.currentTask.Id_State,
+            }
+            // let id = this.asdasd;
+            // console.log({modifiedTask, id});
+            // llamar a editar tarea al API
+            const result = await AdminApi.PutTask(modifiedTask);
+            if (result.data.ok) {
+                this.$swal({ icon: 'success', text: 'Se creo correctamente la tarea' });
+                console.log("Se edito la tarea correctamente");
+                this.getTareasDesdeAPI(); // llamamos a get tareas
+            } else {
+                console.log("Hubo un error al editar tarea");
+            }
+        },
+
+        async deleteTask(task) {
+
+            const id = task.Task_Id;
+
+            const result = await AdminApi.DeleteTask(modifiedTask);
+            if (result.data.ok) {
+                console.log("Se borro la tarea correctamente");
+                this.getTareasDesdeAPI(); // llamamos a get tareas
+            } else {
+                console.log("Hubo un error al eliminar tarea");
+            }
+
         },
 
         mostrarSubtareas: function() {
@@ -792,6 +725,56 @@ export default {
 
         },
 
+        startTaskEditing(task) {
+            this.selectCurrentTask(task);
+
+            // cargar los campos para edicion
+            this.taskIdUnderEdit = task.Id_Task;
+            this.taskDescriptionUnderEdit = task.Description_Task;
+            this.taskStateUnderEdit = task.Task_State,
+            this.taskNameUnderEdit = task.Task_Name
+        },
+
+        selectCurrentTask(task) {
+            this.currentTask = task;
+        },
+
+        createTask() {
+            const currentSprintId = localStorage.getItem("currentSprintId");
+            const task = {
+                Task_Name : this.taskName,
+                Description_Task : this.taskDescription,
+                Id_Sprint : currentSprintId,
+            }
+
+            console.log(task);
+            this.postTaskToAPI(task);
+        },
+
+        async getTareasDesdeAPI() {
+            try {
+                const response = await AdminApi.GetAllTasks();
+                const Tasklist = response.data.obj;
+                this.tareas = Tasklist;
+                console.log(this.tareas);
+            } catch (error) {
+                console.error('Error al cargar las tareas desde la API:', error);
+            }
+        },
+
+        async postTaskToAPI(tarea) {
+            try {
+                const response = await AdminApi.PostTask(tarea);
+                if (response.data.ok) {
+                    // caso exitoso para creacion de tarea
+                    this.getTareasDesdeAPI(); // llamamos a get tareas
+                } else {
+                    console.log({ error : 'Error al crear la tarea' , response});
+                }
+            } catch (error) {
+                console.error('Error al crear tarea', error);
+            }
+        }
     },
 
     mounted: async function() {
@@ -811,7 +794,8 @@ export default {
     },
 
     created: async function () {
-        await this.verificarLog();
+        this.getTareasDesdeAPI()
+         await this.verificarLog();
         await this.$root.validarLoginFooter.call();
     }
 
@@ -1106,6 +1090,7 @@ ul, ol {
 .tablaPersonalizada{
     display: grid;
     grid-template-columns: 10% 2% 48% 15% 25%;
+    margin-bottom: 15px;
 }
 
 .tablaPersonalizadaSubtareas{

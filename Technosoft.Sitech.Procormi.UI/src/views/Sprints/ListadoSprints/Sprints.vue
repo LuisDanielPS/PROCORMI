@@ -305,9 +305,13 @@ export default {
                     id: SprintID,
                 }
             })
-        },
+        },  
+            
+        
 
-        verTareas: function() {
+    verTareas: function() {
+           //cambiar el 1 por Sprint.Id_Sprint
+            localStorage.setItem("currentSprintId", 1);
             this.$router.push({
                 name: "Tareas"
             })

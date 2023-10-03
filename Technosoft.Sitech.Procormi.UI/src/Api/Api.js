@@ -139,5 +139,39 @@ export default {
     }
     ,
     
+    GetAllTasks()
+    {
+        return apicliente.get('Task/GetALLTasks' , {
+            withCredentials: false,
+            headers: { 'Content-Type': 'application/json; charset=UTF-8' }
+        })
+    },
+    
+    PostTask(task) {
+        return apicliente.post('Task/PostTask' ,
+        task,
+        {
+            withCredentials: false,
+            headers: { 'Content-Type': 'application/json; charset=UTF-8' },
+        })
+    },
+
+    PutTask(task) {
+        return apicliente.put('Task/PutTask' ,
+        task,
+        {
+            withCredentials: false,
+            headers: { 'Content-Type': 'application/json; charset=UTF-8' },
+        })
+    },
+
+    DeleteTask(taskId) {
+        return apicliente.delete(`Task/DeleteTask?pIdTask=${taskId}`,
+        {
+            withCredentials: false,
+            headers: { 'Content-Type': 'application/json; charset=UTF-8' },
+        })
+    },
+
 
 }
