@@ -12,8 +12,8 @@
                             <div style="padding: 50px;">
                                 <div>
                                     <label class="margin-15px-bottom text-black">Nombre</label>
-                                    <input v-model="project.Project_Name" maxlength="50" class="small-input inputsGeneral"
-                                        type="text" required>
+                                    <input v-model.trim="project.Project_Name" maxlength="100"
+                                        class="small-input inputsGeneral" ref="inputProjectName" type="text" required>
                                 </div>
                                 <br />
                                 <div class="row">
@@ -92,7 +92,7 @@
                                             </div>
                                         </div>
                                         <div class="right-content">
-                                            <button type="button" ref="fileupload" class="btn btn-success"
+                                            <button type="button" class="btn btn-success"
                                                 style="min-height: 48px; min-width: 48px; float: right;"><span
                                                     class="fas fa-plus"></span></button>
                                         </div>
@@ -239,168 +239,254 @@ export default {
         ,
 
         insertOrEditProject: async function () {
-            if (!this.esEditar) {
-                try {
-                    const quillText = this.quill.getText();
-                    this.project.Description_Project = quillText;
 
-                    const response = await AdminApi.PostProject(this.project);
-                    const mensaje = response.data.msg;
-                    console.log(mensaje)
+            const quilltext = this.quill.getText();
+            const maxLength = 1000;
 
-                    const idProject = await AdminApi.GetLastInsertId();
-                    const idInsert = idProject.data.obj;
-                    console.log(idInsert)
+            if (this.project.Project_Name.trim() == "") {
+                this.$refs.inputProjectName.focus();
 
-                    for (const item of this.UserlistAdd) {
-                        const addUser = {
-                            "Id": 0,
-                            "User_Login": item.usu_Login,
-                            "Id_Project": idInsert
-                        };
-
-                        try {
-                            const response3 = await AdminApi.PostAddUserProject(addUser);
-                            const mensaje3 = response3.data.msg;
-                            console.log(mensaje3);
-                            this.$router.push({ name: 'Inicio' })
-                        } catch (error) {
-                            console.error('Error al agregar usuario al proyecto:', error);
-                        }
-                    }
-
-                    for (const item of this.FileList) {
-                        const addFile = {
-                            "File_ID": 0,
-                            "File_Name": item.File_Name,
-                            "File_Path": "",
-                            "File_Type": item.File_Type,
-                            "File_Size": 5,
-                            "Creation_Date": "2023-09-30T13:47:37.9361279-06:00"
-                        };
-
-                        try {
-
-                            const response = await AdminApi.PostFile(addFile);
-                            const idFileLastInsert = await AdminApi.GetLastInsertId();
-                            const idFileLastInsertObj = idFileLastInsert.data.obj;
-                            const mensaje = response.data.msg;
-                            console.log(mensaje);
-
-                            const FileProject = {
-                                "ID_Project_File": 0,
-                                "Id_Project": idInsert,
-                                "File_ID": idFileLastInsertObj
-                            };
-
-                            const response2 = await AdminApi.PostAddFileProject(FileProject);
-                            const mensaje2 = response2.data.obj;
-                            console.log(mensaje2)
-                            this.$swal({ icon: 'success', text: 'Se creo correctamente el proyecto' });
-                            this.$router.push({ name: 'Inicio' })
-
-                        } catch (error) {
-                            console.error('Error al agregar usuario al proyecto:', error);
-                        }
+                return this.$swal.fire({
+                    position: 'top-end',
+                    text: 'Se tiene que completar el campo del nombre del proyecto',
+                    showConfirmButton: false,
+                    timer: 3000
+                })
+            }
 
 
-                    }
+            if (quilltext.trim() == "") {
 
+                this.quill.focus();
+                return this.$swal.fire({
+                    position: 'top-end',
+                    text: 'Se tiene que completar el  campo de la descripcion',
+                    showConfirmButton: false,
+                    timer: 6000
+                })
+            }
+            if (quilltext.length > maxLength) {
 
-                } catch (error) {
-                    console.error('Error al cargar los proyectos desde la API:', error);
-                }
+                const truncatedText = quilltext.slice(0, maxLength);
+                this.quill.setText(truncatedText);
+                this.quill.focus();
+                return this.$swal.fire({
+                    position: 'top-end',
+                    text: 'No se puede un valor superior ha 1000 caracteres en la descripcion',
+                    showConfirmButton: false,
+                    timer: 6000
+                })
+            }
 
-            } else {
+            if (this.UserlistAdd.length == 0) {
 
-                try {
-                    const quillText = this.quill.getText();
-                    this.project.Description_Project = quillText;
-
-                    const response = await AdminApi.PutProject(this.project);
-                    const mensaje = response.data.msg;
-                    console.log(mensaje)
-
-
-
-
-                    const idProject = await AdminApi.GetLastInsertId();
-                    const idInsert = idProject.data.obj;
-                    console.log(idInsert)
-
-                    const response2 = await AdminApi.DeleteFileProject(this.$route.params.id);
-                    const mensaje2 = response2.data.obj;
-                    console.log(mensaje2)
-
-                    const response3 = await AdminApi.DeleteUserListProject(this.$route.params.id);
-                    const mensaje3 = response3.data.obj;
-                    console.log(mensaje3)
-
-                    for (const item of this.UserlistAdd) {
-                        const addUser = {
-                            "Id": 0,
-                            "User_Login": item.usu_Login,
-                            "Id_Project": this.idProyecto,
-                        };
-
-                        try {
-                            const response3 = await AdminApi.PostAddUserProject(addUser);
-                            const mensaje3 = response3.data.msg;
-                            console.log(mensaje3);
-                            this.$router.push({ name: 'Inicio' })
-                        } catch (error) {
-                            console.error('Error al agregar usuario al proyecto:', error);
-                        }
-                    }
-
-                    for (const item of this.FileList) {
-                        const addFile = {
-                            "File_ID": 0,
-                            "File_Name": item.File_Name,
-                            "File_Path": "",
-                            "File_Type": item.File_Type,
-                            "File_Size": 5,
-                            "Creation_Date": "2023-09-30T13:47:37.9361279-06:00"
-                        };
-
-
-                        try {
-
-                            const response = await AdminApi.PostFile(addFile);
-                            const idFileLastInsert = await AdminApi.GetLastInsertId();
-                            const idFileLastInsertObj = idFileLastInsert.data.obj;
-                            const mensaje = response.data.msg;
-                            console.log(mensaje);
-
-                            const FileProject = {
-                                "ID_Project_File": 0,
-                                "Id_Project": this.idProyecto,
-                                "File_ID": idFileLastInsertObj
-                            };
-
-                            const response2 = await AdminApi.PostAddFileProject(FileProject);
-                            const mensaje2 = response2.data.obj;
-                            console.log(mensaje2)
-                            this.$swal({ icon: 'success', text: 'Se actualizó correctamente el proyecto' });
-                            setTimeout(() => {
-                               this.$router.push({ name: 'Inicio' })
-                            }, 10000);
-                            
-
-                        } catch (error) {
-                            console.error('Error al agregar usuario al proyecto:', error);
-                        }
-
-                    }
-
-
-                } catch (error) {
-                    console.error('Error al cargar los proyectos desde la API:', error);
-                }
+                return this.$swal.fire({
+                    position: 'top-end',
+                    text: 'Se tiene que agregar al menos un usuario',
+                    showConfirmButton: false,
+                    timer: 6000
+                })
 
             }
 
+
+
+
+            if (
+                this.project.Project_Name.trim() != "" &&
+                quilltext.trim() != "" &&
+                this.UserlistAdd.length > 0 
+                
+            ) {
+
+                if (!this.esEditar) {
+                    try {
+                        const quillText = this.quill.getText();
+                        this.project.Description_Project = quillText;
+
+                        const response = await AdminApi.PostProject(this.project);
+                        const mensaje = response.data.msg;
+                        console.log(mensaje)
+
+                        const idProject = await AdminApi.GetLastInsertId();
+                        const idInsert = idProject.data.obj;
+                        console.log(idInsert)
+
+                        for (const item of this.UserlistAdd) {
+                            const addUser = {
+                                "Id": 0,
+                                "User_Login": item.usu_Login,
+                                "Id_Project": idInsert
+                            };
+
+                            try {
+                                const response3 = await AdminApi.PostAddUserProject(addUser);
+                                const mensaje3 = response3.data.msg;
+                                console.log(mensaje3);
+                               
+                            } catch (error) {
+                                console.error('Error al agregar usuario al proyecto:', error);
+                            }
+                        }
+
+                        if(this.FileList.length>0){
+
+                        for (const item of this.FileList) {
+                            const addFile = {
+                                "File_ID": 0,
+                                "File_Name": item.File_Name,
+                                "File_Path": "",
+                                "File_Type": item.File_Type,
+                                "File_Size": 5,
+                                "Creation_Date": "2023-09-30T13:47:37.9361279-06:00"
+                            };
+
+                            try {
+
+                                const response = await AdminApi.PostFile(addFile);
+                                const idFileLastInsert = await AdminApi.GetLastInsertId();
+                                const idFileLastInsertObj = idFileLastInsert.data.obj;
+                                const mensaje = response.data.msg;
+                                console.log(mensaje);
+
+                                const FileProject = {
+                                    "ID_Project_File": 0,
+                                    "Id_Project": idInsert,
+                                    "File_ID": idFileLastInsertObj
+                                };
+
+                                const response2 = await AdminApi.PostAddFileProject(FileProject);
+                                const mensaje2 = response2.data.obj;
+                                console.log(mensaje2)
+                                this.$swal({ icon: 'success', text: 'Se creo correctamente el proyecto' });
+                                this.$router.push({ name: 'Inicio' })
+
+                            } catch (error) {
+                                console.error('Error al agregar usuario al proyecto:', error);
+                            }
+
+
+                        }
+
+                    }
+                    else
+                    {
+
+                        this.$swal({ icon: 'success', text: 'Se creo correctamente el proyecto' });
+                        this.$router.push({ name: 'Inicio' })
+                    }
+
+
+                    } catch (error) {
+                        console.error('Error al cargar los proyectos desde la API:', error);
+                    }
+
+                } else {
+
+                    try {
+                        const quillText = this.quill.getText();
+                        this.project.Description_Project = quillText;
+
+                        const response = await AdminApi.PutProject(this.project);
+                        const mensaje = response.data.msg;
+                        console.log(mensaje)
+
+
+
+
+                        const idProject = await AdminApi.GetLastInsertId();
+                        const idInsert = idProject.data.obj;
+                        console.log(idInsert)
+
+                        const response2 = await AdminApi.DeleteFileProject(this.$route.params.id);
+                        const mensaje2 = response2.data.obj;
+                        console.log(mensaje2)
+
+                        const response3 = await AdminApi.DeleteUserListProject(this.$route.params.id);
+                        const mensaje3 = response3.data.obj;
+                        console.log(mensaje3)
+
+                        for (const item of this.UserlistAdd) {
+                            const addUser = {
+                                "Id": 0,
+                                "User_Login": item.usu_Login,
+                                "Id_Project": this.idProyecto,
+                            };
+
+                            try {
+                                const response3 = await AdminApi.PostAddUserProject(addUser);
+                                const mensaje3 = response3.data.msg;
+                                console.log(mensaje3);
+                              
+                            } catch (error) {
+                                console.error('Error al agregar usuario al proyecto:', error);
+                            }
+                        }
+
+                    if(this.FileList.length > 0){
+
+                        for (const item of this.FileList) {
+                            const addFile = {
+                                "File_ID": 0,
+                                "File_Name": item.File_Name,
+                                "File_Path": "",
+                                "File_Type": item.File_Type,
+                                "File_Size": 5,
+                                "Creation_Date": "2023-09-30T13:47:37.9361279-06:00"
+                            };
+
+
+                            try {
+
+                                const response = await AdminApi.PostFile(addFile);
+                                const idFileLastInsert = await AdminApi.GetLastInsertId();
+                                const idFileLastInsertObj = idFileLastInsert.data.obj;
+                                const mensaje = response.data.msg;
+                                console.log(mensaje);
+
+                                const FileProject = {
+                                    "ID_Project_File": 0,
+                                    "Id_Project": this.idProyecto,
+                                    "File_ID": idFileLastInsertObj
+                                };
+
+                                const response2 = await AdminApi.PostAddFileProject(FileProject);
+                                const mensaje2 = response2.data.obj;
+                                console.log(mensaje2)
+                                this.$swal({ icon: 'success', text: 'Proyecto modificado con éxito' });
+                                setTimeout(() => {
+                                    this.$router.push({ name: 'Inicio' })
+                                }, 2000);
+
+
+                            } catch (error) {
+                                console.error('Error al agregar usuario al proyecto:', error);
+                            }
+
+                           } 
+                          }
+                          else
+                          {
+                            this.$swal({ icon: 'success', text: 'Proyecto modificado con éxito' });
+                                setTimeout(() => {
+                                    this.$router.push({ name: 'Inicio' })
+                                }, 2000);
+
+                          }
+
+
+                    } catch (error) {
+                        console.error('Error al cargar los proyectos desde la API:', error);
+                    }
+
+                }
+
+            }
+            else {
+                this.$swal({ icon: 'warning', text: 'No fue posible modificar el registro' });
+            }
         }
+
         ,
 
         addListUser: async function () {
@@ -417,6 +503,9 @@ export default {
                         usu_Login: selectedUserObject.usu_Login,
                         usu_Nombre: selectedUserObject.usu_Nombre
                     });
+                }
+                else {
+                    this.$swal({ icon: 'warning', text: 'No se puede agregar dos veces el mismo usuario' });
                 }
 
 
@@ -435,7 +524,13 @@ export default {
                         File_Type: selectedFile.type
                     });
                 }
+                else {
+                    this.$swal({ icon: 'warning', text: 'No se puede agregar dos veces el mismo archivo' });
+                }
+
             }
+
+
         }
         ,
         deleteElementListFile: async function (name) {

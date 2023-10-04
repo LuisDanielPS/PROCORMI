@@ -374,6 +374,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
     <Folder Include="Properties\" />
+    <Folder Include="Source\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Technosoft.Sitech.Procormi.BLL\Technosoft.Sitech.Procormi.BLL.vbproj">
