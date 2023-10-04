@@ -266,8 +266,9 @@ export default {
                 })
             }
             if (quilltext.length > maxLength) {
-
-                const truncatedText = quilltext.slice(0, maxLength+5);
+                
+                const maxLengthAux=maxLength-50;
+                const truncatedText = quilltext.slice(0, maxLengthAux);
                 this.quill.setText(truncatedText);
                 this.quill.focus();
                 return this.$swal.fire({
@@ -301,7 +302,7 @@ export default {
 
                 if (!this.esEditar) {
                     try {
-                        const quillText = this.quill.getText();
+                        const quillText = this.quill.getText().trim();
                         this.project.Description_Project = quillText;
 
                         const response = await AdminApi.PostProject(this.project);
@@ -384,7 +385,7 @@ export default {
                 } else {
 
                     try {
-                        const quillText = this.quill.getText();
+                        const quillText = this.quill.getText().trim();
                         this.project.Description_Project = quillText;
 
                         const response = await AdminApi.PutProject(this.project);
