@@ -267,7 +267,7 @@ export default {
             }
             if (quilltext.length > maxLength) {
 
-                const truncatedText = quilltext.slice(0, maxLength);
+                const truncatedText = quilltext.slice(0, maxLength+5);
                 this.quill.setText(truncatedText);
                 this.quill.focus();
                 return this.$swal.fire({
