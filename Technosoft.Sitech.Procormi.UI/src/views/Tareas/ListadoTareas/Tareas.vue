@@ -669,9 +669,8 @@ export default {
                 return;
             }
 
-            // let id = this.asdasd;
-            // console.log({modifiedTask, id});
-            // llamar a editar tarea al API
+           
+            
             const result = await AdminApi.PutTask(modifiedTask);
             if (result.data.ok) {
 
@@ -682,7 +681,7 @@ export default {
 
                 this.$swal({ icon: 'success', text: 'Se creo correctamente la tarea' });
                 console.log("Se edito la tarea correctamente");
-                this.getTareasDesdeAPI(); // llamamos a get tareas
+                this.getTareasDesdeAPI(); 
             } else {
                 console.log("Hubo un error al editar tarea");
             }
@@ -714,7 +713,7 @@ export default {
         validateTask(task, isEdit) {
 
             if (task.Task_Name.trim() == "") {
-                //this.validationMessage = 'Se tiene que agregar nombre a la tarea'
+                
                 return this.$swal.fire({
                     position: 'top-end',
                     text: 'Se tiene que agregar nombre a la tarea',
@@ -724,7 +723,7 @@ export default {
             }
 
             if (task.Description_Task.trim() == "") {
-                // this.validationMessage = 'Se tiene que agregar descripcion a la tarea';
+                
                 return this.$swal.fire({
                     position: 'top-end',
                     text: 'Se tiene que agregar descripcion a la tarea',
@@ -735,7 +734,7 @@ export default {
 
             const validStates = [ "Pendiente", "En Proceso", "Finalizada" ]
             if (isEdit && !validStates.includes(task.Id_Status.trim())) {
-                // this.validationMessage = 'El estado de la tarea no es valido, elige otro'
+                
                 return this.$swal.fire({
                     position: 'top-end',
                     text: 'El estado de la tarea no es valido, elige otro',
