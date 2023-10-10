@@ -746,19 +746,6 @@ export default {
             return 'VALID';
         },
 
-
-
-
-
-
-
-
-
-
-
-
-        
-
         async deleteTask(task) {
             this.currentTask = task
 

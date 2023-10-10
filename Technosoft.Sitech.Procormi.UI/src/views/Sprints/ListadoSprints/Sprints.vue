@@ -8,7 +8,8 @@
 
                 <!--Modal crear Sprint-->
 
-                <div class="modal fade" id="staticBackdrop" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal fade" id="staticBackdrop" tabindex="-1" aria-labelledby="exampleModalLabel"
+                    aria-hidden="true" data-backdrop="static" data-keyboard="false">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -17,45 +18,51 @@
                             </div>
                             <div class="modal-body">
                                 <div>
-                                    <label>Nombre</label>
+                                    <label>Nombre<span style="color: red;"> *</span></label>
                                     <br />
                                     <div style="margin-top: 15px;">
-                                        <input v-model="sprint.Sprint_Name" required style="border-radius: 5px;" type="text" placeholder="Nombre">
+                                        <input v-model.trim="sprint.Sprint_Name" ref="inputSprintName" maxlength="45"  required 
+                                            style="border-radius: 5px;" type="text" placeholder="Nombre">
                                     </div>
                                 </div>
                                 <br />
                                 <div>
-                                    <label>Inicia</label>
+                                    <label>Inicia<span style="color: red;"> *</span></label>
                                     <br />
                                     <div style="margin-top: 15px;">
-                                        <input v-model="sprint.Start_Date" required style="border-radius: 5px;" type="date">
+                                        <input v-model="sprint.Start_Date" ref="inputStartDate" required
+                                            style="border-radius: 5px;" type="date">
                                     </div>
                                 </div>
                                 <br />
                                 <div>
-                                    <label>Finaliza</label>
+                                    <label>Finaliza<span style="color: red;"> *</span></label>
                                     <br />
                                     <div style="margin-top: 15px;">
-                                        <input v-model="sprint.End_Date" required style="border-radius: 5px;" type="date">
+                                        <input v-model="sprint.End_Date" ref="inputEndDate" required
+                                            style="border-radius: 5px;" type="date">
                                     </div>
                                 </div>
                                 <br />
                                 <div>
-                                    <label>Usario asignado</label>
+                                    <label>Usario asignado<span style="color: red;"> *</span></label>
                                     <br />
                                     <div class="left-content" style="margin-top: 15px;">
-                                        <select v-model="sprint.User_Login" required name="usuarios" id="usuarios"
-                                                class="form-select text-black inputsGeneral" style="min-height: 48px;">
-                                                <option :value="null">Seleccione una opción</option>
-                                                <option v-for="item in listUsers" :key="item.usu_Login"
-                                                    :value="item.usu_Login">{{ item.usu_Nombre }}</option>
+                                        <select v-model="sprint.User_Login" ref="inputUserLogin" required name="usuarios"
+                                            id="usuarios" class="form-select text-black inputsGeneral"
+                                            style="min-height: 48px;">
+                                            <option :value="null">Seleccione una opción</option>
+                                            <option v-for="item in listUsers" :key="item.usu_Login" :value="item.usu_Login">
+                                                {{ item.usu_Nombre }}</option>
                                         </select>
                                     </div>
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
-                                <button @click="createSprint" type="button" class="btn btn-success" data-bs-dismiss="modal">Guardar</button>
+                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal"
+                                    @click="this.limpiarContenido">Cancelar</button>
+                                <button @click="createSprint" type="button" ref="inputDate" class="btn btn-success"
+                                    data-bs-dismiss="modal">Guardar</button>
                             </div>
                         </div>
                     </div>
@@ -65,7 +72,8 @@
 
                 <!--Modal eliminar Sprint-->
 
-                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                    aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -80,14 +88,16 @@
                                     <label>Digite su contraseña</label>
                                     <br />
                                     <div class="row" style="margin-top: 15px;">
-                                        <input class="col-10" style="margin-left: 10px; border-radius: 5px;" type="text" required placeholder="Contraseña">
-                                        <button class="btn btn-success col-1" style="margin-left: 5px;"><span class="fas fa-check"></span></button>
+                                        <input v-model="verifyPassword" class="col-10" style="margin-left: 10px; border-radius: 5px;" type="password"
+                                            required placeholder="Contraseña">
+                                        <button @click="getPasswordVerifyDeleteRow()" type="button"
+                                            class="btn btn-success col-1" style="margin-left: 5px;"><span class="fas fa-check"></span></button>
                                     </div>
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
-                                <button type="button" class="btn btn-success">Aceptar</button>
+                                <button @click="this.limpiarContenido" type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                                <button @click="deleteRowList()" class="btn btn-success" >Aceptar</button>
                             </div>
                         </div>
                     </div>
@@ -117,23 +127,31 @@
 
                         <div class="col-lg-4 col-md-4 col-sm-12 row justify-content-center" style="margin-top: 40px;">
                             <div class="col-8 textoBlanco" style="text-align: center;">
-                                <router-link role="button" :to="{ name: 'Inicio' }" class="textoBlanco textoEncuestas" style="text-decoration: none;" exact-active-class="active-link">Proyectos&nbsp;&nbsp;<i class="text-white fas fa-project-diagram" style="cursor: pointer; font-size: 14px;"></i></router-link>
-                            </div>
-                        </div>
-                        
-                        <div class="col-lg-4 col-md-4 col-sm-12 row justify-content-center" style="margin-top: 40px;">
-                            <div class="col-8 textoBlanco" style="text-align: center;">
-                                <router-link role="button" :to="{ name: 'Encuestas' }" class="textoBlanco textoEncuestas" style="text-decoration: none;" exact-active-class="active-link">Encuestas&nbsp;&nbsp;<i class="text-white fas fa-chart-line" style="cursor: pointer;"></i></router-link>
+                                <router-link role="button" :to="{ name: 'Inicio' }" class="textoBlanco textoEncuestas"
+                                    style="text-decoration: none;" exact-active-class="active-link">Proyectos&nbsp;&nbsp;<i
+                                        class="text-white fas fa-project-diagram"
+                                        style="cursor: pointer; font-size: 14px;"></i></router-link>
                             </div>
                         </div>
 
                         <div class="col-lg-4 col-md-4 col-sm-12 row justify-content-center" style="margin-top: 40px;">
                             <div class="col-8 textoBlanco" style="text-align: center;">
-                                <router-link role="button" :to="{ name: 'Reportes' }" class="textoBlanco textoEncuestas" style="text-decoration: none;" exact-active-class="active-link">Reportes&nbsp;&nbsp;<i class="text-white far fa-file-alt" style="cursor: pointer;"></i></router-link>
+                                <router-link role="button" :to="{ name: 'Encuestas' }" class="textoBlanco textoEncuestas"
+                                    style="text-decoration: none;" exact-active-class="active-link">Encuestas&nbsp;&nbsp;<i
+                                        class="text-white fas fa-chart-line" style="cursor: pointer;"></i></router-link>
                             </div>
                         </div>
 
-                        <div style="text-align: center; font-size: large; padding-top: 40px; cursor: pointer; margin-left: 20px;" v-if="filtroDesplegar" v-on:click="desplegarFiltros()">
+                        <div class="col-lg-4 col-md-4 col-sm-12 row justify-content-center" style="margin-top: 40px;">
+                            <div class="col-8 textoBlanco" style="text-align: center;">
+                                <router-link role="button" :to="{ name: 'Reportes' }" class="textoBlanco textoEncuestas"
+                                    style="text-decoration: none;" exact-active-class="active-link">Reportes&nbsp;&nbsp;<i
+                                        class="text-white far fa-file-alt" style="cursor: pointer;"></i></router-link>
+                            </div>
+                        </div>
+
+                        <div style="text-align: center; font-size: large; padding-top: 40px; cursor: pointer; margin-left: 20px;"
+                            v-if="filtroDesplegar" v-on:click="desplegarFiltros()">
                             <a class="text-white fas fa-angle-up" style="text-decoration: none;"></a>
                         </div>
 
@@ -150,14 +168,19 @@
                                 <div class="card" style="border: none;" ref="cuadroLoader">
                                     <div class="encabezado">
                                         <ul style="text-align: left;">
-                                            <router-link class="li agregarBlt" role="button" :to="{ name: 'Inicio' }"><span class="fas fa-arrow-left"></span></router-link>
+                                            <router-link class="li agregarBlt" role="button" :to="{ name: 'Inicio' }"><span
+                                                    class="fas fa-arrow-left"></span></router-link>
                                         </ul>
                                         <div style="text-align: center; padding-top: 10px; cursor: default;">
                                             <h4>Listado de Sprints</h4>
                                         </div>
                                         <ul style="text-align: right;">
-                                            <a class="li agregarBlt agregarResponsive" role="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop"><span class="fas fa-plus"></span> Crear Sprint</a>
-                                            <a class="li agregarBlt agregarResponsivePlus" role="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop"><span class="fas fa-plus"></span></a>
+                                            <a class="li agregarBlt agregarResponsive" role="button" data-bs-toggle="modal"
+                                                data-bs-target="#staticBackdrop"><span class="fas fa-plus"></span> Crear
+                                                Sprint</a>
+                                            <a class="li agregarBlt agregarResponsivePlus" role="button"
+                                                data-bs-toggle="modal" data-bs-target="#staticBackdrop"><span
+                                                    class="fas fa-plus"></span></a>
                                         </ul>
                                     </div>
 
@@ -167,7 +190,8 @@
                                                 <a class="text-black fas fa-calendar-alt"></a>
                                                 <label class="text-black p-3 Td">Fecha inicio</label>
                                             </div>
-                                            <input type="date" id="fechaInicio" class="diseñoSelectLateral" style="cursor: pointer; border-radius: 5px;" v-model="Filtros.fechaI">
+                                            <input type="date" id="fechaInicio" class="diseñoSelectLateral"
+                                                style="cursor: pointer; border-radius: 5px;" v-model="Filtros.fechaI">
                                         </div>
 
                                         <div class="col-3">
@@ -175,12 +199,14 @@
                                                 <a class="text-black fas fa-calendar-alt"></a>
                                                 <label class="text-black p-3 Td">Fecha Fin</label>
                                             </div>
-                                            <input type="date" id="fechaFin" class="diseñoSelectLateral" style="cursor: pointer; border-radius: 5px;" v-model="Filtros.fechaF">
+                                            <input type="date" id="fechaFin" class="diseñoSelectLateral"
+                                                style="cursor: pointer; border-radius: 5px;" v-model="Filtros.fechaF">
                                         </div>
-                                        
+
                                         <div class="col-3">
                                             <div>
-                                                <a class="text-black fas fa-check-square" style="text-decoration: none;"></a>
+                                                <a class="text-black fas fa-check-square"
+                                                    style="text-decoration: none;"></a>
                                                 <label class="text-black p-3 Td">Estado</label>
                                             </div>
                                             <select class="form-select diseñoSelectLateral" v-model="Filtros.estado">
@@ -227,20 +253,31 @@
                                             </thead>
                                             <tbody style="font-size: large;">
                                                 <tr v-for="sprint in sprints" :key="sprint.Id_Sprint">
-                                                    <td @click="verTareas(sprint.Id_Sprint)" class="claseTD">{{sprint.Id_Sprint}}</td>
-                                                    <td @click="verTareas(sprint.Id_Sprint)" class="claseTD">{{sprint.Sprint_Name}}</td>
-                                                    <td @click="verTareas(sprint.Id_Sprint)" class="claseTD">{{$filters.FormatearFecha(sprint.Start_Date)}}</td>
-                                                    <td @click="verTareas(sprint.Id_Sprint)" class="claseTD">{{$filters.FormatearFecha(sprint.End_Date)}}</td>
-                                                    <td @click="verTareas(sprint.Id_Sprint)" class="claseTD">{{sprint.Id_Status == 1 ? "Activo" : "Inactivo"}}</td>
+                                                    <td @click="verTareas(sprint.Id_Sprint)" class="claseTD">
+                                                        {{ sprint.Id_Sprint }}</td>
+                                                    <td @click="verTareas(sprint.Id_Sprint)" class="claseTD">
+                                                        {{ sprint.Sprint_Name }}</td>
+                                                    <td @click="verTareas(sprint.Id_Sprint)" class="claseTD">
+                                                        {{ $filters.FormatearFecha(sprint.Start_Date) }}</td>
+                                                    <td @click="verTareas(sprint.Id_Sprint)" class="claseTD">
+                                                        {{ $filters.FormatearFecha(sprint.End_Date) }}</td>
+                                                    <td @click="verTareas(sprint.Id_Sprint)" class="claseTD">
+                                                        {{ sprint.Id_Status == 1 ? "Activo" : "Inactivo" }}</td>
                                                     <td class="text-white">
                                                         <button class="btn btn-primary" role="button" @click="verTareas">
-                                                            <span class="fas fa-eye" b-tooltip.hover title="Ver Sprint"></span>
+                                                            <span class="fas fa-eye" b-tooltip.hover
+                                                                title="Ver Sprint"></span>
                                                         </button>
-                                                        <button style="margin-left: 5px;" type="button" class="btn btn-success" v-on:click="EditarSprint(1)">
-                                                            <span class="fas fa-pen" b-tooltip.hover title="Editar Sprint"></span>
+                                                        <button style="margin-left: 5px;" type="button"
+                                                            class="btn btn-success" v-on:click="EditarSprint(1)">
+                                                            <span class="fas fa-pen" b-tooltip.hover
+                                                                title="Editar Sprint"></span>
                                                         </button>
-                                                        <button type="button" class="btn btn-danger" style="margin-left: 5px;" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                                                            <span class="fas fa-trash" b-tooltip.hover title="Eliminar Sprint"></span>
+                                                        <button type="button" class="btn btn-danger"
+                                                            style="margin-left: 5px;" data-bs-toggle="modal"
+                                                            data-bs-target="#exampleModal">
+                                                            <span class="fas fa-trash" b-tooltip.hover
+                                                                title="Eliminar Sprint"></span>
                                                         </button>
                                                     </td>
                                                 </tr>
@@ -250,7 +287,8 @@
                                     </div>
                                 </div>
                             </div>
-                            <nav aria-label="Page navigation example" style="position: absolute; bottom: 25px; margin-left: 25px;">
+                            <nav aria-label="Page navigation example"
+                                style="position: absolute; bottom: 25px; margin-left: 25px;">
                                 <ul class="pagination">
                                     <li class="page-item"><a class="page-link" href="#">Anterior</a></li>
                                     <li class="page-item"><a class="page-link" href="#">1</a></li>
@@ -288,21 +326,25 @@ export default {
             selectedUser: null,
             UserlistAdd: [],
             listUsers: [],
-            sprints:[],
+            sprints: [],
+            verifyPassword:"",
+            validationMessage : '',
+            confimPassworsDelete : '',
+            idSprintDeleteVerify:0,
 
             filtroDesplegar: false,
             Filtros: {
-            fechaI: "",
-            fechaF: "",
-            estado: "",
-            usuario: "",
+                fechaI: "",
+                fechaF: "",
+                estado: "",
+                usuario: "",
             },
 
             sprint: {
-                Id_Project : "",
-                Sprint_Name : "",
-                Start_Date : "",
-                End_Date : "",
+                Id_Project: "",
+                Sprint_Name: "",
+                Start_Date: "",
+                End_Date: "",
                 User_Login: "",
             },
 
@@ -310,17 +352,17 @@ export default {
     },
 
     methods: {
-        
+
         async getSprintsDesdeAPI() {
             try {
                 const response = await AdminApi.GetAllSprint();
-                const Sprintlist=response.data.obj;
+                const Sprintlist = response.data.obj;
                 this.sprints = Sprintlist;
             } catch (error) {
                 console.error('Error al cargar los sprints desde la API:', error);
             }
         }
-        , 
+        ,
 
         loadUserSelect: async function () {
             try {
@@ -337,10 +379,10 @@ export default {
         async postSprintToAPI(sprint) {
             try {
                 const response = await AdminApi.PostSprint(sprint);
-                if (response.data.ok) {                    
+                if (response.data.ok) {
                     this.getSprintsDesdeAPI();
                 } else {
-                    console.log({ error : 'Error al crear el sprint' , response});
+                    console.log({ error: 'Error al crear el sprint', response });
                 }
             } catch (error) {
                 console.error('Error al crear sprint', error);
@@ -350,25 +392,83 @@ export default {
         async createSprint() {
             const currentProjectId = localStorage.getItem("currentProjectId");
             this.sprint.Id_Project = currentProjectId
-            
+
+            if (this.sprint.Sprint_Name.trim() == "") {
+                this.$refs.inputSprintName.focus();
+
+                return this.$swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: '¡Error!',
+                    text: 'Se tiene que completar el campo del nombre del sprint',
+                })
+            }
+
+            if (this.sprint.Start_Date == "") {
+                this.$refs.inputStartDate.focus();
+
+                return this.$swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: '¡Error!',
+                    text: 'Se tiene que elegir una fecha de inicio',
+                })
+            }
+
+            if (this.sprint.End_Date == "") {
+                this.$refs.inputEndDate.focus();
+
+                return this.$swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: '¡Error!',
+                    text: 'Se tiene que elegir una fecha de finalización',
+                })
+            }
+
+            const startDate = new Date(this.sprint.Start_Date);
+            const endDate = new Date(this.sprint.End_Date);
+
+            if (endDate < startDate) {
+                this.$refs.inputDate.focus();
+
+                return this.$swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: '¡Error!',
+                    text: 'La fecha de finalización no puede ser previa a la de inicio',
+                })
+            }
+
+            if (this.sprint.User_Login == "" || this.sprint.User_Login == null) {
+                this.$refs.inputUserLogin.focus();
+
+                return this.$swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: '¡Error!',
+                    text: 'Se tiene que elegir un usuario',
+                })
+            }
+
             await AdminApi.PostSprint(this.sprint)
-                    .then(response => {
-                        if (response.data.ok == true) {
-                            this.$swal(response.data.msg, '', 'success')
-                            this.limpiarContenido()
-                            this.getSprintsDesdeAPI()
-                        } else {
-                            this.$swal(response.data.msg, '', 'error')
-                        }
-                    })
+                .then(response => {
+                    if (response.data.ok == true) {
+                        this.$swal(response.data.msg, '', 'success')
+                        this.limpiarContenido()
+                        this.getSprintsDesdeAPI()
+                    } else {
+                        this.$swal(response.data.msg, '', 'error')
+                    }
+                })
         },
 
         limpiarContenido: function () {
             this.sprint = {
-                Id_Project : "",
-                Sprint_Name : "",
-                Start_Date : "",
-                End_Date : "",
+                Id_Project: "",
+                Sprint_Name: "",
+                Start_Date: "",
+                End_Date: "",
                 User_Login: "",
             }
         },
@@ -376,8 +476,8 @@ export default {
         selectCurrentSprint(sprint) {
             this.currentSprint = sprint;
         },
-        
-        EditarSprint: function(SprintID) {
+
+        EditarSprint: function (SprintID) {
             this.$router.push({
                 name: "EditarSprint",
                 params: {
@@ -386,10 +486,58 @@ export default {
             })
         },
 
-         verTareas: function(Id_Sprint) {
+        deleteRowList: async function () {
+          
+          try {
+
+            const id = this.currentSprint.Id_Sprint;
+
+              if(this.confimPassworsDelete){
+              const response = await AdminApi.PutTaskDisableStatus(id);
+              const message=response.data.ok;
+              console.log(message)
+              location.reload()
+                  
+              }
+              else
+              {
+                  this.$swal({ icon: 'warning', text: 'La contraseña no es correcta' });
+              }
+
+          } catch (error) {
+              console.error('Error al cargar los sprints desde la API:', error);
+          }
+
+      },
+
+      getPasswordVerifyDeleteRow: async function () {
+            let login = this.recuperarUsuLog()
+            try {
+                const response = await AdminApi.GetPasswordVerifyDeleteRow(login, this.verifyPassword);
+                const message = response.data.ok;
+                console.log(message == true ? "Se verifico" : "No se verifico")
+
+                if (message == true) {
+
+                    this.confimPassworsDelete = true
+                    this.$swal({ icon: 'success', text: 'Se verifico correctamente la contraseña' });
+
+                }
+                else {
+                    this.$swal({ icon: 'warning', text: 'La contraseña que insertaste no es correcta' });
+
+                }
+
+            } catch (error) {
+                console.error('Error al cargar los sprints desde la API:', error);
+            }
+
+        },
+
+        verTareas: function (Id_Sprint) {
             localStorage.setItem("currentSprintId", Id_Sprint);
             this.$router.push({
-            name: "Tareas"
+                name: "Tareas"
             })
         },
 
@@ -401,7 +549,7 @@ export default {
             this.filtroDesplegar = false;
         },
 
-        seleccionarAplicacion: async function() {
+        seleccionarAplicacion: async function () {
             await this.$root.designarAplicacionHeaderPrincipal.call();
         },
 
@@ -434,13 +582,13 @@ export default {
 
     },
 
-    mounted: async function() {
+    mounted: async function () {
         this.$root.cerrarMenuFiltros = this.cerrarFiltros;
         let loader = this.$loading.show({
             container: this.$refs.cuadroLoader,
             opacity: 1
         })
-                
+
         setTimeout(() => {
             loader.hide()
         }, 500)
@@ -457,22 +605,21 @@ export default {
 
 </script>
 
-<style>
-</style>
+<style></style>
 
 <style scoped>
-
 #header {
     margin: auto;
     width: 500px;
     font-family: Arial, Helvetica, sans-serif;
 }
 
-ul, ol {
+ul,
+ol {
     list-style: none;
 }
 
-.nav > li {
+.nav>li {
     float: left;
 }
 
@@ -484,10 +631,10 @@ ul, ol {
     display: block;
 }
 
-    .nav li a:hover {
-        color: #808080;
-        background-color: #262b35;
-    }
+.nav li a:hover {
+    color: #808080;
+    background-color: #262b35;
+}
 
 .nav li ul {
     display: none;
@@ -495,7 +642,7 @@ ul, ol {
     min-width: 140px;
 }
 
-.nav li:hover > ul {
+.nav li:hover>ul {
     display: block;
 }
 
@@ -514,26 +661,26 @@ ul, ol {
     border-radius: 0.5em;
 }
 
-    .filtro button {
-        background-color: #000;
-        border-radius: 0.5em;
-        border: none;
-    }
+.filtro button {
+    background-color: #000;
+    border-radius: 0.5em;
+    border: none;
+}
 
-    .filtro button:hover {
-        background-color: #000;
-        border-radius: 0.5em;
-        border: none;
-        font-size: 15px;
-    }
+.filtro button:hover {
+    background-color: #000;
+    border-radius: 0.5em;
+    border: none;
+    font-size: 15px;
+}
 
 /*Select*/
 
-.diseñoSelectLateral{
+.diseñoSelectLateral {
     height: 30px;
 }
 
-.diseñoSelect{
+.diseñoSelect {
     height: 35px;
 }
 
@@ -553,7 +700,7 @@ ul, ol {
 }
 
 @media screen and (max-width: 900px) {
-    .posicion1{
+    .posicion1 {
         display: none;
     }
 }
@@ -564,22 +711,22 @@ ul, ol {
         min-height: 500px;
     }
 
-    .menuLateralCelular{
+    .menuLateralCelular {
         display: none;
     }
 }
 
-.filtrosCelular{
+.filtrosCelular {
     padding-top: 20px;
     padding-left: 50px;
     padding-right: 50px;
     padding-bottom: 20px;
-    background: rgba(10,58,102,1);
+    background: rgba(10, 58, 102, 1);
 }
 
 @media screen and (min-width: 901px) {
 
-    .filtrosCelular{
+    .filtrosCelular {
         display: none;
     }
 }
@@ -596,21 +743,21 @@ ul, ol {
     margin-top: 25px;
 }
 
-    .encabezado ul {
-            padding-top: 14px;
-        }
+.encabezado ul {
+    padding-top: 14px;
+}
 
-    .li {
-        font-family: sans-serif;
-        color: black;
-        text-decoration: none;
-    }
+.li {
+    font-family: sans-serif;
+    color: black;
+    text-decoration: none;
+}
 
-    .encabezado div {
-        text-align: center;
-    }
+.encabezado div {
+    text-align: center;
+}
 
-.sinResultadosAct{
+.sinResultadosAct {
     width: 100%;
     text-align: center;
     margin-top: 30px;
@@ -623,12 +770,12 @@ ul, ol {
     margin-top: 25px;
 }
 
-.botones{
+.botones {
     min-height: 40px;
     min-width: 150px;
 }
 
-.agregarBlt{
+.agregarBlt {
     font-family: sans-serif;
     font-size: 18px;
     text-decoration: none;
@@ -639,34 +786,34 @@ ul, ol {
 }
 
 @media screen and (max-width: 975px) {
-    .agregarResponsive{
+    .agregarResponsive {
         display: none;
     }
 }
 
 @media screen and (min-width: 975px) {
-    .agregarResponsivePlus{
+    .agregarResponsivePlus {
         display: none;
     }
 }
 
 @media screen and (min-width: 901px) {
-    .linkResponsive{
+    .linkResponsive {
         display: none;
     }
 }
 
 @media screen and (max-width: 610px) {
-    .linkResponsiveCelular{
+    .linkResponsiveCelular {
         display: none;
     }
 }
 
-.filtrosCelularBoton{
+.filtrosCelularBoton {
     text-align: center;
     font-size: large;
     cursor: pointer;
-    background-color: rgba(10,58,102,1);
+    background-color: rgba(10, 58, 102, 1);
     height: 30px;
     border-bottom-right-radius: 10px;
     border-bottom-left-radius: 10px;
@@ -674,32 +821,32 @@ ul, ol {
 }
 
 @media screen and (min-width: 901px) {
-    .filtrosCelularBotones{
+    .filtrosCelularBotones {
         display: none;
     }
 
-    .filtrosCelularBoton{
+    .filtrosCelularBoton {
         display: none;
     }
 }
 
-.vistaPrincipal{
+.vistaPrincipal {
     min-height: 85vh;
 }
 
 @media screen and (max-width: 900px) {
-    .vistaPrincipal{
+    .vistaPrincipal {
         min-height: 98vh;
     }
 }
 
 @media screen and (max-width: 400px) {
-    .vistaPrincipal{
+    .vistaPrincipal {
         min-height: 100vh;
     }
 }
 
-.botonEncuestas{
+.botonEncuestas {
     margin-left: -15px;
     min-width: 12.4rem;
     background-color: #114677;
@@ -709,7 +856,7 @@ ul, ol {
     list-style: none;
 }
 
-.textoEncuestas{
+.textoEncuestas {
     margin-left: 25px;
     margin-top: -15px;
     font-size: 17px;
@@ -725,6 +872,4 @@ ul, ol {
     margin-bottom: 12px;
     margin-right: 1px;
     margin-left: 5px;
-}
-
-</style>
+}</style>
