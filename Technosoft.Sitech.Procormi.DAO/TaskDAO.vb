@@ -23,7 +23,7 @@ Public Class TaskDao
 
         Try
 
-            sentence = "SELECT * FROM task"
+            sentence = "SELECT * FROM task where not Id_Status = 2"
 
             dr = ConexionDAO.Instancia.ExecuteConsultGetAllProjects(sentence)
 
@@ -33,13 +33,12 @@ Public Class TaskDao
                 task.Task_Name = dr(1)
                 task.Description_Task = dr(2)
                 task.Id_Sprint = dr(3)
-                task.Id_State = dr(4)
-                task.Task_State = dr(5)
+                task.Id_Status = dr(4)
 
                 ' Get state name instead of id
-                dr1 = ConexionDAO.Instancia.ExecuteStateById(task.Id_State)
+                dr1 = ConexionDAO.Instancia.ExecuteStateById(task.Id_Status)
                 If (dr1.Read) Then
-                    task.Id_State = dr1(0)
+                    task.Id_Status = dr1(0)
                 End If
 
                 tareas.Add(task)
@@ -77,7 +76,7 @@ Public Class TaskDao
 
         Try
 
-            sentence = "SELECT * FROM task where Id_Sprint=@filtro1"
+            sentence = "SELECT * FROM task where Id_Sprint=@filtro1 and Id_Status= 1"
             dr = ConexionDAO.Instancia.ExecuteConsultGetAllTasks(sentence, sprintId)
 
             While dr.Read
@@ -86,13 +85,12 @@ Public Class TaskDao
                 task.Task_Name = dr(1)
                 task.Description_Task = dr(2)
                 task.Id_Sprint = dr(3)
-                task.Id_State = dr(4)
-                task.Task_State = dr(5)
+                task.Id_Status = dr(4)
 
                 ' Get state name instead of id
-                dr1 = ConexionDAO.Instancia.ExecuteStateById(task.Id_State)
+                dr1 = ConexionDAO.Instancia.ExecuteStateById(task.Id_Status)
                 If (dr1.Read) Then
-                    task.Id_State = dr1(0)
+                    task.Id_Status = dr1(0)
                 End If
 
                 tareas.Add(task)
@@ -139,7 +137,7 @@ Public Class TaskDao
                 task.Task_Name = dr(1)
                 task.Description_Task = dr(2)
                 task.Id_Sprint = dr(3)
-                task.Id_State = dr(4)
+                task.Id_Status = dr(4)
 
                 reply.obj = task
             End While
@@ -207,11 +205,11 @@ Public Class TaskDao
                 reply.msg = "El objeto de la tarea esta Vacio"
 
             ElseIf pTaskEn IsNot Nothing Then
-                sentence = "UPDATE task SET Task_Name = @parameter1, Description_Task = @parameter2 ,Id_Sprint= @parameter3 , Id_Status= @parameter4, Task_Status= @parameter5 WHERE Id_Task = @Condition"
+                sentence = "UPDATE task SET Task_Name = @parameter1, Description_Task = @parameter2 ,Id_Sprint= @parameter3 , Id_Status= @parameter4 WHERE Id_Task = @Condition"
 
                 ConexionDAO.Instancia.ExecuteUpdateTask(sentence, pTaskEn)
                 reply.ok = True
-                reply.msg = "Se ha modificado correctamente el proyecto"
+                reply.msg = "Se ha modificado correctamente el la tarea"
 
             End If
 
@@ -229,6 +227,37 @@ Public Class TaskDao
 
 
     End Function
+
+    Public Function PutTaskDAOByDisabling(ByVal pTaskEn As String) As Reply(Of TaskEN)
+
+        Dim reply As New Reply(Of TaskEN)
+        Try
+            If pTaskEn Is Nothing Then
+                reply.ok = False
+                reply.msg = "El objeto de la tarea esta Vacio"
+
+            ElseIf pTaskEn IsNot Nothing Then
+                sentence = "UPDATE task SET Id_Status = 2 WHERE Id_Task = @Condition"
+
+                ConexionDAO.Instancia.ExecuteUpdateTaskByDisabling(sentence, pTaskEn)
+                reply.ok = True
+                reply.msg = "Se ha modificado correctamente la tarea"
+
+            End If
+
+        Catch ex As Exception
+            EscritorVisorEventos.Instancia().EscribirEvento(nameClass, MethodBase.GetCurrentMethod().Name, ex)
+            reply.ok = False
+            reply.msg = "No fue posible ejecutar la consulta: " & ex.Message
+            Return reply
+        End Try
+
+
+        Return reply
+
+
+    End Function
+
 
     Public Function DeleteTaskDAO(ByVal pIdProject As String) As Reply(Of TaskEN)
 

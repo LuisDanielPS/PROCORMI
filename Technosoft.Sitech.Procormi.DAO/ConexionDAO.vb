@@ -607,12 +607,11 @@ Public Class ConexionDAO
             sql.Parameters.AddWithValue("@parameter3", Ptask.Id_Sprint)
 
             Dim dr1 As MySqlDataReader
-            dr1 = ConexionDAO.Instancia.ExecuteStateByName(Ptask.Id_State)
+            dr1 = ConexionDAO.Instancia.ExecuteStateByName(Ptask.Id_Status)
             If (dr1.Read) Then
                 sql.Parameters.AddWithValue("@parameter4", dr1(0))
             End If
 
-            sql.Parameters.AddWithValue("@parameter5", Ptask.Task_State)
             sql.CommandType = CommandType.Text
             conn.Open()
             sql.ExecuteNonQuery()
@@ -623,6 +622,20 @@ Public Class ConexionDAO
         End Try
     End Sub
 
+    Public Sub ExecuteUpdateTaskByDisabling(ByVal psSql As String, ByVal pTaskId As String)
+        Try
+            conn = New MySqlConnection(conStr)
+            sql = New MySqlCommand(psSql, conn)
+            sql.Parameters.AddWithValue("@Condition", pTaskId)
+            sql.CommandType = CommandType.Text
+            conn.Open()
+            sql.ExecuteNonQuery()
+            conn.Close()
+        Catch ex As MySqlException
+            EscritorVisorEventos.Instancia().EscribirEvento(nombreClase, MethodBase.GetCurrentMethod().Name, ex)
+            Throw New Exception("Error al ejecutar el update para eliminado logico")
+        End Try
+    End Sub
 
     Public Sub ExecuteDeleteTask(ByVal psSql As String, ByVal pIdTask As String)
         Try

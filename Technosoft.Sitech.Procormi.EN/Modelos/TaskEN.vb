@@ -50,26 +50,15 @@ Public Class TaskEN
         End Set
     End Property
 
-    Private _Id_State As String
+    Private _Id_Status As String
 
     <DataMember()>
-    Public Property Id_State() As String
+    Public Property Id_Status() As String
         Get
-            Return _Id_State
+            Return _Id_Status
         End Get
         Set(value As String)
-            _Id_State = value
-        End Set
-    End Property
-
-    Private _Task_State As String
-    <DataMember()>
-    Public Property Task_State() As String
-        Get
-            Return _Task_State
-        End Get
-        Set(value As String)
-            _Task_State = value
+            _Id_Status = value
         End Set
     End Property
 End Class

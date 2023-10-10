@@ -51,6 +51,13 @@ Namespace Controllers
 
         End Function
 
+        <HttpPut>
+        Public Function PutTaskByDisabling(pTaskId As String) As Reply(Of TaskEN)
+            Dim reply As Reply(Of TaskEN) = New Reply(Of TaskEN)
+            reply = TaskBLL.Instance.PutTaskBLLByDisabling(pTaskId)
+            Return reply
+        End Function
+
         <HttpDelete>
         Public Function DeleteTask(pIdTask As String) As Reply(Of TaskEN)
             Dim reply As Reply(Of TaskEN) = New Reply(Of TaskEN)

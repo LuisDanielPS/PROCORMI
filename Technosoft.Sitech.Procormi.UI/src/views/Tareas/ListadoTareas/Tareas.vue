@@ -113,19 +113,20 @@
                                     <label>Digite su contraseña</label>
                                     <br />
                                     <div class="row" style="margin-top: 15px;">
-                                        <input class="col-10" style="margin-left: 10px; border-radius: 5px;" type="text" required placeholder="Contraseña">
-                                        <button class="btn btn-success col-1" style="margin-left: 5px;"><span class="fas fa-check"></span></button>
+                                        <input v-model="verifyPassword" class="col-10" style="margin-left: 10px; border-radius: 5px;" type="password"
+                                            required placeholder="Contraseña">
+                                        <button @click="getPasswordVerifyDeleteRow()" type="button" class="btn btn-success col-1" style="margin-left: 5px;"><span
+                                                class="fas fa-check"></span></button>
                                     </div>
                                 </div>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
-                                <button type="button" class="btn btn-success">Aceptar</button>
+                                <button @click="deleteRowList()"  class="btn btn-success">Aceptar</button>
                             </div>
                         </div>
                     </div>
                 </div>
-
                 <!--Modal eliminar Tarea-->
 
                 <!--Modal Ver Tarea-->
@@ -553,7 +554,7 @@
                                                 </div>
                                                 <div>
                                                     
-                                                    <div class="tablaPersonalizadaRow" @click="mostrarSubtareas">{{ tarea.Task_State }}</div> 
+                                                    <div class="tablaPersonalizadaRow" @click="mostrarSubtareas">{{ tarea.Id_Status }}</div> 
                                                     
                                                 </div>
                                                 <div>
@@ -564,7 +565,7 @@
                                                         <button @click="() => startTaskEditing(tarea)" style="margin-left: 5px;" type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#editarTarea">
                                                             <span class="fas fa-pen" b-tooltip.hover title="Editar Tarea"></span>
                                                         </button>
-                                                        <button @click="() => deleteTask(tarea)" type="button" class="btn btn-danger" style="margin-left: 5px;" data-bs-toggle="modal" data-bs-target="#exampleModal" disabled>
+                                                        <button @click="() => deleteTask(tarea)" type="button" class="btn btn-danger" style="margin-left: 5px;" data-bs-toggle="modal" data-bs-target="#exampleModal">
                                                             <span class="fas fa-trash" b-tooltip.hover title="Eliminar Tarea"></span>
                                                         </button>
                                                     </div>
@@ -627,12 +628,19 @@ export default {
 
             taskName: '',
             taskDescription: '',
+            verifyPassword:"",
 
             // campos de edicion
             taskNameUnderEdit : '',
             taskDescriptionUnderEdit : '',
             taskStateUnderEdit : '',
             taskIdUnderEdit : null,
+
+            // validacion de tarea
+            validationMessage : '',
+            confimPassworsDelete : '',
+
+            currentSprintId : 0,
         }
     },
 
@@ -651,17 +659,27 @@ export default {
             let modifiedTask = {
                 Task_Name : this.taskNameUnderEdit,
                 Description_Task : this.taskDescriptionUnderEdit,
-                Task_State : this.taskStateUnderEdit,
                 // los que no cambian
                 Id_Task : this.taskIdUnderEdit,
                 Id_Sprint: this.currentTask.Id_Sprint,
-                Id_State: this.currentTask.Id_State,
+                Id_Status: this.taskStateUnderEdit,
             }
+
+            if (this.validateTask(modifiedTask, true) !== 'VALID') {
+                return;
+            }
+
             // let id = this.asdasd;
             // console.log({modifiedTask, id});
             // llamar a editar tarea al API
             const result = await AdminApi.PutTask(modifiedTask);
             if (result.data.ok) {
+
+                // limpiar campos
+                this.taskNameUnderEdit = ''
+                this.taskDescriptionUnderEdit = ''
+                this.taskStateUnderEdit = ''
+
                 this.$swal({ icon: 'success', text: 'Se creo correctamente la tarea' });
                 console.log("Se edito la tarea correctamente");
                 this.getTareasDesdeAPI(); // llamamos a get tareas
@@ -670,17 +688,76 @@ export default {
             }
         },
 
-        async deleteTask(task) {
+        deleteRowList: async function () {
+          
+          try {
 
-            const id = task.Task_Id;
+            const id = this.currentTask.Id_Task;
 
-            const result = await AdminApi.DeleteTask(modifiedTask);
-            if (result.data.ok) {
-                console.log("Se borro la tarea correctamente");
-                this.getTareasDesdeAPI(); // llamamos a get tareas
-            } else {
-                console.log("Hubo un error al eliminar tarea");
+              if(this.confimPassworsDelete){
+              const response = await AdminApi.PutTaskDisableStatus(id);
+              const mensage=response.data.ok;
+              location.reload()
+                  
+              }
+              else
+              {
+                  this.$swal({ icon: 'warning', text: 'La contraseña que insertaste no es correcta' });
+              }
+
+          } catch (error) {
+              console.error('Error al cargar las tareas desde la API:', error);
+          }
+
+      },
+
+        validateTask(task, isEdit) {
+
+            if (task.Task_Name.trim() == "") {
+                //this.validationMessage = 'Se tiene que agregar nombre a la tarea'
+                return this.$swal.fire({
+                    position: 'top-end',
+                    text: 'Se tiene que agregar nombre a la tarea',
+                    showConfirmButton: false,
+                    timer: 6000
+                })
             }
+
+            if (task.Description_Task.trim() == "") {
+                // this.validationMessage = 'Se tiene que agregar descripcion a la tarea';
+                return this.$swal.fire({
+                    position: 'top-end',
+                    text: 'Se tiene que agregar descripcion a la tarea',
+                    showConfirmButton: false,
+                    timer: 6000
+                })
+            }
+
+            const validStates = [ "Pendiente", "En Proceso", "Finalizada" ]
+            if (isEdit && !validStates.includes(task.Id_Status.trim())) {
+                // this.validationMessage = 'El estado de la tarea no es valido, elige otro'
+                return this.$swal.fire({
+                    position: 'top-end',
+                    text: 'El estado de la tarea no es valido, elige otro',
+                    showConfirmButton: false,
+                    timer: 6000
+                })
+            }
+
+            return 'VALID';
+        },
+
+        async deleteTask(task) {
+            this.currentTask = task
+
+            // const id = task.Task_Id;
+            // const result = await AdminApi.DeleteTask(modifiedTask);
+            // if (result.data.ok) {
+            //     console.log("Se borro la tarea correctamente");
+            //     this.getTareasDesdeAPI(); // llamamos a get tareas
+            // } else {
+            //     console.log("Hubo un error al eliminar tarea");
+            // }
 
         },
 
@@ -733,12 +810,40 @@ export default {
             // cargar los campos para edicion
             this.taskIdUnderEdit = task.Id_Task;
             this.taskDescriptionUnderEdit = task.Description_Task;
-            this.taskStateUnderEdit = task.Task_State,
+            this.taskStateUnderEdit = task.Id_Status,
             this.taskNameUnderEdit = task.Task_Name
         },
 
         selectCurrentTask(task) {
             this.currentTask = task;
+        },
+
+        recuperarUsuLog() {
+            return Cookies.get("usuarioLogin")
+        },
+
+        getPasswordVerifyDeleteRow: async function () {
+            let login = this.recuperarUsuLog()
+            try {
+                const response = await AdminApi.GetPasswordVerifyDeleteRow(login, this.verifyPassword);
+                const mensage=response.data.ok;
+                console.log( mensage == true ? "Se verifico" : "No se verifico")
+
+                if(mensage==true){
+
+                this.confimPassworsDelete=true
+                this.$swal({ icon: 'success', text: 'Se verifico correctamente la contraseña' });
+                    
+                }
+                else{
+                    this.$swal({ icon: 'warning', text: 'La contraseña que insertaste no es correcta' });
+
+                }
+
+            } catch (error) {
+                console.error('Error al cargar los proyectos desde la API:', error);
+            }
+
         },
 
         createTask() {
@@ -749,9 +854,23 @@ export default {
                 Id_Sprint : currentSprintId,
             }
 
-            console.log(task);
+            if (this.validateTask(task, false) !== 'VALID') {
+                return;
+            }
+
             this.postTaskToAPI(task);
         },
+
+        // async getTareasDesdeAPI() {
+        //     try {
+        //         const response = await AdminApi.GetAllTasks();
+        //         const Tasklist = response.data.obj;
+        //         this.tareas = Tasklist;
+        //         console.log(this.tareas);
+        //     } catch (error) {
+        //         console.error('Error al cargar las tareas desde la API:', error);
+        //     }
+        // },
 
         async getTareasDesdeAPI() {
             try {
@@ -768,6 +887,8 @@ export default {
             try {
                 const response = await AdminApi.PostTask(tarea);
                 if (response.data.ok) {
+                    this.taskName = ''
+                    this.taskDescription = ''
                     // caso exitoso para creacion de tarea
                     this.getTareasDesdeAPI(); // llamamos a get tareas
                 } else {
@@ -796,9 +917,14 @@ export default {
     },
 
     created: async function () {
-        this.getTareasDesdeAPI()
+       
          await this.verificarLog();
         await this.$root.validarLoginFooter.call();
+
+        let urlParams = new URLSearchParams(window.location.search);
+        this.currentSprintId = urlParams.get('id') || localStorage.getItem("currentSprintId");
+
+        this.getTareasDesdeAPI()
     }
 
 }

@@ -118,6 +118,26 @@ Public Class TaskBLL
 
     End Function
 
+    Public Function PutTaskBLLByDisabling(ByVal pTaskId As String) As Reply(Of TaskEN)
+
+
+        Dim reply As Reply(Of TaskEN) = Nothing
+
+        Try
+            If pTaskId IsNot Nothing Then
+                Return TaskDao.Instance.PutTaskDAOByDisabling(pTaskId)
+            End If
+
+        Catch ex As Exception
+            EscritorVisorEventos.Instancia().EscribirEvento(nameClass, MethodBase.GetCurrentMethod().Name, ex)
+            reply.ok = False
+            reply.msg = "Error al desactivar tarea"
+        End Try
+
+        Return reply
+
+    End Function
+
 
     Public Function DeleteTaskBLL(ByVal pIdTask As String) As Reply(Of TaskEN)
 

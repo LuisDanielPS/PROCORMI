@@ -41,6 +41,15 @@ export default {
     }
     ,
 
+    GetAllTasksBySprint(sprintId)
+    {
+        return apicliente.get(`Task/GetALLTasks?sprintId=${sprintId}` , {
+            withCredentials: false,
+            headers: { 'Content-Type': 'application/json; charset=UTF-8' }
+        })
+    }
+    ,
+
     GetALLUsers()
     {
         return apicliente.get('User/GetALLUsers' , {
@@ -166,8 +175,14 @@ export default {
             headers: { 'Content-Type': 'application/json; charset=UTF-8' }
         })
 
-    }   
+    }  
     ,
+    PutTaskDisableStatus(IdTask) {
+        return apicliente.put(`Task/PutTaskByDisabling?pTaskId=${IdTask}`, {
+            withCredentials: false,
+            headers: { 'Content-Type': 'application/json; charset=UTF-8' }
+        })
+    },
     DeleteSprint(IdSprint)
     {
         return apicliente.put('Sprint/DeleteSprint?pIdSprint='+ IdSprint, {
@@ -178,7 +193,7 @@ export default {
     }   
     ,
     DeleteTask(taskId) {
-        return apicliente.delete(`Task/DeleteTask?pIdTask=${taskId}`,
+        return apicliente.put(`Task/PutTaskByDisabling?pTaskId=${taskId}`,
         {
             withCredentials: false,
             headers: { 'Content-Type': 'application/json; charset=UTF-8' },
