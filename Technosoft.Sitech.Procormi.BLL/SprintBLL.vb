@@ -13,13 +13,13 @@ Public Class SprintBLL
     End Function
 
 
-    Public Function GetAllSprintsBLL() As Reply(Of List(Of SprintEN))
+    Public Function GetAllSprintsBLL(idProyect As Integer) As Reply(Of List(Of SprintEN))
 
         Dim reply As Reply(Of List(Of SprintEN)) = Nothing
 
         Try
 
-            reply = SprintDAO.Instance.GetSprintsAllDAO()
+            reply = SprintDAO.Instance.GetSprintsAllDAO(idProyect)
 
         Catch ex As Exception
             EscritorVisorEventos.Instancia().EscribirEvento(nameClass, MethodBase.GetCurrentMethod().Name, ex)

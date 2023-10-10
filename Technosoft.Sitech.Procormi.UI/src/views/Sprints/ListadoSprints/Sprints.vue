@@ -164,7 +164,7 @@
                         <!--Lista de Sprints /-->
 
                         <div class="row" style="padding:15px; min-height: 95vh; padding-right: 45px;">
-                            <div class="col-12 estiloTabla" style="padding:15px;">
+                            <div class="col-12 estiloTabla tableHeight" style="padding:15px;">
                                 <div class="card" style="border: none;" ref="cuadroLoader">
                                     <div class="encabezado">
                                         <ul style="text-align: left;">
@@ -226,20 +226,29 @@
                                             </div>
                                             <select class="form-select diseñoSelectLateral" v-model="Filtros.usuario">
                                                 <option value="">Todos</option>
-                                                <!--<option v-bind:value="Usuario.usu_Login"
-                                                        v-for="Usuario in ListaUsuarios"
+                                                <option v-bind:value="Usuario.usu_Login"
+                                                        v-for="Usuario in listUsers"
                                                         v-bind:key="Usuario.usu_Login">
                                                     {{Usuario.usu_Login}}
-                                                </option>-->
+                                                </option>
                                             </select>
                                         </div>
                                     </div>
 
-                                    <!--<div class="sinResultadosAct">
-                                        <p>No hay sprints para mostrar</p>
-                                    </div>-->
+                                    <div class="row" style="margin-top: 20px">
+                                        <div class="col-6">
+                                            <input autocomplete="off" maxlength="70" class="diseñoSelectLateral" type="search" id="pClaveInput" placeholder="Buscar" v-model="Filtros.palabra">
+                                        </div>
+                                        <div class="col-6">
+                                            <button type="button" class="btn btn-success" style="float: left" @click="aplyFilter(Filtros.fechaI, Filtros.fechaF, Filtros.estado, Filtros.usuario, Filtros.palabra)"><span class="fas fa-search"></span></button>
+                                        </div>
+                                    </div>
 
-                                    <div class="contenidoTabla">
+                                    <div v-if="paginateData.length == 0" class="sinResultadosAct">
+                                        <p>No hay sprints para mostrar</p>
+                                    </div>
+
+                                    <div v-if="paginateData.length > 0" class="contenidoTabla">
                                         <table class="table table-stryped" style="text-align: center;">
                                             <thead>
                                                 <tr>
@@ -252,7 +261,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody style="font-size: large;">
-                                                <tr v-for="sprint in sprints" :key="sprint.Id_Sprint">
+                                                <tr v-for="sprint in paginateData" :key="sprint.Id_Sprint">
                                                     <td @click="verTareas(sprint.Id_Sprint)" class="claseTD">
                                                         {{ sprint.Id_Sprint }}</td>
                                                     <td @click="verTareas(sprint.Id_Sprint)" class="claseTD">
@@ -263,7 +272,7 @@
                                                         {{ $filters.FormatearFecha(sprint.End_Date) }}</td>
                                                     <td @click="verTareas(sprint.Id_Sprint)" class="claseTD">
                                                         {{ sprint.Id_Status == 1 ? "Activo" : "Inactivo" }}</td>
-                                                    <td class="text-white">
+                                                    <td class="text-white" style="min-width: 130px;">
                                                         <button class="btn btn-primary" role="button" @click="verTareas">
                                                             <span class="fas fa-eye" b-tooltip.hover
                                                                 title="Ver Sprint"></span>
@@ -287,19 +296,18 @@
                                     </div>
                                 </div>
                             </div>
-                            <nav aria-label="Page navigation example"
-                                style="position: absolute; bottom: 25px; margin-left: 25px;">
-                                <ul class="pagination">
-                                    <li class="page-item"><a class="page-link" href="#">Anterior</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">Siguiente</a></li>
+                            <nav v-if="paginate" aria-label="Page navigation example" style="position: absolute; bottom: 25px; margin-left: 25px;">
+                                <ul class="pagination cursorPaginados">
+                                    <li class="page-item"><a class="page-link" v-on:click="goBack()">Anterior</a></li>
+                                    <li v-for="pagina in pageNumeration" v-bind:key="pagina" class="page-item">
+                                        <a class="page-link" v-on:click="changePage(pagina)" v-bind:class="{ active: (pagina == actualPage) }">{{pagina}}</a>
+                                    </li>
+                                    <li class="page-item"><a class="page-link" v-on:click="goNext()">Siguiente</a></li>
                                 </ul>
                             </nav>
                         </div>
 
-                        <!--Lista de proyectos /-->
+                        <!--Lista de sprints /-->
 
                     </div>
                 </div>
@@ -333,12 +341,19 @@ export default {
             idSprintDeleteVerify:0,
 
             filtroDesplegar: false,
+
             Filtros: {
                 fechaI: "",
                 fechaF: "",
                 estado: "",
                 usuario: "",
             },
+
+            pageElements: 4,
+            actualPage: 1,
+            pageNumeration: [],
+            paginate: true,
+            paginateData: [],
 
             sprint: {
                 Id_Project: "",
@@ -354,15 +369,219 @@ export default {
     methods: {
 
         async getSprintsDesdeAPI() {
+            const idProyect = localStorage.getItem("currentProjectId")
+            this.actualPage = 1
             try {
-                const response = await AdminApi.GetAllSprint();
-                const Sprintlist = response.data.obj;
-                this.sprints = Sprintlist;
+                if (this.sprints.length == 0) {
+                    const response = await AdminApi.GetAllSprint(idProyect);
+                    const Sprintlist = response.data.obj;
+                    this.sprints = Sprintlist;
+                    this.paginateData = [];
+                    if(this.sprints.length < this.pageElements){
+                        for (let index = 0; index < this.sprints.length; index++){
+                            this.paginateData.push(this.sprints[index]);
+                        }
+                    } else {
+                        for (let index = 0; index < this.pageElements; index++){
+                            this.paginateData.push(this.sprints[index]);
+                        }
+                    }
+                } else {
+                    this.paginateData = [];
+                    if(this.sprints.length < this.pageElements){
+                        for (let index = 0; index < this.sprints.length; index++){
+                            this.paginateData.push(this.sprints[index]);
+                        }
+                    } else {
+                        for (let index = 0; index < this.pageElements; index++){
+                            this.paginateData.push(this.sprints[index]);
+                        }
+                    }
+                }
             } catch (error) {
                 console.error('Error al cargar los sprints desde la API:', error);
             }
-        }
-        ,
+        },
+
+        aplyFilter: async function (beginDate, endDate, state, user, word) {
+            const idProyect = localStorage.getItem("currentProjectId")
+            const response = await AdminApi.GetAllSprint(idProyect);
+            const SprintList = response.data.obj;
+            this.sprints = SprintList;
+            const filteredSprints = [];
+            let success = false;
+            
+            for (const project of this.sprints) {
+                const matchesBeginDate = (!beginDate || project.Start_Date.includes(beginDate));
+                const matchesEndDate = (!endDate || project.End_Date.includes(endDate));
+                const matchesState = (!state || project.Id_Status.toString() === state);
+                const matchesUser = (!user || project.User_Login.toLowerCase().includes(user.toLowerCase()));
+                const matchesWord = (!word || project.Sprint_Name.toLowerCase().includes(word.toLowerCase()));
+
+                if (matchesBeginDate && matchesEndDate && matchesState && matchesUser && matchesWord) {
+                    filteredSprints.push(project);
+                    success = true;
+                }
+            }
+
+            if ((!success && (beginDate || endDate || state || user || word))) {
+                this.paginateData = []
+                this.paginate = false
+                this.Filtros.fechaI = "";
+                this.Filtros.fechaF = "";
+                return
+            }
+
+            this.sprints = filteredSprints;
+            await this.getSprintsDesdeAPI();
+            await this.cutPages();
+            this.actualPage = 1;
+            this.Filtros.fechaI = "";
+            this.Filtros.fechaF = "";
+        },
+
+        totalPages: function () {
+            return Math.ceil(this.sprints.length / this.pageElements)
+        },
+
+        changePage: async function (pageNum) {
+            if(pageNum != "..."){
+                this.paginateData = []
+                if (pageNum == undefined){
+                    pageNum = 1
+                }
+                this.actualPage = pageNum
+                let ini = (pageNum * this.pageElements) - this.pageElements;
+                let end = (pageNum * this.pageElements);
+                let total = this.sprints.length;
+                if(end < total){
+                    for (let index = ini; index < end; index++){
+                        this.paginateData.push(this.sprints[index]);
+                    }
+                } else{
+                    for (let index = ini; index < total; index++){
+                        this.paginateData.push(this.sprints[index]);
+                    }
+                }
+                await this.cutPages();
+            }
+        },
+
+        goBack: async function() {
+            this.paginateData = []
+            let paginaAnt = this.actualPage - 1
+            this.actualPage = paginaAnt
+            let ini = (paginaAnt * this.pageElements) - this.pageElements;
+            let end = (paginaAnt * this.pageElements);
+            let total = this.sprints.length;
+            if(end < total){
+                for (let index = ini; index < end; index++){
+                    this.paginateData.push(this.sprints[index]);
+                }
+            } else{
+                for (let index = ini; index < total; index++){
+                    this.paginateData.push(this.sprints[index]);
+                }
+            }
+            await this.cutPages();
+        },
+
+        goNext: async function() {
+            this.paginateData = []
+            let paginaAnt = this.actualPage + 1
+            this.actualPage = paginaAnt
+            let ini = (paginaAnt * this.pageElements) - this.pageElements;
+            let end = (paginaAnt * this.pageElements);
+            let total = this.sprints.length;
+            if(end < total){
+                for (let index = ini; index < end; index++){
+                    this.paginateData.push(this.sprints[index]);
+                }
+            } else{
+                for (let index = ini; index < total; index++){
+                    this.paginateData.push(this.sprints[index]);
+                }
+            }
+            await this.cutPages();
+        },
+
+        cutPages: async function () {
+            let pages = []
+            let numberOfPages = Math.ceil(this.sprints.length / this.pageElements)
+            let actualPage = this.actualPage
+            let numeration = 2
+            let numerationSide = Math.floor(numeration / 2)
+            let initialPage = 1
+            let finalPage = numberOfPages
+
+            if (numberOfPages > numeration) {
+
+                if (actualPage > numerationSide) {
+
+                    initialPage = actualPage - numerationSide
+
+                    finalPage = actualPage + numerationSide
+
+                } else {
+
+                    initialPage = 1
+
+                    finalPage = actualPage + numerationSide
+
+                    finalPage += (numerationSide - (actualPage - 1))
+
+                }
+
+                if (finalPage > numberOfPages) {
+
+                    finalPage = numberOfPages
+
+                    initialPage = numberOfPages - numeration + 1
+
+                }
+
+            }
+
+            for (let i = initialPage; i <= finalPage; i++) {
+
+                pages.push(i)
+
+            }
+
+            if (actualPage > (numerationSide + 2)) { pages.unshift("...") }
+
+            if (actualPage > (numerationSide + 1)) { pages.unshift(1) }
+
+            if (
+
+                (actualPage < (numberOfPages - numerationSide - 1)) &&
+
+                numberOfPages != finalPage
+
+            ) { pages.push("...") }
+
+            if (
+
+                (actualPage < (numberOfPages - numerationSide)) &&
+
+                numberOfPages != finalPage
+
+            ) { pages.push(numberOfPages) }
+
+            this.pageNumeration = pages
+
+            await this.validatePaginate();
+
+        },
+
+        validatePaginate: function () {
+            let quantity = this.sprints.length
+            if(quantity < 5){
+                this.paginate = false
+            } else {
+                this.paginate = true
+            }
+        },
 
         loadUserSelect: async function () {
             try {
@@ -461,6 +680,12 @@ export default {
                         this.$swal(response.data.msg, '', 'error')
                     }
                 })
+
+            this.actualPage = 1
+            this.sprints = []
+            await this.getSprintsDesdeAPI();
+            await this.cutPages()
+
         },
 
         limpiarContenido: function () {
@@ -504,11 +729,11 @@ export default {
                   this.$swal({ icon: 'warning', text: 'La contraseña no es correcta' });
               }
 
-          } catch (error) {
-              console.error('Error al cargar los sprints desde la API:', error);
-          }
+            } catch (error) {
+                console.error('Error al cargar los sprints desde la API:', error);
+            }
 
-      },
+        },
 
       getPasswordVerifyDeleteRow: async function () {
             let login = this.recuperarUsuLog()
@@ -595,17 +820,16 @@ export default {
     },
 
     created: async function () {
+        await this.verificarLog();
         await this.getSprintsDesdeAPI();
         await this.loadUserSelect();
-        await this.verificarLog();
+        await this.cutPages();
         await this.$root.validarLoginFooter.call();
     }
 
 }
 
 </script>
-
-<style></style>
 
 <style scoped>
 #header {

@@ -14,7 +14,7 @@ Public Class TaskBLL
 
 
 
-    Public Function GetAllTasksBLL() As Reply(Of List(Of TaskEN))
+    Public Function GetAllTasksBLL(idSprint As Integer) As Reply(Of List(Of TaskEN))
 
 
 
@@ -22,7 +22,7 @@ Public Class TaskBLL
 
         Try
 
-            reply = TaskDao.Instance.GetTasksAllDAO
+            reply = TaskDao.Instance.GetTasksAllDAO(idSprint)
 
         Catch ex As Exception
             EscritorVisorEventos.Instancia().EscribirEvento(nameClass, MethodBase.GetCurrentMethod().Name, ex)

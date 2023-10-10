@@ -23,18 +23,18 @@ export default {
 
     }
     ,
-    GetAllSprint()
+    GetAllSprint(idProyect)
     {
-        return apicliente.get('Sprint/GetALLSprints' , {
+        return apicliente.get('Sprint/GetALLSprints?idProyect='+ idProyect, {
             withCredentials: false,
             headers: { 'Content-Type': 'application/json; charset=UTF-8' }
         })
 
     }
     ,
-    GetAllTasks()
+    GetAllTasks(idSprint)
     {
-        return apicliente.get('Task/GetALLTasks' , {
+        return apicliente.get('Task/GetALLTasks?idSprint='+ idSprint, {
             withCredentials: false,
             headers: { 'Content-Type': 'application/json; charset=UTF-8' }
         })

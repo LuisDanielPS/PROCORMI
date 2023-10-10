@@ -201,7 +201,7 @@ ul, ol {
 .posicion1 {
     z-index: 1;
     max-width: 280px;
-    min-height: 95vh;
+    min-height: 107vh;
     background-color: #0a3a66;
     min-width: 15em;
     border-bottom: 1px solid white;

@@ -9,10 +9,10 @@ Namespace Controllers
         Inherits ApiController
 
         <HttpGet>
-        Public Function GetALLSprints() As Reply(Of List(Of SprintEN))
+        Public Function GetALLSprints(idProyect As Integer) As Reply(Of List(Of SprintEN))
 
             Dim reply As Reply(Of List(Of SprintEN))
-            reply = SprintBLL.Instance.GetAllSprintsBLL()
+            reply = SprintBLL.Instance.GetAllSprintsBLL(idProyect)
             Return reply
 
         End Function

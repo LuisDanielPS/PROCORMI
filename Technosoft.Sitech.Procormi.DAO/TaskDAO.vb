@@ -14,7 +14,7 @@ Public Class TaskDao
 
     Dim sentence As String = ""
 
-    Public Function GetTasksAllDAO() As Reply(Of List(Of TaskEN))
+    Public Function GetTasksAllDAO(idSprint As Integer) As Reply(Of List(Of TaskEN))
 
         Dim reply As New Reply(Of List(Of TaskEN))
         Dim dr As MySqlDataReader
@@ -23,7 +23,7 @@ Public Class TaskDao
 
         Try
 
-            sentence = "SELECT * FROM task where not Id_Status = 2"
+            sentence = "SELECT * FROM task where not Id_Status = 2 and Id_Sprint = " & idSprint & ";"
 
             dr = ConexionDAO.Instancia.ExecuteConsultGetAllProjects(sentence)
 
@@ -34,12 +34,6 @@ Public Class TaskDao
                 task.Description_Task = dr(2)
                 task.Id_Sprint = dr(3)
                 task.Id_Status = dr(4)
-
-                ' Get state name instead of id
-                dr1 = ConexionDAO.Instancia.ExecuteStateById(task.Id_Status)
-                If (dr1.Read) Then
-                    task.Id_Status = dr1(0)
-                End If
 
                 tareas.Add(task)
             End While

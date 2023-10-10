@@ -1,10 +1,10 @@
 CREATE DATABASE  IF NOT EXISTS `procormi` /*!40100 DEFAULT CHARACTER SET latin1 */ /*!80016 DEFAULT ENCRYPTION='N' */;
 USE `procormi`;
--- MySQL dump 10.13  Distrib 8.0.34, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.31, for Win64 (x86_64)
 --
 -- Host: localhost    Database: procormi
 -- ------------------------------------------------------
--- Server version	8.0.34
+-- Server version	8.0.31
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -55,7 +55,7 @@ CREATE TABLE `answer` (
   PRIMARY KEY (`Id_Answer`),
   KEY `Fk_Question_Answer_idx` (`Id_Question`),
   CONSTRAINT `Fk_Question_Answer` FOREIGN KEY (`Id_Question`) REFERENCES `question` (`Id_Question`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -131,7 +131,7 @@ CREATE TABLE `poll` (
   `Description` varchar(45) DEFAULT NULL,
   `Creation_Date` datetime DEFAULT NULL,
   PRIMARY KEY (`Id_Poll`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -154,7 +154,7 @@ CREATE TABLE `priority` (
   `Id_Priority` int NOT NULL,
   `Priority_Name` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`Id_Priority`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -182,7 +182,7 @@ CREATE TABLE `project` (
   PRIMARY KEY (`Id_Project`),
   KEY `Fk_Status_idx` (`Id_Status`),
   CONSTRAINT `Fk_Status_Project` FOREIGN KEY (`Id_Status`) REFERENCES `status` (`Id_Status`)
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -191,7 +191,7 @@ CREATE TABLE `project` (
 
 LOCK TABLES `project` WRITE;
 /*!40000 ALTER TABLE `project` DISABLE KEYS */;
-INSERT INTO `project` VALUES (15,'123','AAA\n12\n',1,'2023-09-30 14:15:16'),(16,'222','2222222\n',1,'2023-09-30 14:19:46'),(17,'1982892819282','2121222\n',1,'2023-09-30 14:21:54'),(19,'sass','sassss\n',1,'2023-09-30 14:31:47'),(20,'ssssss','12222222222222222222\n',1,'2023-09-30 14:34:39'),(21,'TestLuis','TestLuis\n',1,'2023-10-01 15:50:41'),(22,'Danieltest','Danieltest\n',1,'2023-10-01 17:01:37');
+INSERT INTO `project` VALUES (15,'123','AAA\n12\n',1,'2023-09-30 14:15:16'),(16,'222','2222222\n',1,'2023-09-30 14:19:46'),(17,'1982892819282','2121222\n',1,'2023-09-30 14:21:54'),(19,'sass','sassss\n',1,'2023-09-30 14:31:47'),(20,'ssssss','12222222222222222222\n',1,'2023-09-30 14:34:39'),(21,'TestLuis','TestLuis\n',1,'2023-10-01 15:50:41'),(22,'Danieltest','Danieltest\n',1,'2023-10-01 17:01:37'),(23,'ASDASD','asdasd',2,'2023-10-05 21:40:56');
 /*!40000 ALTER TABLE `project` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -242,7 +242,7 @@ CREATE TABLE `question` (
   KEY `Fk_Poll_idx` (`Id_Poll`),
   CONSTRAINT `Fk_Poll` FOREIGN KEY (`Id_Poll`) REFERENCES `poll` (`Id_Poll`),
   CONSTRAINT `Fk_Question_Type` FOREIGN KEY (`Id_Question_Type`) REFERENCES `question_type` (`Id_Question_Type`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -321,7 +321,7 @@ CREATE TABLE `seg_usu` (
   `usu_remote` smallint NOT NULL DEFAULT '0',
   `horario_numero` bigint NOT NULL DEFAULT '1',
   PRIMARY KEY (`usu_Login`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -350,7 +350,7 @@ CREATE TABLE `seg_usu_project` (
   KEY `Fk_Id_Project_idx` (`Id_Project`),
   CONSTRAINT `Fk_Id_Project` FOREIGN KEY (`Id_Project`) REFERENCES `project` (`Id_Project`),
   CONSTRAINT `Fk_User_Login` FOREIGN KEY (`User_Login`) REFERENCES `seg_usu` (`usu_Login`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -359,7 +359,7 @@ CREATE TABLE `seg_usu_project` (
 
 LOCK TABLES `seg_usu_project` WRITE;
 /*!40000 ALTER TABLE `seg_usu_project` DISABLE KEYS */;
-INSERT INTO `seg_usu_project` VALUES (16,'cristian',21),(18,'cristian',22);
+INSERT INTO `seg_usu_project` VALUES (16,'cristian',21),(18,'cristian',22),(19,'cristian',23);
 /*!40000 ALTER TABLE `seg_usu_project` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -385,7 +385,7 @@ CREATE TABLE `sprint` (
   CONSTRAINT `Fk_Project` FOREIGN KEY (`Id_Project`) REFERENCES `project` (`Id_Project`),
   CONSTRAINT `Fk_Status_Sprint` FOREIGN KEY (`Id_Status`) REFERENCES `status` (`Id_Status`),
   CONSTRAINT `Fk_User` FOREIGN KEY (`User_Login`) REFERENCES `seg_usu` (`usu_Login`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -409,7 +409,7 @@ CREATE TABLE `status` (
   `Id_Status` int NOT NULL,
   `Status_Name` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`Id_Status`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -418,7 +418,7 @@ CREATE TABLE `status` (
 
 LOCK TABLES `status` WRITE;
 /*!40000 ALTER TABLE `status` DISABLE KEYS */;
-INSERT INTO `status` VALUES (1,'Activo'),(2,'Inactivo');
+INSERT INTO `status` VALUES (1,'Activo'),(2,'Inactivo'),(3,'Pendiente'),(4,'En Proceso'),(5,'Finalizada');
 /*!40000 ALTER TABLE `status` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -444,7 +444,7 @@ CREATE TABLE `sub_task` (
   CONSTRAINT `Fk_Priority` FOREIGN KEY (`Id_Priority`) REFERENCES `priority` (`Id_Priority`),
   CONSTRAINT `Fk_Status` FOREIGN KEY (`Id_Status`) REFERENCES `status` (`Id_Status`),
   CONSTRAINT `Fk_Task` FOREIGN KEY (`Id_Task`) REFERENCES `task` (`Id_Task`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -468,14 +468,13 @@ CREATE TABLE `task` (
   `Task_Name` varchar(45) DEFAULT NULL,
   `Description_Task` varchar(300) DEFAULT NULL,
   `Id_Sprint` int NOT NULL,
-  `Id_Status` int NOT NULL,
-  `Task_Status` varchar(45) DEFAULT 'PENDIENTE',
+  `Id_Status` int NOT NULL DEFAULT '3',
   PRIMARY KEY (`Id_Task`),
   KEY `Fk_Status_Task_idx` (`Id_Status`),
   KEY `Fk_Sprint_idx` (`Id_Sprint`),
   CONSTRAINT `Fk_Sprint` FOREIGN KEY (`Id_Sprint`) REFERENCES `sprint` (`Id_Sprint`),
   CONSTRAINT `Fk_Status_Task` FOREIGN KEY (`Id_Status`) REFERENCES `status` (`Id_Status`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -484,6 +483,7 @@ CREATE TABLE `task` (
 
 LOCK TABLES `task` WRITE;
 /*!40000 ALTER TABLE `task` DISABLE KEYS */;
+INSERT INTO `task` VALUES (1,'ASD','ASD',1,2),(2,'asdasd','asdasdasd',1,4),(3,'asdasd','asdasd',1,5);
 /*!40000 ALTER TABLE `task` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -496,4 +496,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-10-02 20:37:54
+-- Dump completed on 2023-10-05 23:47:26

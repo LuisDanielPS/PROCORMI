@@ -9,10 +9,10 @@ Namespace Controllers
         Inherits ApiController
 
         <HttpGet>
-        Public Function GetALLTasks() As Reply(Of List(Of TaskEN))
+        Public Function GetALLTasks(idSprint As Integer) As Reply(Of List(Of TaskEN))
 
             Dim reply As Reply(Of List(Of TaskEN))
-            reply = TaskBLL.Instance.GetAllTasksBLL()
+            reply = TaskBLL.Instance.GetAllTasksBLL(idSprint)
             Return reply
 
         End Function

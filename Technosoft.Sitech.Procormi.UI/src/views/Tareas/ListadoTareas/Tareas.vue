@@ -405,7 +405,7 @@
                         <!--Lista de Tareas /-->
 
                         <div class="row" style="padding:15px; min-height: 95vh; padding-right: 45px;">
-                            <div class="col-12 estiloTabla" style="padding:15px;">
+                            <div class="col-12 estiloTabla tableHeight" style="padding:15px;">
                                 <div class="card" style="border: none;" ref="cuadroLoader">
                                     <div class="encabezado">
                                         <ul style="text-align: left;">
@@ -421,58 +421,49 @@
                                     </div>
 
                                     <div class="row">
-                                        <div class="col-3">
-                                            <div>
-                                                <a class="text-black fas fa-calendar-alt"></a>
-                                                <label class="text-black p-3 Td">Fecha inicio</label>
-                                            </div>
-                                            <input type="date" id="fechaInicio" class="diseñoSelectLateral" style="cursor: pointer; border-radius: 5px;" v-model="Filtros.fechaI">
-                                        </div>
-
-                                        <div class="col-3">
-                                            <div>
-                                                <a class="text-black fas fa-calendar-alt"></a>
-                                                <label class="text-black p-3 Td">Fecha Fin</label>
-                                            </div>
-                                            <input type="date" id="fechaFin" class="diseñoSelectLateral" style="cursor: pointer; border-radius: 5px;" v-model="Filtros.fechaF">
-                                        </div>
                                         
-                                        <div class="col-3">
+                                        <div class="col-4">
                                             <div>
                                                 <a class="text-black fas fa-check-square" style="text-decoration: none;"></a>
                                                 <label class="text-black p-3 Td">Estado</label>
                                             </div>
                                             <select class="form-select diseñoSelectLateral" v-model="Filtros.estado">
                                                 <option value="">Todos</option>
-                                                <!--<option v-bind:value="Estado.gen_EstadoCodigo"
-                                                        v-for="Estado in ListaEstados"
-                                                        v-bind:key="Estado.gen_EstadoID">
-                                                    {{Estado.gen_EstadoDescripcion}}
-                                                </option>-->
+                                                <option value="1" >Activa</option>
+                                                <option value="2" >Inactiva</option>
+                                                <option value="3" >Pendiente</option>
+                                                <option value="4" >En Proceso</option>
+                                                <option value="5" >Finalizada</option>
                                             </select>
                                         </div>
 
-                                        <div v-if="recuperarUsuTipo() == 'Administrador'" class="col-3">
+                                        <div class="col-6">
                                             <div>
-                                                <a class="text-black fas fa-user"></a>
-                                                <label class="text-black p-3 Td">Usuario</label>
+                                                <a class="text-black fas fa-pen-square"
+                                                    style="text-decoration: none;"></a>
+                                                <label class="text-black p-3 Td">Palabra</label>
                                             </div>
-                                            <select class="form-select diseñoSelectLateral" v-model="Filtros.usuario">
-                                                <option value="">Todos</option>
-                                                <!--<option v-bind:value="Usuario.usu_Login"
-                                                        v-for="Usuario in ListaUsuarios"
-                                                        v-bind:key="Usuario.usu_Login">
-                                                    {{Usuario.usu_Login}}
-                                                </option>-->
-                                            </select>
+                                            <div>
+                                                <input autocomplete="off" maxlength="70" class="diseñoSelectLateral" type="search" id="pClaveInput" placeholder="Buscar" v-model="Filtros.palabra">
+                                            </div>
                                         </div>
+
+                                        <div class="col-2">
+                                            <div>
+                                                <label class="text-white p-3 Td">.</label>
+                                            </div>
+                                            <div>
+                                                <button type="button" class="btn btn-success" style="float: right;" @click="aplyFilter(Filtros.estado, Filtros.palabra)"><span class="fas fa-search"></span></button>
+                                            </div>
+                                        </div>
+
                                     </div>
 
-                                    <!--<div class="sinResultadosAct">
+                                    <div v-if="paginateData.length == 0" class="sinResultadosAct">
                                         <p>No hay tareas para mostrar</p>
-                                    </div>-->
+                                    </div>
 
-                                    <div class="contenidoTabla">
+                                    <div class="contenidoTabla" v-if="paginateData.length > 0">
                                         <!--<table class="table table-stryped" style="text-align: center;">
                                             <thead>
                                                 <tr>
@@ -542,7 +533,7 @@
                                         </div>
                                         <div>
 
-                                            <div class="tablaPersonalizada" v-for="tarea in tareas" :key="tarea.Id_Task">
+                                            <div class="tablaPersonalizada" v-for="tarea in paginateData" :key="tarea.Id_Task">
                                                 <div>
                                                     <div class="tablaPersonalizadaRow" @click="mostrarSubtareas">{{ tarea.Id_Task }}</div>
                                                 </div>
@@ -554,7 +545,11 @@
                                                 </div>
                                                 <div>
                                                     
-                                                    <div class="tablaPersonalizadaRow" @click="mostrarSubtareas">{{ tarea.Id_Status }}</div> 
+                                                    <div v-if="tarea.Id_Status == 1" class="tablaPersonalizadaRow" @click="mostrarSubtareas">Activo</div>
+                                                    <div v-if="tarea.Id_Status == 2" class="tablaPersonalizadaRow" @click="mostrarSubtareas">Inactivo</div> 
+                                                    <div v-if="tarea.Id_Status == 3" class="tablaPersonalizadaRow" @click="mostrarSubtareas">Pendiente</div> 
+                                                    <div v-if="tarea.Id_Status == 4" class="tablaPersonalizadaRow" @click="mostrarSubtareas">En Proceso</div> 
+                                                    <div v-if="tarea.Id_Status == 5" class="tablaPersonalizadaRow" @click="mostrarSubtareas">Finalizada</div> 
                                                     
                                                 </div>
                                                 <div>
@@ -576,13 +571,13 @@
                                     </div>
                                 </div>
                             </div>
-                            <nav aria-label="Page navigation example" style="position: absolute; bottom: 25px; margin-left: 25px;">
-                                <ul class="pagination">
-                                    <li class="page-item"><a class="page-link" href="#">Anterior</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">Siguiente</a></li>
+                            <nav v-if="paginate" aria-label="Page navigation example" style="position: absolute; bottom: 25px; margin-left: 25px;">
+                                <ul class="pagination cursorPaginados">
+                                    <li class="page-item"><a class="page-link" v-on:click="goBack()">Anterior</a></li>
+                                    <li v-for="pagina in pageNumeration" v-bind:key="pagina" class="page-item">
+                                        <a class="page-link" v-on:click="changePage(pagina)" v-bind:class="{ active: (pagina == actualPage) }">{{pagina}}</a>
+                                    </li>
+                                    <li class="page-item"><a class="page-link" v-on:click="goNext()">Siguiente</a></li>
                                 </ul>
                             </nav>
                         </div>
@@ -616,11 +611,17 @@ export default {
             filtroDesplegar: false,
 
             Filtros: {
-            fechaI: "",
-            fechaF: "",
-            estado: "",
-            usuario: "",
+                fechaI: "",
+                fechaF: "",
+                estado: "",
+                usuario: "",
             },
+
+            pageElements: 4,
+            actualPage: 1,
+            pageNumeration: [],
+            paginate: true,
+            paginateData: [],
 
             subtareas: false,
             tareas : [],
@@ -845,7 +846,7 @@ export default {
 
         },
 
-        createTask() {
+        async createTask() {
             const currentSprintId = localStorage.getItem("currentSprintId");
             const task = {
                 Task_Name : this.taskName,
@@ -856,13 +857,17 @@ export default {
             if (this.validateTask(task, false) !== 'VALID') {
                 return;
             }
-
-            this.postTaskToAPI(task);
+            this.actualPage = 1
+            await this.postTaskToAPI(task);
+            this.tareas = []
+            await this.getTareasDesdeAPI()
+            await this.cutPages()
         },
 
         // async getTareasDesdeAPI() {
+        //    const idSprint = localStorage.getItem("currentSprintId")
         //     try {
-        //         const response = await AdminApi.GetAllTasks();
+        //         const response = await AdminApi.GetAllTasks(idSprint);
         //         const Tasklist = response.data.obj;
         //         this.tareas = Tasklist;
         //         console.log(this.tareas);
@@ -872,13 +877,214 @@ export default {
         // },
 
         async getTareasDesdeAPI() {
+            const idSprint = localStorage.getItem("currentSprintId")
+            this.actualPage = 1
             try {
-                const response = await AdminApi.GetAllTasks();
-                const Tasklist = response.data.obj;
-                this.tareas = Tasklist;
-                console.log(this.tareas);
+                if (this.tareas.length == 0) {
+                    const response = await AdminApi.GetAllTasks(idSprint);
+                    const Tasklist = response.data.obj;
+                    this.tareas = Tasklist;
+                    this.paginateData = [];
+                    if(this.tareas.length < this.pageElements){
+                        for (let index = 0; index < this.tareas.length; index++){
+                            this.paginateData.push(this.tareas[index]);
+                        }
+                    } else {
+                        for (let index = 0; index < this.pageElements; index++){
+                            this.paginateData.push(this.tareas[index]);
+                        }
+                    }
+                } else {
+                    this.paginateData = [];
+                    if(this.tareas.length < this.pageElements){
+                        for (let index = 0; index < this.tareas.length; index++){
+                            this.paginateData.push(this.tareas[index]);
+                        }
+                    } else {
+                        for (let index = 0; index < this.pageElements; index++){
+                            this.paginateData.push(this.tareas[index]);
+                        }
+                    }
+                }
             } catch (error) {
                 console.error('Error al cargar las tareas desde la API:', error);
+            }
+        },
+
+        aplyFilter: async function (state, word) {
+            const idSprint = localStorage.getItem("currentSprintId")
+            const response = await AdminApi.GetAllTasks(idSprint);
+            const TaskList = response.data.obj;
+            this.tareas = TaskList;
+            const filteredTasks = [];
+            let success = false;
+            
+            for (const project of this.tareas) {
+                const matchesState = (!state || project.Id_Status.toString() === state);
+                const matchesWord = (!word || project.Task_Name.toLowerCase().includes(word.toLowerCase()) || project.Description_Task.toLowerCase().includes(word.toLowerCase()));
+
+                if (matchesState && matchesWord) {
+                    filteredTasks.push(project);
+                    success = true;
+                }
+            }
+
+            if ((!success && (state || word))) {
+                this.paginateData = []
+                this.paginate = false
+                this.Filtros.fechaI = "";
+                this.Filtros.fechaF = "";
+                return
+            }
+
+            this.tareas = filteredTasks;
+            await this.getTareasDesdeAPI();
+            await this.cutPages();
+            this.actualPage = 1;
+            this.Filtros.fechaI = "";
+            this.Filtros.fechaF = "";
+        },
+
+        totalPages: function () {
+            return Math.ceil(this.tareas.length / this.pageElements)
+        },
+
+        changePage: async function (pageNum) {
+            if(pageNum != "..."){
+                this.paginateData = []
+                if (pageNum == undefined){
+                    pageNum = 1
+                }
+                this.actualPage = pageNum
+                let ini = (pageNum * this.pageElements) - this.pageElements;
+                let end = (pageNum * this.pageElements);
+                let total = this.tareas.length;
+                if(end < total){
+                    for (let index = ini; index < end; index++){
+                        this.paginateData.push(this.tareas[index]);
+                    }
+                } else{
+                    for (let index = ini; index < total; index++){
+                        this.paginateData.push(this.tareas[index]);
+                    }
+                }
+                await this.cutPages();
+            }
+        },
+
+        goBack: async function() {
+            this.paginateData = []
+            let paginaAnt = this.actualPage - 1
+            this.actualPage = paginaAnt
+            let ini = (paginaAnt * this.pageElements) - this.pageElements;
+            let end = (paginaAnt * this.pageElements);
+            let total = this.tareas.length;
+            if(end < total){
+                for (let index = ini; index < end; index++){
+                    this.paginateData.push(this.tareas[index]);
+                }
+            } else{
+                for (let index = ini; index < total; index++){
+                    this.paginateData.push(this.tareas[index]);
+                }
+            }
+            await this.cutPages();
+        },
+
+        goNext: async function() {
+            this.paginateData = []
+            let paginaAnt = this.actualPage + 1
+            this.actualPage = paginaAnt
+            let ini = (paginaAnt * this.pageElements) - this.pageElements;
+            let end = (paginaAnt * this.pageElements);
+            let total = this.tareas.length;
+            if(end < total){
+                for (let index = ini; index < end; index++){
+                    this.paginateData.push(this.tareas[index]);
+                }
+            } else{
+                for (let index = ini; index < total; index++){
+                    this.paginateData.push(this.tareas[index]);
+                }
+            }
+            await this.cutPages();
+        },
+
+        cutPages: async function () {
+            let pages = []
+            let numberOfPages = Math.ceil(this.tareas.length / this.pageElements)
+            let actualPage = this.actualPage
+            let numeration = 2
+            let numerationSide = Math.floor(numeration / 2)
+            let initialPage = 1
+            let finalPage = numberOfPages
+
+            if (numberOfPages > numeration) {
+
+                if (actualPage > numerationSide) {
+
+                    initialPage = actualPage - numerationSide
+
+                    finalPage = actualPage + numerationSide
+
+                } else {
+
+                    initialPage = 1
+
+                    finalPage = actualPage + numerationSide
+
+                    finalPage += (numerationSide - (actualPage - 1))
+
+                }
+
+                if (finalPage > numberOfPages) {
+
+                    finalPage = numberOfPages
+
+                    initialPage = numberOfPages - numeration + 1
+
+                }
+
+            }
+
+            for (let i = initialPage; i <= finalPage; i++) {
+
+                pages.push(i)
+
+            }
+
+            if (actualPage > (numerationSide + 2)) { pages.unshift("...") }
+
+            if (actualPage > (numerationSide + 1)) { pages.unshift(1) }
+
+            if (
+
+                (actualPage < (numberOfPages - numerationSide - 1)) &&
+
+                numberOfPages != finalPage
+
+            ) { pages.push("...") }
+
+            if (
+
+                (actualPage < (numberOfPages - numerationSide)) &&
+
+                numberOfPages != finalPage
+
+            ) { pages.push(numberOfPages) }
+
+            this.pageNumeration = pages
+
+            await this.validatePaginate();
+
+        },
+
+        validatePaginate: function () {
+            let quantity = this.tareas.length
+            if(quantity < 5){
+                this.paginate = false
+            } else {
+                this.paginate = true
             }
         },
 
@@ -917,21 +1123,18 @@ export default {
 
     created: async function () {
        
-         await this.verificarLog();
+        await this.verificarLog();
+        await this.getTareasDesdeAPI()
+        await this.cutPages();
         await this.$root.validarLoginFooter.call();
 
         let urlParams = new URLSearchParams(window.location.search);
         this.currentSprintId = urlParams.get('id') || localStorage.getItem("currentSprintId");
-
-        this.getTareasDesdeAPI()
     }
 
 }
 
 </script>
-
-<style>
-</style>
 
 <style scoped>
 

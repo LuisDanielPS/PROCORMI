@@ -174,12 +174,13 @@
                         <!--Lista de proyectos /-->
 
                         <div class="row" style="padding:15px; min-height: 95vh; padding-right: 45px;">
-                            <div class="col-12 estiloTabla">
+                            <div class="col-12 estiloTabla tableHeight">
                                 <div class="card" style="border: none;" ref="cuadroLoader">
 
                                     <div class="encabezado">
                                         <div style="text-align: left;">
-                                            <FiltroSuperior class="justify-content-center buscador" />
+                                            <div>
+                                            </div>
                                         </div>
                                         <div style="text-align: center; padding-top: 10px; cursor: default;">
                                             <h4>Listado de Proyectos</h4>
@@ -195,25 +196,16 @@
                                     </div>
 
                                     <div class="row">
-                                        <div class="col-3">
+                                        <div class="col-3" style="min-width: 105px;">
                                             <div>
                                                 <a class="text-black fas fa-calendar-alt"></a>
-                                                <label class="text-black p-3 Td">Fecha inicio</label>
+                                                <label class="text-black p-3 Td">Fecha</label>
                                             </div>
                                             <input type="date" id="fechaInicio" class="diseñoSelectLateral"
                                                 style="cursor: pointer; border-radius: 5px;" v-model="Filtros.fechaI">
                                         </div>
 
-                                        <div class="col-3">
-                                            <div>
-                                                <a class="text-black fas fa-calendar-alt"></a>
-                                                <label class="text-black p-3 Td">Fecha Fin</label>
-                                            </div>
-                                            <input type="date" id="fechaFin" class="diseñoSelectLateral"
-                                                style="cursor: pointer; border-radius: 5px;" v-model="Filtros.fechaF">
-                                        </div>
-
-                                        <div class="col-3">
+                                        <div class="col-3" style="min-width: 105px;">
                                             <div>
                                                 <a class="text-black fas fa-check-square"
                                                     style="text-decoration: none;"></a>
@@ -221,35 +213,38 @@
                                             </div>
                                             <select class="form-select diseñoSelectLateral" v-model="Filtros.estado">
                                                 <option value="">Todos</option>
-                                                <!--<option v-bind:value="Estado.gen_EstadoCodigo"
-                                                        v-for="Estado in ListaEstados"
-                                                        v-bind:key="Estado.gen_EstadoID">
-                                                    {{Estado.gen_EstadoDescripcion}}
-                                                </option>-->
+                                                <option value="1">Activo</option>
+                                                <option value="2">Pendiente</option>
                                             </select>
                                         </div>
 
-                                        <div v-if="recuperarUsuTipo() == 'Administrador'" class="col-3">
+                                        <div class="col-5" style="min-width: 95px;">
                                             <div>
-                                                <a class="text-black fas fa-user"></a>
-                                                <label class="text-black p-3 Td">Usuario</label>
+                                                <a class="text-black fas fa-pen-square"
+                                                    style="text-decoration: none;"></a>
+                                                <label class="text-black p-3 Td">Palabra</label>
                                             </div>
-                                            <select class="form-select diseñoSelectLateral" v-model="Filtros.usuario">
-                                                <option value="">Todos</option>
-                                                <!--<option v-bind:value="Usuario.usu_Login"
-                                                        v-for="Usuario in ListaUsuarios"
-                                                        v-bind:key="Usuario.usu_Login">
-                                                    {{Usuario.usu_Login}}
-                                                </option>-->
-                                            </select>
+                                            <div>
+                                                <input autocomplete="off" maxlength="70" class="diseñoSelectLateral" type="search" id="pClaveInput" placeholder="Buscar" v-model="Filtros.palabra">
+                                            </div>
                                         </div>
+
+                                        <div class="col-1">
+                                            <div>
+                                                <label class="text-white p-3 Td">.</label>
+                                            </div>
+                                            <div>
+                                                <button type="button" class="btn btn-success" @click="aplyFilter(Filtros.fechaI, Filtros.estado, Filtros.palabra)"><span class="fas fa-search"></span></button>
+                                            </div>
+                                        </div>
+
                                     </div>
 
-                                    <!--<div class="sinResultadosAct">
+                                    <div v-if="paginateData.length == 0" class="sinResultadosAct">
                                         <p>No hay proyectos para mostrar</p>
-                                    </div>-->
+                                    </div>
 
-                                    <div class="contenidoTabla">
+                                    <div v-if="paginateData.length > 0" class="contenidoTabla">
                                         <table class="table table-stryped" style="text-align: center;">
                                             <thead>
                                                 <tr>
@@ -257,11 +252,11 @@
                                                     <th class="col-4" style="min-width: 150px;">Nombre</th>
                                                     <th class="col-3" style="min-width: 125px;">Fecha Creacion</th>
                                                     <th class="col-2" style="min-width: 125px;">Estado</th>
-                                                    <th class="col-2" style="min-width: 125px;">Opciones</th>
+                                                    <th class="col-2" style="min-width: 150px;">Opciones</th>
                                                 </tr>
                                             </thead>
                                             <tbody style="font-size: large;">
-                                                <tr v-for="proyecto in proyectos" :key="proyecto.Id_project" >
+                                                <tr v-for="proyecto in paginateData" :key="proyecto.Id_project" >
                                                     <td @click="verSprints(proyecto.Id_project)" class="claseTD">{{ proyecto.Id_project }}</td>
                                                     <td @click="verSprints(proyecto.Id_project)" class="claseTD">{{ proyecto.Project_Name }}</td>
                                                     <td @click="verSprints(proyecto.Id_project)" class="claseTD">{{ $filters.FormatearFecha(proyecto.Creation_Date) }}</td>
@@ -290,14 +285,13 @@
                                     </div>
                                 </div>
                             </div>
-                            <nav aria-label="Page navigation example"
-                                style="position: absolute; bottom: 25px; margin-left: 25px;">
-                                <ul class="pagination">
-                                    <li class="page-item"><a class="page-link" href="#">Anterior</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">Siguiente</a></li>
+                            <nav v-if="paginate" aria-label="Page navigation example" style="position: absolute; bottom: 25px; margin-left: 25px;">
+                                <ul class="pagination cursorPaginados">
+                                    <li class="page-item"><a class="page-link" v-on:click="goBack()">Anterior</a></li>
+                                    <li v-for="pagina in pageNumeration" v-bind:key="pagina" class="page-item">
+                                        <a class="page-link" v-on:click="changePage(pagina)" v-bind:class="{ active: (pagina == actualPage) }">{{pagina}}</a>
+                                    </li>
+                                    <li class="page-item"><a class="page-link" v-on:click="goNext()">Siguiente</a></li>
                                 </ul>
                             </nav>
                         </div>
@@ -316,13 +310,12 @@
 import Cookies from 'js-cookie';
 import HeaderPrincipal from '@/components/HeaderPrincipal.vue'
 import MenuLateral from '@/components/MenuLateral.vue'
-import FiltroSuperior from '@/components/FiltroSuperior.vue'
 import AdminApi from '@/Api/Api';
 
 export default {
 
     components: {
-        HeaderPrincipal, MenuLateral, FiltroSuperior
+        HeaderPrincipal, MenuLateral
     },
 
     data() {
@@ -344,11 +337,16 @@ export default {
             filtroDesplegar: false,
 
             Filtros: {
+                palabra: "",
                 fechaI: "",
-                fechaF: "",
                 estado: "",
-                usuario: "",
             },
+
+            pageElements: 4,
+            actualPage: 1,
+            pageNumeration: [],
+            paginate: true,
+            paginateData: [],
 
         }
     },
@@ -411,16 +409,215 @@ export default {
         },
 
         getProyectosDesdeAPI: async function () {
+            this.actualPage = 1
             try {
-                const response = await AdminApi.GetAllProject();
-                const Projectlist=response.data.obj;
-                this.proyectos = Projectlist;
+                if (this.proyectos.length == 0) {
+                    const response = await AdminApi.GetAllProject();
+                    const Projectlist = response.data.obj;
+                    this.proyectos = Projectlist;
+                    this.paginateData = [];
+                    if(this.proyectos.length < this.pageElements){
+                        for (let index = 0; index < this.proyectos.length; index++){
+                            this.paginateData.push(this.proyectos[index]);
+                        }
+                    } else {
+                        for (let index = 0; index < this.pageElements; index++){
+                            this.paginateData.push(this.proyectos[index]);
+                        }
+                    }
+                } else {
+                    this.paginateData = [];
+                    if(this.proyectos.length < this.pageElements){
+                        for (let index = 0; index < this.proyectos.length; index++){
+                            this.paginateData.push(this.proyectos[index]);
+                        }
+                    } else {
+                        for (let index = 0; index < this.pageElements; index++){
+                            this.paginateData.push(this.proyectos[index]);
+                        }
+                    }
+                }
             } catch (error) {
                 console.error('Error al cargar los proyectos desde la API:', error);
             }
 
-        }
-        , 
+        },
+
+        aplyFilter: async function (date, state, word) {
+            const response = await AdminApi.GetAllProject();
+            const Projectlist = response.data.obj;
+            this.proyectos = Projectlist;
+            const filteredProjects = [];
+            let success = false;
+
+            for (const project of this.proyectos) {
+                const matchesDate = (!date || project.Creation_Date.includes(date));
+                const matchesState = (!state || project.Id_State.toString() === state);
+                const matchesWord = (!word || project.Project_Name.toLowerCase().includes(word.toLowerCase()) || project.Description_Project.toLowerCase().includes(word.toLowerCase()));
+
+                if (matchesDate && matchesState && matchesWord) {
+                    filteredProjects.push(project);
+                    success = true;
+                }
+            }
+
+            if ((!success && (date || state || word))) {
+                this.paginateData = []
+                this.paginate = false
+                this.Filtros.fechaI = "";
+                return
+            }
+
+            this.proyectos = filteredProjects;
+            await this.getProyectosDesdeAPI();
+            await this.cutPages();
+            this.actualPage = 1;
+            this.Filtros.fechaI = "";
+        },
+
+        totalPages: function () {
+            return Math.ceil(this.proyectos.length / this.pageElements)
+        },
+
+        changePage: async function (pageNum) {
+            if(pageNum != "..."){
+                this.paginateData = []
+                if (pageNum == undefined){
+                    pageNum = 1
+                }
+                this.actualPage = pageNum
+                let ini = (pageNum * this.pageElements) - this.pageElements;
+                let end = (pageNum * this.pageElements);
+                let total = this.proyectos.length;
+                if(end < total){
+                    for (let index = ini; index < end; index++){
+                        this.paginateData.push(this.proyectos[index]);
+                    }
+                } else{
+                    for (let index = ini; index < total; index++){
+                        this.paginateData.push(this.proyectos[index]);
+                    }
+                }
+                await this.cutPages();
+            }
+        },
+
+        goBack: async function() {
+            this.paginateData = []
+            let paginaAnt = this.actualPage - 1
+            this.actualPage = paginaAnt
+            let ini = (paginaAnt * this.pageElements) - this.pageElements;
+            let end = (paginaAnt * this.pageElements);
+            let total = this.proyectos.length;
+            if(end < total){
+                for (let index = ini; index < end; index++){
+                    this.paginateData.push(this.proyectos[index]);
+                }
+            } else{
+                for (let index = ini; index < total; index++){
+                    this.paginateData.push(this.proyectos[index]);
+                }
+            }
+            await this.cutPages();
+        },
+
+        goNext: async function() {
+            this.paginateData = []
+            let paginaAnt = this.actualPage + 1
+            this.actualPage = paginaAnt
+            let ini = (paginaAnt * this.pageElements) - this.pageElements;
+            let end = (paginaAnt * this.pageElements);
+            let total = this.proyectos.length;
+            if(end < total){
+                for (let index = ini; index < end; index++){
+                    this.paginateData.push(this.proyectos[index]);
+                }
+            } else{
+                for (let index = ini; index < total; index++){
+                    this.paginateData.push(this.proyectos[index]);
+                }
+            }
+            await this.cutPages();
+        },
+
+        cutPages: async function () {
+            let pages = []
+            let numberOfPages = Math.ceil(this.proyectos.length / this.pageElements)
+            let actualPage = this.actualPage
+            let numeration = 2
+            let numerationSide = Math.floor(numeration / 2)
+            let initialPage = 1
+            let finalPage = numberOfPages
+
+            if (numberOfPages > numeration) {
+
+                if (actualPage > numerationSide) {
+
+                    initialPage = actualPage - numerationSide
+
+                    finalPage = actualPage + numerationSide
+
+                } else {
+
+                    initialPage = 1
+
+                    finalPage = actualPage + numerationSide
+
+                    finalPage += (numerationSide - (actualPage - 1))
+
+                }
+
+                if (finalPage > numberOfPages) {
+
+                    finalPage = numberOfPages
+
+                    initialPage = numberOfPages - numeration + 1
+
+                }
+
+            }
+
+            for (let i = initialPage; i <= finalPage; i++) {
+
+                pages.push(i)
+
+            }
+
+            if (actualPage > (numerationSide + 2)) { pages.unshift("...") }
+
+            if (actualPage > (numerationSide + 1)) { pages.unshift(1) }
+
+            if (
+
+                (actualPage < (numberOfPages - numerationSide - 1)) &&
+
+                numberOfPages != finalPage
+
+            ) { pages.push("...") }
+
+            if (
+
+                (actualPage < (numberOfPages - numerationSide)) &&
+
+                numberOfPages != finalPage
+
+            ) { pages.push(numberOfPages) }
+
+            this.pageNumeration = pages
+
+            await this.validatePaginate();
+
+        },
+
+        validatePaginate: function () {
+            let quantity = this.proyectos.length
+            if(quantity < 5){
+                this.paginate = false
+            } else {
+                this.paginate = true
+            }
+        },
+        
         getPasswordVerifyDeleteRow: async function () {
             let login = this.recuperarUsuLog()
             try {
@@ -495,9 +692,9 @@ export default {
     },
 
     created: async function () {
-   
-        await this.getProyectosDesdeAPI();
         await this.verificarLog();
+        await this.getProyectosDesdeAPI();
+        await this.cutPages();
         await this.$root.validarLoginFooter.call();
     }
      
@@ -509,9 +706,8 @@ export default {
 
 </script>
 
-<style></style>
-
 <style scoped>
+
 #header {
     margin: auto;
     width: 500px;

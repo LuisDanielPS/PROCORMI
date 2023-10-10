@@ -119,9 +119,45 @@ button, button:focus, button:hover { outline: none; }
         box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.5);
     }
 
+    .inputFiltro{
+        max-width: 300px;
+    }
+
+    @media screen and (max-width: 920px) {
+        .inputFiltro{
+            max-width: 280px;
+        }
+    }
+
+    @media screen and (max-width: 800px) {
+        .inputFiltro{
+            max-width: 200px;
+        }
+    }
+
+    @media screen and (max-width: 400px) {
+        .inputFiltro{
+            max-width: 150px;
+        }
+    }
+
+    .tableHeight{
+        min-height: 100vh;
+    }
+
+    @media screen and (max-width: 900px) {
+        .tableHeight{
+            min-height: 100vh;
+        }
+    }
+
 .active-link {
     font-weight: bold;
     color: rgb(87, 142, 179) !important;
+}
+
+.cursorPaginados {
+    cursor: pointer;
 }
 
 .gridEncabezado{

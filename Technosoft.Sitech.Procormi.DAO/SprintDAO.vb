@@ -14,7 +14,7 @@ Public Class SprintDAO
 
     Dim sentence As String = ""
 
-    Public Function GetSprintsAllDAO() As Reply(Of List(Of SprintEN))
+    Public Function GetSprintsAllDAO(idProyect As Integer) As Reply(Of List(Of SprintEN))
 
         Dim reply As New Reply(Of List(Of SprintEN))
         Dim dr As MySqlDataReader
@@ -22,7 +22,7 @@ Public Class SprintDAO
 
         Try
 
-            sentence = "SELECT * FROM sprint"
+            sentence = "SELECT * FROM sprint where Id_Project = " & idProyect & ";"
 
             dr = ConexionDAO.Instancia.ExecuteConsultGetAllSprints(sentence)
 
