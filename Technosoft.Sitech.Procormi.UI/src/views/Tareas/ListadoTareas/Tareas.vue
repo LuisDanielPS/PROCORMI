@@ -59,7 +59,7 @@
                                     <label>Nombre</label>
                                     <br />
                                     <div style="margin-top: 15px;">
-                                        <input v-model="taskNameUnderEdit" required style="border-radius: 5px;" type="text" placeholder="Nombre">
+                                        <input v-model="taskNameUnderEdit" required style="border-radius: 5px;" maxLength="45" type="text" placeholder="Nombre">
                                     </div>
                                 </div>
                                 <div class="row">
@@ -67,7 +67,7 @@
                                         <div>
                                             <label class="margin-15px-bottom text-black">Descripción</label>
                                             <div>
-                                                <input v-model="taskDescriptionUnderEdit" required style="border-radius: 5px;" type="textarea" placeholder="Descripcion...">
+                                                <input v-model="taskDescriptionUnderEdit" required style="border-radius: 5px;" maxLength="100" type="textarea" placeholder="Descripcion...">
                                             </div>
                                         </div>
                                     </div>
@@ -745,6 +745,19 @@ export default {
 
             return 'VALID';
         },
+
+
+
+
+
+
+
+
+
+
+
+
+        
 
         async deleteTask(task) {
             this.currentTask = task
