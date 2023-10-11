@@ -211,11 +211,11 @@
                                             </div>
                                             <select class="form-select diseñoSelectLateral" v-model="Filtros.estado">
                                                 <option value="">Todos</option>
-                                                <!--<option v-bind:value="Estado.gen_EstadoCodigo"
-                                                        v-for="Estado in ListaEstados"
-                                                        v-bind:key="Estado.gen_EstadoID">
-                                                    {{Estado.gen_EstadoDescripcion}}
-                                                </option>-->
+                                                <option value="1" >Activa</option>
+                                                <option value="2" >Inactiva</option>
+                                                <option value="3" >Pendiente</option>
+                                                <option value="4" >En Proceso</option>
+                                                <option value="5" >Finalizada</option>
                                             </select>
                                         </div>
 
