@@ -175,8 +175,17 @@ export default {
             headers: { 'Content-Type': 'application/json; charset=UTF-8' }
         })
 
-    }  
-    ,
+    }, 
+    
+    PutDisableSprintStatus(IdSprint)
+    {
+        return apicliente.put('Sprint/PutDisableSprintStatus?pIdSprint='+ IdSprint, {
+            withCredentials: false,
+            headers: { 'Content-Type': 'application/json; charset=UTF-8' }
+        })
+
+    },
+    
     PutTaskDisableStatus(IdTask) {
         return apicliente.put(`Task/PutTaskByDisabling?pTaskId=${IdTask}`, {
             withCredentials: false,

@@ -290,9 +290,6 @@ export default {
 
             }
 
-
-
-
             if (
                 this.project.Project_Name.trim() != "" &&
                 quilltext.trim() != "" &&

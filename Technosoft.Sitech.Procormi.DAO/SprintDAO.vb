@@ -187,7 +187,35 @@ Public Class SprintDAO
 
 
     End Function
+    Public Function PutDisableStatusDAO(ByVal pIdSprint As Integer) As Reply(Of SprintEN)
 
+        Dim reply As New Reply(Of SprintEN)
+
+        Try
+            If pIdSprint = 0 Then
+                reply.ok = False
+                reply.msg = "El objeto del sprint esta Vacio"
+
+
+            ElseIf pIdSprint <> 0 Then
+                sentence = "UPDATE sprint SET Id_Status = 2  WHERE Id_Sprint = @Condition"
+
+                ConexionDAO.Instancia.ExecuteSprintDisableStatus(sentence, pIdSprint)
+                reply.ok = True
+                reply.msg = "Se ha eliminado el sprint"
+
+            End If
+
+        Catch ex As Exception
+            EscritorVisorEventos.Instancia().EscribirEvento(nameClass, MethodBase.GetCurrentMethod().Name, ex)
+            reply.ok = False
+            reply.msg = "No fue posible ejecutar la consulta: " & ex.Message
+            Return reply
+        End Try
+
+        Return reply
+
+    End Function
     Public Function DeleteSprintDAO(ByVal pIdSprint As String) As Reply(Of SprintEN)
 
         Dim reply As New Reply(Of SprintEN)

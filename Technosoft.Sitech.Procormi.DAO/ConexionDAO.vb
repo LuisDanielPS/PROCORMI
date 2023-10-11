@@ -492,6 +492,22 @@ Public Class ConexionDAO
         End Try
     End Sub
 
+    Public Sub ExecuteSprintDisableStatus(ByVal psSql As String, ByVal PidSprint As Integer)
+        Try
+            conn = New MySqlConnection(conStr)
+            sql = New MySqlCommand(psSql, conn)
+            sql.Parameters.AddWithValue("@Condition", PidSprint)
+            sql.CommandType = CommandType.Text
+            conn.Open()
+            sql.ExecuteNonQuery()
+            conn.Close()
+        Catch ex As MySqlException
+            EscritorVisorEventos.Instancia().EscribirEvento(nombreClase, MethodBase.GetCurrentMethod().Name, ex)
+            Throw New Exception("Error al ejecutar la inserción")
+        End Try
+
+    End Sub
+
     Public Sub ExecuteDeleteSprint(ByVal psSql As String, ByVal pIdSprint As String)
         Try
             conn = New MySqlConnection(conStr)

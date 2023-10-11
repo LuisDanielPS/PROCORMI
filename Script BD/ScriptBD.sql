@@ -1,10 +1,10 @@
 CREATE DATABASE  IF NOT EXISTS `procormi` /*!40100 DEFAULT CHARACTER SET latin1 */ /*!80016 DEFAULT ENCRYPTION='N' */;
 USE `procormi`;
--- MySQL dump 10.13  Distrib 8.0.31, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.34, for Win64 (x86_64)
 --
 -- Host: localhost    Database: procormi
 -- ------------------------------------------------------
--- Server version	8.0.31
+-- Server version	8.0.34
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -55,7 +55,7 @@ CREATE TABLE `answer` (
   PRIMARY KEY (`Id_Answer`),
   KEY `Fk_Question_Answer_idx` (`Id_Question`),
   CONSTRAINT `Fk_Question_Answer` FOREIGN KEY (`Id_Question`) REFERENCES `question` (`Id_Question`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -131,7 +131,7 @@ CREATE TABLE `poll` (
   `Description` varchar(45) DEFAULT NULL,
   `Creation_Date` datetime DEFAULT NULL,
   PRIMARY KEY (`Id_Poll`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -154,7 +154,7 @@ CREATE TABLE `priority` (
   `Id_Priority` int NOT NULL,
   `Priority_Name` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`Id_Priority`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -182,7 +182,7 @@ CREATE TABLE `project` (
   PRIMARY KEY (`Id_Project`),
   KEY `Fk_Status_idx` (`Id_Status`),
   CONSTRAINT `Fk_Status_Project` FOREIGN KEY (`Id_Status`) REFERENCES `status` (`Id_Status`)
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -242,7 +242,7 @@ CREATE TABLE `question` (
   KEY `Fk_Poll_idx` (`Id_Poll`),
   CONSTRAINT `Fk_Poll` FOREIGN KEY (`Id_Poll`) REFERENCES `poll` (`Id_Poll`),
   CONSTRAINT `Fk_Question_Type` FOREIGN KEY (`Id_Question_Type`) REFERENCES `question_type` (`Id_Question_Type`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -321,7 +321,7 @@ CREATE TABLE `seg_usu` (
   `usu_remote` smallint NOT NULL DEFAULT '0',
   `horario_numero` bigint NOT NULL DEFAULT '1',
   PRIMARY KEY (`usu_Login`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -350,7 +350,7 @@ CREATE TABLE `seg_usu_project` (
   KEY `Fk_Id_Project_idx` (`Id_Project`),
   CONSTRAINT `Fk_Id_Project` FOREIGN KEY (`Id_Project`) REFERENCES `project` (`Id_Project`),
   CONSTRAINT `Fk_User_Login` FOREIGN KEY (`User_Login`) REFERENCES `seg_usu` (`usu_Login`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -385,7 +385,7 @@ CREATE TABLE `sprint` (
   CONSTRAINT `Fk_Project` FOREIGN KEY (`Id_Project`) REFERENCES `project` (`Id_Project`),
   CONSTRAINT `Fk_Status_Sprint` FOREIGN KEY (`Id_Status`) REFERENCES `status` (`Id_Status`),
   CONSTRAINT `Fk_User` FOREIGN KEY (`User_Login`) REFERENCES `seg_usu` (`usu_Login`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -409,7 +409,7 @@ CREATE TABLE `status` (
   `Id_Status` int NOT NULL,
   `Status_Name` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`Id_Status`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -431,9 +431,9 @@ DROP TABLE IF EXISTS `sub_task`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `sub_task` (
   `Id_Sub_Task` int NOT NULL AUTO_INCREMENT,
-  `Titule` varchar(45) DEFAULT NULL,
+  `Title` varchar(45) DEFAULT NULL,
   `Description` varchar(300) DEFAULT NULL,
-  `Requirid_Time` int DEFAULT NULL,
+  `Required_Time` int DEFAULT NULL,
   `Id_Task` int NOT NULL,
   `Id_Status` int NOT NULL,
   `Id_Priority` int NOT NULL,
@@ -444,7 +444,7 @@ CREATE TABLE `sub_task` (
   CONSTRAINT `Fk_Priority` FOREIGN KEY (`Id_Priority`) REFERENCES `priority` (`Id_Priority`),
   CONSTRAINT `Fk_Status` FOREIGN KEY (`Id_Status`) REFERENCES `status` (`Id_Status`),
   CONSTRAINT `Fk_Task` FOREIGN KEY (`Id_Task`) REFERENCES `task` (`Id_Task`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -474,7 +474,7 @@ CREATE TABLE `task` (
   KEY `Fk_Sprint_idx` (`Id_Sprint`),
   CONSTRAINT `Fk_Sprint` FOREIGN KEY (`Id_Sprint`) REFERENCES `sprint` (`Id_Sprint`),
   CONSTRAINT `Fk_Status_Task` FOREIGN KEY (`Id_Status`) REFERENCES `status` (`Id_Status`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -483,7 +483,7 @@ CREATE TABLE `task` (
 
 LOCK TABLES `task` WRITE;
 /*!40000 ALTER TABLE `task` DISABLE KEYS */;
-INSERT INTO `task` VALUES (1,'ASD','ASD',1,2),(2,'asdasd','asdasdasd',1,4),(3,'asdasd','asdasd',1,5);
+INSERT INTO `task` VALUES (1,'Prueba1','Task1',1,2),(2,'Prueba2','Task2',1,3),(3,'Prueba','Task3',1,2),(4,'Sasss','Prueba1',1,2);
 /*!40000 ALTER TABLE `task` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -496,4 +496,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-10-05 23:47:26
+-- Dump completed on 2023-10-10 19:01:27

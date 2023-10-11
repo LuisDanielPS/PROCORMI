@@ -6,6 +6,66 @@
         <div class="posicion0" v-on:click="cerrarMenu()">
             <div class="d-flex">
 
+                <!--Modal Ver Sprint-->
+
+                <div class="modal fade" id="verSprint" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+                    aria-labelledby="verSprint" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-scrollable modal-xl">
+                        <div class="modal-content bg-gradient-gray">
+                            <div class="modal-header">
+                                <div class="col-12">
+                                    <div class="row" style="text-align: right;">
+                                        <div class="col-md-12 col-xs-12">
+                                            <button
+                                                style="border: none; background-color: transparent; min-height: 15px; min-width: 25px; font-size: 30px;"
+                                                type="button" data-bs-dismiss="modal">&times;</button>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                    </div>
+                                </div>
+                            </div>
+                            <br />
+                            <div class="modal-body">
+                                <div class="col-md-12 col-xs-12" style="min-height: 350px; max-height: 400px">
+                                    <div>
+                                        <div class="col-12">
+                                            <h1 style="text-align:center"><strong>{{ currentSprint ?
+                                                currentSprint.Sprint_Name : '' }}</strong></h1>
+                                        </div>
+                                    </div>
+                                    <br/>
+                                    <div class="col-md-12 col-xs-12" style="min-height: 350px; max-height: 400px">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <h4 class="modal-title" style="text-align: left">
+                                                    <strong>{{ 'Fecha de Inicio: ' + (currentSprint ?
+                                                        formatoFecha(currentSprint.Start_Date) : '') }}</strong>
+                                                </h4>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <h4 class="modal-title" style="text-align: left">
+                                                    <strong>{{ 'Fecha de Finalización: ' + (currentSprint ?
+                                                        formatoFecha(currentSprint.End_Date) : '') }}</strong>
+                                                </h4>
+                                            </div>
+                                        </div>
+                                        <br/>
+                                        <div class="row justify-content-center" style="position: relative;">
+                                        </div>
+                                        <br />
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--Modal Ver Sprint-->
+
                 <!--Modal crear Sprint-->
 
                 <div class="modal fade" id="staticBackdrop" tabindex="-1" aria-labelledby="exampleModalLabel"
@@ -21,8 +81,8 @@
                                     <label>Nombre<span style="color: red;"> *</span></label>
                                     <br />
                                     <div style="margin-top: 15px;">
-                                        <input v-model.trim="sprint.Sprint_Name" ref="inputSprintName" maxlength="45"  required 
-                                            style="border-radius: 5px;" type="text" placeholder="Nombre">
+                                        <input v-model.trim="sprint.Sprint_Name" ref="inputSprintName" maxlength="45"
+                                            required style="border-radius: 5px;" type="text" placeholder="Nombre">
                                     </div>
                                 </div>
                                 <br />
@@ -60,7 +120,7 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal"
-                                    @click="this.limpiarContenido">Cancelar</button>
+                                    @click="limpiarContenido()">Cancelar</button>
                                 <button @click="createSprint" type="button" ref="inputDate" class="btn btn-success"
                                     data-bs-dismiss="modal">Guardar</button>
                             </div>
@@ -88,16 +148,21 @@
                                     <label>Digite su contraseña</label>
                                     <br />
                                     <div class="row" style="margin-top: 15px;">
-                                        <input v-model="verifyPassword" class="col-10" style="margin-left: 10px; border-radius: 5px;" type="password"
-                                            required placeholder="Contraseña">
+                                        <input v-model="verifyPassword" class="col-10"
+                                            style="margin-left: 10px; border-radius: 5px;" type="password" required
+                                            placeholder="Contraseña">
                                         <button @click="getPasswordVerifyDeleteRow()" type="button"
-                                            class="btn btn-success col-1" style="margin-left: 5px;"><span class="fas fa-check"></span></button>
+                                            class="btn btn-success col-1" style="margin-left: 5px;"><span
+                                                class="fas fa-check"></span></button>
                                     </div>
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button @click="this.limpiarContenido" type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
-                                <button @click="deleteRowList()" class="btn btn-success" >Aceptar</button>
+                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal"
+                                    @click="limpiarContenido()">Cancelar</button>
+                                <button @click="deleteRowList()" class="btn btn-success"
+                                    :disabled="!isButtonEnabled">Aceptar</button>
+
                             </div>
                         </div>
                     </div>
@@ -211,11 +276,11 @@
                                             </div>
                                             <select class="form-select diseñoSelectLateral" v-model="Filtros.estado">
                                                 <option value="">Todos</option>
-                                                <option value="1" >Activa</option>
-                                                <option value="2" >Inactiva</option>
-                                                <option value="3" >Pendiente</option>
-                                                <option value="4" >En Proceso</option>
-                                                <option value="5" >Finalizada</option>
+                                                <option value="1">Activa</option>
+                                                <option value="2">Inactiva</option>
+                                                <option value="3">Pendiente</option>
+                                                <option value="4">En Proceso</option>
+                                                <option value="5">Finalizada</option>
                                             </select>
                                         </div>
 
@@ -226,10 +291,9 @@
                                             </div>
                                             <select class="form-select diseñoSelectLateral" v-model="Filtros.usuario">
                                                 <option value="">Todos</option>
-                                                <option v-bind:value="Usuario.usu_Login"
-                                                        v-for="Usuario in listUsers"
-                                                        v-bind:key="Usuario.usu_Login">
-                                                    {{Usuario.usu_Login}}
+                                                <option v-bind:value="Usuario.usu_Login" v-for="Usuario in listUsers"
+                                                    v-bind:key="Usuario.usu_Login">
+                                                    {{ Usuario.usu_Login }}
                                                 </option>
                                             </select>
                                         </div>
@@ -237,10 +301,14 @@
 
                                     <div class="row" style="margin-top: 20px">
                                         <div class="col-6">
-                                            <input autocomplete="off" maxlength="70" class="diseñoSelectLateral" type="search" id="pClaveInput" placeholder="Buscar" v-model="Filtros.palabra">
+                                            <input autocomplete="off" maxlength="70" class="diseñoSelectLateral"
+                                                type="search" id="pClaveInput" placeholder="Buscar"
+                                                v-model="Filtros.palabra">
                                         </div>
                                         <div class="col-6">
-                                            <button type="button" class="btn btn-success" style="float: left" @click="aplyFilter(Filtros.fechaI, Filtros.fechaF, Filtros.estado, Filtros.usuario, Filtros.palabra)"><span class="fas fa-search"></span></button>
+                                            <button type="button" class="btn btn-success" style="float: left"
+                                                @click="aplyFilter(Filtros.fechaI, Filtros.fechaF, Filtros.estado, Filtros.usuario, Filtros.palabra)"><span
+                                                    class="fas fa-search"></span></button>
                                         </div>
                                     </div>
 
@@ -273,18 +341,20 @@
                                                     <td @click="verTareas(sprint.Id_Sprint)" class="claseTD">
                                                         {{ sprint.Id_Status == 1 ? "Activo" : "Inactivo" }}</td>
                                                     <td class="text-white" style="min-width: 130px;">
-                                                        <button class="btn btn-primary" role="button" @click="verTareas">
+                                                        <button @click="() => selectCurrentSprint(sprint)"
+                                                            class="btn btn-primary" role="button" data-bs-toggle="modal"
+                                                            data-bs-target="#verSprint">
                                                             <span class="fas fa-eye" b-tooltip.hover
                                                                 title="Ver Sprint"></span>
                                                         </button>
                                                         <button style="margin-left: 5px;" type="button"
-                                                            class="btn btn-success" v-on:click="EditarSprint(1)">
+                                                            class="btn btn-success" v-on:click="EditarSprint(sprint.Id_Sprint)">
                                                             <span class="fas fa-pen" b-tooltip.hover
                                                                 title="Editar Sprint"></span>
                                                         </button>
-                                                        <button type="button" class="btn btn-danger"
-                                                            style="margin-left: 5px;" data-bs-toggle="modal"
-                                                            data-bs-target="#exampleModal">
+                                                        <button @click="saveIdSprintDelete(sprint.Id_Sprint)" type="button"
+                                                            class="btn btn-danger" style="margin-left: 5px;"
+                                                            data-bs-toggle="modal" data-bs-target="#exampleModal">
                                                             <span class="fas fa-trash" b-tooltip.hover
                                                                 title="Eliminar Sprint"></span>
                                                         </button>
@@ -296,11 +366,13 @@
                                     </div>
                                 </div>
                             </div>
-                            <nav v-if="paginate" aria-label="Page navigation example" style="position: absolute; bottom: 25px; margin-left: 25px;">
+                            <nav v-if="paginate" aria-label="Page navigation example"
+                                style="position: absolute; bottom: 25px; margin-left: 25px;">
                                 <ul class="pagination cursorPaginados">
                                     <li class="page-item"><a class="page-link" v-on:click="goBack()">Anterior</a></li>
                                     <li v-for="pagina in pageNumeration" v-bind:key="pagina" class="page-item">
-                                        <a class="page-link" v-on:click="changePage(pagina)" v-bind:class="{ active: (pagina == actualPage) }">{{pagina}}</a>
+                                        <a class="page-link" v-on:click="changePage(pagina)"
+                                            v-bind:class="{ active: (pagina == actualPage) }">{{ pagina }}</a>
                                     </li>
                                     <li class="page-item"><a class="page-link" v-on:click="goNext()">Siguiente</a></li>
                                 </ul>
@@ -331,16 +403,18 @@ export default {
 
     data() {
         return {
+
             selectedUser: null,
             UserlistAdd: [],
             listUsers: [],
             sprints: [],
-            verifyPassword:"",
-            validationMessage : '',
-            confimPassworsDelete : '',
-            idSprintDeleteVerify:0,
-
+            verifyPassword: false,
+            validationMessage: '',
+            confimPassworsDelete: false,
+            idSprintDeleteVerify: 0,
             filtroDesplegar: false,
+            isButtonEnabled: false,
+            currentSprint: null,
 
             Filtros: {
                 fechaI: "",
@@ -377,23 +451,23 @@ export default {
                     const Sprintlist = response.data.obj;
                     this.sprints = Sprintlist;
                     this.paginateData = [];
-                    if(this.sprints.length < this.pageElements){
-                        for (let index = 0; index < this.sprints.length; index++){
+                    if (this.sprints.length < this.pageElements) {
+                        for (let index = 0; index < this.sprints.length; index++) {
                             this.paginateData.push(this.sprints[index]);
                         }
                     } else {
-                        for (let index = 0; index < this.pageElements; index++){
+                        for (let index = 0; index < this.pageElements; index++) {
                             this.paginateData.push(this.sprints[index]);
                         }
                     }
                 } else {
                     this.paginateData = [];
-                    if(this.sprints.length < this.pageElements){
-                        for (let index = 0; index < this.sprints.length; index++){
+                    if (this.sprints.length < this.pageElements) {
+                        for (let index = 0; index < this.sprints.length; index++) {
                             this.paginateData.push(this.sprints[index]);
                         }
                     } else {
-                        for (let index = 0; index < this.pageElements; index++){
+                        for (let index = 0; index < this.pageElements; index++) {
                             this.paginateData.push(this.sprints[index]);
                         }
                     }
@@ -410,7 +484,7 @@ export default {
             this.sprints = SprintList;
             const filteredSprints = [];
             let success = false;
-            
+
             for (const project of this.sprints) {
                 const matchesBeginDate = (!beginDate || project.Start_Date.includes(beginDate));
                 const matchesEndDate = (!endDate || project.End_Date.includes(endDate));
@@ -445,21 +519,21 @@ export default {
         },
 
         changePage: async function (pageNum) {
-            if(pageNum != "..."){
+            if (pageNum != "...") {
                 this.paginateData = []
-                if (pageNum == undefined){
+                if (pageNum == undefined) {
                     pageNum = 1
                 }
                 this.actualPage = pageNum
                 let ini = (pageNum * this.pageElements) - this.pageElements;
                 let end = (pageNum * this.pageElements);
                 let total = this.sprints.length;
-                if(end < total){
-                    for (let index = ini; index < end; index++){
+                if (end < total) {
+                    for (let index = ini; index < end; index++) {
                         this.paginateData.push(this.sprints[index]);
                     }
-                } else{
-                    for (let index = ini; index < total; index++){
+                } else {
+                    for (let index = ini; index < total; index++) {
                         this.paginateData.push(this.sprints[index]);
                     }
                 }
@@ -467,38 +541,38 @@ export default {
             }
         },
 
-        goBack: async function() {
+        goBack: async function () {
             this.paginateData = []
             let paginaAnt = this.actualPage - 1
             this.actualPage = paginaAnt
             let ini = (paginaAnt * this.pageElements) - this.pageElements;
             let end = (paginaAnt * this.pageElements);
             let total = this.sprints.length;
-            if(end < total){
-                for (let index = ini; index < end; index++){
+            if (end < total) {
+                for (let index = ini; index < end; index++) {
                     this.paginateData.push(this.sprints[index]);
                 }
-            } else{
-                for (let index = ini; index < total; index++){
+            } else {
+                for (let index = ini; index < total; index++) {
                     this.paginateData.push(this.sprints[index]);
                 }
             }
             await this.cutPages();
         },
 
-        goNext: async function() {
+        goNext: async function () {
             this.paginateData = []
             let paginaAnt = this.actualPage + 1
             this.actualPage = paginaAnt
             let ini = (paginaAnt * this.pageElements) - this.pageElements;
             let end = (paginaAnt * this.pageElements);
             let total = this.sprints.length;
-            if(end < total){
-                for (let index = ini; index < end; index++){
+            if (end < total) {
+                for (let index = ini; index < end; index++) {
                     this.paginateData.push(this.sprints[index]);
                 }
-            } else{
-                for (let index = ini; index < total; index++){
+            } else {
+                for (let index = ini; index < total; index++) {
                     this.paginateData.push(this.sprints[index]);
                 }
             }
@@ -576,7 +650,7 @@ export default {
 
         validatePaginate: function () {
             let quantity = this.sprints.length
-            if(quantity < 5){
+            if (quantity < 5) {
                 this.paginate = false
             } else {
                 this.paginate = true
@@ -711,31 +785,7 @@ export default {
             })
         },
 
-        deleteRowList: async function () {
-          
-          try {
-
-            const id = this.currentSprint.Id_Sprint;
-
-              if(this.confimPassworsDelete){
-              const response = await AdminApi.PutTaskDisableStatus(id);
-              const message=response.data.ok;
-              console.log(message)
-              location.reload()
-                  
-              }
-              else
-              {
-                  this.$swal({ icon: 'warning', text: 'La contraseña no es correcta' });
-              }
-
-            } catch (error) {
-                console.error('Error al cargar los sprints desde la API:', error);
-            }
-
-        },
-
-      getPasswordVerifyDeleteRow: async function () {
+        getPasswordVerifyDeleteRow: async function () {
             let login = this.recuperarUsuLog()
             try {
                 const response = await AdminApi.GetPasswordVerifyDeleteRow(login, this.verifyPassword);
@@ -746,15 +796,41 @@ export default {
 
                     this.confimPassworsDelete = true
                     this.$swal({ icon: 'success', text: 'Se verifico correctamente la contraseña' });
+                    this.isButtonEnabled = true;
 
                 }
                 else {
-                    this.$swal({ icon: 'warning', text: 'La contraseña que insertaste no es correcta' });
+                    this.$swal({ icon: 'warning', text: 'Contraseña Incorrecta' });
 
                 }
 
             } catch (error) {
-                console.error('Error al cargar los sprints desde la API:', error);
+                this.$swal('Error al cargar los sprints desde la API:', error);
+            }
+
+        },
+
+        deleteRowList: async function () {
+
+            try {
+
+                if (this.confimPassworsDelete == true) {
+                    const response = await AdminApi.PutDisableSprintStatus(this.idSprintDeleteVerify);
+                    const message = response.data.ok;
+                    console.log(message)
+                    this.$swal({ icon: 'success', text: 'El Sprint se ha eliminado correctamente' });
+                    setTimeout(() => {
+                        location.reload()
+                    }, 1000);
+                    this.isButtonEnabled = false;
+
+                }
+                else {
+                    this.$swal({ icon: 'warning', text: 'La contraseña no es correcta' });
+                }
+
+            } catch (error) {
+                this.$swal({ icon: 'error', text: 'Error al eliminar el Sprint' + error });
             }
 
         },
@@ -766,12 +842,33 @@ export default {
             })
         },
 
+        saveIdSprintDelete: function (idSprint) {
+            this.idSprintDeleteVerify = idSprint
+
+        },
+
+        saveViewSprintModal: function (sprint) {
+            this.ViewSprint = sprint
+
+        },
+
         desplegarFiltros: function () {
             this.filtroDesplegar = !this.filtroDesplegar;
         },
 
         cerrarFiltros: function () {
             this.filtroDesplegar = false;
+        },
+
+        deshabilitarBoton: function () {
+            this.isButtonEnabled = false;
+        },
+
+        formatoFecha(fecha) {
+            if (!fecha) return ''; // Manejar el caso cuando la fecha es nula o indefinida
+
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            return new Date(fecha).toLocaleDateString('es-ES', options);
         },
 
         seleccionarAplicacion: async function () {
@@ -1096,4 +1193,5 @@ ol {
     margin-bottom: 12px;
     margin-right: 1px;
     margin-left: 5px;
-}</style>
+}
+</style>

@@ -85,6 +85,8 @@ export default {
 
     methods: {
 
+        
+
         limpiarEditor: function () {
             this.quill.root.innerHTML = ""
         },
@@ -125,6 +127,7 @@ export default {
     created: async function () {
         await this.verificarLog();
         await this.$root.validarLoginFooter.call();
+        await this.loadFormEdit();
     }
 
 }

@@ -101,6 +101,29 @@ Public Class SprintBLL
 
     End Function
 
+    Public Function PutDisableStatusBLL(ByVal pIdSprint As Integer) As Reply(Of SprintEN)
+
+        Dim reply As Reply(Of SprintEN) = Nothing
+
+        Try
+            If pIdSprint <> 0 Then
+
+                reply = SprintDAO.Instance.PutDisableStatusDAO(pIdSprint)
+                reply.ok = True
+                reply.msg = "Se ha eliminado el sprint"
+
+            End If
+
+        Catch ex As Exception
+            EscritorVisorEventos.Instancia().EscribirEvento(nameClass, MethodBase.GetCurrentMethod().Name, ex)
+            reply.ok = False
+            reply.msg = "Error al eliminar proyecto"
+        End Try
+
+        Return reply
+
+    End Function
+
 
     Public Function DeleteSprintBLL(ByVal pIdSprint As String) As Reply(Of SprintEN)
 
