@@ -7,6 +7,160 @@
             <div class="d-flex">
                 <MenuLateral />
 
+
+                <div class="modal fade" id="listprojectreport" tabindex="-1" aria-labelledby="exampleModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="exampleModalLabel">Generar reporte de proyecto por usuario
+                                </h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="content-icon">
+
+                                    <span class="fas fa-file-excel"></span>
+
+                                </div>
+
+                                <div>
+                                    <label>Busque el usuario del que desea generar el reporte</label>
+                                    <br />
+                                    <div class="row" style="margin-top: 15px;">
+                                        <select v-model="elementSelectUsuLogin" required name="usuarios" id="usuarios"
+                                            class="form-select text-black inputsGeneral" style="min-height: 48px;">
+                                            <option :value="null">Seleccione una opción</option>
+                                            <option v-for="item in listUsers" :key="item.usu_Login"
+                                                :value="JSON.stringify(item)">{{ item.usu_Nombre }} : {{ item.usu_email }}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                                <button class="btn btn-success" @click="downloadExcelReportProject()">Generar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal fade" id="listSprintreport" tabindex="-1" aria-labelledby="exampleModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="exampleModalLabel">Generar reporte de sprint por usuario
+                                </h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="content-icon">
+
+                                    <span class="fas fa-file-excel"></span>
+
+                                </div>
+
+                                <div>
+                                    <label>Busque el usuario del que desea generar el reporte</label>
+                                    <br />
+                                    <div class="row" style="margin-top: 15px;">
+                                        <select v-model="elementSelectUsuLogin" required name="usuarios" id="usuarios"
+                                            class="form-select text-black inputsGeneral" style="min-height: 48px;">
+                                            <option :value="null">Seleccione una opción</option>
+                                            <option v-for="item in listUsers" :key="item.usu_Login"
+                                                :value="JSON.stringify(item)">{{ item.usu_Nombre }} : {{ item.usu_email }}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                                <button class="btn btn-success" @click="downloadExcelReportSprint()">Generar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal fade" id="listTaskReport" tabindex="-1" aria-labelledby="exampleModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="exampleModalLabel">Generar reporte de tareas por usuario
+                                </h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="content-icon">
+
+                                    <span class="fas fa-file-excel"></span>
+
+                                </div>
+
+                                <div>
+                                    <label>Busque el usuario del que desea generar el reporte</label>
+                                    <br />
+                                    <div class="row" style="margin-top: 15px;">
+                                        <select v-model="elementSelectUsuLogin" required name="usuarios" id="usuarios"
+                                            class="form-select text-black inputsGeneral" style="min-height: 48px;">
+                                            <option :value="null">Seleccione una opción</option>
+                                            <option v-for="item in listUsers" :key="item.usu_Login"
+                                                :value="JSON.stringify(item)">{{ item.usu_Nombre }} : {{ item.usu_email }}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                                <button class="btn btn-success" @click="downloadExcelReportTask()" >Generar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal fade" id="listSubTaskReport" tabindex="-1" aria-labelledby="exampleModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="exampleModalLabel">Generar reporte de sub tareas por
+                                    usuario
+                                </h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="content-icon">
+
+                                    <span class="fas fa-file-excel"></span>
+
+                                </div>
+
+                                <div>
+                                    <label>Busque el usuario del que desea generar el reporte</label>
+                                    <br />
+                                    <div class="row" style="margin-top: 15px;">
+                                        <select v-model="elementSelectUsuLogin" required name="usuarios" id="usuarios"
+                                            class="form-select text-black inputsGeneral" style="min-height: 48px;">
+                                            <option :value="null">Seleccione una opción</option>
+                                            <option v-for="item in listUsers" :key="item.usu_Login"
+                                                :value="JSON.stringify(item)">{{ item.usu_Nombre }} : {{ item.usu_email }}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                                <button class="btn btn-success">Generar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
                 <div class="w-100 listadoGeneral">
 
                     <!--Filtros responsive /-->
@@ -23,23 +177,31 @@
 
                         <div class="col-lg-4 col-md-4 col-sm-12 row justify-content-center" style="margin-top: 40px;">
                             <div class="col-8 textoBlanco" style="text-align: center;">
-                                <router-link role="button" :to="{ name: 'Inicio' }" class="textoBlanco textoEncuestas" style="text-decoration: none;" exact-active-class="active-link">Proyectos&nbsp;&nbsp;<i class="text-white fas fa-project-diagram" style="cursor: pointer; font-size: 14px;"></i></router-link>
-                            </div>
-                        </div>
-                        
-                        <div class="col-lg-4 col-md-4 col-sm-12 row justify-content-center" style="margin-top: 40px;">
-                            <div class="col-8 textoBlanco" style="text-align: center;">
-                                <router-link role="button" :to="{ name: 'Encuestas' }" class="textoBlanco textoEncuestas" style="text-decoration: none;" exact-active-class="active-link">Encuestas&nbsp;&nbsp;<i class="text-white fas fa-chart-line" style="cursor: pointer;"></i></router-link>
+                                <router-link role="button" :to="{ name: 'Inicio' }" class="textoBlanco textoEncuestas"
+                                    style="text-decoration: none;" exact-active-class="active-link">Proyectos&nbsp;&nbsp;<i
+                                        class="text-white fas fa-project-diagram"
+                                        style="cursor: pointer; font-size: 14px;"></i></router-link>
                             </div>
                         </div>
 
                         <div class="col-lg-4 col-md-4 col-sm-12 row justify-content-center" style="margin-top: 40px;">
                             <div class="col-8 textoBlanco" style="text-align: center;">
-                                <router-link role="button" :to="{ name: 'Reportes' }" class="textoBlanco textoEncuestas" style="text-decoration: none;" exact-active-class="active-link">Reportes&nbsp;&nbsp;<i class="text-white far fa-file-alt" style="cursor: pointer;"></i></router-link>
+                                <router-link role="button" :to="{ name: 'Encuestas' }" class="textoBlanco textoEncuestas"
+                                    style="text-decoration: none;" exact-active-class="active-link">Encuestas&nbsp;&nbsp;<i
+                                        class="text-white fas fa-chart-line" style="cursor: pointer;"></i></router-link>
                             </div>
                         </div>
 
-                        <div style="text-align: center; font-size: large; padding-top: 40px; cursor: pointer; margin-left: 20px;" v-if="filtroDesplegar" v-on:click="desplegarFiltros()">
+                        <div class="col-lg-4 col-md-4 col-sm-12 row justify-content-center" style="margin-top: 40px;">
+                            <div class="col-8 textoBlanco" style="text-align: center;">
+                                <router-link role="button" :to="{ name: 'Reportes' }" class="textoBlanco textoEncuestas"
+                                    style="text-decoration: none;" exact-active-class="active-link">Reportes&nbsp;&nbsp;<i
+                                        class="text-white far fa-file-alt" style="cursor: pointer;"></i></router-link>
+                            </div>
+                        </div>
+
+                        <div style="text-align: center; font-size: large; padding-top: 40px; cursor: pointer; margin-left: 20px;"
+                            v-if="filtroDesplegar" v-on:click="desplegarFiltros()">
                             <a class="text-white fas fa-angle-up" style="text-decoration: none;"></a>
                         </div>
 
@@ -56,7 +218,9 @@
                                 <div class="card" style="border: none;" ref="cuadroLoader">
                                     <div class="encabezado">
                                         <ul style="text-align: left;">
-                                            <router-link class="li agregarBlt" role="button" :to="{ name: 'Inicio' }"><span class="fas fa-arrow-left"></span> <span class="linkResponsiveCelular"> Inicio</span></router-link>
+                                            <router-link class="li agregarBlt" role="button" :to="{ name: 'Inicio' }"><span
+                                                    class="fas fa-arrow-left"></span> <span class="linkResponsiveCelular">
+                                                    Inicio</span></router-link>
                                         </ul>
                                         <div style="text-align: center; padding-top: 10px; cursor: default;">
                                             <h4>Listado de Reportes</h4>
@@ -74,8 +238,10 @@
                                                 <tr>
                                                     <td>Listado de proyectos por usuario</td>
                                                     <td class="text-white">
-                                                        <button type="button" class="btn btn-primary" style="margin-left: 5px;">
-                                                            <span class="fas fa-file-download" b-tooltip.hover title="PDF"></span>
+                                                        <button data-bs-toggle="modal" data-bs-target="#listprojectreport"
+                                                            type="button" class="btn btn-primary" style="margin-left: 5px;">
+                                                            <span class="fas fa-file-download" b-tooltip.hover
+                                                                title="Excel"></span>
                                                         </button>
                                                         <!--<button class="btn btn-success" role="button" @click="verSprints">
                                                             <span class="fas fa-file-excel" b-tooltip.hover title="EXCEL"></span>
@@ -91,8 +257,10 @@
                                                 <tr>
                                                     <td>Listado de sprints por usuario</td>
                                                     <td class="text-white">
-                                                        <button type="button" class="btn btn-primary" style="margin-left: 5px;">
-                                                            <span class="fas fa-file-download" b-tooltip.hover title="PDF"></span>
+                                                        <button data-bs-toggle="modal" data-bs-target="#listSprintreport"
+                                                            type="button" class="btn btn-primary" style="margin-left: 5px;">
+                                                            <span class="fas fa-file-download" b-tooltip.hover
+                                                                title="Excel"></span>
                                                         </button>
                                                         <!--<button class="btn btn-success" role="button" @click="verSprints">
                                                             <span class="fas fa-file-excel" b-tooltip.hover title="EXCEL"></span>
@@ -108,8 +276,10 @@
                                                 <tr>
                                                     <td>Listado de tareas por usuario</td>
                                                     <td class="text-white">
-                                                        <button type="button" class="btn btn-primary" style="margin-left: 5px;">
-                                                            <span class="fas fa-file-download" b-tooltip.hover title="PDF"></span>
+                                                        <button data-bs-toggle="modal" data-bs-target="#listTaskReport"
+                                                            type="button" class="btn btn-primary" style="margin-left: 5px;">
+                                                            <span class="fas fa-file-download" b-tooltip.hover
+                                                                title="Excel"></span>
                                                         </button>
                                                         <!--<button class="btn btn-success" role="button" @click="verSprints">
                                                             <span class="fas fa-file-excel" b-tooltip.hover title="EXCEL"></span>
@@ -125,8 +295,10 @@
                                                 <tr>
                                                     <td>Listado de subtareas por usuario</td>
                                                     <td class="text-white">
-                                                        <button type="button" class="btn btn-primary" style="margin-left: 5px;">
-                                                            <span class="fas fa-file-download" b-tooltip.hover title="PDF"></span>
+                                                        <button data-bs-toggle="modal" data-bs-target="#listSubTaskReport"
+                                                            type="button" class="btn btn-primary" style="margin-left: 5px;">
+                                                            <span class="fas fa-file-download" b-tooltip.hover
+                                                                title="Excel"></span>
                                                         </button>
                                                         <!--<button class="btn btn-success" role="button" @click="verSprints">
                                                             <span class="fas fa-file-excel" b-tooltip.hover title="EXCEL"></span>
@@ -160,7 +332,8 @@
 import Cookies from 'js-cookie';
 import HeaderPrincipal from '@/components/HeaderPrincipal.vue'
 import MenuLateral from '@/components/MenuLateral.vue'
-//import AdminApi from '@/Api/Api';
+import AdminApi from '@/Api/Api';
+import ExcelJS from 'exceljs';
 
 export default {
 
@@ -170,7 +343,14 @@ export default {
 
     data() {
         return {
+            elementSelectUsuLogin: null,
             filtroDesplegar: false,
+            selectedUser: null,
+            listUsers: [],
+            dataListProjectUser: [],
+            dataListSprintUser: [],
+            dataListTaskUser: []
+
         }
     },
 
@@ -207,15 +387,475 @@ export default {
 
         },
 
+        loadUserSelect: async function () {
+            try {
+                const response = await AdminApi.GetALLUsers();
+                const userList = response.data.obj;
+                this.listUsers = userList;
+            } catch (error) {
+                console.error('Error al cargar los proyectos desde la API:', error);
+            }
+
+        },
+        downloadExcelReportProject: async function () {
+
+            const selectedUserObject = JSON.parse(this.elementSelectUsuLogin);
+
+            if (selectedUserObject !== null) {
+
+                try {
+                    const response = await AdminApi.GetProjectsReportUser(selectedUserObject.usu_Login);
+                    const data = response.data.obj;
+                    this.dataListProjectUser = data;
+                } catch (error) {
+                    console.error('Error al cargar los proyectos desde la API:', error);
+                }
+
+                if (this.dataListTaskUser && this.dataListTaskUser.length > 0) {
+                const fontStyle = {
+                    name: 'Arial',
+                    size: 30,
+                    bold: true,
+                    italic: true,
+                    underline: false,
+                    color: { argb: 'FFFFFF' },
+                };
+
+                const fontDataUserStyle = {
+                    name: 'Arial',
+                    size: 12,
+                    bold: true,
+                    italic: true,
+                    underline: false,
+                    color: { argb: 'FFFFFF' },
+                };
+
+                const fontRowStyle = {
+                    name: 'Arial',
+                    size: 12,
+                    bold: true,
+                    italic: true,
+                    underline: false,
+                    color: { argb: '000000' },
+                };
+                const HeaderStyle = {
+                    fill: { type: 'pattern', pattern: 'solid', fgColor: { argb: 'F7F704' } },
+                    border: {
+                        top: { style: 'thin', color: { argb: '000000' } },
+                        left: { style: 'thin', color: { argb: '000000' } },
+                        bottom: { style: 'thin', color: { argb: '000000' } },
+                        right: { style: 'thin', color: { argb: '000000' } },
+                    },
+                };
+
+                const DataUserStyle = {
+                    fill: { type: 'pattern', pattern: 'solid', fgColor: { argb: '244062' } },
+                    border: {
+                        top: { style: 'thin', color: { argb: '000000' } },
+                        left: { style: 'thin', color: { argb: '000000' } },
+                        bottom: { style: 'thin', color: { argb: '000000' } },
+                        right: { style: 'thin', color: { argb: '000000' } },
+                    },
+                };
+                const rowStyle = {
+                    fill: { type: 'pattern', pattern: 'solid', fgColor: { argb: 'F2F2F2' } },
+                    border: {
+                        top: { style: 'thin', color: { argb: '000000' } },
+                        left: { style: 'thin', color: { argb: '000000' } },
+                        bottom: { style: 'thin', color: { argb: '000000' } },
+                        right: { style: 'thin', color: { argb: '000000' } },
+                    },
+                };
+
+
+                const workbook = new ExcelJS.Workbook();
+                const worksheet = workbook.addWorksheet("Informe del usuario");
+
+                worksheet.getColumn(1).width = 60;
+                worksheet.getColumn(1).alignment = { horizontal: 'center', vertical: 'middle' };
+                worksheet.getColumn(2).width = 30;
+                worksheet.getColumn(3).width = 40;
+                worksheet.getColumn(4).width = 30;
+                worksheet.getColumn(5).width = 20;
+                worksheet.addRow(["Reporte de proyecto", "de usuario", "Procormi"]);
+                const cell = worksheet.getCell('A1');
+                cell.width = 100;
+                worksheet.addRow(["#Nombre del usuario", selectedUserObject.usu_Nombre, "Correo Electronico", selectedUserObject.usu_email]);
+                worksheet.addRow(["#Numero de proyecto", "Nombre del proyecto", "Descripcion", "Estado", "Fecha de creacion"]);
+                worksheet.getRow(1).eachCell((cell) => {
+                    cell.fill = HeaderStyle.fill;
+                    cell.border = HeaderStyle.border;
+                    cell.font = fontStyle;
+                });
+                worksheet.getRow(2).eachCell((cell) => {
+                    cell.fill = DataUserStyle.fill;
+                    cell.border = DataUserStyle.border;
+                    cell.font = fontDataUserStyle;
+                });
+                worksheet.getRow(3).eachCell((cell) => {
+                    cell.fill = HeaderStyle.fill;
+                    cell.border = HeaderStyle.border;
+                    cell.font = fontRowStyle;
+                });
+                for (const item of this.dataListProjectUser) {
+                    const row = worksheet.addRow([item.Id_project, item.Project_Name, item.Description_Project, item.Status_Name, item.Creation_Date]);
+
+
+                    row.eachCell({ includeEmpty: true }, (cell) => {
+                        cell.fill = rowStyle.fill;
+                        cell.border = rowStyle.border;
+
+                    });
+                }
+
+
+                workbook.xlsx.writeBuffer().then((data) => {
+                    const blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+                    const url = window.URL.createObjectURL(blob);
+
+                    const namewithoutspaces = selectedUserObject.usu_Nombre.replace(/\s/g, '');
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'ReporteProyecto' + namewithoutspaces + '.xlsx';
+                    a.style.display = 'none';
+                    document.body.appendChild(a);
+                    a.click();
+
+
+                    window.URL.revokeObjectURL(url);
+
+                    this.$swal.fire({
+                        title: 'Descargando archivo',
+                        icon: 'info',
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                    });
+                });
+            }else{
+
+                this.$swal({ icon: 'warning', text: 'No existe ningun proyecto asociado con el usuario' });
+            }
+            
+                
+            } else {
+                this.$swal({ icon: 'warning', text: 'Tiene que seleccionar un usuario' });
+            }
+
+
+        },
+        downloadExcelReportSprint: async function () {
+
+            const selectedUserObject = JSON.parse(this.elementSelectUsuLogin);
+
+            if (selectedUserObject !== null) {
+
+               
+  
+                try {
+                    const response = await AdminApi.GetSprintReportUser(selectedUserObject.usu_Login);
+                    const data = response.data.obj;
+                    this.dataListSprintUser = data;
+                } catch (error) {
+                    console.error('Error al cargar los proyectos desde la API:', error);
+                }
+
+                if (this.dataListSprintUser && this.dataListSprintUser.length > 0) {
+
+                    const fontStyle = {
+                        name: 'Arial',
+                        size: 30,
+                        bold: true,
+                        italic: true,
+                        underline: false,
+                        color: { argb: 'FFFFFF' },
+                    };
+
+                    const fontDataUserStyle = {
+                        name: 'Arial',
+                        size: 12,
+                        bold: true,
+                        italic: true,
+                        underline: false,
+                        color: { argb: 'FFFFFF' },
+                    };
+
+                    const fontRowStyle = {
+                        name: 'Arial',
+                        size: 12,
+                        bold: true,
+                        italic: true,
+                        underline: false,
+                        color: { argb: '000000' },
+                    };
+                    const HeaderStyle = {
+                        fill: { type: 'pattern', pattern: 'solid', fgColor: { argb: 'F7F704' } },
+                        border: {
+                            top: { style: 'thin', color: { argb: '000000' } },
+                            left: { style: 'thin', color: { argb: '000000' } },
+                            bottom: { style: 'thin', color: { argb: '000000' } },
+                            right: { style: 'thin', color: { argb: '000000' } },
+                        },
+                    };
+
+                    const DataUserStyle = {
+                        fill: { type: 'pattern', pattern: 'solid', fgColor: { argb: '244062' } },
+                        border: {
+                            top: { style: 'thin', color: { argb: '000000' } },
+                            left: { style: 'thin', color: { argb: '000000' } },
+                            bottom: { style: 'thin', color: { argb: '000000' } },
+                            right: { style: 'thin', color: { argb: '000000' } },
+                        },
+                    };
+                    const rowStyle = {
+                        fill: { type: 'pattern', pattern: 'solid', fgColor: { argb: 'F2F2F2' } },
+                        border: {
+                            top: { style: 'thin', color: { argb: '000000' } },
+                            left: { style: 'thin', color: { argb: '000000' } },
+                            bottom: { style: 'thin', color: { argb: '000000' } },
+                            right: { style: 'thin', color: { argb: '000000' } },
+                        },
+                    };
+
+
+                    const workbook = new ExcelJS.Workbook();
+                    const worksheet = workbook.addWorksheet("Informe del usuario");
+
+                    worksheet.getColumn(1).width = 60;
+                    worksheet.getColumn(1).alignment = { horizontal: 'center', vertical: 'middle' };
+                    worksheet.getColumn(2).width = 30;
+                    worksheet.getColumn(3).width = 40;
+                    worksheet.getColumn(4).width = 30;
+                    worksheet.getColumn(5).width = 30;
+                    worksheet.addRow(["Reporte de sprint", "de usuario", "Procormi"]);
+                    const cell = worksheet.getCell('A1');
+                    cell.width = 100;
+                    worksheet.addRow(["#Nombre del usuario", selectedUserObject.usu_Nombre, "Correo Electronico", selectedUserObject.usu_email]);
+                    worksheet.addRow(["#Numero de Spring", "Numero del Proyecto #", "Nombre del spring", "Fecha de inicio", "Fecha final", "Estado"]);
+                    worksheet.getRow(1).eachCell((cell) => {
+                        cell.fill = HeaderStyle.fill;
+                        cell.border = HeaderStyle.border;
+                        cell.font = fontStyle;
+                    });
+                    worksheet.getRow(2).eachCell((cell) => {
+                        cell.fill = DataUserStyle.fill;
+                        cell.border = DataUserStyle.border;
+                        cell.font = fontDataUserStyle;
+                    });
+                    worksheet.getRow(3).eachCell((cell) => {
+                        cell.fill = HeaderStyle.fill;
+                        cell.border = HeaderStyle.border;
+                        cell.font = fontRowStyle;
+                    });
+                    for (const item of this.dataListSprintUser) {
+                        const row = worksheet.addRow([item.Id_Sprint, item.Id_Project, item.Sprint_Name, item.Start_Date, item.End_Date, item.Status_Name]);
+
+
+                        row.eachCell({ includeEmpty: true }, (cell) => {
+                            cell.fill = rowStyle.fill;
+                            cell.border = rowStyle.border;
+
+                        });
+                    }
+
+
+                    workbook.xlsx.writeBuffer().then((data) => {
+                        const blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+                        const url = window.URL.createObjectURL(blob);
+
+                        const namewithoutspaces = selectedUserObject.usu_Nombre.replace(/\s/g, '');
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = 'ReporteSprint' + namewithoutspaces + '.xlsx';
+                        a.style.display = 'none';
+                        document.body.appendChild(a);
+                        a.click();
+
+
+                        window.URL.revokeObjectURL(url);
+
+                        this.$swal.fire({
+                            title: 'Descargando archivo',
+                            icon: 'info',
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                        });
+                    });
+                } else {
+                    this.$swal({ icon: 'warning', text: 'No existe ningun sprint asociado con el usuario' });
+                }
+
+            }
+
+            else {
+                this.$swal({ icon: 'warning', text: 'Tiene que seleccionar un usuario' });
+            }
+
+        },
+        downloadExcelReportTask: async function () {
+
+            const selectedUserObject = JSON.parse(this.elementSelectUsuLogin);
+
+            if (selectedUserObject !== null) {
+
+                try {
+                    const response = await AdminApi.GetTaskReportUser(selectedUserObject.usu_Login);
+                    const data = response.data.obj;
+                    this.dataListTaskUser = data;
+                } catch (error) {
+                    console.error('Error al cargar los proyectos desde la API:', error);
+                }
+
+                if (this.dataListTaskUser && this.dataListTaskUser.length > 0) {
+
+                    const fontStyle = {
+                        name: 'Arial',
+                        size: 30,
+                        bold: true,
+                        italic: true,
+                        underline: false,
+                        color: { argb: 'FFFFFF' },
+                    };
+
+                    const fontDataUserStyle = {
+                        name: 'Arial',
+                        size: 12,
+                        bold: true,
+                        italic: true,
+                        underline: false,
+                        color: { argb: 'FFFFFF' },
+                    };
+
+                    const fontRowStyle = {
+                        name: 'Arial',
+                        size: 12,
+                        bold: true,
+                        italic: true,
+                        underline: false,
+                        color: { argb: '000000' },
+                    };
+                    const HeaderStyle = {
+                        fill: { type: 'pattern', pattern: 'solid', fgColor: { argb: 'F7F704' } },
+                        border: {
+                            top: { style: 'thin', color: { argb: '000000' } },
+                            left: { style: 'thin', color: { argb: '000000' } },
+                            bottom: { style: 'thin', color: { argb: '000000' } },
+                            right: { style: 'thin', color: { argb: '000000' } },
+                        },
+                    };
+
+                    const DataUserStyle = {
+                        fill: { type: 'pattern', pattern: 'solid', fgColor: { argb: '244062' } },
+                        border: {
+                            top: { style: 'thin', color: { argb: '000000' } },
+                            left: { style: 'thin', color: { argb: '000000' } },
+                            bottom: { style: 'thin', color: { argb: '000000' } },
+                            right: { style: 'thin', color: { argb: '000000' } },
+                        },
+                    };
+                    const rowStyle = {
+                        fill: { type: 'pattern', pattern: 'solid', fgColor: { argb: 'F2F2F2' } },
+                        border: {
+                            top: { style: 'thin', color: { argb: '000000' } },
+                            left: { style: 'thin', color: { argb: '000000' } },
+                            bottom: { style: 'thin', color: { argb: '000000' } },
+                            right: { style: 'thin', color: { argb: '000000' } },
+                        },
+                    };
+
+
+                    const workbook = new ExcelJS.Workbook();
+                    const worksheet = workbook.addWorksheet("Informe del usuario");
+
+                    worksheet.getColumn(1).width = 60;
+                    worksheet.getColumn(1).alignment = { horizontal: 'center', vertical: 'middle' };
+                    worksheet.getColumn(2).width = 30;
+                    worksheet.getColumn(3).width = 40;
+                    worksheet.getColumn(4).width = 30;
+                    worksheet.getColumn(5).width = 30;
+                    worksheet.getColumn(6).width = 30;
+                    worksheet.addRow(["Reporte de tareas", "de usuario", "Procormi"]);
+                    const cell = worksheet.getCell('A1');
+                    cell.width = 100;
+                    worksheet.addRow(["#Nombre del usuario", selectedUserObject.usu_Nombre, "Correo Electronico", selectedUserObject.usu_email]);
+                    worksheet.addRow(["#Numero de Spring", "Nombre del Sprint ", "#Numero Proyecto", "#Numero de tarea", "Nombre de tarea", "Descripcion","Estado"]);
+                    worksheet.getRow(1).eachCell((cell) => {
+                        cell.fill = HeaderStyle.fill;
+                        cell.border = HeaderStyle.border;
+                        cell.font = fontStyle;
+                    });
+                    worksheet.getRow(2).eachCell((cell) => {
+                        cell.fill = DataUserStyle.fill;
+                        cell.border = DataUserStyle.border;
+                        cell.font = fontDataUserStyle;
+                    });
+                    worksheet.getRow(3).eachCell((cell) => {
+                        cell.fill = HeaderStyle.fill;
+                        cell.border = HeaderStyle.border;
+                        cell.font = fontRowStyle;
+                    });
+                    for (const item of this.dataListTaskUser) {
+                        const row = worksheet.addRow([item.Id_Sprint, item.Sprint_Name, item.Id_Project, item.Id_Task, item.Task_Name, item.Description_Task,item.Status_Name]);
+
+
+                        row.eachCell({ includeEmpty: true }, (cell) => {
+                            cell.fill = rowStyle.fill;
+                            cell.border = rowStyle.border;
+
+                        });
+                    }
+
+
+                    workbook.xlsx.writeBuffer().then((data) => {
+                        const blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+                        const url = window.URL.createObjectURL(blob);
+
+                        const namewithoutspaces = selectedUserObject.usu_Nombre.replace(/\s/g, '');
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = 'ReporteTarea' + namewithoutspaces + '.xlsx';
+                        a.style.display = 'none';
+                        document.body.appendChild(a);
+                        a.click();
+
+
+                        window.URL.revokeObjectURL(url);
+
+                        this.$swal.fire({
+                            title: 'Descargando archivo',
+                            icon: 'info',
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                        });
+                    });
+                } else {
+                    this.$swal({ icon: 'warning', text: 'No existe ningun sprint asociado con el usuario' });
+                }
+
+            }
+
+            else {
+                this.$swal({ icon: 'warning', text: 'Tiene que seleccionar un usuario' });
+            }
+
+        },
     },
 
-    mounted: async function() {
+    mounted: async function () {
         this.$root.cerrarMenuFiltros = this.cerrarFiltros;
         let loader = this.$loading.show({
             container: this.$refs.cuadroLoader,
             opacity: 1
         })
-                
+
         setTimeout(() => {
             loader.hide()
         }, 500)
@@ -223,6 +863,7 @@ export default {
 
     created: async function () {
         await this.verificarLog();
+        await this.loadUserSelect();
         await this.$root.validarLoginFooter.call();
     }
 
@@ -230,22 +871,21 @@ export default {
 
 </script>
 
-<style>
-</style>
+<style></style>
 
 <style scoped>
-
 #header {
     margin: auto;
     width: 500px;
     font-family: Arial, Helvetica, sans-serif;
 }
 
-ul, ol {
+ul,
+ol {
     list-style: none;
 }
 
-.nav > li {
+.nav>li {
     float: left;
 }
 
@@ -257,10 +897,10 @@ ul, ol {
     display: block;
 }
 
-    .nav li a:hover {
-        color: #808080;
-        background-color: #262b35;
-    }
+.nav li a:hover {
+    color: #808080;
+    background-color: #262b35;
+}
 
 .nav li ul {
     display: none;
@@ -268,7 +908,7 @@ ul, ol {
     min-width: 140px;
 }
 
-.nav li:hover > ul {
+.nav li:hover>ul {
     display: block;
 }
 
@@ -287,26 +927,26 @@ ul, ol {
     border-radius: 0.5em;
 }
 
-    .filtro button {
-        background-color: #000;
-        border-radius: 0.5em;
-        border: none;
-    }
+.filtro button {
+    background-color: #000;
+    border-radius: 0.5em;
+    border: none;
+}
 
-    .filtro button:hover {
-        background-color: #000;
-        border-radius: 0.5em;
-        border: none;
-        font-size: 15px;
-    }
+.filtro button:hover {
+    background-color: #000;
+    border-radius: 0.5em;
+    border: none;
+    font-size: 15px;
+}
 
 /*Select*/
 
-.diseñoSelectLateral{
+.diseñoSelectLateral {
     height: 30px;
 }
 
-.diseñoSelect{
+.diseñoSelect {
     height: 35px;
 }
 
@@ -326,7 +966,7 @@ ul, ol {
 }
 
 @media screen and (max-width: 900px) {
-    .posicion1{
+    .posicion1 {
         display: none;
     }
 }
@@ -337,23 +977,23 @@ ul, ol {
         min-height: 500px;
     }
 
-    .menuLateralCelular{
+    .menuLateralCelular {
         display: none;
     }
 }
 
-.filtrosCelular{
+.filtrosCelular {
     padding-top: 20px;
     padding-left: 10px;
     padding-right: 10px;
     padding-bottom: 20px;
-    background-color: rgba(10,58,102,1);
+    background-color: rgba(10, 58, 102, 1);
     text-align: center;
 }
 
 @media screen and (min-width: 901px) {
 
-    .filtrosCelular{
+    .filtrosCelular {
         display: none;
     }
 }
@@ -366,24 +1006,25 @@ ul, ol {
     min-height: 50px;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
-    max-width: 1800px;;
+    max-width: 1800px;
+    ;
 }
 
-    .encabezado ul {
-            padding-top: 14px;
-        }
+.encabezado ul {
+    padding-top: 14px;
+}
 
-    .li {
-        font-family: sans-serif;
-        color: black;
-        text-decoration: none;
-    }
+.li {
+    font-family: sans-serif;
+    color: black;
+    text-decoration: none;
+}
 
-    .encabezado div {
-        text-align: center;
-    }
+.encabezado div {
+    text-align: center;
+}
 
-.sinResultadosAct{
+.sinResultadosAct {
     width: 100%;
     text-align: center;
     margin-top: 30px;
@@ -396,12 +1037,12 @@ ul, ol {
     padding: 25px;
 }
 
-.botones{
+.botones {
     min-height: 40px;
     min-width: 150px;
 }
 
-.agregarBlt{
+.agregarBlt {
     font-family: sans-serif;
     font-size: 18px;
     text-decoration: none;
@@ -412,34 +1053,34 @@ ul, ol {
 }
 
 @media screen and (max-width: 975px) {
-    .agregarResponsive{
+    .agregarResponsive {
         display: none;
     }
 }
 
 @media screen and (min-width: 975px) {
-    .agregarResponsivePlus{
+    .agregarResponsivePlus {
         display: none;
     }
 }
 
 @media screen and (min-width: 901px) {
-    .linkResponsive{
+    .linkResponsive {
         display: none;
     }
 }
 
 @media screen and (max-width: 610px) {
-    .linkResponsiveCelular{
+    .linkResponsiveCelular {
         display: none;
     }
 }
 
-.filtrosCelularBoton{
+.filtrosCelularBoton {
     text-align: center;
     font-size: large;
     cursor: pointer;
-    background-color: rgba(10,58,102,1);
+    background-color: rgba(10, 58, 102, 1);
     height: 30px;
     border-bottom-right-radius: 10px;
     border-bottom-left-radius: 10px;
@@ -447,32 +1088,32 @@ ul, ol {
 }
 
 @media screen and (min-width: 901px) {
-    .filtrosCelularBotones{
+    .filtrosCelularBotones {
         display: none;
     }
 
-    .filtrosCelularBoton{
+    .filtrosCelularBoton {
         display: none;
     }
 }
 
-.vistaPrincipal{
+.vistaPrincipal {
     min-height: 85vh;
 }
 
 @media screen and (max-width: 900px) {
-    .vistaPrincipal{
+    .vistaPrincipal {
         min-height: 98vh;
     }
 }
 
 @media screen and (max-width: 400px) {
-    .vistaPrincipal{
+    .vistaPrincipal {
         min-height: 100vh;
     }
 }
 
-.botonEncuestas{
+.botonEncuestas {
     margin-left: -15px;
     min-width: 12.4rem;
     background-color: #114677;
@@ -482,7 +1123,7 @@ ul, ol {
     list-style: none;
 }
 
-.textoEncuestas{
+.textoEncuestas {
     margin-left: 25px;
     margin-top: -15px;
     font-size: 17px;
@@ -500,4 +1141,16 @@ ul, ol {
     margin-left: 5px;
 }
 
+.content-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.content-icon span {
+    margin: 15px;
+    font-size: 6em;
+    color: #0a3a66;
+}
 </style>

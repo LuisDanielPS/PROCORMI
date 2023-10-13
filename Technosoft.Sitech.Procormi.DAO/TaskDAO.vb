@@ -61,6 +61,70 @@ Public Class TaskDao
         Return reply
     End Function
 
+    Public Function GetTaskReportUserDAO(ByVal pUsuLogin As String) As Reply(Of List(Of SpringTaskStatusReportVM))
+
+        Dim reply As New Reply(Of List(Of SpringTaskStatusReportVM))
+        Dim dr As MySqlDataReader
+        Dim tasks As New List(Of SpringTaskStatusReportVM)()
+
+        Try
+
+            sentence = "SELECT 
+                         spr.Id_Sprint,
+                         spr.Sprint_Name,
+                         spr.Id_Project,
+                         t.Id_Task,
+                         t.Task_Name,
+                         t.Description_Task,
+                         s.Status_Name
+                        FROM 
+                sprint spr 
+            JOIN 
+            task t ON spr.Id_Sprint = t.Id_Sprint 
+            JOIN 
+            status s ON t.Id_Status = s.Id_Status
+            JOIN 
+            seg_usu u ON u.usu_Login = spr.User_Login where u.usu_Login = @filtro1"
+
+            dr = ConexionDAO.Instancia.ExecuteConsultGetTaskReportUser(sentence, pUsuLogin)
+
+            While dr.Read
+                Dim task As New SpringTaskStatusReportVM
+                task.Id_Sprint = dr(0)
+                task.Sprint_Name = dr(1)
+                task.Id_Project = dr(2)
+                task.Id_Task = dr(3)
+                task.Task_Name = dr(4)
+                task.Description_Task = dr(5)
+                task.Status_Name = dr(6)
+
+                tasks.Add(task)
+            End While
+
+            If tasks.Count > 0 Then
+                reply.obj = tasks
+                reply.ok = True
+                reply.msg = "La tarea encontrados"
+            Else
+                reply.obj = Nothing
+                reply.ok = False
+                reply.msg = "La tarea no encontrados"
+            End If
+
+        Catch ex As Exception
+            EscritorVisorEventos.Instancia().EscribirEvento(nameClass, MethodBase.GetCurrentMethod().Name, ex)
+            reply.ok = False
+            reply.msg = "No fue posible ejecutar la consulta: " & ex.Message
+            Return reply
+
+
+        End Try
+        dr.Close()
+        dr.Dispose()
+
+        Return reply
+    End Function
+
     Public Function GetTasksAllDAO(ByVal sprintId As String) As Reply(Of List(Of TaskEN))
 
         Dim reply As New Reply(Of List(Of TaskEN))

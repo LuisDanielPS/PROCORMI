@@ -64,6 +64,68 @@ Public Class SprintDAO
         Return reply
     End Function
 
+    Public Function GetSprintsAllReportUserDAO(ByVal pUsuLogin As String) As Reply(Of List(Of SprintStatusReportVM))
+
+        Dim reply As New Reply(Of List(Of SprintStatusReportVM))
+        Dim dr As MySqlDataReader
+        Dim sprints As New List(Of SprintStatusReportVM)()
+
+        Try
+
+            sentence = "SELECT
+            spr.Id_Sprint,
+            spr.Sprint_Name,
+            spr.Start_Date,
+            spr.End_Date,
+            spr.Id_Project,
+            spr.User_Login,
+            st.Status_Name
+        FROM
+            sprint spr
+        JOIN seg_usu usu ON spr.User_Login = usu.usu_Login
+        JOIN status st ON spr.Id_Status = st.Id_Status WHERE spr.User_Login = @filtro1"
+
+            dr = ConexionDAO.Instancia.ExecuteConsultGetSprintReportUser(sentence, pUsuLogin)
+
+            While dr.Read
+                Dim sprint As New SprintStatusReportVM
+                sprint.Id_Sprint = dr(0)
+                sprint.Sprint_Name = dr(1)
+                sprint.Start_Date = dr(2)
+                sprint.End_Date = dr(3)
+                sprint.Id_Project = dr(4)
+                sprint.User_Login = dr(5)
+                sprint.Status_Name = dr(6)
+
+                sprints.Add(sprint)
+
+            End While
+
+            If sprints.Count > 0 Then
+                reply.obj = sprints
+                reply.ok = True
+                reply.msg = "Sprints encontrados"
+            Else
+                reply.obj = Nothing
+                reply.ok = False
+                reply.msg = "Sprints no encontrados"
+            End If
+
+        Catch ex As Exception
+            EscritorVisorEventos.Instancia().EscribirEvento(nameClass, MethodBase.GetCurrentMethod().Name, ex)
+            reply.ok = False
+            reply.msg = "No fue posible ejecutar la consulta: " & ex.Message
+            Return reply
+
+
+        End Try
+        dr.Close()
+        dr.Dispose()
+
+        Return reply
+    End Function
+
+
     Public Function GetSprintDAO(ByVal pIdSprint As String) As Reply(Of SprintEN)
 
         Dim reply As New Reply(Of SprintEN)

@@ -30,13 +30,15 @@
                                 <div class="col-md-12 col-xs-12" style="min-height: 350px; max-height: 400px">
                                     <div>
                                         <div class="col-12">
-                                            <h1 style="text-align:center"><strong>{{this.ViewProject.Project_Name}}</strong></h1>
+                                            <h1 style="text-align:center"><strong>{{ this.ViewProject.Project_Name }}</strong>
+                                            </h1>
                                         </div>
                                         <br />
                                         <br />
                                         <div class="row">
                                             <div class="col-12" style="text-align: right;">
-                                                <p style="text-align: right;">Fecha: <b >{{this.ViewProject.Creation_Date }} </b></p>
+                                                <p style="text-align: right;">Fecha: <b>{{ this.ViewProject.Creation_Date }}
+                                                    </b></p>
                                             </div>
                                         </div>
                                     </div>
@@ -45,7 +47,8 @@
                                         <div class="row">
                                             <div class="col-12">
                                                 <h4 class="modal-title" style="text-align: center">
-                                                    <strong>Descripción</strong></h4>
+                                                    <strong>Descripción</strong>
+                                                </h4>
                                             </div>
                                         </div>
                                         <br />
@@ -54,7 +57,7 @@
                                             <div class="col-12">
                                                 <div class="col-md-12 col-xs-12">
                                                     <div style="text-align: justify;">
-                                                        {{this.ViewProject.Description_Project}}
+                                                        {{ this.ViewProject.Description_Project }}
                                                     </div>
                                                 </div>
                                             </div>
@@ -98,16 +101,18 @@
                                     <label>Digite su contraseña</label>
                                     <br />
                                     <div class="row" style="margin-top: 15px;">
-                                        <input v-model="verifyPassword" class="col-10" style="margin-left: 10px; border-radius: 5px;" type="text"
-                                            required placeholder="Contraseña">
-                                        <button @click="getPasswordVerifyDeleteRow()" type="button" class="btn btn-success col-1" style="margin-left: 5px;"><span
+                                        <input type="password" v-model="verifyPassword" class="col-10"
+                                            style="margin-left: 10px; border-radius: 5px;"  required
+                                            placeholder="Contraseña">
+                                        <button @click="getPasswordVerifyDeleteRow()" type="button"
+                                            class="btn btn-success col-1" style="margin-left: 5px;"><span
                                                 class="fas fa-check"></span></button>
                                     </div>
                                 </div>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
-                                <button @click="deleteRowList()"  class="btn btn-success">Aceptar</button>
+                                <button @click="deleteRowList()" class="btn btn-success">Aceptar</button>
                             </div>
                         </div>
                     </div>
@@ -186,10 +191,10 @@
                                             <h4>Listado de Proyectos</h4>
                                         </div>
                                         <ul style="text-align: right;">
-                                            <router-link class="li agregarBlt agregarResponsive" role="button"
+                                            <router-link v-show="showElement" class="li agregarBlt agregarResponsive" role="button"
                                                 :to="{ name: 'CrearProyecto' }"><span class="fas fa-plus"></span> Crear
                                                 Proyecto</router-link>
-                                            <router-link class="li agregarBlt agregarResponsivePlus" role="button"
+                                            <router-link v-show="showElement" class="li agregarBlt agregarResponsivePlus" role="button"
                                                 :to="{ name: 'CrearProyecto' }"><span
                                                     class="fas fa-plus"></span></router-link>
                                         </ul>
@@ -220,12 +225,13 @@
 
                                         <div class="col-5" style="min-width: 95px;">
                                             <div>
-                                                <a class="text-black fas fa-pen-square"
-                                                    style="text-decoration: none;"></a>
+                                                <a class="text-black fas fa-pen-square" style="text-decoration: none;"></a>
                                                 <label class="text-black p-3 Td">Palabra</label>
                                             </div>
                                             <div>
-                                                <input autocomplete="off" maxlength="70" class="diseñoSelectLateral" type="search" id="pClaveInput" placeholder="Buscar" v-model="Filtros.palabra">
+                                                <input autocomplete="off" maxlength="70" class="diseñoSelectLateral"
+                                                    type="search" id="pClaveInput" placeholder="Buscar"
+                                                    v-model="Filtros.palabra">
                                             </div>
                                         </div>
 
@@ -234,7 +240,9 @@
                                                 <label class="text-white p-3 Td">.</label>
                                             </div>
                                             <div>
-                                                <button type="button" class="btn btn-success" @click="aplyFilter(Filtros.fechaI, Filtros.estado, Filtros.palabra)"><span class="fas fa-search"></span></button>
+                                                <button type="button" class="btn btn-success"
+                                                    @click="aplyFilter(Filtros.fechaI, Filtros.estado, Filtros.palabra)"><span
+                                                        class="fas fa-search"></span></button>
                                             </div>
                                         </div>
 
@@ -256,24 +264,31 @@
                                                 </tr>
                                             </thead>
                                             <tbody style="font-size: large;">
-                                                <tr v-for="proyecto in paginateData" :key="proyecto.Id_project" >
-                                                    <td @click="verSprints(proyecto.Id_project)" class="claseTD">{{ proyecto.Id_project }}</td>
-                                                    <td @click="verSprints(proyecto.Id_project)" class="claseTD">{{ proyecto.Project_Name }}</td>
-                                                    <td @click="verSprints(proyecto.Id_project)" class="claseTD">{{ $filters.FormatearFecha(proyecto.Creation_Date) }}</td>
-                                                    <td @click="verSprints(proyecto.Id_project)" class="claseTD">{{ proyecto.Id_State == 1 ? "Activo" : "Inactivo"}}</td>
+                                                <tr v-for="proyecto in paginateData" :key="proyecto.Id_project">
+                                                    <td @click="verSprints(proyecto.Id_project)" class="claseTD">{{
+                                                        proyecto.Id_project }}</td>
+                                                    <td @click="verSprints(proyecto.Id_project)" class="claseTD">{{
+                                                        proyecto.Project_Name }}</td>
+                                                    <td @click="verSprints(proyecto.Id_project)" class="claseTD">{{
+                                                        $filters.FormatearFecha(proyecto.Creation_Date) }}</td>
+                                                    <td @click="verSprints(proyecto.Id_project)" class="claseTD">{{
+                                                        proyecto.Id_State == 1 ? "Activo" : "Inactivo" }}</td>
                                                     <td class="text-white">
-                                                        <button @click="saveViewProjectModal(proyecto)" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop" role="button" >
+                                                        <button @click="saveViewProjectModal(proyecto)" type="button"
+                                                            class="btn btn-primary" data-bs-toggle="modal"
+                                                            data-bs-target="#staticBackdrop" role="button">
                                                             <span class="fas fa-eye" b-tooltip.hover
                                                                 title="Ver Proyecto"></span>
                                                         </button>
-                                                        <button style="margin-left: 5px;" type="button"
-                                                            class="btn btn-success" @click="EditarProyecto(proyecto.Id_project)">
+                                                        <button v-show="showElement" style="margin-left: 5px;" type="button"
+                                                            class="btn btn-success"
+                                                            @click="EditarProyecto(proyecto.Id_project)">
                                                             <span class="fas fa-pen" b-tooltip.hover
                                                                 title="Editar Proyecto"></span>
                                                         </button>
-                                                        <button @click="saveIdProjectDelete(proyecto.Id_project)" type="button" class="btn btn-danger"
-                                                            style="margin-left: 5px;" data-bs-toggle="modal"
-                                                            data-bs-target="#exampleModal">
+                                                        <button v-show="showElement" @click="saveIdProjectDelete(proyecto.Id_project)"
+                                                            type="button" class="btn btn-danger" style="margin-left: 5px;"
+                                                            data-bs-toggle="modal" data-bs-target="#exampleModal">
                                                             <span class="fas fa-trash" b-tooltip.hover
                                                                 title="Eliminar Proyecto"></span>
                                                         </button>
@@ -285,11 +300,13 @@
                                     </div>
                                 </div>
                             </div>
-                            <nav v-if="paginate" aria-label="Page navigation example" style="position: absolute; bottom: 25px; margin-left: 25px;">
+                            <nav v-if="paginate" aria-label="Page navigation example"
+                                style="position: absolute; bottom: 25px; margin-left: 25px;">
                                 <ul class="pagination cursorPaginados">
                                     <li class="page-item"><a class="page-link" v-on:click="goBack()">Anterior</a></li>
                                     <li v-for="pagina in pageNumeration" v-bind:key="pagina" class="page-item">
-                                        <a class="page-link" v-on:click="changePage(pagina)" v-bind:class="{ active: (pagina == actualPage) }">{{pagina}}</a>
+                                        <a class="page-link" v-on:click="changePage(pagina)"
+                                            v-bind:class="{ active: (pagina == actualPage) }">{{ pagina }}</a>
                                     </li>
                                     <li class="page-item"><a class="page-link" v-on:click="goNext()">Siguiente</a></li>
                                 </ul>
@@ -327,10 +344,11 @@ export default {
                 Id_State: 0,
                 Creation_Date: ""
             },
-            confimPassworsDelete:false,
-            idProjectDeleteVerify:0,
-            verifyPassword:"",
-            proyectos:[],
+            confimPassworsDelete: false,
+            idProjectDeleteVerify: 0,
+            verifyPassword: "",
+            showElement:true,
+            proyectos: [],
             esConocormi: false,
             esActicormi: false,
             esIncormi: false,
@@ -410,29 +428,42 @@ export default {
 
         getProyectosDesdeAPI: async function () {
             this.actualPage = 1
+            let login = this.recuperarUsuLog()
+            let usutipo = this.recuperarUsuTipo()
             try {
                 if (this.proyectos.length == 0) {
-                    const response = await AdminApi.GetAllProject();
-                    const Projectlist = response.data.obj;
-                    this.proyectos = Projectlist;
+                    if (usutipo==="Operador") {
+                        const response = await AdminApi.GetProjectsAllOperator(login);
+                        const Projectlist = response.data.obj;
+                        this.proyectos = Projectlist;
+                        this.showElement = !this.showElement;
+                    }
+                    else {
+                        const response = await AdminApi.GetAllProject();
+                        const Projectlist = response.data.obj;
+                        this.proyectos = Projectlist;
+                    }
+
+
                     this.paginateData = [];
-                    if(this.proyectos.length < this.pageElements){
-                        for (let index = 0; index < this.proyectos.length; index++){
+
+                    if (this.proyectos.length < this.pageElements) {
+                        for (let index = 0; index < this.proyectos.length; index++) {
                             this.paginateData.push(this.proyectos[index]);
                         }
                     } else {
-                        for (let index = 0; index < this.pageElements; index++){
+                        for (let index = 0; index < this.pageElements; index++) {
                             this.paginateData.push(this.proyectos[index]);
                         }
                     }
                 } else {
                     this.paginateData = [];
-                    if(this.proyectos.length < this.pageElements){
-                        for (let index = 0; index < this.proyectos.length; index++){
+                    if (this.proyectos.length < this.pageElements) {
+                        for (let index = 0; index < this.proyectos.length; index++) {
                             this.paginateData.push(this.proyectos[index]);
                         }
                     } else {
-                        for (let index = 0; index < this.pageElements; index++){
+                        for (let index = 0; index < this.pageElements; index++) {
                             this.paginateData.push(this.proyectos[index]);
                         }
                     }
@@ -444,9 +475,19 @@ export default {
         },
 
         aplyFilter: async function (date, state, word) {
-            const response = await AdminApi.GetAllProject();
-            const Projectlist = response.data.obj;
-            this.proyectos = Projectlist;
+            let login = this.recuperarUsuLog()
+            let usutipo = this.recuperarUsuTipo()
+            if (usutipo==="Operador") {
+                        const response = await AdminApi.GetProjectsAllOperator(login);
+                        const Projectlist = response.data.obj;
+                        this.proyectos = Projectlist;
+                    }
+                    else {
+                        const response = await AdminApi.GetAllProject();
+                        const Projectlist = response.data.obj;
+                        this.proyectos = Projectlist;
+                    }
+            
             const filteredProjects = [];
             let success = false;
 
@@ -480,21 +521,21 @@ export default {
         },
 
         changePage: async function (pageNum) {
-            if(pageNum != "..."){
+            if (pageNum != "...") {
                 this.paginateData = []
-                if (pageNum == undefined){
+                if (pageNum == undefined) {
                     pageNum = 1
                 }
                 this.actualPage = pageNum
                 let ini = (pageNum * this.pageElements) - this.pageElements;
                 let end = (pageNum * this.pageElements);
                 let total = this.proyectos.length;
-                if(end < total){
-                    for (let index = ini; index < end; index++){
+                if (end < total) {
+                    for (let index = ini; index < end; index++) {
                         this.paginateData.push(this.proyectos[index]);
                     }
-                } else{
-                    for (let index = ini; index < total; index++){
+                } else {
+                    for (let index = ini; index < total; index++) {
                         this.paginateData.push(this.proyectos[index]);
                     }
                 }
@@ -502,38 +543,38 @@ export default {
             }
         },
 
-        goBack: async function() {
+        goBack: async function () {
             this.paginateData = []
             let paginaAnt = this.actualPage - 1
             this.actualPage = paginaAnt
             let ini = (paginaAnt * this.pageElements) - this.pageElements;
             let end = (paginaAnt * this.pageElements);
             let total = this.proyectos.length;
-            if(end < total){
-                for (let index = ini; index < end; index++){
+            if (end < total) {
+                for (let index = ini; index < end; index++) {
                     this.paginateData.push(this.proyectos[index]);
                 }
-            } else{
-                for (let index = ini; index < total; index++){
+            } else {
+                for (let index = ini; index < total; index++) {
                     this.paginateData.push(this.proyectos[index]);
                 }
             }
             await this.cutPages();
         },
 
-        goNext: async function() {
+        goNext: async function () {
             this.paginateData = []
             let paginaAnt = this.actualPage + 1
             this.actualPage = paginaAnt
             let ini = (paginaAnt * this.pageElements) - this.pageElements;
             let end = (paginaAnt * this.pageElements);
             let total = this.proyectos.length;
-            if(end < total){
-                for (let index = ini; index < end; index++){
+            if (end < total) {
+                for (let index = ini; index < end; index++) {
                     this.paginateData.push(this.proyectos[index]);
                 }
-            } else{
-                for (let index = ini; index < total; index++){
+            } else {
+                for (let index = ini; index < total; index++) {
                     this.paginateData.push(this.proyectos[index]);
                 }
             }
@@ -611,27 +652,27 @@ export default {
 
         validatePaginate: function () {
             let quantity = this.proyectos.length
-            if(quantity < 5){
+            if (quantity < 5) {
                 this.paginate = false
             } else {
                 this.paginate = true
             }
         },
-        
+
         getPasswordVerifyDeleteRow: async function () {
             let login = this.recuperarUsuLog()
             try {
                 const response = await AdminApi.GetPasswordVerifyDeleteRow(login, this.verifyPassword);
-                const mensage=response.data.ok;
-                console.log( mensage == true ? "Se verifico" : "No se verifico")
+                const mensage = response.data.ok;
+                console.log(mensage == true ? "Se verifico" : "No se verifico")
 
-                if(mensage==true){
+                if (mensage == true) {
 
-                this.confimPassworsDelete=true
-                this.$swal({ icon: 'success', text: 'Se verifico correctamente la contraseña' });
-                    
+                    this.confimPassworsDelete = true
+                    this.$swal({ icon: 'success', text: 'Se verifico correctamente la contraseña' });
+
                 }
-                else{
+                else {
                     this.$swal({ icon: 'warning', text: 'La contraseña que insertaste no es correcta' });
 
                 }
@@ -643,18 +684,17 @@ export default {
         }
         ,
         deleteRowList: async function () {
-          
+
             try {
 
-                if(this.confimPassworsDelete){
-                const response = await AdminApi.PutDisableStatus(this.idProjectDeleteVerify);
-                const mensage=response.data.ok;
-                console.log(mensage)
-                location.reload()
-                    
+                if (this.confimPassworsDelete) {
+                    const response = await AdminApi.PutDisableStatus(this.idProjectDeleteVerify);
+                    const mensage = response.data.ok;
+                    console.log(mensage)
+                    location.reload()
+
                 }
-                else
-                {
+                else {
                     this.$swal({ icon: 'warning', text: 'La contraseña que insertaste no es correcta' });
                 }
 
@@ -664,22 +704,22 @@ export default {
 
         }
         ,
-        saveIdProjectDelete:  function (idProject) {
-           this.idProjectDeleteVerify=idProject
-
-        }
-        , 
-        saveViewProjectModal:  function (project) {
-           this.ViewProject=project
+        saveIdProjectDelete: function (idProject) {
+            this.idProjectDeleteVerify = idProject
 
         }
         ,
-        
+        saveViewProjectModal: function (project) {
+            this.ViewProject = project
+
+        }
+        ,
+
     },
 
     mounted: async function () {
 
-        
+
         this.$root.cerrarMenuFiltros = this.cerrarFiltros;
         let loader = this.$loading.show({
             container: this.$refs.cuadroLoader,
@@ -697,7 +737,7 @@ export default {
         await this.cutPages();
         await this.$root.validarLoginFooter.call();
     }
-     
+
 
 
 
@@ -707,7 +747,6 @@ export default {
 </script>
 
 <style scoped>
-
 #header {
     margin: auto;
     width: 500px;

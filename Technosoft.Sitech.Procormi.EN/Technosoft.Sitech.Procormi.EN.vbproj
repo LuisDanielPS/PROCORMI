@@ -67,7 +67,10 @@
   <ItemGroup>
     <Compile Include="Modelos\FileEN.vb" />
     <Compile Include="Modelos\ProjectFileEN.vb" />
+    <Compile Include="Modelos\ProjectStatusVM.vb" />
     <Compile Include="Modelos\SegUsuProjectEN.vb" />
+    <Compile Include="Modelos\SpringTaskStatusReportVM.vb" />
+    <Compile Include="Modelos\SprintStatusReportVM.vb" />
     <Compile Include="Modelos\TaskEN.vb" />
     <Compile Include="Modelos\UserListProjectVM.vb" />
     <Compile Include="Modelos\UsuarioEN.vb" />

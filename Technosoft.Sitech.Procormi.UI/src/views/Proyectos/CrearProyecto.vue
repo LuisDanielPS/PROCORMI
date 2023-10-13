@@ -164,10 +164,14 @@ export default {
 
     data() {
         return {
+            saveDateCreationFile: "",
             FileList: [],
+            listNewFileEdit: [],
+            listEditFile: [],
             selectedUser: null,
             UserlistAdd: [],
             listUsers: [],
+            idProjectInsert: 0,//Este sirve para almacenar el id del proyecto cuando se inserta como es autoincremental
             idProyecto: (this.$route.params.id != undefined) ? this.$route.params.id : 0,
             esEditar: false,
             project: {
@@ -266,8 +270,8 @@ export default {
                 })
             }
             if (quilltext.length > maxLength) {
-                
-                const maxLengthAux=maxLength-50;
+
+                const maxLengthAux = maxLength - 50;
                 const truncatedText = quilltext.slice(0, maxLengthAux);
                 this.quill.setText(truncatedText);
                 this.quill.focus();
@@ -293,8 +297,8 @@ export default {
             if (
                 this.project.Project_Name.trim() != "" &&
                 quilltext.trim() != "" &&
-                this.UserlistAdd.length > 0 
-                
+                this.UserlistAdd.length > 0
+
             ) {
 
                 if (!this.esEditar) {
@@ -303,12 +307,12 @@ export default {
                         this.project.Description_Project = quillText;
 
                         const response = await AdminApi.PostProject(this.project);
-                        const mensaje = response.data.msg;
+                        const mensaje = response.data.ok
                         console.log(mensaje)
 
                         const idProject = await AdminApi.GetLastInsertId();
                         const idInsert = idProject.data.obj;
-                        console.log(idInsert)
+                        this.idProjectInsert = idInsert;
 
                         for (const item of this.UserlistAdd) {
                             const addUser = {
@@ -319,60 +323,68 @@ export default {
 
                             try {
                                 const response3 = await AdminApi.PostAddUserProject(addUser);
-                                const mensaje3 = response3.data.msg;
+                                const mensaje3 = response3.data.ok;
                                 console.log(mensaje3);
-                               
+
                             } catch (error) {
                                 console.error('Error al agregar usuario al proyecto:', error);
                             }
                         }
 
-                        if(this.FileList.length>0){
 
-                        for (const item of this.FileList) {
-                            const addFile = {
-                                "File_ID": 0,
-                                "File_Name": item.File_Name,
-                                "File_Path": "",
-                                "File_Type": item.File_Type,
-                                "File_Size": 5,
-                                "Creation_Date": "2023-09-30T13:47:37.9361279-06:00"
-                            };
+                        const currentdate = new Date();
+                        const options = { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' };
+                        const Dateformat = new Intl.DateTimeFormat('es', options).format(currentdate);
+                        const DateFormatwithoutBar = Dateformat.replace(/\//g, '-');
+                        const DateFormatwithoutSpace = DateFormatwithoutBar.replace(/[-\s:]/g, '')
+                        this.saveDateCreationFile = DateFormatwithoutSpace
 
-                            try {
+                        if (this.FileList.length > 0) {
 
-                                const response = await AdminApi.PostFile(addFile);
-                                const idFileLastInsert = await AdminApi.GetLastInsertId();
-                                const idFileLastInsertObj = idFileLastInsert.data.obj;
-                                const mensaje = response.data.msg;
-                                console.log(mensaje);
-
-                                const FileProject = {
-                                    "ID_Project_File": 0,
-                                    "Id_Project": idInsert,
-                                    "File_ID": idFileLastInsertObj
+                            for (const item of this.FileList) {
+                                const addFile = {
+                                    "File_ID": 0,
+                                    "File_Name": this.idProjectInsert + "_" + DateFormatwithoutSpace + "_" + item.File_Name,
+                                    "File_Path": "",
+                                    "File_Type": item.File_Type,
+                                    "File_Size": 5,
+                                    "Creation_Date": "2023-09-30T13:47:37.9361279-06:00"
                                 };
 
-                                const response2 = await AdminApi.PostAddFileProject(FileProject);
-                                const mensaje2 = response2.data.obj;
-                                console.log(mensaje2)
-                                this.$swal({ icon: 'success', text: 'Se creo correctamente el proyecto' });
-                                this.$router.push({ name: 'Inicio' })
+                                try {
 
-                            } catch (error) {
-                                console.error('Error al agregar usuario al proyecto:', error);
+                                    const response = await AdminApi.PostFile(addFile);
+                                    const idFileLastInsert = await AdminApi.GetLastInsertId();
+                                    const idFileLastInsertObj = idFileLastInsert.data.obj;
+                                    const mensaje = response.data.ok;
+                                    console.log(mensaje);
+
+                                    const FileProject = {
+                                        "ID_Project_File": 0,
+                                        "Id_Project": idInsert,
+                                        "File_ID": idFileLastInsertObj
+                                    };
+
+                                    const response2 = await AdminApi.PostAddFileProject(FileProject);
+                                    const mensaje2 = response2.data.obj;
+                                    await this.uploadsFile()
+                                    console.log(mensaje2)
+                                    this.$swal({ icon: 'success', text: 'Se creo correctamente el proyecto' });
+                                    this.$router.push({ name: 'Inicio' })
+
+                                } catch (error) {
+                                    console.error('Error al agregar usuario al proyecto:', error);
+                                }
+
+
                             }
 
-
                         }
+                        else {
 
-                    }
-                    else
-                    {
-
-                        this.$swal({ icon: 'success', text: 'Se creo correctamente el proyecto' });
-                        this.$router.push({ name: 'Inicio' })
-                    }
+                            this.$swal({ icon: 'success', text: 'Se creo correctamente el proyecto' });
+                            this.$router.push({ name: 'Inicio' })
+                        }
 
 
                     } catch (error) {
@@ -386,22 +398,17 @@ export default {
                         this.project.Description_Project = quillText;
 
                         const response = await AdminApi.PutProject(this.project);
-                        const mensaje = response.data.msg;
+                        const mensaje = response.data.ok;
                         console.log(mensaje)
 
 
-
-
-                        const idProject = await AdminApi.GetLastInsertId();
-                        const idInsert = idProject.data.obj;
-                        console.log(idInsert)
-
-                        const response2 = await AdminApi.DeleteFileProject(this.$route.params.id);
-                        const mensaje2 = response2.data.obj;
-                        console.log(mensaje2)
-
+                        if (this.ArraysEquals(this.fileListEdit,this.FileList)===true) {
+                            const response2 = await AdminApi.DeleteFileProject(this.$route.params.id);
+                            const mensaje2 = response2.data.ok;
+                            console.log(mensaje2)
+                        }
                         const response3 = await AdminApi.DeleteUserListProject(this.$route.params.id);
-                        const mensaje3 = response3.data.obj;
+                        const mensaje3 = response3.data.ok;
                         console.log(mensaje3)
 
                         for (const item of this.UserlistAdd) {
@@ -413,64 +420,88 @@ export default {
 
                             try {
                                 const response3 = await AdminApi.PostAddUserProject(addUser);
-                                const mensaje3 = response3.data.msg;
+                                const mensaje3 = response3.data.ok;
                                 console.log(mensaje3);
-                              
+
                             } catch (error) {
                                 console.error('Error al agregar usuario al proyecto:', error);
                             }
                         }
-
-                    if(this.FileList.length > 0){
-
-                        for (const item of this.FileList) {
-                            const addFile = {
-                                "File_ID": 0,
-                                "File_Name": item.File_Name,
-                                "File_Path": "",
-                                "File_Type": item.File_Type,
-                                "File_Size": 5,
-                                "Creation_Date": "2023-09-30T13:47:37.9361279-06:00"
-                            };
+                        const currentdate = new Date();
+                        const options = { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' };
+                        const Dateformat = new Intl.DateTimeFormat('es', options).format(currentdate);
+                        const DateFormatwithoutBar = Dateformat.replace(/\//g, '-');
+                        const DateFormatwithoutSpace = DateFormatwithoutBar.replace(/[-\s:]/g, '')
+                        this.saveDateCreationFile = DateFormatwithoutSpace;
 
 
+
+                        if (this.FileList.length > 0) {
+                            for (const item of this.FileList) {
+                                let fileAlreadyExists = false;
+
+                                for (let i = 0; i < this.fileListEdit.length; i++) {
+                                    if (this.fileListEdit[i].File_Name === item.File_Name) {
+                                        fileAlreadyExists = true;
+                                        break; // Si el archivo ya existe, no es necesario seguir buscando
+                                    }
+                                }
+
+                                if (!fileAlreadyExists) {
+                                    // Agregar el archivo al proyecto
+                                    const addFile = {
+                                        "File_ID": 0,
+                                        "File_Name": this.idProyecto + "_" + DateFormatwithoutSpace + "_" + item.File_Name,
+                                        "File_Path": "",
+                                        "File_Type": item.File_Type,
+                                        "File_Size": 5,
+                                        "Creation_Date": "2023-09-30T13:47:37.9361279-06:00"
+                                    };
+                                    this.listNewFileEdit.push(addFile);
+
+                                }
+                            }
                             try {
 
-                                const response = await AdminApi.PostFile(addFile);
-                                const idFileLastInsert = await AdminApi.GetLastInsertId();
-                                const idFileLastInsertObj = idFileLastInsert.data.obj;
-                                const mensaje = response.data.msg;
-                                console.log(mensaje);
 
-                                const FileProject = {
-                                    "ID_Project_File": 0,
-                                    "Id_Project": this.idProyecto,
-                                    "File_ID": idFileLastInsertObj
-                                };
+                                for (const item of this.listNewFileEdit) {
+                                    const response = await AdminApi.PostFile(item);
+                                    const mensaje = response.data.ok;
+                                    console.log(mensaje)
 
-                                const response2 = await AdminApi.PostAddFileProject(FileProject);
-                                const mensaje2 = response2.data.obj;
-                                console.log(mensaje2)
-                                this.$swal({ icon: 'success', text: 'Proyecto modificado con éxito' });
-                                setTimeout(() => {
-                                    this.$router.push({ name: 'Inicio' })
-                                }, 2000);
+                                    const idFileLastInsert = await AdminApi.GetLastInsertId();
+                                    const idFileLastInsertObj = idFileLastInsert.data.obj;
 
+
+                                    const FileProject = {
+                                        "ID_Project_File": 0,
+                                        "Id_Project": this.idProyecto,
+                                        "File_ID": idFileLastInsertObj
+                                    };
+
+                                    const response2 = await AdminApi.PostAddFileProject(FileProject);
+                                    const mensaje2 = response2.data.ok
+                                    console.log(mensaje2)
+                                }
+
+                                await this.uploadsFile();
 
                             } catch (error) {
                                 console.error('Error al agregar usuario al proyecto:', error);
                             }
 
-                           } 
-                          }
-                          else
-                          {
                             this.$swal({ icon: 'success', text: 'Proyecto modificado con éxito' });
-                                setTimeout(() => {
-                                    this.$router.push({ name: 'Inicio' })
-                                }, 2000);
+                            setTimeout(() => {
+                                this.$router.push({ name: 'Inicio' });
+                            }, 2000);
+                        } else {
+                            this.$swal({ icon: 'success', text: 'Proyecto modificado con éxito' });
+                            setTimeout(() => {
+                                this.$router.push({ name: 'Inicio' });
+                            }, 2000);
+                        }
 
-                          }
+
 
 
                     } catch (error) {
@@ -511,6 +542,7 @@ export default {
             }
         },
 
+
         onFileSelected: function (event) {
 
             const selectedFile = event.target.files[0];
@@ -519,7 +551,8 @@ export default {
                 if (!isUserInList) {
                     this.FileList.push({
                         File_Name: selectedFile.name,
-                        File_Type: selectedFile.type
+                        File_Type: selectedFile.type,
+                        File: selectedFile
                     });
                 }
                 else {
@@ -574,7 +607,7 @@ export default {
                             usu_Nombre: item.Usu_Nombre
                         });
                     }
-                    console.log(response2)
+
 
 
                     const response3 = await AdminApi.GetFileListProject(this.idProyecto);
@@ -586,13 +619,43 @@ export default {
                             File_Type: item.File_Type
                         });
                     }
-                    console.log(response2)
+                    this.fileListEdit = fileListEdit;
 
                 } catch (error) {
-                    console.error('Error al cargar el proyecto desde la API:', error);
+                    console.error('Error al cargar el proyecto desde la API:' + error);
                 }
             }
         },
+        uploadsFile: async function () {
+            const formData = new FormData();
+
+            for (const fileData of this.FileList) {
+                const selectedFile = fileData.File;
+                formData.append('archivos', selectedFile);
+            }
+
+            try {
+
+                const response = await AdminApi.PostUploadFile(this.idProjectInsert, this.saveDateCreationFile, formData);
+                console.log(response)
+            } catch (error) {
+                console.log(error);
+            }
+
+
+
+        },
+
+    ArraysEquals: function (array1, array2) {
+    
+            for (let i = 0; i < array1.length; i++) {
+                if (array1[i] !== array2[i]) {
+                    return false;
+                }
+            }
+
+            return true;
+        }
 
     },
 

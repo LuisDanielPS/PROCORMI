@@ -14,6 +14,15 @@ export default {
         })
     },
 
+    GetProjectsAllOperator(usulogin)
+    {
+        return apicliente.get('Project/GetProjectsAllOperator?UsuLogin=' +usulogin, {
+            withCredentials: false,
+            headers: { 'Content-Type': 'application/json; charset=UTF-8' }
+        })
+
+    }
+    ,
     GetAllProject()
     {
         return apicliente.get('Project/GetALLProjects' , {
@@ -103,7 +112,27 @@ export default {
             headers: { 'Content-Type': 'application/json; charset=UTF-8' }
         })
     },
-    
+    GetProjectsReportUser(usulogin) {
+        return apicliente.get('Report/GetProjectsReportUser?UsuLogin=' + usulogin, {
+            withCredentials: false,
+            headers: { 'Content-Type': 'application/json; charset=UTF-8' }
+        })
+    }
+    ,
+    GetSprintReportUser(usulogin) {
+        return apicliente.get('Report/GetSprintReportUser?UsuLogin=' + usulogin, {
+            withCredentials: false,
+            headers: { 'Content-Type': 'application/json; charset=UTF-8' }
+        })
+    }
+    ,
+    GetTaskReportUser(usulogin) {
+        return apicliente.get('Report/GetTaskReportUser?UsuLogin=' + usulogin, {
+            withCredentials: false,
+            headers: { 'Content-Type': 'application/json; charset=UTF-8' }
+        })
+    }
+    ,
     PostProject(project){
         return apicliente.post('Project/PostProject' ,project,{
             withCredentials: false,
@@ -145,6 +174,13 @@ export default {
         return apicliente.post('File/PostFile' ,addfile,{
             withCredentials: false,
             headers: { 'Content-Type': 'application/json; charset=UTF-8' }
+        })
+    }
+    ,
+    PostUploadFile(idProyect,creationDate,formData){
+        return apicliente.post('File/PostUploadFile?pIdProject='+idProyect+'&pCreationdate='+creationDate ,formData,{
+            withCredentials: false,
+            headers: { 'Content-Type': 'multipart/form-data' }
         })
     }
     ,

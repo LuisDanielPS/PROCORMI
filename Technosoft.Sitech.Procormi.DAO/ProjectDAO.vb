@@ -65,6 +65,61 @@ Public Class ProjectDAO
         Return reply
     End Function
 
+    Public Function GetProjectsAllOperatorDAO(ByVal pUsuLogin As String) As Reply(Of List(Of ProjectEN))
+
+        Dim reply As New Reply(Of List(Of ProjectEN))
+        Dim dr As MySqlDataReader
+        Dim proyectos As New List(Of ProjectEN)()
+
+        Try
+
+            sentence = "SELECT p.Id_Project, p.Project_Name, p.Description_Project, p.Id_Status, p.Date_Creation
+            FROM project AS p
+            JOIN seg_usu_project AS sp ON p.Id_Project = sp.Id_Project
+            JOIN seg_usu AS u ON sp.User_Login = u.usu_Login
+            WHERE u.usu_Login = @filtro1 AND u.usu_Tipo = 'Operador' AND p.Id_Status<>2"
+
+            dr = ConexionDAO.Instancia.ExecuteConsultGetAllProjectsOperator(sentence, pUsuLogin)
+
+            While dr.Read
+                Dim proyecto As New ProjectEN
+                proyecto.Id_project = dr(0)
+                proyecto.Project_Name = dr(1)
+                proyecto.Description_Project = dr(2)
+                proyecto.Id_State = dr(3)
+                proyecto.Creation_Date = dr(4)
+
+
+
+
+                proyectos.Add(proyecto)
+
+            End While
+
+            If proyectos.Count > 0 Then
+                reply.obj = proyectos
+                reply.ok = True
+                reply.msg = "Proyectos encontrados"
+            Else
+                reply.obj = Nothing
+                reply.ok = False
+                reply.msg = "Proyectos no encontrados"
+            End If
+
+        Catch ex As Exception
+            EscritorVisorEventos.Instancia().EscribirEvento(nameClass, MethodBase.GetCurrentMethod().Name, ex)
+            reply.ok = False
+            reply.msg = "No fue posible ejecutar la consulta: " & ex.Message
+            Return reply
+
+
+        End Try
+        dr.Close()
+        dr.Dispose()
+
+        Return reply
+    End Function
+
 
     Public Function GetProjectDAO(ByVal pIdProject As String) As Reply(Of ProjectEN)
 
@@ -160,6 +215,7 @@ Public Class ProjectDAO
     End Function
 
 
+
     Public Function GetFileListProjectDAO(ByVal pIdProject As Integer) As Reply(Of List(Of FileEN))
 
         Dim reply As New Reply(Of List(Of FileEN))
@@ -208,6 +264,68 @@ Public Class ProjectDAO
         Return reply
 
 
+    End Function
+
+    Public Function GetProjectsReportUserDAO(ByVal pUsuLogin As String) As Reply(Of List(Of ProjectStatusVM))
+
+        Dim reply As New Reply(Of List(Of ProjectStatusVM))
+        Dim dr As MySqlDataReader
+        Dim proyectos As New List(Of ProjectStatusVM)()
+
+        Try
+
+            sentence = "SELECT 
+             p.Id_Project, 
+             p.Project_Name, 
+             p.Description_Project, 
+             s.Status_Name, 
+             p.Date_Creation 
+    FROM 
+        project AS p 
+    JOIN 
+        seg_usu_project AS sp ON p.Id_Project = sp.Id_Project 
+    JOIN 
+        seg_usu AS u ON sp.User_Login = u.usu_Login 
+    JOIN 
+        status AS s ON p.Id_Status = s.Id_Status 
+    WHERE  u.usu_Login = @filtro1"
+
+            dr = ConexionDAO.Instancia.ExecuteConsultGetProjectsReportUser(sentence, pUsuLogin)
+
+            While dr.Read
+                Dim proyecto As New ProjectStatusVM
+                proyecto.Id_project = dr(0)
+                proyecto.Project_Name = dr(1)
+                proyecto.Description_Project = dr(2)
+                proyecto.Status_Name = dr(3)
+                proyecto.Creation_Date = dr(4)
+
+                proyectos.Add(proyecto)
+
+            End While
+
+            If proyectos.Count > 0 Then
+                reply.obj = proyectos
+                reply.ok = True
+                reply.msg = "Proyectos encontrados"
+            Else
+                reply.obj = Nothing
+                reply.ok = False
+                reply.msg = "Proyectos no encontrados"
+            End If
+
+        Catch ex As Exception
+            EscritorVisorEventos.Instancia().EscribirEvento(nameClass, MethodBase.GetCurrentMethod().Name, ex)
+            reply.ok = False
+            reply.msg = "No fue posible ejecutar la consulta: " & ex.Message
+            Return reply
+
+
+        End Try
+        dr.Close()
+        dr.Dispose()
+
+        Return reply
     End Function
 
 

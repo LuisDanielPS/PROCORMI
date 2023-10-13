@@ -34,6 +34,51 @@ Public Class ProjectBLL
 
     End Function
 
+    Public Function GetProjectsAllOperatorBLL(ByVal pUsuLogin As String) As Reply(Of List(Of ProjectEN))
+
+        Dim reply As Reply(Of List(Of ProjectEN)) = Nothing
+
+        Try
+            If pUsuLogin IsNot Nothing Then
+
+
+                reply = ProjectDAO.Instance.GetProjectsAllOperatorDAO(pUsuLogin)
+
+
+            End If
+
+        Catch ex As Exception
+            EscritorVisorEventos.Instancia().EscribirEvento(nameClass, MethodBase.GetCurrentMethod().Name, ex)
+            reply.ok = False
+            reply.msg = "Error al tratar de buscar un proyecto"
+        End Try
+
+        Return reply
+
+    End Function
+
+    Public Function GetProjectsReportUserBLL(ByVal pUsuLogin As String) As Reply(Of List(Of ProjectStatusVM))
+
+        Dim reply As Reply(Of List(Of ProjectStatusVM)) = Nothing
+
+        Try
+            If pUsuLogin IsNot Nothing Then
+
+                reply = ProjectDAO.Instance.GetProjectsReportUserDAO(pUsuLogin)
+
+            End If
+
+        Catch ex As Exception
+            EscritorVisorEventos.Instancia().EscribirEvento(nameClass, MethodBase.GetCurrentMethod().Name, ex)
+            reply.ok = False
+            reply.msg = "Error al tratar de buscar un proyecto"
+        End Try
+
+        Return reply
+
+    End Function
+
+
 
 
     Public Function GetProjectBLL(ByVal pIdProject As String) As Reply(Of ProjectEN)
@@ -59,6 +104,7 @@ Public Class ProjectBLL
         Return reply
 
     End Function
+
 
     Public Function GetUserListProjectBLL(ByVal pIdProject As Integer) As Reply(Of List(Of UserListProjectVM))
 

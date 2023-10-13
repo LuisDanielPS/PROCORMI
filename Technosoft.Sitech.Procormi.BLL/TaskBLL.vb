@@ -54,6 +54,30 @@ Public Class TaskBLL
     End Function
 
 
+    Public Function GetTaskAllReportUserBLL(ByVal pUsuLogin As String) As Reply(Of List(Of SpringTaskStatusReportVM))
+
+        Dim reply As Reply(Of List(Of SpringTaskStatusReportVM)) = Nothing
+
+        Try
+            If pUsuLogin IsNot Nothing Then
+
+
+                reply = TaskDao.Instance.GetTaskReportUserDAO(pUsuLogin)
+
+
+            End If
+
+        Catch ex As Exception
+            EscritorVisorEventos.Instancia().EscribirEvento(nameClass, MethodBase.GetCurrentMethod().Name, ex)
+            reply.ok = False
+            reply.msg = "Error al tratar de buscar un proyecto"
+        End Try
+
+        Return reply
+
+    End Function
+
+
     Public Function GetTaskBLL(ByVal pIdTask As String) As Reply(Of TaskEN)
 
 

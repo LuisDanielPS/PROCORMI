@@ -16,6 +16,15 @@ Namespace Controllers
             Return reply
 
         End Function
+        <HttpGet>
+        Public Function GetProjectsAllOperator(ByVal UsuLogin As String) As Reply(Of List(Of ProjectEN))
+
+            Dim reply As Reply(Of List(Of ProjectEN))
+            reply = ProjectBLL.Instance.GetProjectsAllOperatorBLL(UsuLogin)
+            Return reply
+
+        End Function
+
 
         <HttpGet>
         Public Function GetProject(pIdProject As String) As Reply(Of ProjectEN)
