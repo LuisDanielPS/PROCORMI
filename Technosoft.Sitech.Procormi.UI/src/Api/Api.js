@@ -85,9 +85,17 @@ export default {
             headers: { 'Content-Type': 'application/json; charset=UTF-8' }
         })
 
-    }
-    
-    ,
+    },
+
+    GetSprint(IdSprint)
+    {
+        return apicliente.get('Sprint/GetSprint?pIdSprint='+ IdSprint, {
+            withCredentials: false,
+            headers: { 'Content-Type': 'application/json; charset=UTF-8' }
+        })
+
+    },
+
     GetUserListProject(IdProject)
     {
         return apicliente.get('Project/GetUserListProject?pIdProject='+ IdProject, {

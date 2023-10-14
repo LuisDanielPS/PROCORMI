@@ -738,10 +738,6 @@ export default {
         await this.$root.validarLoginFooter.call();
     }
 
-
-
-
-
 }
 
 </script>

@@ -10,22 +10,22 @@
                         <form class="estiloForm">
                             <div style="padding: 50px;">
                                 <div>
-                                    <label class="margin-15px-bottom text-black">Nombre</label>
+                                    <label class="margin-15px-bottom text-black">Nombre<span style="color: red;"> *</span></label>
                                     <input maxlength="50" class="small-input inputsGeneral" type="text" required>
                                 </div>
                                 <br />
                                 <div>
-                                    <label class="margin-15px-bottom text-black">Fecha inicio</label>
+                                    <label class="margin-15px-bottom text-black">Fecha de Inicio<span style="color: red;"> *</span></label>
                                     <input class="small-input inputsGeneral" type="date" required>
                                 </div>
                                 <br />
                                 <div>
-                                    <label class="margin-15px-bottom text-black">Fecha fin</label>
+                                    <label class="margin-15px-bottom text-black">Fecha de Finalización<span style="color: red;"> *</span></label>
                                     <input class="small-input inputsGeneral" type="date" required>
                                 </div>
                                 <br />
                                 <div>
-                                    <label>Usario asignado</label>
+                                    <label>Usario asignado<span style="color: red;"> *</span></label>
                                     <br />
                                     <div class="left-content" style="margin-top: 15px;">
                                         <select required name="usuarios" id="usuarios" class="form-select text-black inputsGeneral" style="min-height: 48px;">
@@ -57,6 +57,7 @@
 import HeaderPrincipal from '@/components/HeaderPrincipal.vue'
 import 'quill/dist/quill.snow.css'
 import Cookies from 'js-cookie';
+import AdminApi from '@/Api/Api';
 
 export default {
 
@@ -68,7 +69,7 @@ export default {
         return {
 
             EditarSprint: {
-                Id_Project : "",
+                Id_sprint : "",
                 Sprint_Name : "",
                 Start_Date : "",
                 End_Date : "",
@@ -85,7 +86,24 @@ export default {
 
     methods: {
 
-        
+        loadFormEdit: async function () {
+
+            try {
+                      const response = await AdminApi.GetSprint(this.idSprint);
+                      const sprintData = response.data.obj;
+
+                    this.EditarSprint = {
+                        Id_sprint: sprintData.Id_sprint,
+                        Sprint_Name: sprintData.Sprint_Name,
+                        Start_Date: sprintData.Start_Date,
+                        End_Date: sprintData.End_Date,
+                        User_Login: sprintData.User_Login
+                    };
+
+            }catch (error) {
+                this.$swal('Error al cargar los la información para editar', error);
+                }
+        },
 
         limpiarEditor: function () {
             this.quill.root.innerHTML = ""

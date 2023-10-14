@@ -163,8 +163,6 @@ Public Class ConexionDAO
 
     End Function
 
-
-
     'Project Script
     Public Function ExecuteConsultGetAllProjects(ByVal psSql As String
                                              ) As MySqlDataReader

@@ -31,4 +31,5 @@ Public Class UsuarioBLL
         Return reply
 
     End Function
+
 End Class

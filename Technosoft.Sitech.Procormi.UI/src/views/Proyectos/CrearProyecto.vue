@@ -11,7 +11,7 @@
                         <form class="estiloForm">
                             <div style="padding: 50px;">
                                 <div>
-                                    <label class="margin-15px-bottom text-black">Nombre</label>
+                                    <label class="margin-15px-bottom text-black">Nombre<span style="color: red;"> *</span></label>
                                     <input v-model.trim="project.Project_Name" maxlength="100"
                                         class="small-input inputsGeneral" ref="inputProjectName" type="text" required>
                                 </div>
@@ -19,7 +19,7 @@
                                 <div class="row">
                                     <div class="col-12">
                                         <div>
-                                            <label class="margin-15px-bottom text-black">Descripción</label>
+                                            <label class="margin-15px-bottom text-black">Descripción<span style="color: red;"> *</span></label>
                                             <div>
                                                 <div ref="Quill"
                                                     style="border: 1px solid gray; min-height: 200px; border-bottom-left-radius: 15px; border-bottom-right-radius: 15px;">
@@ -30,7 +30,7 @@
                                 </div>
                                 <br />
                                 <div>
-                                    <label class="margin-15px-bottom text-black">Usuarios</label>
+                                    <label class="margin-15px-bottom text-black">Usuarios<span style="color: red;"> *</span></label>
                                     <div class="containerPlus">
                                         <div class="left-content">
                                             <select v-model="selectedUser" required name="usuarios" id="usuarios"
@@ -608,8 +608,6 @@ export default {
                         });
                     }
 
-
-
                     const response3 = await AdminApi.GetFileListProject(this.idProyecto);
                     const fileListEdit = response3.data.obj;
 
@@ -626,6 +624,7 @@ export default {
                 }
             }
         },
+        
         uploadsFile: async function () {
             const formData = new FormData();
 

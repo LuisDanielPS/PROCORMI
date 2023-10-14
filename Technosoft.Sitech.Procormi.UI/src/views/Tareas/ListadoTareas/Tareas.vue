@@ -19,7 +19,7 @@
                             </div>
                             <div class="modal-body">
                                 <div>
-                                    <label>Nombre</label>
+                                    <label>Nombre<span style="color: red;"> *</span></label>
                                     <br />
                                     <div style="margin-top: 15px;">
                                         <input v-model="taskName" required style="border-radius: 5px;" type="text" placeholder="Nombre">
@@ -30,7 +30,7 @@
                                 <div class="row">
                                     <div class="col-12">
                                         <div>
-                                            <label class="margin-15px-bottom text-black">Descripción</label>
+                                            <label class="margin-15px-bottom text-black">Descripción<span style="color: red;"> *</span></label>
                                             <div style="margin-top: 15px;">
                                                 <input v-model="taskDescription" required style="border-radius: 5px;" type="textarea" placeholder="Descripción">
                                             </div>
@@ -56,25 +56,26 @@
                             </div>
                             <div class="modal-body">
                                 <div>
-                                    <label>Nombre</label>
+                                    <label>Nombre<span style="color: red;"> *</span></label>
                                     <br />
                                     <div style="margin-top: 15px;">
                                         <input v-model="taskNameUnderEdit" required style="border-radius: 5px;" maxLength="45" type="text" placeholder="Nombre">
                                     </div>
                                 </div>
+                            <br/>
                                 <div class="row">
                                     <div class="col-12">
                                         <div>
-                                            <label class="margin-15px-bottom text-black">Descripción</label>
+                                            <label class="margin-15px-bottom text-black">Descripción<span style="color: red;"> *</span></label>
                                             <div>
                                                 <input v-model="taskDescriptionUnderEdit" required style="border-radius: 5px;" maxLength="100" type="textarea" placeholder="Descripcion...">
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <br />
+                                <br/>
                                 <div>
-                                    <label>Estado</label>
+                                    <label>Estado<span style="color: red;"> *</span></label>
                                     <br />
                                     <!--:selected="currentTask?.Task_State === 'Finalizada'" -->
                                     <div class="left-content" style="margin-top: 15px;">
@@ -88,7 +89,7 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
-                                <button @click="editCurrentTask" type="button" class="btn btn-success" data-bs-dismiss="modal">Aceptar</button>
+                                <button @click="editCurrentTask" type="button" class="btn btn-success" data-bs-dismiss="modal">Guardar</button>
                             </div>
                         </div>
                     </div>
@@ -669,8 +670,6 @@ export default {
             if (this.validateTask(modifiedTask, true) !== 'VALID') {
                 return;
             }
-
-           
             
             const result = await AdminApi.PutTask(modifiedTask);
             if (result.data.ok) {
@@ -683,6 +682,7 @@ export default {
                 this.$swal({ icon: 'success', text: 'Se creo correctamente la tarea' });
                 console.log("Se edito la tarea correctamente");
                 this.getTareasDesdeAPI(); 
+                reload
             } else {
                 console.log("Hubo un error al editar tarea");
             }
@@ -716,20 +716,20 @@ export default {
             if (task.Task_Name.trim() == "") {
                 
                 return this.$swal.fire({
-                    position: 'top-end',
-                    text: 'Se tiene que agregar nombre a la tarea',
-                    showConfirmButton: false,
-                    timer: 6000
+                    position: 'center',
+                    icon: 'error',
+                    title: '¡Error!',
+                    text: 'No se ingresó el nombre de la tarea',
                 })
             }
 
             if (task.Description_Task.trim() == "") {
                 
                 return this.$swal.fire({
-                    position: 'top-end',
-                    text: 'Se tiene que agregar descripcion a la tarea',
-                    showConfirmButton: false,
-                    timer: 6000
+                    position: 'center',
+                    icon: 'error',
+                    title: '¡Error!',
+                    text: 'No se ingresó la descripción de la tarea',
                 })
             }
 
@@ -737,10 +737,10 @@ export default {
             if (isEdit && !validStates.includes(task.Id_Status.trim())) {
                 
                 return this.$swal.fire({
-                    position: 'top-end',
-                    text: 'El estado de la tarea no es valido, elige otro',
-                    showConfirmButton: false,
-                    timer: 6000
+                    position: 'center',
+                    icon: 'error',
+                    title: '¡Error!',
+                    text: 'Se tiene que elegir un estado',
                 })
             }
 

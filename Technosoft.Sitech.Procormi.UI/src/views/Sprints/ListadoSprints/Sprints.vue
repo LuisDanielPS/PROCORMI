@@ -34,7 +34,7 @@
                                                 currentSprint.Sprint_Name : '' }}</strong></h1>
                                         </div>
                                     </div>
-                                    <br/>
+                                    <br />
                                     <div class="col-md-12 col-xs-12" style="min-height: 350px; max-height: 400px">
                                         <div class="row">
                                             <div class="col-12">
@@ -52,7 +52,7 @@
                                                 </h4>
                                             </div>
                                         </div>
-                                        <br/>
+                                        <br />
                                         <div class="row justify-content-center" style="position: relative;">
                                         </div>
                                         <br />
@@ -87,7 +87,7 @@
                                 </div>
                                 <br />
                                 <div>
-                                    <label>Inicia<span style="color: red;"> *</span></label>
+                                    <label>Fecha de Inicio<span style="color: red;"> *</span></label>
                                     <br />
                                     <div style="margin-top: 15px;">
                                         <input v-model="sprint.Start_Date" ref="inputStartDate" required
@@ -96,7 +96,7 @@
                                 </div>
                                 <br />
                                 <div>
-                                    <label>Finaliza<span style="color: red;"> *</span></label>
+                                    <label>Fecha de Finalización<span style="color: red;"> *</span></label>
                                     <br />
                                     <div style="margin-top: 15px;">
                                         <input v-model="sprint.End_Date" ref="inputEndDate" required
@@ -129,6 +129,68 @@
                 </div>
 
                 <!--Modal crear Sprint-->
+
+                <!--Modal editar Sprint-->
+
+                <div class="modal fade" id="editarSprint" tabindex="-1" aria-labelledby="editarSprint" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="exampleModalLabel">Editar Sprint</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div>
+                                    <label>Nombre<span style="color: red;"> *</span></label>
+                                    <br />
+                                    <div style="margin-top: 15px;">
+                                        <input v-model.trim="SprintNameEdit" ref="EditarSprintName" maxlength="45" required
+                                            style="border-radius: 5px;" type="text" placeholder="Nombre">
+                                    </div>
+                                </div>
+                                <br />
+                                <div>
+                                    <label>Fecha de Inicio<span style="color: red;"> *</span></label>
+                                    <br />
+                                    <div style="margin-top: 15px;">
+                                        <input v-model="SprintStartDateEdit" ref="EditarStartDate" required
+                                            style="border-radius: 5px;" type="date">
+                                    </div>
+                                </div>
+                                <br />
+                                <div>
+                                    <label>Fecha de Finalización<span style="color: red;"> *</span></label>
+                                    <br />
+                                    <div style="margin-top: 15px;">
+                                        <input v-model="SprintEndDateEdit" ref="EditarEndDate" required
+                                            style="border-radius: 5px;" type="date">
+                                    </div>
+                                </div>
+                                <br />
+                                <div>
+                                    <label>Usario asignado<span style="color: red;"> *</span></label>
+                                    <br />
+                                    <div class="left-content" style="margin-top: 15px;">
+                                        <select v-model="SprintUsuLoginEdit" ref="EditarUserLogin" required name="usuarios"
+                                            id="usuarios" class="form-select text-black inputsGeneral"
+                                            style="min-height: 48px;">
+                                            <option :value="null">Seleccione una opción</option>
+                                            <option v-for="item in listUsers" :key="item.usu_Login" :value="item.usu_Login">
+                                                {{ item.usu_Nombre }}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                                <button @click="editSprint" type="button" ref="inputDate" class="btn btn-success"
+                                    data-bs-dismiss="modal">Guardar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--Modal editar Sprint-->
 
                 <!--Modal eliminar Sprint-->
 
@@ -347,8 +409,10 @@
                                                             <span class="fas fa-eye" b-tooltip.hover
                                                                 title="Ver Sprint"></span>
                                                         </button>
-                                                        <button style="margin-left: 5px;" type="button"
-                                                            class="btn btn-success" v-on:click="EditarSprint(sprint.Id_Sprint)">
+
+                                                        <button @click="() => startSprintEditing(sprint)"
+                                                            style="margin-left: 5px;" type="button" class="btn btn-success"
+                                                            data-bs-toggle="modal" data-bs-target="#editarSprint">
                                                             <span class="fas fa-pen" b-tooltip.hover
                                                                 title="Editar Sprint"></span>
                                                         </button>
@@ -436,6 +500,11 @@ export default {
                 End_Date: "",
                 User_Login: "",
             },
+
+            SprintNameEdit: '',
+            SprintStartDateEdit: null,
+            SprintEndDateEdit: null,
+            SprintUsuLoginEdit: '',
 
         }
     },
@@ -772,17 +841,56 @@ export default {
             }
         },
 
-        selectCurrentSprint(sprint) {
-            this.currentSprint = sprint;
+        startSprintEditing(sprint) {
+            this.selectCurrentSprint(sprint);
+
+            this.SprintNameEdit = sprint.Sprint_Name;
+            this.SprintStartDateEdit = sprint.Start_Date;
+            this.SprintEndDateEdit = sprint.End_Date;
+            this.SprintUsuLoginEdit = sprint.usu_Login;
         },
 
-        EditarSprint: function (SprintID) {
-            this.$router.push({
-                name: "EditarSprint",
-                params: {
-                    id: SprintID,
-                }
-            })
+        async editSprint() {
+            let modifiedSprint = {
+                Sprint_Name: this.SprintNameEdit,
+                Start_Date: this.Start_Date,
+                End_Date: this.End_Date,
+                usu_Login: this.SprintUsuLoginEdit,
+                Id_Sprint: this.Id_Sprint,
+                Id_Project: this.Id_Project,
+                Id_Status: this.Id_Status
+
+            }
+
+            if (this.SprintNameEdit.trim() == "") {
+                this.$refs.EditarSprintName.focus();
+
+                return this.$swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: '¡Error!',
+                    text: 'Se tiene que completar el campo del nombre del sprint',
+                })
+            }
+
+            const result = await AdminApi.PutSprint(modifiedSprint);
+            if (result.data.ok) {
+
+                // limpiar campos
+                this.SprintNameEdit = ''
+                this.Sprint.Start_Date = ''
+                this.Sprint.End_Date = ''
+                this.SprintUsuLoginEdit= ''
+
+                console.$swal({ icon: 'success', text: 'Se editó correctamente el sprint' });
+                this.getSprintsDesdeAPI();
+            } else {
+                console.$swal("Hubo un error al editar el sprint");
+            }
+        },
+
+        selectCurrentSprint(sprint) {
+            this.currentSprint = sprint;
         },
 
         getPasswordVerifyDeleteRow: async function () {
@@ -1193,5 +1301,4 @@ ol {
     margin-bottom: 12px;
     margin-right: 1px;
     margin-left: 5px;
-}
-</style>
+}</style>
