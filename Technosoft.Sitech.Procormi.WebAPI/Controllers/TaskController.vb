@@ -9,15 +9,6 @@ Namespace Controllers
         Inherits ApiController
 
         <HttpGet>
-        Public Function GetALLTasks(idSprint As Integer) As Reply(Of List(Of TaskEN))
-
-            Dim reply As Reply(Of List(Of TaskEN))
-            reply = TaskBLL.Instance.GetAllTasksBLL(idSprint)
-            Return reply
-
-        End Function
-
-        <HttpGet>
         Public Function GetALLTasks(sprintId As String) As Reply(Of List(Of TaskEN))
             Dim reply As Reply(Of List(Of TaskEN))
             reply = TaskBLL.Instance.GetAllTasksBLL(sprintId)
@@ -55,6 +46,13 @@ Namespace Controllers
         Public Function PutTaskByDisabling(pTaskId As String) As Reply(Of TaskEN)
             Dim reply As Reply(Of TaskEN) = New Reply(Of TaskEN)
             reply = TaskBLL.Instance.PutTaskBLLByDisabling(pTaskId)
+            Return reply
+        End Function
+
+        <HttpPut>
+        Public Function PutTaskAsFinished(pTaskId As String) As Reply(Of TaskEN)
+            Dim reply As Reply(Of TaskEN) = New Reply(Of TaskEN)
+            reply = TaskBLL.Instance.PutTaskBLLAsFinished(pTaskId)
             Return reply
         End Function
 

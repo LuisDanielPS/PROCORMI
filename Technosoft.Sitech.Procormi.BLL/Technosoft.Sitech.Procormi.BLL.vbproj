@@ -83,6 +83,7 @@
     </Compile>
     <Compile Include="ProjectBLL.vb" />
     <Compile Include="SprintBLL.vb" />
+    <Compile Include="SubTaskBLL.vb" />
     <Compile Include="TaskBLL.vb" />
     <Compile Include="UsuarioBLL.vb" />
   </ItemGroup>

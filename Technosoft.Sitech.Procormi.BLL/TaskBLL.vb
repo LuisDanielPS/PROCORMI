@@ -53,7 +53,6 @@ Public Class TaskBLL
 
     End Function
 
-
     Public Function GetTaskAllReportUserBLL(ByVal pUsuLogin As String) As Reply(Of List(Of SpringTaskStatusReportVM))
 
         Dim reply As Reply(Of List(Of SpringTaskStatusReportVM)) = Nothing
@@ -136,6 +135,26 @@ Public Class TaskBLL
             EscritorVisorEventos.Instancia().EscribirEvento(nameClass, MethodBase.GetCurrentMethod().Name, ex)
             reply.ok = False
             reply.msg = "Error al modificar tarea"
+        End Try
+
+        Return reply
+
+    End Function
+
+    Public Function PutTaskBLLAsFinished(ByVal pTaskId As String) As Reply(Of TaskEN)
+
+
+        Dim reply As Reply(Of TaskEN) = Nothing
+
+        Try
+            If pTaskId IsNot Nothing Then
+                Return TaskDao.Instance.PutTaskDAOAsFinished(pTaskId)
+            End If
+
+        Catch ex As Exception
+            EscritorVisorEventos.Instancia().EscribirEvento(nameClass, MethodBase.GetCurrentMethod().Name, ex)
+            reply.ok = False
+            reply.msg = "Error al finalizar la tarea"
         End Try
 
         Return reply

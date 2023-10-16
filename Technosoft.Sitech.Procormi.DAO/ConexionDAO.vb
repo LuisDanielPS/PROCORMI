@@ -163,6 +163,97 @@ Public Class ConexionDAO
 
     End Function
 
+
+    Public Function ExecuteConsultGetAllPriorities(ByVal psSql As String
+                                             ) As MySqlDataReader
+        Try
+            If dr IsNot Nothing Then dr.Close()
+
+            conn = New MySqlConnection(conStr)
+            sql = New MySqlCommand(psSql, conn)
+            sql.CommandType = CommandType.Text
+            conn.Open()
+            dr = sql.ExecuteReader(CommandBehavior.CloseConnection)
+            sql.Dispose()
+            sql = Nothing
+            Return dr
+
+        Catch ex As MySqlException
+            EscritorVisorEventos.Instancia().EscribirEvento(nombreClase, MethodBase.GetCurrentMethod().Name, ex)
+            Throw New Exception("Error al traer las prioridades")
+        End Try
+
+    End Function
+
+
+
+
+    Public Function ExecuteConsultGetAllStatus(ByVal psSql As String
+                                             ) As MySqlDataReader
+        Try
+            If dr IsNot Nothing Then dr.Close()
+
+            conn = New MySqlConnection(conStr)
+            sql = New MySqlCommand(psSql, conn)
+            sql.CommandType = CommandType.Text
+            conn.Open()
+            dr = sql.ExecuteReader(CommandBehavior.CloseConnection)
+            sql.Dispose()
+            sql = Nothing
+            Return dr
+
+        Catch ex As MySqlException
+            EscritorVisorEventos.Instancia().EscribirEvento(nombreClase, MethodBase.GetCurrentMethod().Name, ex)
+            Throw New Exception("Error al traer los status")
+        End Try
+
+    End Function
+
+
+    Public Function ExecutePriorityById(ByVal idPriority As String) As MySqlDataReader
+        Try
+            If dr IsNot Nothing Then dr.Close()
+
+            conn = New MySqlConnection(conStr)
+            sql = New MySqlCommand("SELECT Priority_Name from priority where Id_Priority=@filtro1", conn)
+            sql.Parameters.AddWithValue("@filtro1", idPriority)
+            sql.CommandType = CommandType.Text
+            conn.Open()
+            dr = sql.ExecuteReader(CommandBehavior.CloseConnection)
+            sql.Dispose()
+            sql = Nothing
+            Return dr
+
+        Catch ex As MySqlException
+            EscritorVisorEventos.Instancia().EscribirEvento(nombreClase, MethodBase.GetCurrentMethod().Name, ex)
+            Throw New Exception("Error al ejecutar la consulta")
+        End Try
+
+    End Function
+
+
+    Public Function ExecutePriorityByName(ByVal priorityName As String) As MySqlDataReader
+        Try
+            If dr IsNot Nothing Then dr.Close()
+
+            conn = New MySqlConnection(conStr)
+            sql = New MySqlCommand("SELECT Id_Priority from priority where Priority_Name=@filtro1", conn)
+            sql.Parameters.AddWithValue("@filtro1", priorityName)
+            sql.CommandType = CommandType.Text
+            conn.Open()
+            dr = sql.ExecuteReader(CommandBehavior.CloseConnection)
+            sql.Dispose()
+            sql = Nothing
+            Return dr
+
+        Catch ex As MySqlException
+            EscritorVisorEventos.Instancia().EscribirEvento(nombreClase, MethodBase.GetCurrentMethod().Name, ex)
+            Throw New Exception("Error al ejecutar la consulta")
+        End Try
+
+    End Function
+
+
     'Project Script
     Public Function ExecuteConsultGetAllProjects(ByVal psSql As String
                                              ) As MySqlDataReader
@@ -752,6 +843,145 @@ Public Class ConexionDAO
             Throw New Exception("Error al ejecutar el delete")
         End Try
     End Sub
+
+    Public Sub PutTaskDAOAsFinished(ByVal psSql As String, ByVal pTaskId As String)
+        Try
+            conn = New MySqlConnection(conStr)
+            sql = New MySqlCommand(psSql, conn)
+            sql.Parameters.AddWithValue("@Condition", pTaskId)
+            sql.CommandType = CommandType.Text
+            conn.Open()
+            sql.ExecuteNonQuery()
+            conn.Close()
+        Catch ex As MySqlException
+            EscritorVisorEventos.Instancia().EscribirEvento(nombreClase, MethodBase.GetCurrentMethod().Name, ex)
+            Throw New Exception("Error al ejecutar finalizacion de tarea")
+        End Try
+    End Sub
+
+    'Subtask
+
+    Public Function ExecuteConsultGetAllSubTasks(ByVal psSql As String, ByVal param1 As String
+                                             ) As MySqlDataReader
+        Try
+            If dr IsNot Nothing Then dr.Close()
+
+            conn = New MySqlConnection(conStr)
+            sql = New MySqlCommand(psSql, conn)
+            sql.Parameters.AddWithValue("@filtro1", param1)
+            sql.CommandType = CommandType.Text
+            conn.Open()
+            dr = sql.ExecuteReader(CommandBehavior.CloseConnection)
+            sql.Dispose()
+            sql = Nothing
+            Return dr
+
+        Catch ex As MySqlException
+            EscritorVisorEventos.Instancia().EscribirEvento(nombreClase, MethodBase.GetCurrentMethod().Name, ex)
+            Throw New Exception("Error al ejecutar la consulta")
+        End Try
+
+    End Function
+
+
+    Public Sub ExecuteInsertSubTask(ByVal psSql As String, ByVal PsubTask As SubTaskEN)
+        Try
+            conn = New MySqlConnection(conStr)
+            sql = New MySqlCommand(psSql, conn)
+
+            sql.Parameters.AddWithValue("@parameter1", PsubTask.Title)
+            sql.Parameters.AddWithValue("@parameter2", PsubTask.Description)
+            sql.Parameters.AddWithValue("@parameter3", PsubTask.Required_Time)
+            sql.Parameters.AddWithValue("@parameter4", PsubTask.Id_Task)
+
+            ' Insertar id de status en ves de string
+            Dim dr1 As MySqlDataReader
+            dr1 = ConexionDAO.Instancia.ExecuteStateByName(PsubTask.Id_Status)
+            If (dr1.Read) Then
+                sql.Parameters.AddWithValue("@parameter5", dr1(0))
+            End If
+
+            ' Insertar id de priority en ves de string
+            dr1 = ConexionDAO.Instancia.ExecutePriorityByName(PsubTask.Id_Priority)
+            If (dr1.Read) Then
+                sql.Parameters.AddWithValue("@parameter6", dr1(0))
+            End If
+
+            sql.CommandType = CommandType.Text
+            conn.Open()
+            sql.ExecuteNonQuery()
+            conn.Close()
+        Catch ex As MySqlException
+            EscritorVisorEventos.Instancia().EscribirEvento(nombreClase, MethodBase.GetCurrentMethod().Name, ex)
+            Throw New Exception("Error al ejecutar la inserción")
+        End Try
+    End Sub
+
+    Public Sub ExecuteUpdateSubTask(ByVal psSql As String, ByVal PsubTask As SubTaskEN)
+        Try
+            conn = New MySqlConnection(conStr)
+            sql = New MySqlCommand(psSql, conn)
+            sql.Parameters.AddWithValue("@Condition", PsubTask.Id_Sub_Task)
+            sql.Parameters.AddWithValue("@parameter1", PsubTask.Title)
+            sql.Parameters.AddWithValue("@parameter2", PsubTask.Description)
+            sql.Parameters.AddWithValue("@parameter3", PsubTask.Required_Time)
+            sql.Parameters.AddWithValue("@parameter4", PsubTask.Id_Task)
+
+            Dim dr1 As MySqlDataReader
+            dr1 = ConexionDAO.Instancia.ExecuteStateByName(PsubTask.Id_Status)
+            If (dr1.Read) Then
+                sql.Parameters.AddWithValue("@parameter5", dr1(0))
+            End If
+
+            dr1 = ConexionDAO.Instancia.ExecutePriorityByName(PsubTask.Id_Priority)
+            If (dr1.Read) Then
+                sql.Parameters.AddWithValue("@parameter6", dr1(0))
+            End If
+
+            sql.CommandType = CommandType.Text
+            conn.Open()
+            sql.ExecuteNonQuery()
+            conn.Close()
+        Catch ex As MySqlException
+            EscritorVisorEventos.Instancia().EscribirEvento(nombreClase, MethodBase.GetCurrentMethod().Name, ex)
+            Throw New Exception("Error al ejecutar la inserción")
+        End Try
+    End Sub
+
+    Public Sub ExecuteUpdateSubTaskByDisabling(ByVal psSql As String, ByVal pSubTaskId As String)
+        Try
+            conn = New MySqlConnection(conStr)
+            sql = New MySqlCommand(psSql, conn)
+            sql.Parameters.AddWithValue("@Condition", pSubTaskId)
+            sql.CommandType = CommandType.Text
+            conn.Open()
+            sql.ExecuteNonQuery()
+            conn.Close()
+        Catch ex As MySqlException
+            EscritorVisorEventos.Instancia().EscribirEvento(nombreClase, MethodBase.GetCurrentMethod().Name, ex)
+            Throw New Exception("Error al ejecutar el update para eliminado logico con subtareas")
+        End Try
+    End Sub
+
+
+
+    Public Sub PutSubTaskDAOAsFinished(ByVal psSql As String, ByVal pTaskId As String)
+        Try
+            conn = New MySqlConnection(conStr)
+            sql = New MySqlCommand(psSql, conn)
+            sql.Parameters.AddWithValue("@Condition", pTaskId)
+            sql.CommandType = CommandType.Text
+            conn.Open()
+            sql.ExecuteNonQuery()
+            conn.Close()
+        Catch ex As MySqlException
+            EscritorVisorEventos.Instancia().EscribirEvento(nombreClase, MethodBase.GetCurrentMethod().Name, ex)
+            Throw New Exception("Error al ejecutar finalizacion de subtarea")
+        End Try
+    End Sub
+
+
+
     Public Sub Cerrar()
         If dr IsNot Nothing Then dr.Close()
         If conn IsNot Nothing Then

@@ -61,6 +61,59 @@ Public Class TaskDao
         Return reply
     End Function
 
+    Public Function GetTasksAllDAO(ByVal sprintId As String) As Reply(Of List(Of TaskEN))
+
+        Dim reply As New Reply(Of List(Of TaskEN))
+        Dim dr As MySqlDataReader
+        Dim dr1 As MySqlDataReader
+        Dim tareas As New List(Of TaskEN)()
+
+        Try
+
+            sentence = "SELECT * FROM task where Id_Sprint=@filtro1"
+            dr = ConexionDAO.Instancia.ExecuteConsultGetAllTasks(sentence, sprintId)
+
+            While dr.Read
+                Dim task As New TaskEN
+                task.Id_Task = dr(0)
+                task.Task_Name = dr(1)
+                task.Description_Task = dr(2)
+                task.Id_Sprint = dr(3)
+                task.Id_Status = dr(4)
+
+                ' Get state name instead of id
+                dr1 = ConexionDAO.Instancia.ExecuteStateById(task.Id_Status)
+                If (dr1.Read) Then
+                    task.Id_Status = dr1(0)
+                End If
+
+                tareas.Add(task)
+            End While
+
+            If tareas.Count > 0 Then
+                reply.obj = tareas
+                reply.ok = True
+                reply.msg = "Tareas encontradas"
+            Else
+                reply.obj = Nothing
+                reply.ok = False
+                reply.msg = "Tareas no encontrados"
+            End If
+
+        Catch ex As Exception
+            EscritorVisorEventos.Instancia().EscribirEvento(nameClass, MethodBase.GetCurrentMethod().Name, ex)
+            reply.ok = False
+            reply.msg = "No fue posible ejecutar la consulta: " & ex.Message
+            Return reply
+
+        End Try
+        dr.Close()
+        dr.Dispose()
+
+        Return reply
+    End Function
+
+
     Public Function GetTaskReportUserDAO(ByVal pUsuLogin As String) As Reply(Of List(Of SpringTaskStatusReportVM))
 
         Dim reply As New Reply(Of List(Of SpringTaskStatusReportVM))
@@ -124,59 +177,6 @@ Public Class TaskDao
 
         Return reply
     End Function
-
-    Public Function GetTasksAllDAO(ByVal sprintId As String) As Reply(Of List(Of TaskEN))
-
-        Dim reply As New Reply(Of List(Of TaskEN))
-        Dim dr As MySqlDataReader
-        Dim dr1 As MySqlDataReader
-        Dim tareas As New List(Of TaskEN)()
-
-        Try
-
-            sentence = "SELECT * FROM task where Id_Sprint=@filtro1 and Id_Status= 1"
-            dr = ConexionDAO.Instancia.ExecuteConsultGetAllTasks(sentence, sprintId)
-
-            While dr.Read
-                Dim task As New TaskEN
-                task.Id_Task = dr(0)
-                task.Task_Name = dr(1)
-                task.Description_Task = dr(2)
-                task.Id_Sprint = dr(3)
-                task.Id_Status = dr(4)
-
-                ' Get state name instead of id
-                dr1 = ConexionDAO.Instancia.ExecuteStateById(task.Id_Status)
-                If (dr1.Read) Then
-                    task.Id_Status = dr1(0)
-                End If
-
-                tareas.Add(task)
-            End While
-
-            If tareas.Count > 0 Then
-                reply.obj = tareas
-                reply.ok = True
-                reply.msg = "Tareas encontradas"
-            Else
-                reply.obj = Nothing
-                reply.ok = False
-                reply.msg = "Tareas no encontrados"
-            End If
-
-        Catch ex As Exception
-            EscritorVisorEventos.Instancia().EscribirEvento(nameClass, MethodBase.GetCurrentMethod().Name, ex)
-            reply.ok = False
-            reply.msg = "No fue posible ejecutar la consulta: " & ex.Message
-            Return reply
-
-        End Try
-        dr.Close()
-        dr.Dispose()
-
-        Return reply
-    End Function
-
 
     Public Function GetTaskDAO(ByVal pIdTask As String) As Reply(Of TaskEN)
 
@@ -295,7 +295,7 @@ Public Class TaskDao
                 reply.msg = "El objeto de la tarea esta Vacio"
 
             ElseIf pTaskEn IsNot Nothing Then
-                sentence = "UPDATE task SET Id_Status = 2 WHERE Id_Task = @Condition"
+                sentence = "UPDATE task SET Id_Status = (SELECT s.Id_Status FROM status s where s.Status_Name = 'Inactivo') WHERE Id_Task = @Condition"
 
                 ConexionDAO.Instancia.ExecuteUpdateTaskByDisabling(sentence, pTaskEn)
                 reply.ok = True
@@ -314,6 +314,33 @@ Public Class TaskDao
         Return reply
 
 
+    End Function
+
+    Public Function PutTaskDAOAsFinished(ByVal pTaskEn As String) As Reply(Of TaskEN)
+
+        Dim reply As New Reply(Of TaskEN)
+        Try
+            If pTaskEn Is Nothing Then
+                reply.ok = False
+                reply.msg = "El objeto de la tarea esta Vacio"
+
+            ElseIf pTaskEn IsNot Nothing Then
+                sentence = "UPDATE task SET Id_Status = (SELECT s.Id_Status FROM status s where s.Status_Name = 'Finalizada') WHERE Id_Task = @Condition"
+
+                ConexionDAO.Instancia.PutTaskDAOAsFinished(sentence, pTaskEn)
+                reply.ok = True
+                reply.msg = "Se ha modificado finalizado la tarea"
+
+            End If
+
+        Catch ex As Exception
+            EscritorVisorEventos.Instancia().EscribirEvento(nameClass, MethodBase.GetCurrentMethod().Name, ex)
+            reply.ok = False
+            reply.msg = "Finalizado tarea: No fue posible ejecutar la consulta: " & ex.Message
+            Return reply
+        End Try
+
+        Return reply
     End Function
 
 

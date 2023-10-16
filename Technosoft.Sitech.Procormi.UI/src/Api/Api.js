@@ -59,6 +59,15 @@ export default {
     }
     ,
 
+    GetAllSubTasksByTask(taskId)
+    {
+        return apicliente.get(`SubTask/GetALLSubTasks?taskId=${taskId}` , {
+            withCredentials: false,
+            headers: { 'Content-Type': 'application/json; charset=UTF-8' }
+        })
+    }
+    ,
+
     GetALLUsers()
     {
         return apicliente.get('User/GetALLUsers' , {
@@ -68,6 +77,24 @@ export default {
 
     }
     ,
+
+    GetAllStatus()
+    {
+        return apicliente.get('SubTask/GetALLStatus' , {
+            withCredentials: false,
+            headers: { 'Content-Type': 'application/json; charset=UTF-8' }
+        })
+
+    },
+
+    GetAllPriorities()
+    {
+        return apicliente.get('SubTask/GetALLPriorities' , {
+            withCredentials: false,
+            headers: { 'Content-Type': 'application/json; charset=UTF-8' }
+        })
+
+    },
 
     GetLastInsertId()
     {
@@ -164,6 +191,17 @@ export default {
             headers: { 'Content-Type': 'application/json; charset=UTF-8' },
         })
     },
+
+    PostSubTask(subTask) {
+        return apicliente.post('SubTask/PostTask' ,
+        subTask,
+        {
+            withCredentials: false,
+            headers: { 'Content-Type': 'application/json; charset=UTF-8' },
+        })
+    },
+
+
     PostAddUserProject(adduser){
         return apicliente.post('Project/PostAddUserProject' ,adduser,{
             withCredentials: false,
@@ -212,6 +250,30 @@ export default {
             headers: { 'Content-Type': 'application/json; charset=UTF-8' },
         })
     },
+
+    PutSubTask(subTask) {
+        return apicliente.put('SubTask/PutSubTask' ,subTask,{
+            withCredentials: false,
+            headers: { 'Content-Type': 'application/json; charset=UTF-8' },
+        })
+    },
+
+    PutSubTaskDisableStatus(subTaskId) {
+        return apicliente.put(`SubTask/PutTaskByDisabling?pSubTaskId=${subTaskId}`, {
+            withCredentials: false,
+            headers: { 'Content-Type': 'application/json; charset=UTF-8' }
+        })
+    },
+
+
+
+    PutSubTaskAsFinished(subTaskId) {
+        return apicliente.put(`SubTask/PutSubTaskAsFinished?pSubTaskId=${subTaskId}`, {
+            withCredentials: false,
+            headers: { 'Content-Type': 'application/json; charset=UTF-8' }
+        })
+    },
+    
     PutDisableStatus(IdProject)
     {
         return apicliente.put('Project/PutDisableStatus?pIdProject='+ IdProject, {
@@ -220,6 +282,13 @@ export default {
         })
 
     }, 
+
+    PutTaskAsFinished(IdTask) {
+        return apicliente.put(`Task/PutTaskAsFinished?pTaskId=${IdTask}`, {
+            withCredentials: false,
+            headers: { 'Content-Type': 'application/json; charset=UTF-8' }
+        })
+    },
     
     PutDisableSprintStatus(IdSprint)
     {
@@ -236,6 +305,8 @@ export default {
             headers: { 'Content-Type': 'application/json; charset=UTF-8' }
         })
     },
+
+
     DeleteSprint(IdSprint)
     {
         return apicliente.put('Sprint/DeleteSprint?pIdSprint='+ IdSprint, {

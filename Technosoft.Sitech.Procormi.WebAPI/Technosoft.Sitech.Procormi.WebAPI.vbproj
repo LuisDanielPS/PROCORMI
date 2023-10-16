@@ -267,6 +267,7 @@
     <Compile Include="Controllers\ProjectController.vb" />
     <Compile Include="Controllers\ReportController.vb" />
     <Compile Include="Controllers\SprintController.vb" />
+    <Compile Include="Controllers\SubTaskController.vb" />
     <Compile Include="Controllers\TaskController.vb" />
     <Compile Include="Controllers\UserController.vb" />
     <Compile Include="Global.asax.vb">
