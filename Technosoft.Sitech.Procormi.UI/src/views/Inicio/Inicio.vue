@@ -8,8 +8,7 @@
 
                 <!--Modal Ver Proyecto-->
 
-                <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-                    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal fade" id="staticBackdrop">
                     <div class="modal-dialog modal-dialog-scrollable modal-xl">
                         <div class="modal-content bg-gradient-gray">
                             <div class="modal-header">
@@ -30,7 +29,8 @@
                                 <div class="col-md-12 col-xs-12" style="min-height: 350px; max-height: 400px">
                                     <div>
                                         <div class="col-12">
-                                            <h1 style="text-align:center"><strong>{{ this.ViewProject.Project_Name }}</strong>
+                                            <h1 style="text-align:center"><strong>{{ this.ViewProject.Project_Name
+                                            }}</strong>
                                             </h1>
                                         </div>
                                         <br />
@@ -74,7 +74,8 @@
                                 </div>
                             </div>
                             <div class="modal-footer row justify-content-center">
-                                <button type="button" class="btn btn-primary col-3" style="text-align: center;">Ver archivos
+                                <button @click="loadFileList(this.ViewProject.Id_project)" type="button"
+                                    class="btn btn-primary col-3" style="text-align: center;">Descargar archivos
                                     adjuntos</button>
                             </div>
                         </div>
@@ -82,6 +83,8 @@
                 </div>
 
                 <!--Modal Ver Proyecto-->
+
+
 
                 <!--Modal eliminar Proyecto-->
 
@@ -102,7 +105,7 @@
                                     <br />
                                     <div class="row" style="margin-top: 15px;">
                                         <input type="password" v-model="verifyPassword" class="col-10"
-                                            style="margin-left: 10px; border-radius: 5px;"  required
+                                            style="margin-left: 10px; border-radius: 5px;" required
                                             placeholder="Contraseña">
                                         <button @click="getPasswordVerifyDeleteRow()" type="button"
                                             class="btn btn-success col-1" style="margin-left: 5px;"><span
@@ -191,11 +194,12 @@
                                             <h4>Listado de Proyectos</h4>
                                         </div>
                                         <ul style="text-align: right;">
-                                            <router-link v-show="showElement" class="li agregarBlt agregarResponsive" role="button"
-                                                :to="{ name: 'CrearProyecto' }"><span class="fas fa-plus"></span> Crear
+                                            <router-link v-show="showElement" class="li agregarBlt agregarResponsive"
+                                                role="button" :to="{ name: 'CrearProyecto' }"><span
+                                                    class="fas fa-plus"></span> Crear
                                                 Proyecto</router-link>
-                                            <router-link v-show="showElement" class="li agregarBlt agregarResponsivePlus" role="button"
-                                                :to="{ name: 'CrearProyecto' }"><span
+                                            <router-link v-show="showElement" class="li agregarBlt agregarResponsivePlus"
+                                                role="button" :to="{ name: 'CrearProyecto' }"><span
                                                     class="fas fa-plus"></span></router-link>
                                         </ul>
                                     </div>
@@ -286,8 +290,9 @@
                                                             <span class="fas fa-pen" b-tooltip.hover
                                                                 title="Editar Proyecto"></span>
                                                         </button>
-                                                        <button v-show="showElement" @click="saveIdProjectDelete(proyecto.Id_project)"
-                                                            type="button" class="btn btn-danger" style="margin-left: 5px;"
+                                                        <button v-show="showElement"
+                                                            @click="saveIdProjectDelete(proyecto.Id_project)" type="button"
+                                                            class="btn btn-danger" style="margin-left: 5px;"
                                                             data-bs-toggle="modal" data-bs-target="#exampleModal">
                                                             <span class="fas fa-trash" b-tooltip.hover
                                                                 title="Eliminar Proyecto"></span>
@@ -347,7 +352,7 @@ export default {
             confimPassworsDelete: false,
             idProjectDeleteVerify: 0,
             verifyPassword: "",
-            showElement:true,
+            showElement: true,
             proyectos: [],
             esConocormi: false,
             esActicormi: false,
@@ -365,9 +370,11 @@ export default {
             pageNumeration: [],
             paginate: true,
             paginateData: [],
-
+            FileList: []
         }
     },
+
+    props: ['show'],
 
     methods: {
 
@@ -432,7 +439,7 @@ export default {
             let usutipo = this.recuperarUsuTipo()
             try {
                 if (this.proyectos.length == 0) {
-                    if (usutipo==="Operador") {
+                    if (usutipo === "Operador") {
                         const response = await AdminApi.GetProjectsAllOperator(login);
                         const Projectlist = response.data.obj;
                         this.proyectos = Projectlist;
@@ -477,17 +484,17 @@ export default {
         aplyFilter: async function (date, state, word) {
             let login = this.recuperarUsuLog()
             let usutipo = this.recuperarUsuTipo()
-            if (usutipo==="Operador") {
-                        const response = await AdminApi.GetProjectsAllOperator(login);
-                        const Projectlist = response.data.obj;
-                        this.proyectos = Projectlist;
-                    }
-                    else {
-                        const response = await AdminApi.GetAllProject();
-                        const Projectlist = response.data.obj;
-                        this.proyectos = Projectlist;
-                    }
-            
+            if (usutipo === "Operador") {
+                const response = await AdminApi.GetProjectsAllOperator(login);
+                const Projectlist = response.data.obj;
+                this.proyectos = Projectlist;
+            }
+            else {
+                const response = await AdminApi.GetAllProject();
+                const Projectlist = response.data.obj;
+                this.proyectos = Projectlist;
+            }
+
             const filteredProjects = [];
             let success = false;
 
@@ -707,10 +714,44 @@ export default {
         saveIdProjectDelete: function (idProject) {
             this.idProjectDeleteVerify = idProject
 
-        }
-        ,
+        },
+
         saveViewProjectModal: function (project) {
             this.ViewProject = project
+            this.showModal = true
+        }
+        ,
+
+        loadFileList: async function (idProject) {
+
+
+
+            const response = await AdminApi.GetFileListProject(idProject);
+            const fileListIndex = response.data.obj;
+
+            if (fileListIndex &&fileListIndex.length>0) { 
+            
+            for (const item of fileListIndex) {
+            
+                try {
+
+                    const response = await AdminApi.GetDownloadFile(item.File_Name)
+                    const url = window.URL.createObjectURL(new Blob([response.data]));
+                    const link = document.createElement('a');
+                    link.href = url;
+                    link.setAttribute('download', item.File_Name);
+                    document.body.appendChild(link);
+                    link.click();
+                }
+                catch (error) {
+                    
+                    this.$swal({ icon: 'info', text: 'No se encontro archivos relacionados con este proyecto' });
+                }
+            }
+        }else{
+            this.$swal({ icon: 'info', text: 'No se encontro archivos relacionados con este proyecto' });
+        }
+
 
         }
         ,
@@ -1006,4 +1047,5 @@ ol {
     margin-bottom: 12px;
     margin-right: 1px;
     margin-left: 5px;
-}</style>
+}
+</style>

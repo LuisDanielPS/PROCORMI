@@ -168,6 +168,21 @@ export default {
         })
     }
     ,
+    GetSubTaskReportUser(usulogin) {
+        return apicliente.get('Report/GetSubTaskReportUser?UsuLogin=' + usulogin, {
+            withCredentials: false,
+            headers: { 'Content-Type': 'application/json; charset=UTF-8' }
+        })
+    }
+    ,
+    GetDownloadFile(pNameFile) {
+        return apicliente.get('File/GetDownloadFile?pNameFile=' + pNameFile, {
+            responseType:'blob',
+            withCredentials: false,
+            headers: { 'Content-Type': 'application/json; charset=UTF-8' }
+        })
+    }
+    ,
     PostProject(project){
         return apicliente.post('Project/PostProject' ,project,{
             withCredentials: false,
@@ -324,7 +339,7 @@ export default {
         })
     },
 
-    DeleteFileProject(IdProject)
+    DeleteFilesProject(IdProject)
     {
         return apicliente.delete('Project/DeleteFileProject?pIdProject='+ IdProject, {
             withCredentials: false,
@@ -341,4 +356,24 @@ export default {
         })
 
     }
+
+    ,
+    DeleteFileProject(IdFile)
+    {
+        return apicliente.delete('File/DeleteFileProject?pIdFile='+ IdFile, {
+            withCredentials: false,
+            headers: { 'Content-Type': 'application/json; charset=UTF-8' }
+        })
+
+    },
+
+    DeleteFileUplouds(fileName)
+    {
+        return apicliente.delete('File/DeleteFileUplouds?fileName='+ fileName, {
+            withCredentials: false,
+            headers: { 'Content-Type': 'application/json; charset=UTF-8' }
+        })
+
+    }
+
 }

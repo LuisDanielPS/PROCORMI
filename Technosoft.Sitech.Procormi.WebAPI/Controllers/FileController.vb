@@ -15,9 +15,9 @@ Namespace Controllers
 
 
         <HttpGet>
-        Public Function DownloadFile(ByVal nombreArchivo As String) As HttpResponseMessage
+        Public Function GetDownloadFile(ByVal pNameFile As String) As HttpResponseMessage
             Try
-                Dim rutaArchivo As String = HttpContext.Current.Server.MapPath("~/uploads/" & nombreArchivo)
+                Dim rutaArchivo As String = HttpContext.Current.Server.MapPath("~/uploads/" & pNameFile)
 
                 If System.IO.File.Exists(rutaArchivo) Then
                     Dim stream As New FileStream(rutaArchivo, FileMode.Open)
@@ -25,7 +25,7 @@ Namespace Controllers
                     Dim response As New HttpResponseMessage(HttpStatusCode.OK)
                     response.Content = New StreamContent(stream)
                     response.Content.Headers.ContentDisposition = New ContentDispositionHeaderValue("attachment")
-                    response.Content.Headers.ContentDisposition.FileName = nombreArchivo
+                    response.Content.Headers.ContentDisposition.FileName = pNameFile
                     response.Content.Headers.ContentType = New MediaTypeHeaderValue("application/octet-stream")
 
                     Return response
@@ -86,6 +86,30 @@ Namespace Controllers
         End Function
 
 
+
+        <HttpDelete>
+        Public Function DeleteFileProject(ByVal pIdFile As Integer) As Reply(Of ProjectFileEN)
+            Dim reply As Reply(Of ProjectFileEN) = New Reply(Of ProjectFileEN)
+            reply = FileBLL.Instance.DeleteFileBLL(pIdFile)
+            Return reply
+        End Function
+
+
+        <HttpDelete>
+        Public Function DeleteFileUplouds(ByVal fileName As String) As IHttpActionResult
+            Try
+                Dim rutaArchivo As String = HttpContext.Current.Server.MapPath("~/uploads/" & fileName)
+
+                If File.Exists(rutaArchivo) Then
+                    File.Delete(rutaArchivo)
+                    Return Ok("Archivo eliminado con éxito.")
+                Else
+                    Return BadRequest("El archivo no existe o no se pudo encontrar.")
+                End If
+            Catch ex As Exception
+                Return InternalServerError(ex)
+            End Try
+        End Function
 
 
     End Class

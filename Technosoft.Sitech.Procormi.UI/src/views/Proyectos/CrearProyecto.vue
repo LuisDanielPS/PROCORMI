@@ -11,7 +11,8 @@
                         <form class="estiloForm">
                             <div style="padding: 50px;">
                                 <div>
-                                    <label class="margin-15px-bottom text-black">Nombre<span style="color: red;"> *</span></label>
+                                    <label class="margin-15px-bottom text-black">Nombre<span style="color: red;">
+                                            *</span></label>
                                     <input v-model.trim="project.Project_Name" maxlength="100"
                                         class="small-input inputsGeneral" ref="inputProjectName" type="text" required>
                                 </div>
@@ -19,7 +20,8 @@
                                 <div class="row">
                                     <div class="col-12">
                                         <div>
-                                            <label class="margin-15px-bottom text-black">Descripción<span style="color: red;"> *</span></label>
+                                            <label class="margin-15px-bottom text-black">Descripción<span
+                                                    style="color: red;"> *</span></label>
                                             <div>
                                                 <div ref="Quill"
                                                     style="border: 1px solid gray; min-height: 200px; border-bottom-left-radius: 15px; border-bottom-right-radius: 15px;">
@@ -30,7 +32,8 @@
                                 </div>
                                 <br />
                                 <div>
-                                    <label class="margin-15px-bottom text-black">Usuarios<span style="color: red;"> *</span></label>
+                                    <label class="margin-15px-bottom text-black">Usuarios<span style="color: red;">
+                                            *</span></label>
                                     <div class="containerPlus">
                                         <div class="left-content">
                                             <select v-model="selectedUser" required name="usuarios" id="usuarios"
@@ -197,6 +200,17 @@ export default {
     methods: {
 
         validarEditar: function () {
+            let usutipo = this.recuperarUsuTipo()
+            
+            if (usutipo === "Operador") {
+                
+                this.$router.push({ name: 'Inicio' });
+
+                this.$swal({ icon: 'warning', text: 'No tienes permiso para acceder' });
+                   
+                        
+            }
+            
             if (this.idProyecto != 0) {
                 this.esEditar = true;
             } else {
@@ -392,7 +406,6 @@ export default {
                     }
 
                 } else {
-
                     try {
                         const quillText = this.quill.getText().trim();
                         this.project.Description_Project = quillText;
@@ -400,12 +413,12 @@ export default {
                         const response = await AdminApi.PutProject(this.project);
                         const mensaje = response.data.ok;
                         console.log(mensaje)
-
-
-                        if (this.ArraysEquals(this.fileListEdit,this.FileList)===true) {
-                            const response2 = await AdminApi.DeleteFileProject(this.$route.params.id);
-                            const mensaje2 = response2.data.ok;
-                            console.log(mensaje2)
+                        if (this.fileListEdit && this.FileList) {
+                            if (this.ArraysEquals(this.fileListEdit, this.FileList) === true) {
+                                const response2 = await AdminApi.DeleteFilesProject(this.$route.params.id);
+                                const mensaje2 = response2.data.ok;
+                                console.log(mensaje2)
+                            }
                         }
                         const response3 = await AdminApi.DeleteUserListProject(this.$route.params.id);
                         const mensaje3 = response3.data.ok;
@@ -434,44 +447,48 @@ export default {
                         const DateFormatwithoutSpace = DateFormatwithoutBar.replace(/[-\s:]/g, '')
                         this.saveDateCreationFile = DateFormatwithoutSpace;
 
-
-
                         if (this.FileList.length > 0) {
+
+
                             for (const item of this.FileList) {
                                 let fileAlreadyExists = false;
 
-                                for (let i = 0; i < this.fileListEdit.length; i++) {
-                                    if (this.fileListEdit[i].File_Name === item.File_Name) {
-                                        fileAlreadyExists = true;
-                                        break; // Si el archivo ya existe, no es necesario seguir buscando
+                                if (this.fileListEdit && this.fileListEdit.length > 0) {
+                                    for (let i = 0; i < this.fileListEdit.length; i++) {
+                                        if (this.fileListEdit[i].File_Name === item.File_Name) {
+                                            fileAlreadyExists = true;
+                                            break; // Si el archivo ya existe, no es necesario seguir buscando
+                                        }
                                     }
                                 }
 
                                 if (!fileAlreadyExists) {
                                     // Agregar el archivo al proyecto
                                     const addFile = {
-                                        "File_ID": 0,
-                                        "File_Name": this.idProyecto + "_" + DateFormatwithoutSpace + "_" + item.File_Name,
-                                        "File_Path": "",
-                                        "File_Type": item.File_Type,
-                                        "File_Size": 5,
-                                        "Creation_Date": "2023-09-30T13:47:37.9361279-06:00"
+                                        "FileData": {
+                                            "File_ID": 0,
+                                            "File_Name": this.idProyecto + "_" + DateFormatwithoutSpace + "_" + item.File_Name,
+                                            "File_Path": "",
+                                            "File_Type": item.File_Type,
+                                            "File_Size": 5,
+                                            "Creation_Date": "2023-09-30T13:47:37.9361279-06:00"
+                                        },
+                                        "File": item.File
                                     };
-                                    this.listNewFileEdit.push(addFile);
 
+                                    this.listNewFileEdit.push(addFile);
+                                    console.log(addFile);
+    
                                 }
                             }
                             try {
-
-
                                 for (const item of this.listNewFileEdit) {
-                                    const response = await AdminApi.PostFile(item);
+                                    const response = await AdminApi.PostFile(item.FileData);
                                     const mensaje = response.data.ok;
                                     console.log(mensaje)
 
                                     const idFileLastInsert = await AdminApi.GetLastInsertId();
                                     const idFileLastInsertObj = idFileLastInsert.data.obj;
-
 
                                     const FileProject = {
                                         "ID_Project_File": 0,
@@ -487,27 +504,17 @@ export default {
                                 await this.uploadsFile();
 
                             } catch (error) {
-                                console.error('Error al agregar usuario al proyecto:', error);
+                                console.error('Error al agregar usuario al proyecto:' + error);
                             }
-
-                            this.$swal({ icon: 'success', text: 'Proyecto modificado con éxito' });
-                            setTimeout(() => {
-                                this.$router.push({ name: 'Inicio' });
-                            }, 2000);
-                        } else {
-                            this.$swal({ icon: 'success', text: 'Proyecto modificado con éxito' });
-                            setTimeout(() => {
-                                this.$router.push({ name: 'Inicio' });
-                            }, 2000);
                         }
 
-
-
-
+                        this.$swal({ icon: 'success', text: 'Proyecto modificado con éxito' });
+                        setTimeout(() => {
+                            this.$router.push({ name: 'Inicio' });
+                        }, 2000);
                     } catch (error) {
                         console.error('Error al cargar los proyectos desde la API:', error);
                     }
-
                 }
 
             }
@@ -564,13 +571,37 @@ export default {
 
         }
         ,
-        deleteElementListFile: async function (name) {
 
+        deleteElementListFile: async function (name) {
             const index = this.FileList.findIndex(item => item.File_Name == name);
             if (index !== -1) {
                 this.FileList.splice(index, 1);
+
+                // Verifica si el archivo existe en la lista de archivos existentes (this.fileListEdit)
+                const existingFileIndex = this.fileListEdit.findIndex(item => item.File_Name === name);
+
+                if (existingFileIndex !== -1) {
+                    // El archivo existe en la lista de archivos existentes, elimínalo de la base de datos
+                    const fileToDelete = this.fileListEdit[existingFileIndex];
+
+                    try {
+                        // Elimina el archivo de la base de datos
+                        const response = await AdminApi.DeleteFileProject(fileToDelete.File_ID);
+                        const mensaje = response.data.ok;
+                        console.log(mensaje);
+                        const response2 = await AdminApi.DeleteFileUplouds(fileToDelete.File_Name);
+                        console.log(response2);
+                        
+                    } catch (error) {
+                        console.error('Error al eliminar el archivo de la base de datos:', error);
+                    }
+
+
+                    this.fileListEdit.splice(existingFileIndex, 1);
+                }
             }
         }
+
         ,
 
         deleteElementListUser: async function (usu_Login) {
@@ -624,29 +655,54 @@ export default {
                 }
             }
         },
-        
+
         uploadsFile: async function () {
             const formData = new FormData();
 
-            for (const fileData of this.FileList) {
-                const selectedFile = fileData.File;
-                formData.append('archivos', selectedFile);
+            if (!this.esEditar) {
+                for (const fileData of this.FileList) {
+                    const selectedFile = fileData.File;
+                    formData.append('archivos', selectedFile);
+                }
+
+                try {
+
+                    const response = await AdminApi.PostUploadFile(this.idProjectInsert, this.saveDateCreationFile, formData);
+                    console.log(response)
+                } catch (error) {
+                    console.log(error);
+                }
+            } else {
+
+                for (const fileData of this.listNewFileEdit) {
+                    const selectedFile = fileData.File;
+                    formData.append('archivos', selectedFile);
+                }
+
+                try {
+
+                    const response = await AdminApi.PostUploadFile(this.idProyecto, this.saveDateCreationFile, formData);
+                    console.log(response)
+                } catch (error) {
+                    console.log(error);
+                }
+
             }
-
-            try {
-
-                const response = await AdminApi.PostUploadFile(this.idProjectInsert, this.saveDateCreationFile, formData);
-                console.log(response)
-            } catch (error) {
-                console.log(error);
-            }
-
 
 
         },
 
-    ArraysEquals: function (array1, array2) {
-    
+        ArraysEquals: function (array1, array2) {
+            // Verificar si ambas listas son nulas o indefinidas
+            if (array1 === null || array2 === null || array1 === undefined || array2 === undefined) {
+                return false;
+            }
+
+            // Verificar la longitud de ambas listas
+            if (array1.length !== array2.length) {
+                return false;
+            }
+
             for (let i = 0; i < array1.length; i++) {
                 if (array1[i] !== array2[i]) {
                     return false;
@@ -656,7 +712,9 @@ export default {
             return true;
         }
 
-    },
+
+    }
+    ,
 
     mounted: async function () {
 

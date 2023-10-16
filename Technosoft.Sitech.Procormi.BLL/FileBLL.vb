@@ -34,4 +34,27 @@ Public Class FileBLL
 
     End Function
 
+    Public Function DeleteFileBLL(ByVal pIdFile As Integer) As Reply(Of ProjectFileEN)
+
+
+        Dim reply As Reply(Of ProjectFileEN) = Nothing
+
+        Try
+            If pIdFile <> 0 Then
+
+                reply = FileDAO.Instance.DeleteProjectFileDAO(pIdFile)
+                reply.ok = True
+                reply.msg = "Se borro el file correctamente"
+            End If
+
+        Catch ex As Exception
+            EscritorVisorEventos.Instancia().EscribirEvento(nameClass, MethodBase.GetCurrentMethod().Name, ex)
+            reply.ok = False
+            reply.msg = "Error al borrar file"
+        End Try
+
+        Return reply
+
+    End Function
+
 End Class

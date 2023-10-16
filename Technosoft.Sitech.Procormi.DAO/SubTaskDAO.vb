@@ -71,6 +71,75 @@ Public Class SubTaskDao
         Return reply
     End Function
 
+
+    Public Function GetSubTaskReportUserDAO(ByVal pUsuLogin As String) As Reply(Of List(Of SubTaskReportVM))
+
+        Dim reply As New Reply(Of List(Of SubTaskReportVM))
+        Dim dr As MySqlDataReader
+        Dim subtasks As New List(Of SubTaskReportVM)()
+
+        Try
+
+            sentence = "SELECT
+            st.Id_Sub_Task,
+	        st.Title,
+            st.Description,
+            t.Id_Task,
+            t.Task_Name,
+            t.Description_Task,
+            s.Id_Project,
+            s.Sprint_Name,
+            p.Priority_Name,
+            st1.Status_Name
+        FROM
+	    sub_task AS st
+        JOIN task AS t ON st.Id_Task = t.Id_Task
+        JOIN sprint AS s ON t.Id_Sprint = s.Id_Sprint
+        JOIN priority AS p ON st.Id_Priority = p.Id_Priority
+        JOIN status AS st1 ON st.Id_Status = st1.Id_Status   where s.User_Login=@filtro1"
+
+            dr = ConexionDAO.Instancia.ExecuteConsultGetSubTaskReportUser(sentence, pUsuLogin)
+
+            While dr.Read
+                Dim subtask As New SubTaskReportVM
+                subtask.Id_Sub_Task = dr(0)
+                subtask.Title = dr(1)
+                subtask.Description = dr(2)
+                subtask.Id_Task = dr(3)
+                subtask.Task_Name = dr(4)
+                subtask.Description_Task = dr(5)
+                subtask.Id_Project = dr(6)
+                subtask.Sprint_Name = dr(7)
+                subtask.Priority_Name = dr(8)
+                subtask.Status_Name = dr(9)
+
+                subtasks.Add(subtask)
+            End While
+
+            If subtasks.Count > 0 Then
+                reply.obj = subtasks
+                reply.ok = True
+                reply.msg = "La tarea encontrados"
+            Else
+                reply.obj = Nothing
+                reply.ok = False
+                reply.msg = "La tarea no encontrados"
+            End If
+
+        Catch ex As Exception
+            EscritorVisorEventos.Instancia().EscribirEvento(nameClass, MethodBase.GetCurrentMethod().Name, ex)
+            reply.ok = False
+            reply.msg = "No fue posible ejecutar la consulta: " & ex.Message
+            Return reply
+
+
+        End Try
+        dr.Close()
+        dr.Dispose()
+
+        Return reply
+    End Function
+
     Public Function GetAllPriorityInfo() As Reply(Of List(Of String))
 
         Dim reply As New Reply(Of List(Of String))

@@ -361,6 +361,27 @@ Public Class ConexionDAO
 
     End Function
 
+    Public Function ExecuteConsultGetSubTaskReportUser(ByVal psSql As String, ByVal pUsuLogin As String) As MySqlDataReader
+        Try
+            If dr IsNot Nothing Then dr.Close()
+
+            conn = New MySqlConnection(conStr)
+            sql = New MySqlCommand(psSql, conn)
+            sql.Parameters.AddWithValue("@filtro1", pUsuLogin)
+            sql.CommandType = CommandType.Text
+            conn.Open()
+            dr = sql.ExecuteReader(CommandBehavior.CloseConnection)
+            sql.Dispose()
+            sql = Nothing
+            Return dr
+
+        Catch ex As MySqlException
+            EscritorVisorEventos.Instancia().EscribirEvento(nombreClase, MethodBase.GetCurrentMethod().Name, ex)
+            Throw New Exception("Error al ejecutar la consulta")
+        End Try
+
+    End Function
+
 
 
     Public Function ExecuteConsultGetProject(ByVal psSql As String,
@@ -565,6 +586,21 @@ Public Class ConexionDAO
             conn = New MySqlConnection(conStr)
             sql = New MySqlCommand(psSql, conn)
             sql.Parameters.AddWithValue("@Condition", pIdProject)
+            sql.CommandType = CommandType.Text
+            conn.Open()
+            sql.ExecuteNonQuery()
+            conn.Close()
+        Catch ex As MySqlException
+            EscritorVisorEventos.Instancia().EscribirEvento(nombreClase, MethodBase.GetCurrentMethod().Name, ex)
+            Throw New Exception("Error al ejecutar la inserción")
+        End Try
+    End Sub
+
+    Public Sub ExecuteDeleteFileProject(ByVal psSql As String, ByVal pIdFile As Integer)
+        Try
+            conn = New MySqlConnection(conStr)
+            sql = New MySqlCommand(psSql, conn)
+            sql.Parameters.AddWithValue("@Condition", pIdFile)
             sql.CommandType = CommandType.Text
             conn.Open()
             sql.ExecuteNonQuery()

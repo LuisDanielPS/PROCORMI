@@ -34,6 +34,14 @@ Namespace Controllers
 
         End Function
 
+        <HttpGet>
+        Public Function GetSubTaskReportUser(ByVal UsuLogin As String) As Reply(Of List(Of SubTaskReportVM))
+
+            Dim reply As Reply(Of List(Of SubTaskReportVM))
+            reply = SubTaskBLL.Instance.GetSubTaskAllReportUserBLL(UsuLogin)
+            Return reply
+        End Function
+
 
     End Class
 End Namespace

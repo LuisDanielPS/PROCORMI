@@ -30,7 +30,7 @@
                                     <div class="col-12" style="color: white;"><hr /></div>
                                 </div>
                                 <div class="row justify-content-center" style="margin-left: 5px;">
-                                    <li class="col-8 textoBlanco botonEncuestas">
+                                    <li v-show="showElement" class="col-8 textoBlanco botonEncuestas">
                                         <router-link role="button" :to="{ name: 'Reportes' }" class="textoBlanco textoEncuestas" exact-active-class="active-link">Reportes&nbsp;&nbsp;<i class="text-white far fa-file-alt" style="cursor: pointer;"></i></router-link>
                                     </li>
                                 </div>
@@ -68,7 +68,7 @@ export default {
             estado: "",
             usuario: "",
             },
-
+            showElement:true
         }
     },
 
@@ -98,6 +98,14 @@ export default {
         recuperarUsuNombre() {
             return Cookies.get("nombreUsu")
         },
+        verifyUserType:function(){
+       
+            let usutipo = this.recuperarUsuTipo()
+
+            if (usutipo === "Operador") {
+                this.showElement=false
+            }
+        }
 
     },
 
@@ -105,6 +113,7 @@ export default {
     },
 
     created: async function () {
+        await this.verifyUserType();
         await this.$root.validarLoginFooter.call();
     }
 

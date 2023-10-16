@@ -60,6 +60,29 @@ Public Class SubTaskBLL
 
     End Function
 
+    Public Function GetSubTaskAllReportUserBLL(ByVal pUsuLogin As String) As Reply(Of List(Of SubTaskReportVM))
+
+        Dim reply As Reply(Of List(Of SubTaskReportVM)) = Nothing
+
+        Try
+            If pUsuLogin IsNot Nothing Then
+
+
+                reply = SubTaskDao.Instance.GetSubTaskReportUserDAO(pUsuLogin)
+
+
+            End If
+
+        Catch ex As Exception
+            EscritorVisorEventos.Instancia().EscribirEvento(nameClass, MethodBase.GetCurrentMethod().Name, ex)
+            reply.ok = False
+            reply.msg = "Error al tratar de buscar un proyecto"
+        End Try
+
+        Return reply
+
+    End Function
+
     Public Function PostSubTaskBLL(ByVal pSubTask As SubTaskEN) As Reply(Of SubTaskEN)
         Dim reply As Reply(Of SubTaskEN) = Nothing
 

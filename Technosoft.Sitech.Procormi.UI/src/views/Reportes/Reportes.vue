@@ -116,7 +116,7 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
-                                <button class="btn btn-success" @click="downloadExcelReportTask()" >Generar</button>
+                                <button class="btn btn-success" @click="downloadExcelReportTask()">Generar</button>
                             </div>
                         </div>
                     </div>
@@ -154,7 +154,7 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
-                                <button class="btn btn-success">Generar</button>
+                                <button @click="downloadExcelReportSubTask()" class="btn btn-success">Generar</button>
                             </div>
                         </div>
                     </div>
@@ -349,7 +349,8 @@ export default {
             listUsers: [],
             dataListProjectUser: [],
             dataListSprintUser: [],
-            dataListTaskUser: []
+            dataListTaskUser: [],
+            dataListSubTaskUser: []
 
         }
     },
@@ -380,9 +381,21 @@ export default {
         verificarLog: function () {
             let login = this.recuperarUsuLog()
             let nombre = this.recuperarUsuNombre()
+            let usutipo = this.recuperarUsuTipo()
+            
+
             if (login == null || (nombre == undefined || nombre == null || nombre == '')) {
                 this.$router.push("/");
                 this.$swal({ icon: 'warning', text: 'Aún no ha iniciado sesión, por favor verifique' });
+            }
+            
+            if (usutipo === "Operador") {
+                
+                this.$router.push({ name: 'Inicio' });
+
+                this.$swal({ icon: 'warning', text: 'No tienes permiso para acceder' });
+                   
+                        
             }
 
         },
@@ -412,134 +425,134 @@ export default {
                 }
 
                 if (this.dataListTaskUser && this.dataListTaskUser.length > 0) {
-                const fontStyle = {
-                    name: 'Arial',
-                    size: 30,
-                    bold: true,
-                    italic: true,
-                    underline: false,
-                    color: { argb: 'FFFFFF' },
-                };
+                    const fontStyle = {
+                        name: 'Arial',
+                        size: 30,
+                        bold: true,
+                        italic: true,
+                        underline: false,
+                        color: { argb: 'FFFFFF' },
+                    };
 
-                const fontDataUserStyle = {
-                    name: 'Arial',
-                    size: 12,
-                    bold: true,
-                    italic: true,
-                    underline: false,
-                    color: { argb: 'FFFFFF' },
-                };
+                    const fontDataUserStyle = {
+                        name: 'Arial',
+                        size: 12,
+                        bold: true,
+                        italic: true,
+                        underline: false,
+                        color: { argb: 'FFFFFF' },
+                    };
 
-                const fontRowStyle = {
-                    name: 'Arial',
-                    size: 12,
-                    bold: true,
-                    italic: true,
-                    underline: false,
-                    color: { argb: '000000' },
-                };
-                const HeaderStyle = {
-                    fill: { type: 'pattern', pattern: 'solid', fgColor: { argb: 'F7F704' } },
-                    border: {
-                        top: { style: 'thin', color: { argb: '000000' } },
-                        left: { style: 'thin', color: { argb: '000000' } },
-                        bottom: { style: 'thin', color: { argb: '000000' } },
-                        right: { style: 'thin', color: { argb: '000000' } },
-                    },
-                };
+                    const fontRowStyle = {
+                        name: 'Arial',
+                        size: 12,
+                        bold: true,
+                        italic: true,
+                        underline: false,
+                        color: { argb: '000000' },
+                    };
+                    const HeaderStyle = {
+                        fill: { type: 'pattern', pattern: 'solid', fgColor: { argb: 'F7F704' } },
+                        border: {
+                            top: { style: 'thin', color: { argb: '000000' } },
+                            left: { style: 'thin', color: { argb: '000000' } },
+                            bottom: { style: 'thin', color: { argb: '000000' } },
+                            right: { style: 'thin', color: { argb: '000000' } },
+                        },
+                    };
 
-                const DataUserStyle = {
-                    fill: { type: 'pattern', pattern: 'solid', fgColor: { argb: '244062' } },
-                    border: {
-                        top: { style: 'thin', color: { argb: '000000' } },
-                        left: { style: 'thin', color: { argb: '000000' } },
-                        bottom: { style: 'thin', color: { argb: '000000' } },
-                        right: { style: 'thin', color: { argb: '000000' } },
-                    },
-                };
-                const rowStyle = {
-                    fill: { type: 'pattern', pattern: 'solid', fgColor: { argb: 'F2F2F2' } },
-                    border: {
-                        top: { style: 'thin', color: { argb: '000000' } },
-                        left: { style: 'thin', color: { argb: '000000' } },
-                        bottom: { style: 'thin', color: { argb: '000000' } },
-                        right: { style: 'thin', color: { argb: '000000' } },
-                    },
-                };
-
-
-                const workbook = new ExcelJS.Workbook();
-                const worksheet = workbook.addWorksheet("Informe del usuario");
-
-                worksheet.getColumn(1).width = 60;
-                worksheet.getColumn(1).alignment = { horizontal: 'center', vertical: 'middle' };
-                worksheet.getColumn(2).width = 30;
-                worksheet.getColumn(3).width = 40;
-                worksheet.getColumn(4).width = 30;
-                worksheet.getColumn(5).width = 20;
-                worksheet.addRow(["Reporte de proyecto", "de usuario", "Procormi"]);
-                const cell = worksheet.getCell('A1');
-                cell.width = 100;
-                worksheet.addRow(["#Nombre del usuario", selectedUserObject.usu_Nombre, "Correo Electronico", selectedUserObject.usu_email]);
-                worksheet.addRow(["#Numero de proyecto", "Nombre del proyecto", "Descripcion", "Estado", "Fecha de creacion"]);
-                worksheet.getRow(1).eachCell((cell) => {
-                    cell.fill = HeaderStyle.fill;
-                    cell.border = HeaderStyle.border;
-                    cell.font = fontStyle;
-                });
-                worksheet.getRow(2).eachCell((cell) => {
-                    cell.fill = DataUserStyle.fill;
-                    cell.border = DataUserStyle.border;
-                    cell.font = fontDataUserStyle;
-                });
-                worksheet.getRow(3).eachCell((cell) => {
-                    cell.fill = HeaderStyle.fill;
-                    cell.border = HeaderStyle.border;
-                    cell.font = fontRowStyle;
-                });
-                for (const item of this.dataListProjectUser) {
-                    const row = worksheet.addRow([item.Id_project, item.Project_Name, item.Description_Project, item.Status_Name, item.Creation_Date]);
+                    const DataUserStyle = {
+                        fill: { type: 'pattern', pattern: 'solid', fgColor: { argb: '244062' } },
+                        border: {
+                            top: { style: 'thin', color: { argb: '000000' } },
+                            left: { style: 'thin', color: { argb: '000000' } },
+                            bottom: { style: 'thin', color: { argb: '000000' } },
+                            right: { style: 'thin', color: { argb: '000000' } },
+                        },
+                    };
+                    const rowStyle = {
+                        fill: { type: 'pattern', pattern: 'solid', fgColor: { argb: 'F2F2F2' } },
+                        border: {
+                            top: { style: 'thin', color: { argb: '000000' } },
+                            left: { style: 'thin', color: { argb: '000000' } },
+                            bottom: { style: 'thin', color: { argb: '000000' } },
+                            right: { style: 'thin', color: { argb: '000000' } },
+                        },
+                    };
 
 
-                    row.eachCell({ includeEmpty: true }, (cell) => {
-                        cell.fill = rowStyle.fill;
-                        cell.border = rowStyle.border;
+                    const workbook = new ExcelJS.Workbook();
+                    const worksheet = workbook.addWorksheet("Informe del usuario");
 
+                    worksheet.getColumn(1).width = 60;
+                    worksheet.getColumn(1).alignment = { horizontal: 'center', vertical: 'middle' };
+                    worksheet.getColumn(2).width = 30;
+                    worksheet.getColumn(3).width = 40;
+                    worksheet.getColumn(4).width = 30;
+                    worksheet.getColumn(5).width = 20;
+                    worksheet.addRow(["Reporte de proyecto", "de usuario", "Procormi"]);
+                    const cell = worksheet.getCell('A1');
+                    cell.width = 100;
+                    worksheet.addRow(["#Nombre del usuario", selectedUserObject.usu_Nombre, "Correo Electronico", selectedUserObject.usu_email]);
+                    worksheet.addRow(["#Numero de proyecto", "Nombre del proyecto", "Descripcion", "Estado", "Fecha de creacion"]);
+                    worksheet.getRow(1).eachCell((cell) => {
+                        cell.fill = HeaderStyle.fill;
+                        cell.border = HeaderStyle.border;
+                        cell.font = fontStyle;
                     });
+                    worksheet.getRow(2).eachCell((cell) => {
+                        cell.fill = DataUserStyle.fill;
+                        cell.border = DataUserStyle.border;
+                        cell.font = fontDataUserStyle;
+                    });
+                    worksheet.getRow(3).eachCell((cell) => {
+                        cell.fill = HeaderStyle.fill;
+                        cell.border = HeaderStyle.border;
+                        cell.font = fontRowStyle;
+                    });
+                    for (const item of this.dataListProjectUser) {
+                        const row = worksheet.addRow([item.Id_project, item.Project_Name, item.Description_Project, item.Status_Name, item.Creation_Date]);
+
+
+                        row.eachCell({ includeEmpty: true }, (cell) => {
+                            cell.fill = rowStyle.fill;
+                            cell.border = rowStyle.border;
+
+                        });
+                    }
+
+
+                    workbook.xlsx.writeBuffer().then((data) => {
+                        const blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+                        const url = window.URL.createObjectURL(blob);
+
+                        const namewithoutspaces = selectedUserObject.usu_Nombre.replace(/\s/g, '');
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = 'ReporteProyecto' + namewithoutspaces + '.xlsx';
+                        a.style.display = 'none';
+                        document.body.appendChild(a);
+                        a.click();
+
+
+                        window.URL.revokeObjectURL(url);
+
+                        this.$swal.fire({
+                            title: 'Descargando archivo',
+                            icon: 'info',
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                        });
+                    });
+                } else {
+
+                    this.$swal({ icon: 'warning', text: 'No existe ningun proyecto asociado con el usuario' });
                 }
 
 
-                workbook.xlsx.writeBuffer().then((data) => {
-                    const blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-                    const url = window.URL.createObjectURL(blob);
-
-                    const namewithoutspaces = selectedUserObject.usu_Nombre.replace(/\s/g, '');
-                    const a = document.createElement('a');
-                    a.href = url;
-                    a.download = 'ReporteProyecto' + namewithoutspaces + '.xlsx';
-                    a.style.display = 'none';
-                    document.body.appendChild(a);
-                    a.click();
-
-
-                    window.URL.revokeObjectURL(url);
-
-                    this.$swal.fire({
-                        title: 'Descargando archivo',
-                        icon: 'info',
-                        toast: true,
-                        position: 'top-end',
-                        showConfirmButton: false,
-                        timer: 3000,
-                        timerProgressBar: true,
-                    });
-                });
-            }else{
-
-                this.$swal({ icon: 'warning', text: 'No existe ningun proyecto asociado con el usuario' });
-            }
-            
-                
             } else {
                 this.$swal({ icon: 'warning', text: 'Tiene que seleccionar un usuario' });
             }
@@ -552,8 +565,8 @@ export default {
 
             if (selectedUserObject !== null) {
 
-               
-  
+
+
                 try {
                     const response = await AdminApi.GetSprintReportUser(selectedUserObject.usu_Login);
                     const data = response.data.obj;
@@ -783,7 +796,7 @@ export default {
                     const cell = worksheet.getCell('A1');
                     cell.width = 100;
                     worksheet.addRow(["#Nombre del usuario", selectedUserObject.usu_Nombre, "Correo Electronico", selectedUserObject.usu_email]);
-                    worksheet.addRow(["#Numero de Spring", "Nombre del Sprint ", "#Numero Proyecto", "#Numero de tarea", "Nombre de tarea", "Descripcion","Estado"]);
+                    worksheet.addRow(["#Numero de Spring", "Nombre del Sprint ", "#Numero Proyecto", "#Numero de tarea", "Nombre de tarea", "Descripcion", "Estado"]);
                     worksheet.getRow(1).eachCell((cell) => {
                         cell.fill = HeaderStyle.fill;
                         cell.border = HeaderStyle.border;
@@ -800,7 +813,7 @@ export default {
                         cell.font = fontRowStyle;
                     });
                     for (const item of this.dataListTaskUser) {
-                        const row = worksheet.addRow([item.Id_Sprint, item.Sprint_Name, item.Id_Project, item.Id_Task, item.Task_Name, item.Description_Task,item.Status_Name]);
+                        const row = worksheet.addRow([item.Id_Sprint, item.Sprint_Name, item.Id_Project, item.Id_Task, item.Task_Name, item.Description_Task, item.Status_Name]);
 
 
                         row.eachCell({ includeEmpty: true }, (cell) => {
@@ -819,6 +832,160 @@ export default {
                         const a = document.createElement('a');
                         a.href = url;
                         a.download = 'ReporteTarea' + namewithoutspaces + '.xlsx';
+                        a.style.display = 'none';
+                        document.body.appendChild(a);
+                        a.click();
+
+
+                        window.URL.revokeObjectURL(url);
+
+                        this.$swal.fire({
+                            title: 'Descargando archivo',
+                            icon: 'info',
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                        });
+                    });
+                } else {
+                    this.$swal({ icon: 'warning', text: 'No existe ningun sprint asociado con el usuario' });
+                }
+
+            }
+
+            else {
+                this.$swal({ icon: 'warning', text: 'Tiene que seleccionar un usuario' });
+            }
+
+        },
+        downloadExcelReportSubTask: async function () {
+
+            const selectedUserObject = JSON.parse(this.elementSelectUsuLogin);
+
+            if (selectedUserObject !== null) {
+
+                try {
+                    const response = await AdminApi.GetSubTaskReportUser(selectedUserObject.usu_Login);
+                    const data = response.data.obj;
+                    this.dataListSubTaskUser = data;
+                } catch (error) {
+                    console.error('Error al cargar los proyectos desde la API:', error);
+                }
+
+                if (this.dataListSubTaskUser && this.dataListSubTaskUser.length > 0) {
+
+                    const fontStyle = {
+                        name: 'Arial',
+                        size: 30,
+                        bold: true,
+                        italic: true,
+                        underline: false,
+                        color: { argb: 'FFFFFF' },
+                    };
+
+                    const fontDataUserStyle = {
+                        name: 'Arial',
+                        size: 12,
+                        bold: true,
+                        italic: true,
+                        underline: false,
+                        color: { argb: 'FFFFFF' },
+                    };
+
+                    const fontRowStyle = {
+                        name: 'Arial',
+                        size: 12,
+                        bold: true,
+                        italic: true,
+                        underline: false,
+                        color: { argb: '000000' },
+                    };
+                    const HeaderStyle = {
+                        fill: { type: 'pattern', pattern: 'solid', fgColor: { argb: 'F7F704' } },
+                        border: {
+                            top: { style: 'thin', color: { argb: '000000' } },
+                            left: { style: 'thin', color: { argb: '000000' } },
+                            bottom: { style: 'thin', color: { argb: '000000' } },
+                            right: { style: 'thin', color: { argb: '000000' } },
+                        },
+                    };
+
+                    const DataUserStyle = {
+                        fill: { type: 'pattern', pattern: 'solid', fgColor: { argb: '244062' } },
+                        border: {
+                            top: { style: 'thin', color: { argb: '000000' } },
+                            left: { style: 'thin', color: { argb: '000000' } },
+                            bottom: { style: 'thin', color: { argb: '000000' } },
+                            right: { style: 'thin', color: { argb: '000000' } },
+                        },
+                    };
+                    const rowStyle = {
+                        fill: { type: 'pattern', pattern: 'solid', fgColor: { argb: 'F2F2F2' } },
+                        border: {
+                            top: { style: 'thin', color: { argb: '000000' } },
+                            left: { style: 'thin', color: { argb: '000000' } },
+                            bottom: { style: 'thin', color: { argb: '000000' } },
+                            right: { style: 'thin', color: { argb: '000000' } },
+                        },
+                    };
+
+
+                    const workbook = new ExcelJS.Workbook();
+                    const worksheet = workbook.addWorksheet("Informe del usuario");
+
+                    worksheet.getColumn(1).width = 60;
+                    worksheet.getColumn(1).alignment = { horizontal: 'center', vertical: 'middle' };
+                    worksheet.getColumn(2).width = 30;
+                    worksheet.getColumn(3).width = 40;
+                    worksheet.getColumn(4).width = 30;
+                    worksheet.getColumn(5).width = 30;
+                    worksheet.getColumn(6).width = 30;
+                    worksheet.getColumn(7).width = 30;
+                    worksheet.getColumn(8).width = 30;
+                    worksheet.getColumn(9).width = 30;
+                    worksheet.getColumn(10).width = 30;
+                    worksheet.addRow(["Reporte de sub tareas", "de usuario", "Procormi"]);
+                    const cell = worksheet.getCell('A1');
+                    cell.width = 100;
+                    worksheet.addRow(["#Nombre del usuario", selectedUserObject.usu_Nombre, "Correo Electronico", selectedUserObject.usu_email]);
+                    worksheet.addRow(["#Numero de Sub Tarea", "Titulo", "Descripcion", "#Numero de tarea", "Nombre de tarea", "Descripcion","Numero de proyecto","Nombre sprint","Prioridad","Estado"]);
+                    worksheet.getRow(1).eachCell((cell) => {
+                        cell.fill = HeaderStyle.fill;
+                        cell.border = HeaderStyle.border;
+                        cell.font = fontStyle;
+                    });
+                    worksheet.getRow(2).eachCell((cell) => {
+                        cell.fill = DataUserStyle.fill;
+                        cell.border = DataUserStyle.border;
+                        cell.font = fontDataUserStyle;
+                    });
+                    worksheet.getRow(3).eachCell((cell) => {
+                        cell.fill = HeaderStyle.fill;
+                        cell.border = HeaderStyle.border;
+                        cell.font = fontRowStyle;
+                    });
+                    for (const item of this.dataListSubTaskUser) {
+                        const row = worksheet.addRow([item.Id_Sub_Task, item.Title, item.Description, item.Id_Task, item.Task_Name, item.Description_Task, item.Id_Project,item.Sprint_Name,item.Priority_Name,item.Status_Name]);
+
+
+                        row.eachCell({ includeEmpty: true }, (cell) => {
+                            cell.fill = rowStyle.fill;
+                            cell.border = rowStyle.border;
+
+                        });
+                    }
+
+
+                    workbook.xlsx.writeBuffer().then((data) => {
+                        const blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+                        const url = window.URL.createObjectURL(blob);
+
+                        const namewithoutspaces = selectedUserObject.usu_Nombre.replace(/\s/g, '');
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = 'ReporteSubTarea' + namewithoutspaces + '.xlsx';
                         a.style.display = 'none';
                         document.body.appendChild(a);
                         a.click();
