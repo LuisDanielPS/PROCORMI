@@ -304,6 +304,15 @@ export default {
             headers: { 'Content-Type': 'application/json; charset=UTF-8' }
         })
     },
+
+    PutCompleteSprintStatus(IdSprint)
+    {
+        return apicliente.put('Sprint/PutCompleteSprintStatus?pIdSprint='+ IdSprint, {
+            withCredentials: false,
+            headers: { 'Content-Type': 'application/json; charset=UTF-8' }
+        })
+
+    },
     
     PutDisableSprintStatus(IdSprint)
     {

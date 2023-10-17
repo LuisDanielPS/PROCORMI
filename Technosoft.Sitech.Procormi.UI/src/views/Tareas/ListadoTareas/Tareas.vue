@@ -14,7 +14,7 @@
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h1 class="modal-title fs-5" id="exampleModalLabel">Crear Tarea</h1>
+                                <h1 class="modal-title fs-5"  id="exampleModalLabel">Crear Tarea</h1>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
@@ -212,7 +212,7 @@
                                             <h1 style="text-align:center"><strong>{{ currentSubTask ? currentSubTask.Title : '' }}</strong></h1>
                                         </div>
                                     </div>
-                                    <br />
+                                    <br/>
                                     <div class="col-md-12 col-xs-12" style="min-height: 350px; max-height: 400px">
                                         <div class="row">
                                             <div class="col-12">
@@ -231,7 +231,6 @@
                                             </div>
                                         </div>
                                         <br>
-
                                         <div class=" modal-footer  row justify-content-center" style="position: relative;">
                                             <button v-if="currentSubTask ? currentSubTask.Id_Status != 'Finalizada' : false" style="width: 150px;color: white; background-color: green; min-height: 15px; min-width: 25px;" type="button" data-bs-dismiss="modal" @click="finishSubTask">Finalizar subtarea</button>
  
@@ -288,7 +287,7 @@
                                 </div>
                                 <br />
                                 <div>
-                                    <label>Tiempo requerido<span style="color: red;"> *</span></label>
+                                    <label>Tiempo requerido (horas)<span style="color: red;"> *</span></label>
                                     <br />
                                     <div style="margin-top: 15px;">
                                         <input v-model="requiredTimeSubTarea" required style="border-radius: 5px;" type="number" placeholder="1">
@@ -355,7 +354,7 @@
                                 </div>
                                 <br />
                                 <div>
-                                    <label>Tiempo requerido<span style="color: red;"> *</span></label>
+                                    <label>Tiempo requerido (horas)<span style="color: red;"> *</span></label>
                                     <br />
                                     <div style="margin-top: 15px;">
                                         <input v-model="requiredTimeSubTarea" required style="border-radius: 5px;" type="number" min="1" placeholder="1">
@@ -469,8 +468,8 @@
                                             <h4>Listado de Tareas</h4>
                                         </div>
                                         <ul style="text-align: right;">
-                                            <a class="li agregarBlt agregarResponsive" role="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop"><span class="fas fa-plus"></span> Crear Tarea</a>
-                                            <a class="li agregarBlt agregarResponsivePlus" role="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop"><span class="fas fa-plus"></span></a>
+                                            <a v-if="recuperarUsuTipo() == 'Administrador'" class="li agregarBlt agregarResponsive" role="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop"><span class="fas fa-plus"></span> Crear Tarea</a>
+                                            <a v-if="recuperarUsuTipo() == 'Administrador'" class="li agregarBlt agregarResponsivePlus" role="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop"><span class="fas fa-plus"></span></a>
                                         </ul>
                                     </div>
 
@@ -560,10 +559,10 @@
                                                     <button  @click="() => selectCurrentTask(tarea)" class="btn btn-primary" role="button" data-bs-toggle="modal" data-bs-target="#verTarea">
                                                         <span class="fas fa-eye" b-tooltip.hover title="Ver Tarea"></span>
                                                     </button>
-                                                    <button @click="() => startTaskEditing(tarea)" style="margin-left: 5px;" type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#editarTarea">
+                                                    <button v-if="recuperarUsuTipo() == 'Administrador'" @click="() => startTaskEditing(tarea)" style="margin-left: 5px;" type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#editarTarea">
                                                         <span class="fas fa-pen" b-tooltip.hover title="Editar Tarea"></span>
                                                     </button>
-                                                    <button @click="() => deleteTask(tarea)" type="button" class="btn btn-danger" style="margin-left: 5px;" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                                    <button v-if="recuperarUsuTipo() == 'Administrador'" @click="() => deleteTask(tarea)" type="button" class="btn btn-danger" style="margin-left: 5px;" data-bs-toggle="modal" data-bs-target="#exampleModal">
                                                         <span class="fas fa-trash" b-tooltip.hover title="Eliminar Tarea"></span>
                                                     </button>
                                                 </div>
@@ -601,8 +600,8 @@
                                                 <div>
                                                     <div class="tablaPersonalizadaRowSubtask">
                                                         <a style="text-decoration: none; margin-right: 20px;" class="fas fa-eye" b-tooltip.hover title="Ver subtarea" data-bs-toggle="modal" data-bs-target="#verSubTarea" @click="() => selectCurrentSubTask(subTask)"></a>
-                                                        <a style="text-decoration: none; margin-right: 20px;" class="fas fa-pen" data-bs-toggle="modal" data-bs-target="#editarSubtarea" @click="startSubTaskEditing(subTask)"></a>
-                                                        <a style="text-decoration: none;" class="fas fa-trash" data-bs-toggle="modal" data-bs-target="#eliminarSubtarea" @click="() => selectCurrentSubTask(subTask)"></a>
+                                                        <a v-if="recuperarUsuTipo() == 'Administrador'" style="text-decoration: none; margin-right: 20px;" class="fas fa-pen" data-bs-toggle="modal" data-bs-target="#editarSubtarea" @click="startSubTaskEditing(subTask)"></a>
+                                                        <a v-if="recuperarUsuTipo() == 'Administrador'" style="text-decoration: none;" class="fas fa-trash" data-bs-toggle="modal" data-bs-target="#eliminarSubtarea" @click="() => selectCurrentSubTask(subTask)"></a>
                                                     </div>
                                                 </div>
                                                

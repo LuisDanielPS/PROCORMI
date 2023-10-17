@@ -691,9 +691,10 @@ Public Class ConexionDAO
             conn = New MySqlConnection(conStr)
             sql = New MySqlCommand(psSql, conn)
             sql.Parameters.AddWithValue("@Condition", Psprint.Id_Sprint)
-            sql.Parameters.AddWithValue("@parameter1", Psprint.Start_Date)
-            sql.Parameters.AddWithValue("@parameter2", Psprint.End_Date)
-            sql.Parameters.AddWithValue("@parameter3", Psprint.User_Login)
+            sql.Parameters.AddWithValue("@parameter1", Psprint.Sprint_Name)
+            sql.Parameters.AddWithValue("@parameter2", Psprint.Start_Date)
+            sql.Parameters.AddWithValue("@parameter3", Psprint.End_Date)
+            sql.Parameters.AddWithValue("@parameter4", Psprint.User_Login)
             sql.CommandType = CommandType.Text
             conn.Open()
             sql.ExecuteNonQuery()
@@ -702,6 +703,22 @@ Public Class ConexionDAO
             EscritorVisorEventos.Instancia().EscribirEvento(nombreClase, MethodBase.GetCurrentMethod().Name, ex)
             Throw New Exception("Error al ejecutar la inserción")
         End Try
+    End Sub
+
+    Public Sub ExecuteCompleteSprintStatus(ByVal psSql As String, ByVal PidSprint As Integer)
+        Try
+            conn = New MySqlConnection(conStr)
+            sql = New MySqlCommand(psSql, conn)
+            sql.Parameters.AddWithValue("@Condition", PidSprint)
+            sql.CommandType = CommandType.Text
+            conn.Open()
+            sql.ExecuteNonQuery()
+            conn.Close()
+        Catch ex As MySqlException
+            EscritorVisorEventos.Instancia().EscribirEvento(nombreClase, MethodBase.GetCurrentMethod().Name, ex)
+            Throw New Exception("Error al ejecutar la accion")
+        End Try
+
     End Sub
 
     Public Sub ExecuteSprintDisableStatus(ByVal psSql As String, ByVal PidSprint As Integer)

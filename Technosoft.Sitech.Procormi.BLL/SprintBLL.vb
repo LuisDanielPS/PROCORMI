@@ -124,6 +124,29 @@ Public Class SprintBLL
 
     End Function
 
+    Public Function PutCompleteSprintStatusBLL(ByVal pIdSprint As Integer) As Reply(Of SprintEN)
+
+        Dim reply As Reply(Of SprintEN) = Nothing
+
+        Try
+            If pIdSprint <> 0 Then
+
+                reply = SprintDAO.Instance.PutCompleteSprintStatusDAO(pIdSprint)
+                reply.ok = True
+                reply.msg = "Se ha completado el sprint"
+
+            End If
+
+        Catch ex As Exception
+            EscritorVisorEventos.Instancia().EscribirEvento(nameClass, MethodBase.GetCurrentMethod().Name, ex)
+            reply.ok = False
+            reply.msg = "Error al completar el proyecto"
+        End Try
+
+        Return reply
+
+    End Function
+
     Public Function PutDisableStatusBLL(ByVal pIdSprint As Integer) As Reply(Of SprintEN)
 
         Dim reply As Reply(Of SprintEN) = Nothing

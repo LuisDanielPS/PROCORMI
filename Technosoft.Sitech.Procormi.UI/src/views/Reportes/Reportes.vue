@@ -424,7 +424,7 @@ export default {
                     console.error('Error al cargar los proyectos desde la API:', error);
                 }
 
-                if (this.dataListTaskUser && this.dataListTaskUser.length > 0) {
+                if (this.dataListProjectUser && this.dataListProjectUser.length > 0) {
                     const fontStyle = {
                         name: 'Arial',
                         size: 30,

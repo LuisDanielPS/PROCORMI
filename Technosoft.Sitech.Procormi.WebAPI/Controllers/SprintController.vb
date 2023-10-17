@@ -45,6 +45,15 @@ Namespace Controllers
         End Function
 
         <HttpPut>
+        Public Function PutCompleteSprintStatus(pIdSprint As Integer) As Reply(Of SprintEN)
+
+            Dim reply As Reply(Of SprintEN) = New Reply(Of SprintEN)
+            reply = SprintBLL.Instance.PutCompleteSprintStatusBLL(pIdSprint)
+            Return reply
+
+        End Function
+
+        <HttpPut>
         Public Function PutDisableSprintStatus(pIdSprint As Integer) As Reply(Of SprintEN)
 
             Dim reply As Reply(Of SprintEN) = New Reply(Of SprintEN)

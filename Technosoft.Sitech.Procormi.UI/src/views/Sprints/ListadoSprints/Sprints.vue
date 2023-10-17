@@ -130,6 +130,46 @@
 
                 <!--Modal crear Sprint-->
 
+                <!--Modal completar Sprint-->
+
+                <div class="modal fade" id="completarSprint" tabindex="-1" aria-labelledby="completarSprint"
+                    aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="completarSprint">Completar Sprint</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div>
+                                    <p>¿Está seguro de que desea completar el sprint?</p>
+                                </div>
+                                <div>
+                                    <label>Digite su contraseña</label>
+                                    <br />
+                                    <div class="row" style="margin-top: 15px;">
+                                        <input v-model="verifyPassword" class="col-10"
+                                            style="margin-left: 10px; border-radius: 5px;" type="password" required
+                                            placeholder="Contraseña">
+                                        <button @click="getPasswordVerifyDeleteRow()" type="button"
+                                            class="btn btn-success col-1" style="margin-left: 5px;"><span
+                                                class="fas fa-check"></span></button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal"
+                                    @click="limpiarContenido()">Cancelar</button>
+                                <button @click="completeRowList()" class="btn btn-success"
+                                    :disabled="!isButtonEnabled">Aceptar</button>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--Modal completar Sprint-->
+
                 <!--Modal editar Sprint-->
 
                 <div class="modal fade" id="editarSprint" tabindex="-1" aria-labelledby="editarSprint" aria-hidden="true">
@@ -144,7 +184,7 @@
                                     <label>Nombre<span style="color: red;"> *</span></label>
                                     <br />
                                     <div style="margin-top: 15px;">
-                                        <input v-model.trim="SprintNameEdit" ref="EditarSprintName" maxlength="45" required
+                                        <input v-model.trim="SprintNameEdit" @input="handleChanges" ref="EditarSprintName" maxlength="45" required
                                             style="border-radius: 5px;" type="text" placeholder="Nombre">
                                     </div>
                                 </div>
@@ -153,7 +193,7 @@
                                     <label>Fecha de Inicio<span style="color: red;"> *</span></label>
                                     <br />
                                     <div style="margin-top: 15px;">
-                                        <input v-model="SprintStartDateEdit" ref="EditarStartDate" required
+                                        <input v-model="SprintStartDateEdit" @input="handleChanges" ref="EditarStartDate" required
                                             style="border-radius: 5px;" type="date">
                                     </div>
                                 </div>
@@ -162,7 +202,7 @@
                                     <label>Fecha de Finalización<span style="color: red;"> *</span></label>
                                     <br />
                                     <div style="margin-top: 15px;">
-                                        <input v-model="SprintEndDateEdit" ref="EditarEndDate" required
+                                        <input v-model="SprintEndDateEdit" @input="handleChanges" ref="EditarEndDate" required
                                             style="border-radius: 5px;" type="date">
                                     </div>
                                 </div>
@@ -171,7 +211,7 @@
                                     <label>Usario asignado<span style="color: red;"> *</span></label>
                                     <br />
                                     <div class="left-content" style="margin-top: 15px;">
-                                        <select v-model="SprintUsuLoginEdit" ref="EditarUserLogin" required name="usuarios"
+                                        <select v-model="SprintUsuLoginEdit" @input="handleChanges" ref="EditarUserLogin" required name="usuarios"
                                             id="usuarios" class="form-select text-black inputsGeneral"
                                             style="min-height: 48px;">
                                             <option :value="null">Seleccione una opción</option>
@@ -183,8 +223,8 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
-                                <button @click="editSprint" type="button" ref="inputDate" class="btn btn-success"
-                                    data-bs-dismiss="modal">Guardar</button>
+                                <button @click="editSprint" type="button" class="btn btn-success" data-bs-dismiss="modal"
+                                    ref="editDate">Guardar</button>
                             </div>
                         </div>
                     </div>
@@ -302,10 +342,12 @@
                                             <h4>Listado de Sprints</h4>
                                         </div>
                                         <ul style="text-align: right;">
-                                            <a class="li agregarBlt agregarResponsive" role="button" data-bs-toggle="modal"
+                                            <a v-if="recuperarUsuTipo() == 'Administrador'"
+                                                class="li agregarBlt agregarResponsive" role="button" data-bs-toggle="modal"
                                                 data-bs-target="#staticBackdrop"><span class="fas fa-plus"></span> Crear
                                                 Sprint</a>
-                                            <a class="li agregarBlt agregarResponsivePlus" role="button"
+                                            <a v-if="recuperarUsuTipo() == 'Administrador'"
+                                                class="li agregarBlt agregarResponsivePlus" role="button"
                                                 data-bs-toggle="modal" data-bs-target="#staticBackdrop"><span
                                                     class="fas fa-plus"></span></a>
                                         </ul>
@@ -401,8 +443,10 @@
                                                     <td @click="verTareas(sprint.Id_Sprint)" class="claseTD">
                                                         {{ $filters.FormatearFecha(sprint.End_Date) }}</td>
                                                     <td @click="verTareas(sprint.Id_Sprint)" class="claseTD">
-                                                        {{ sprint.Id_Status == 1 ? "Activo" : "Inactivo" }}</td>
+                                                        {{ sprint.Id_Status == 1 ? "Activo" : (sprint.Id_Status == 5 ?
+                                                            "Finalizada" : "Inactivo") }}</td>
                                                     <td class="text-white" style="min-width: 130px;">
+
                                                         <button @click="() => selectCurrentSprint(sprint)"
                                                             class="btn btn-primary" role="button" data-bs-toggle="modal"
                                                             data-bs-target="#verSprint">
@@ -410,13 +454,26 @@
                                                                 title="Ver Sprint"></span>
                                                         </button>
 
-                                                        <button @click="() => startSprintEditing(sprint)"
-                                                            style="margin-left: 5px;" type="button" class="btn btn-success"
+                                                        <!-- Agregar botón para completar el sprint -->
+
+                                                        <button style="margin-left: 5px;"
+                                                            @click="saveIdSprintDelete(sprint.Id_Sprint)" type="button"
+                                                            class="btn btn-success" data-bs-toggle="modal"
+                                                            data-bs-target="#completarSprint">
+                                                            <span class="fas fa-check" b-tooltip.hover
+                                                                title="Completar Sprint"></span>
+                                                        </button>
+
+                                                        <button v-if="recuperarUsuTipo() == 'Administrador'"
+                                                            @click="() => startSprintEditing(sprint)"
+                                                            style="margin-left: 5px;" type="button" class="btn btn-warning"
                                                             data-bs-toggle="modal" data-bs-target="#editarSprint">
-                                                            <span class="fas fa-pen" b-tooltip.hover
+                                                            <span class="fas fa-pen" style="color:white" b-tooltip.hover
                                                                 title="Editar Sprint"></span>
                                                         </button>
-                                                        <button @click="saveIdSprintDelete(sprint.Id_Sprint)" type="button"
+
+                                                        <button v-if="recuperarUsuTipo() == 'Administrador'"
+                                                            @click="saveIdSprintDelete(sprint.Id_Sprint)" type="button"
                                                             class="btn btn-danger" style="margin-left: 5px;"
                                                             data-bs-toggle="modal" data-bs-target="#exampleModal">
                                                             <span class="fas fa-trash" b-tooltip.hover
@@ -479,6 +536,7 @@ export default {
             filtroDesplegar: false,
             isButtonEnabled: false,
             currentSprint: null,
+            hasChanges: false,
 
             Filtros: {
                 fechaI: "",
@@ -498,13 +556,16 @@ export default {
                 Sprint_Name: "",
                 Start_Date: "",
                 End_Date: "",
+                Id_Status: "",
                 User_Login: "",
             },
 
-            SprintNameEdit: '',
-            SprintStartDateEdit: null,
-            SprintEndDateEdit: null,
-            SprintUsuLoginEdit: '',
+            SprintIdEdit: "",
+            SprintIdStatusEdit: "",
+            SprintNameEdit: "",
+            SprintStartDateEdit: "",
+            SprintEndDateEdit: "",
+            SprintUsuLoginEdit: "",
 
         }
     },
@@ -514,11 +575,14 @@ export default {
         async getSprintsDesdeAPI() {
             const idProyect = localStorage.getItem("currentProjectId")
             this.actualPage = 1
+
             try {
                 if (this.sprints.length == 0) {
+
                     const response = await AdminApi.GetAllSprint(idProyect);
                     const Sprintlist = response.data.obj;
                     this.sprints = Sprintlist;
+
                     this.paginateData = [];
                     if (this.sprints.length < this.pageElements) {
                         for (let index = 0; index < this.sprints.length; index++) {
@@ -841,24 +905,40 @@ export default {
             }
         },
 
+        formatDateToYYYYMMDD(date) {
+            const year = date.getFullYear();
+            const month = (date.getMonth() + 1).toString().padStart(2, '0');
+            const day = date.getDate().toString().padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        },
+
         startSprintEditing(sprint) {
             this.selectCurrentSprint(sprint);
-
+            console.log('sprint:', sprint);
+            this.SprintIdEdit = sprint.Id_Sprint
             this.SprintNameEdit = sprint.Sprint_Name;
-            this.SprintStartDateEdit = sprint.Start_Date;
-            this.SprintEndDateEdit = sprint.End_Date;
-            this.SprintUsuLoginEdit = sprint.usu_Login;
+            this.SprintStartDateEdit = this.formatDateToYYYYMMDD(new Date(sprint.Start_Date));
+            this.SprintEndDateEdit = this.formatDateToYYYYMMDD(new Date(sprint.End_Date));
+            this.SprintIdStatusEdit = sprint.Id_Status;
+            this.SprintUsuLoginEdit = sprint.User_Login;
+            this.hasChanges = false;
+        },
+
+        handleChanges() {
+            this.hasChanges = true;
         },
 
         async editSprint() {
+
             let modifiedSprint = {
-                Sprint_Name: this.SprintNameEdit,
-                Start_Date: this.Start_Date,
-                End_Date: this.End_Date,
-                usu_Login: this.SprintUsuLoginEdit,
-                Id_Sprint: this.Id_Sprint,
-                Id_Project: this.Id_Project,
-                Id_Status: this.Id_Status
+                Sprint_Name: this.SprintNameEdit.trim(),
+                Start_Date: this.SprintStartDateEdit,
+                End_Date: this.SprintEndDateEdit,
+                User_Login: this.SprintUsuLoginEdit,
+
+                Id_Sprint: this.SprintIdEdit,
+                Id_Project: localStorage.getItem("currentProjectId"),
+                Id_Status: this.SprintIdStatusEdit,
 
             }
 
@@ -873,19 +953,83 @@ export default {
                 })
             }
 
-            const result = await AdminApi.PutSprint(modifiedSprint);
-            if (result.data.ok) {
+            if (this.SprintStartDateEdit == "") {
+                this.$refs.EditarStartDate.focus();
 
-                // limpiar campos
-                this.SprintNameEdit = ''
-                this.Sprint.Start_Date = ''
-                this.Sprint.End_Date = ''
-                this.SprintUsuLoginEdit= ''
+                return this.$swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: '¡Error!',
+                    text: 'Se tiene que elegir una fecha de inicio',
+                })
+            }
 
-                console.$swal({ icon: 'success', text: 'Se editó correctamente el sprint' });
-                this.getSprintsDesdeAPI();
-            } else {
-                console.$swal("Hubo un error al editar el sprint");
+            if (this.SprintEndDateEdit == "") {
+                this.$refs.EditarEndDate.focus();
+
+                return this.$swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: '¡Error!',
+                    text: 'Se tiene que elegir una fecha de finalización',
+                })
+            }
+
+            const editstartDate = new Date(this.SprintStartDateEdit);
+            const editendDate = new Date(this.SprintEndDateEdit);
+
+            if (editendDate < editstartDate) {
+                this.$refs.editDate.focus();
+
+                return this.$swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: '¡Error!',
+                    text: 'La fecha de finalización no puede ser previa a la de inicio',
+                })
+            }
+
+            if (this.SprintUsuLoginEdit == "" || this.SprintUsuLoginEdit == null) {
+                this.$refs.EditarUserLogin.focus();
+
+                return this.$swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: '¡Error!',
+                    text: 'Se tiene que elegir un usuario',
+                })
+            }
+
+            if (!this.hasChanges) {
+                return this.$swal.fire({
+                    position: 'center',
+                    icon: 'warning',
+                    title: '¡Advertencia!',
+                    text: 'No se realizó ningún cambio',
+                });
+            }
+
+            try {
+
+                const result = await AdminApi.PutSprint(modifiedSprint);
+                if (result.data.ok) {
+
+                    console.log('Respuesta de la API:', result);
+                    this.SprintNameEdit = ''
+                    this.SprintStartDateEdit = ''
+                    this.SprintEndDateEdit = ''
+                    this.SprintUsuLoginEdit = ''
+
+                    this.$swal({ icon: 'success', text: 'Se editó correctamente el sprint' });
+                    this.getSprintsDesdeAPI();
+                    setTimeout(() => {
+                        location.reload()
+                    }, 1000);
+                } else {
+                    this.$swal("Hubo un error al editar el sprint");
+                }
+            } catch (error) {
+                this.$swal("Hubo un error al editar el sprint");
             }
         },
 
@@ -896,6 +1040,7 @@ export default {
         getPasswordVerifyDeleteRow: async function () {
             let login = this.recuperarUsuLog()
             try {
+
                 const response = await AdminApi.GetPasswordVerifyDeleteRow(login, this.verifyPassword);
                 const message = response.data.ok;
                 console.log(message == true ? "Se verifico" : "No se verifico")
@@ -912,8 +1057,35 @@ export default {
 
                 }
 
+
             } catch (error) {
                 this.$swal('Error al cargar los sprints desde la API:', error);
+            }
+
+        },
+
+        completeRowList: async function () {
+
+            try {
+
+                if (this.confimPassworsDelete == true) {
+
+                    const response = await AdminApi.PutCompleteSprintStatus(this.idSprintDeleteVerify);
+                    const message = response.data.ok;
+                    console.log(message)
+                    this.$swal({ icon: 'success', text: 'El Sprint se ha completado correctamente' });
+                    setTimeout(() => {
+                        location.reload()
+                    }, 1000);
+                    this.isButtonEnabled = false;
+
+                }
+                else {
+                    this.$swal({ icon: 'warning', text: 'La contraseña no es correcta' });
+                }
+
+            } catch (error) {
+                this.$swal({ icon: 'error', text: 'Error al completar el Sprint' + error });
             }
 
         },
@@ -1301,4 +1473,5 @@ ol {
     margin-bottom: 12px;
     margin-right: 1px;
     margin-left: 5px;
-}</style>
+}
+</style>
