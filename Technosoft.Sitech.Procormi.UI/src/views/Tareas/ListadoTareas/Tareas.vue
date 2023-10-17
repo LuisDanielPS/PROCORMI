@@ -600,8 +600,8 @@
                                                 <div>
                                                     <div class="tablaPersonalizadaRowSubtask">
                                                         <a style="text-decoration: none; margin-right: 20px;" class="fas fa-eye" b-tooltip.hover title="Ver subtarea" data-bs-toggle="modal" data-bs-target="#verSubTarea" @click="() => selectCurrentSubTask(subTask)"></a>
-                                                        <a v-if="recuperarUsuTipo() == 'Administrador'" style="text-decoration: none; margin-right: 20px;" class="fas fa-pen" data-bs-toggle="modal" data-bs-target="#editarSubtarea" @click="startSubTaskEditing(subTask)"></a>
-                                                        <a v-if="recuperarUsuTipo() == 'Administrador'" style="text-decoration: none;" class="fas fa-trash" data-bs-toggle="modal" data-bs-target="#eliminarSubtarea" @click="() => selectCurrentSubTask(subTask)"></a>
+                                                        <a style="text-decoration: none; margin-right: 20px;" class="fas fa-pen" data-bs-toggle="modal" data-bs-target="#editarSubtarea" @click="startSubTaskEditing(subTask)"></a>
+                                                        <a style="text-decoration: none;" class="fas fa-trash" data-bs-toggle="modal" data-bs-target="#eliminarSubtarea" @click="() => selectCurrentSubTask(subTask)"></a>
                                                     </div>
                                                 </div>
                                                
