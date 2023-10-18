@@ -23,7 +23,7 @@ Public Class UserDAO
 
             sentence = "SELECT usu_Login , usu_Nombre , usu_Tipo , usu_Fecha , usu_Vigencia , usu_email , usu_remote , horario_numero FROM seg_usu"
 
-            dr = ConexionDAO.Instancia.ExecuteConsultGetAllUsers(sentence)
+            dr = ConexionDAO.Instancia.ExecuteConsult(sentence)
 
             While dr.Read
                 Dim user As New UsuarioEN

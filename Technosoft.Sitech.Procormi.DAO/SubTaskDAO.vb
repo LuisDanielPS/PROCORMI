@@ -23,7 +23,7 @@ Public Class SubTaskDao
 
         Try
             sentence = "SELECT * FROM sub_task where Id_Task=@filtro1 and not Id_Status = 2"
-            dr = ConexionDAO.Instancia.ExecuteConsultGetAllSubTasks(sentence, taskId)
+            dr = ConexionDAO.Instancia.ExecuteConsultOneParameterString(sentence, taskId)
 
             While dr.Read
                 Dim subTask As New SubTaskEN
@@ -98,7 +98,7 @@ Public Class SubTaskDao
         JOIN priority AS p ON st.Id_Priority = p.Id_Priority
         JOIN status AS st1 ON st.Id_Status = st1.Id_Status   where s.User_Login=@filtro1"
 
-            dr = ConexionDAO.Instancia.ExecuteConsultGetSubTaskReportUser(sentence, pUsuLogin)
+            dr = ConexionDAO.Instancia.ExecuteConsultOneParameterString(sentence, pUsuLogin)
 
             While dr.Read
                 Dim subtask As New SubTaskReportVM
@@ -148,7 +148,7 @@ Public Class SubTaskDao
 
         Try
             sentence = "SELECT Priority_Name FROM priority"
-            dr = ConexionDAO.Instancia.ExecuteConsultGetAllPriorities(sentence)
+            dr = ConexionDAO.Instancia.ExecuteConsult(sentence)
 
             While dr.Read
                 Dim priorityName As String = dr(0)
@@ -186,7 +186,7 @@ Public Class SubTaskDao
 
         Try
             sentence = "SELECT Status_Name FROM status"
-            dr = ConexionDAO.Instancia.ExecuteConsultGetAllStatus(sentence)
+            dr = ConexionDAO.Instancia.ExecuteConsult(sentence)
 
             While dr.Read
                 Dim priorityName As String = dr(0)
@@ -295,7 +295,7 @@ Public Class SubTaskDao
             ElseIf pSubTaskEnId IsNot Nothing Then
                 sentence = "UPDATE sub_task SET Id_Status = 2 WHERE Id_Sub_Task = @Condition"
 
-                ConexionDAO.Instancia.ExecuteUpdateSubTaskByDisabling(sentence, pSubTaskEnId)
+                ConexionDAO.Instancia.ExecuteConsultCondition(sentence, pSubTaskEnId)
                 reply.ok = True
                 reply.msg = "Se ha modificado correctamente la subtarea"
 
@@ -325,7 +325,7 @@ Public Class SubTaskDao
             ElseIf pSubTaskEnId IsNot Nothing Then
                 sentence = "UPDATE sub_task SET Id_Status = (SELECT s.Id_Status FROM status s where s.Status_Name = 'Finalizada') WHERE Id_Sub_Task = @Condition"
 
-                ConexionDAO.Instancia.PutSubTaskDAOAsFinished(sentence, pSubTaskEnId)
+                ConexionDAO.Instancia.ExecuteConsultCondition(sentence, pSubTaskEnId)
                 reply.ok = True
                 reply.msg = "Se ha finalizado correctamente la subtarea"
 

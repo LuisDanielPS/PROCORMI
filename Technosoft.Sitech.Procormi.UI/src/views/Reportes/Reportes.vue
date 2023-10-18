@@ -850,7 +850,7 @@ export default {
                         });
                     });
                 } else {
-                    this.$swal({ icon: 'warning', text: 'No existe ningun sprint asociado con el usuario' });
+                    this.$swal({ icon: 'warning', text: 'No existe ningun tareas asociadas con el usuario' });
                 }
 
             }
@@ -1004,7 +1004,7 @@ export default {
                         });
                     });
                 } else {
-                    this.$swal({ icon: 'warning', text: 'No existe ningun sprint asociado con el usuario' });
+                    this.$swal({ icon: 'warning', text: 'No existe ningun sub tareas asociadas con el usuario' });
                 }
 
             }

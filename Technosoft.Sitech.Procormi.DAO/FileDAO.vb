@@ -63,7 +63,7 @@ Public Class FileDAO
             ElseIf pIdFile <> 0 Then
                 sentence = "DELETE FROM project_files WHERE File_ID = @Condition ; DELETE FROM Files WHERE File_ID = @Condition"
 
-                ConexionDAO.Instancia.ExecuteDeleteFileProject(sentence, pIdFile)
+                ConexionDAO.Instancia.ExecuteConsultCondition(sentence, pIdFile)
                 reply.ok = True
                 reply.msg = "Se ha eliminado  la lista de archivo del proyecto"
 

@@ -25,7 +25,7 @@ Public Class TaskDao
 
             sentence = "SELECT * FROM task where not Id_Status = 2 and Id_Sprint = " & idSprint & ";"
 
-            dr = ConexionDAO.Instancia.ExecuteConsultGetAllProjects(sentence)
+            dr = ConexionDAO.Instancia.ExecuteConsult(sentence)
 
             While dr.Read
                 Dim task As New TaskEN
@@ -71,7 +71,7 @@ Public Class TaskDao
         Try
 
             sentence = "SELECT * FROM task where not Id_Status = 2 and Id_Sprint=@filtro1"
-            dr = ConexionDAO.Instancia.ExecuteConsultGetAllTasks(sentence, sprintId)
+            dr = ConexionDAO.Instancia.ExecuteConsultOneParameterString(sentence, sprintId)
 
             While dr.Read
                 Dim task As New TaskEN
@@ -139,7 +139,7 @@ Public Class TaskDao
             JOIN 
             seg_usu u ON u.usu_Login = spr.User_Login where u.usu_Login = @filtro1"
 
-            dr = ConexionDAO.Instancia.ExecuteConsultGetTaskReportUser(sentence, pUsuLogin)
+            dr = ConexionDAO.Instancia.ExecuteConsultOneParameterString(sentence, pUsuLogin)
 
             While dr.Read
                 Dim task As New SpringTaskStatusReportVM
@@ -187,7 +187,7 @@ Public Class TaskDao
 
             sentence = "SELECT * FROM task WHERE Id_Task = @filtro1 "
 
-            dr = ConexionDAO.Instancia.ExecuteConsultGetProject(sentence, pIdTask)
+            dr = ConexionDAO.Instancia.ExecuteConsultOneParameterString(sentence, pIdTask)
 
             While dr.Read
                 Dim task As New TaskEN
@@ -297,7 +297,7 @@ Public Class TaskDao
             ElseIf pTaskEn IsNot Nothing Then
                 sentence = "UPDATE task SET Id_Status = (SELECT s.Id_Status FROM status s where s.Status_Name = 'Inactivo') WHERE Id_Task = @Condition"
 
-                ConexionDAO.Instancia.ExecuteUpdateTaskByDisabling(sentence, pTaskEn)
+                ConexionDAO.Instancia.ExecuteConsultCondition(sentence, pTaskEn)
                 reply.ok = True
                 reply.msg = "Se ha modificado correctamente la tarea"
 
@@ -327,7 +327,7 @@ Public Class TaskDao
             ElseIf pTaskEn IsNot Nothing Then
                 sentence = "UPDATE task SET Id_Status = (SELECT s.Id_Status FROM status s where s.Status_Name = 'Finalizada') WHERE Id_Task = @Condition"
 
-                ConexionDAO.Instancia.PutTaskDAOAsFinished(sentence, pTaskEn)
+                ConexionDAO.Instancia.ExecuteConsultCondition(sentence, pTaskEn)
                 reply.ok = True
                 reply.msg = "Se ha modificado finalizado la tarea"
 
@@ -357,7 +357,7 @@ Public Class TaskDao
             ElseIf pIdProject IsNot Nothing Then
                 sentence = "DELETE FROM task WHERE Id_Task = @Condition"
 
-                ConexionDAO.Instancia.ExecuteDeleteTask(sentence, pIdProject)
+                ConexionDAO.Instancia.ExecuteConsultCondition(sentence, pIdProject)
                 reply.ok = True
                 reply.msg = "Se ha eliminado correctamente el proyecto"
 

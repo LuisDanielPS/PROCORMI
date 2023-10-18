@@ -24,7 +24,7 @@ Public Class ProjectDAO
 
             sentence = "SELECT * FROM project WHERE Id_Status = 1"
 
-            dr = ConexionDAO.Instancia.ExecuteConsultGetAllProjects(sentence)
+            dr = ConexionDAO.Instancia.ExecuteConsult(sentence)
 
             While dr.Read
                 Dim proyecto As New ProjectEN
@@ -79,7 +79,7 @@ Public Class ProjectDAO
             JOIN seg_usu AS u ON sp.User_Login = u.usu_Login
             WHERE u.usu_Login = @filtro1 AND u.usu_Tipo = 'Operador' AND p.Id_Status<>2"
 
-            dr = ConexionDAO.Instancia.ExecuteConsultGetAllProjectsOperator(sentence, pUsuLogin)
+            dr = ConexionDAO.Instancia.ExecuteConsultOneParameterString(sentence, pUsuLogin)
 
             While dr.Read
                 Dim proyecto As New ProjectEN
@@ -130,7 +130,7 @@ Public Class ProjectDAO
 
             sentence = "SELECT * FROM project WHERE Id_Project = @filtro1 "
 
-            dr = ConexionDAO.Instancia.ExecuteConsultGetProject(sentence, pIdProject)
+            dr = ConexionDAO.Instancia.ExecuteConsultOneParameterString(sentence, pIdProject)
 
             While dr.Read
                 Dim proyecto As New ProjectEN
@@ -146,9 +146,11 @@ Public Class ProjectDAO
             If reply.obj IsNot Nothing Then
                 reply.ok = True
                 reply.msg = "Proyecto encontrado"
+
             ElseIf reply.obj Is Nothing Then
                 reply.ok = False
                 reply.msg = "Proyecto no encontrado"
+
             End If
 
         Catch ex As Exception
@@ -175,7 +177,7 @@ Public Class ProjectDAO
 
             sentence = "SELECT p.Id_Project , su.usu_Login , usu_Nombre FROM seg_usu AS su JOIN seg_usu_project AS sup ON su.usu_Login = sup.User_Login JOIN project AS p ON sup.Id_Project = p.Id_Project where p.Id_Project = @filtro1"
 
-            dr = ConexionDAO.Instancia.ExecuteConsultJoinSegUsuProject(sentence, pIdProject)
+            dr = ConexionDAO.Instancia.ExecuteConsultOneParameterInteger(sentence, pIdProject)
 
             While dr.Read
                 Dim user As New UserListProjectVM
@@ -225,7 +227,7 @@ Public Class ProjectDAO
 
             sentence = "SELECT f.File_ID, f.File_Name , f.File_Type, f.File_Size, f.Creation_Date FROM project p INNER JOIN project_files pf ON p.Id_Project = pf.Id_Project INNER JOIN files f ON pf.File_ID = f.File_ID WHERE p.Id_Project=@filtro1"
 
-            dr = ConexionDAO.Instancia.ExecuteConsultJoinFileProject(sentence, pIdProject)
+            dr = ConexionDAO.Instancia.ExecuteConsultOneParameterInteger(sentence, pIdProject)
 
             While dr.Read
                 Dim file As New FileEN
@@ -290,7 +292,7 @@ Public Class ProjectDAO
         status AS s ON p.Id_Status = s.Id_Status 
     WHERE  u.usu_Login = @filtro1"
 
-            dr = ConexionDAO.Instancia.ExecuteConsultGetProjectsReportUser(sentence, pUsuLogin)
+            dr = ConexionDAO.Instancia.ExecuteConsultOneParameterString(sentence, pUsuLogin)
 
             While dr.Read
                 Dim proyecto As New ProjectStatusVM
@@ -445,7 +447,7 @@ Public Class ProjectDAO
 
             sentence = "SELECT LAST_INSERT_ID()"
 
-            dr = ConexionDAO.Instancia.ExecuteConsultLastInsertId(sentence)
+            dr = ConexionDAO.Instancia.ExecuteConsult(sentence)
 
             While dr.Read
                 Dim Last_Id_Insert As Integer
@@ -528,7 +530,7 @@ Public Class ProjectDAO
             ElseIf pIdProject <> 0 Then
                 sentence = "UPDATE project SET Id_Status = 2  WHERE Id_project = @Condition"
 
-                ConexionDAO.Instancia.ExecuteDisableStatus(sentence, pIdProject)
+                ConexionDAO.Instancia.ExecuteConsultCondition(sentence, pIdProject)
                 reply.ok = True
                 reply.msg = "Se ha eliminado el proyecto"
 
@@ -562,7 +564,7 @@ Public Class ProjectDAO
             ElseIf pIdProject IsNot Nothing Then
                 sentence = "DELETE FROM project WHERE Id_Project = @Condition"
 
-                ConexionDAO.Instancia.ExecuteDeleteProject(sentence, pIdProject)
+                ConexionDAO.Instancia.ExecuteConsultCondition(sentence, pIdProject)
                 reply.ok = True
                 reply.msg = "Se ha eliminado correctamente el proyecto"
 
@@ -597,7 +599,7 @@ Public Class ProjectDAO
             ElseIf pIdProject <> 0 Then
                 sentence = "DELETE FROM project_files WHERE Id_Project = @Condition"
 
-                ConexionDAO.Instancia.ExecuteDeleteListUserFileProject(sentence, pIdProject)
+                ConexionDAO.Instancia.ExecuteConsultCondition(sentence, pIdProject)
                 reply.ok = True
                 reply.msg = "Se ha eliminado  la lista de archivo del proyecto"
 
@@ -630,7 +632,7 @@ Public Class ProjectDAO
             ElseIf pIdProject <> 0 Then
                 sentence = "DELETE FROM seg_usu_project WHERE Id_Project = @Condition"
 
-                ConexionDAO.Instancia.ExecuteDeleteListUserFileProject(sentence, pIdProject)
+                ConexionDAO.Instancia.ExecuteConsultCondition(sentence, pIdProject)
                 reply.ok = True
                 reply.msg = "Se ha eliminado la lista de usuarios relacionados con el proyecto"
 
@@ -662,7 +664,7 @@ Public Class ProjectDAO
 
             sentence = "SELECT usu_Login , usu_Password FROM seg_usu WHERE usu_Login = @filtro1 And usu_Password = @filtro2"
 
-            dr = ConexionDAO.Instancia.ExecuteVerifyDeleteRow(sentence, pUsu, pPass)
+            dr = ConexionDAO.Instancia.ExecuteConsultTwoParameterString(sentence, pUsu, pPass)
 
             While dr.Read
                 Dim usu As New UsuarioEN

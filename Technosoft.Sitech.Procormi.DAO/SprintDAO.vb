@@ -24,7 +24,7 @@ Public Class SprintDAO
 
             sentence = "SELECT * FROM sprint where not Id_Status = 2 and Id_Project = " & idProyect & ";"
 
-            dr = ConexionDAO.Instancia.ExecuteConsultGetAllSprints(sentence)
+            dr = ConexionDAO.Instancia.ExecuteConsult(sentence)
 
             While dr.Read
                 Dim sprint As New SprintEN
@@ -85,7 +85,7 @@ Public Class SprintDAO
         JOIN seg_usu usu ON spr.User_Login = usu.usu_Login
         JOIN status st ON spr.Id_Status = st.Id_Status WHERE spr.User_Login = @filtro1"
 
-            dr = ConexionDAO.Instancia.ExecuteConsultGetSprintReportUser(sentence, pUsuLogin)
+            dr = ConexionDAO.Instancia.ExecuteConsultOneParameterString(sentence, pUsuLogin)
 
             While dr.Read
                 Dim sprint As New SprintStatusReportVM
@@ -135,7 +135,7 @@ Public Class SprintDAO
 
             sentence = "SELECT * FROM Sprint WHERE Id_Sprint = @filtro1 "
 
-            dr = ConexionDAO.Instancia.ExecuteConsultGetSprint(sentence, pIdSprint)
+            dr = ConexionDAO.Instancia.ExecuteConsultOneParameterString(sentence, pIdSprint)
 
             While dr.Read
                 Dim sprint As New SprintEN
@@ -195,7 +195,7 @@ Public Class SprintDAO
                 adlist.Add(New MySqlParameter("@parameter5", 1))
                 adlist.Add(New MySqlParameter("@parameter6", pSprintEn.User_Login))
 
-                ConexionDAO.Instancia.ExecuteInsertSprint2(sentence, adlist)
+                ConexionDAO.Instancia.ExecuteInsertSprint(sentence, adlist)
                 reply.ok = True
                 reply.msg = "Sprint registrado con éxito"
 
@@ -263,7 +263,7 @@ Public Class SprintDAO
             ElseIf pIdSprint <> 0 Then
                 sentence = "UPDATE sprint SET Id_Status = 5  WHERE Id_Sprint = @Condition"
 
-                ConexionDAO.Instancia.ExecuteCompleteSprintStatus(sentence, pIdSprint)
+                ConexionDAO.Instancia.ExecuteConsultCondition(sentence, pIdSprint)
                 reply.ok = True
                 reply.msg = "Se ha eliminado el sprint"
 
@@ -293,7 +293,7 @@ Public Class SprintDAO
             ElseIf pIdSprint <> 0 Then
                 sentence = "UPDATE sprint SET Id_Status = 2  WHERE Id_Sprint = @Condition"
 
-                ConexionDAO.Instancia.ExecuteSprintDisableStatus(sentence, pIdSprint)
+                ConexionDAO.Instancia.ExecuteConsultCondition(sentence, pIdSprint)
                 reply.ok = True
                 reply.msg = "Se ha eliminado el sprint"
 
@@ -322,7 +322,7 @@ Public Class SprintDAO
             ElseIf pIdSprint IsNot Nothing Then
                 sentence = "UPDATE sprint SET Id_Status = '2' WHERE Id_Sprint = @Condition"
 
-                ConexionDAO.Instancia.ExecuteDeleteSprint(sentence, pIdSprint)
+                ConexionDAO.Instancia.ExecuteConsultCondition(sentence, pIdSprint)
                 reply.ok = True
                 reply.msg = "Se ha eliminado correctamente el sprint"
 

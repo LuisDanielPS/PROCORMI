@@ -28,7 +28,7 @@ Public Class LoginDAO
 
             sentencia = "SELECT * FROM seg_usu WHERE usu_Login = @filtro1 And usu_Password = @filtro2"
 
-            dr = ConexionDAO.Instancia.EjecutarConsultaLogin(sentencia, pUsu, pClave)
+            dr = ConexionDAO.Instancia.ExecuteConsultTwoParameterString(sentencia, pUsu, pClave)
 
             While dr.Read
                 Dim usu As New UsuarioEN
