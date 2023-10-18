@@ -1,5 +1,5 @@
 <template>
-    <div class="vistaPrincipal">
+    <div>
         <!--<HeaderPrincipal :cuadroLoaderPrincipal="$refs.cuadroLoader" />-->
         <HeaderPrincipal />
 
@@ -131,7 +131,7 @@
 
                 <div class="modal fade" id="verTarea" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="verTarea" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-scrollable modal-xl">
-                        <div class="modal-content bg-gradient-gray">
+                        <div class="modal-content">
                             <div class="modal-header">
                                 <div class="col-12">
                                     <div class="row" style="text-align: right;">
@@ -163,7 +163,7 @@
                                         <div class="row">
                                             <div class="col-12">
                                                 <div class="col-md-12 col-xs-12">
-                                                    <div style="text-align: justify;">
+                                                    <div style="text-align: center;">
                                                         {{ currentTask ? currentTask.Description_Task : '' }}
                                                     </div>
                                                 </div>
@@ -173,7 +173,7 @@
 
                                         <div class=" modal-footer   row justify-content-center" style="position: relative;">
                                             <div class="row justify-content-center" style="position: relative;">
-                                                <button v-if="currentTask ? currentTask.Id_Status != 'Finalizada' : false" style="width: 150px;color: white; background-color: green; min-height: 15px; min-width: 25px" type="button" data-bs-dismiss="modal" @click="finishTask">Finalizar</button>
+                                                <button class="btn btn-success" v-if="currentTask ? currentTask.Id_Status != 'Finalizada' : false" style="width: 150px; min-height: 15px;" type="button" data-bs-dismiss="modal" @click="finishTask"><span class="fas fa-check"></span></button>
                                             </div>
                                         </div>
 
@@ -315,9 +315,9 @@
                 <!--Modal crear Subtarea-->
 
 
-  <!--Modal editar Subtarea-->
+                <!--Modal editar Subtarea-->
 
-  <div class="modal fade" id="editarSubtarea" tabindex="-1" aria-labelledby="editarSubtarea" aria-hidden="true">
+                <div class="modal fade" id="editarSubtarea" tabindex="-1" aria-labelledby="editarSubtarea" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -457,8 +457,8 @@
 
                         <!--Lista de Tareas /-->
 
-                        <div class="row" style="padding:15px; min-height: 95vh; padding-right: 45px;">
-                            <div class="col-12 estiloTabla tableHeight" style="padding:15px;">
+                        <div class="row" style="padding:15px; min-height: 95vh; padding-right: 45px; position: relative;">
+                            <div class="col-12 estiloTabla tableHeight" style="padding:15px; margin-bottom: 10px;">
                                 <div class="card" style="border: none;" ref="cuadroLoader">
                                     <div class="encabezado">
                                         <ul style="text-align: left;">
@@ -570,35 +570,38 @@
 
                                             <div 
                                                 v-if="!subtareasPorTask[currentSelectedTaskId] || subtareasPorTask[currentSelectedTaskId].length == 0" 
-                                                class="subtask-element sinResultadosAct"
+                                                class="subtask-element sinResultadosAct listadoSubtareas"
                                                 :style="`${subtareas && tarea.Id_Task == currentSelectedTaskId ? '' : 'display: none;'}`"
                                             >
-                                                <p>No hay subtareas para mostrar</p>
+                                                <div class="tablaPersonalizadaRowSubTareas">
+                                                    <p>No hay subtareas para mostrar</p>
+                                                </div>
+                                                
                                             </div>
 
                                             <div 
                                                 v-for="subTask in subtareasPorTask[currentSelectedTaskId]" 
                                                 :key="subTask.Id_Sub_Task" 
-                                                class="subtask-element" 
+                                                class="subtask-element tablaPersonalizadaSubtareas listadoSubtareas" 
                                                 :style="`${subtareas && tarea.Id_Task == currentSelectedTaskId ? '' : 'display: none;'}`"
                                                 :class="{ 'show': subtareas && tarea.Id_Task == currentSelectedTaskId}"
                                             >
                                                 <div>
-                                                    <div class="tablaPersonalizadaRowSubtask">{{ subTask.Id_Sub_Task }} </div>
+                                                    <div class="tablaPersonalizadaRow"></div>
                                                 </div>
                                                 <div>
-                                                    <div class="tablaPersonalizadaRowSubtask">{{ subTask.Required_Time }} horas</div>
+                                                    <div class="tablaPersonalizadaRow" style="min-width: 75px;"></div>
                                                 </div>
                                                 <div>
-                                                    <div class="tablaPersonalizadaRowSubtask">{{ subTask.Description }}</div>
+                                                    <div class="tablaPersonalizadaRowSubTareas">{{ subTask.Description }}</div>
                                                 </div>
                                                 <div>
-                                                    <div class="tablaPersonalizadaRowSubtask">
+                                                    <div class="tablaPersonalizadaRow">
                                                         <p class="fas" :class="`fa-${getPriorityIcon(subTask.Id_Priority)}-circle`" :style="`color: ${getPriorityColor(subTask.Id_Priority)};`"></p>
                                                     </div>
                                                 </div>
                                                 <div>
-                                                    <div class="tablaPersonalizadaRowSubtask">
+                                                    <div class="tablaPersonalizadaRow" style="min-width: 200px;">
                                                         <a style="text-decoration: none; margin-right: 20px;" class="fas fa-eye" b-tooltip.hover title="Ver subtarea" data-bs-toggle="modal" data-bs-target="#verSubTarea" @click="() => selectCurrentSubTask(subTask)"></a>
                                                         <a style="text-decoration: none; margin-right: 20px;" class="fas fa-pen" data-bs-toggle="modal" data-bs-target="#editarSubtarea" @click="startSubTaskEditing(subTask)"></a>
                                                         <a style="text-decoration: none;" class="fas fa-trash" data-bs-toggle="modal" data-bs-target="#eliminarSubtarea" @click="() => selectCurrentSubTask(subTask)"></a>
@@ -616,7 +619,7 @@
                                 </div>
                             </div>
                 
-                            <nav v-if="paginate" aria-label="Page navigation example" style="position: absolute; bottom: 25px; margin-left: 25px;">
+                            <nav v-if="paginate" aria-label="Page navigation example" style="margin-top: 10px;">
                                 <ul class="pagination cursorPaginados">
                                     <li class="page-item"><a class="page-link" v-on:click="goBack()">Anterior</a></li>
                                     <li v-for="pagina in pageNumeration" v-bind:key="pagina" class="page-item">
@@ -662,7 +665,7 @@ export default {
                 usuario: "",
             },
 
-            pageElements: 4,
+            pageElements: 10,
             actualPage: 1,
             pageNumeration: [],
             paginate: true,
@@ -1201,41 +1204,47 @@ export default {
         },
 
         goBack: async function() {
-            this.paginateData = []
-            let paginaAnt = this.actualPage - 1
-            this.actualPage = paginaAnt
-            let ini = (paginaAnt * this.pageElements) - this.pageElements;
-            let end = (paginaAnt * this.pageElements);
-            let total = this.tareas.length;
-            if(end < total){
-                for (let index = ini; index < end; index++){
-                    this.paginateData.push(this.tareas[index]);
+            if (this.actualPage > 1){
+                this.paginateData = []
+                let paginaAnt = this.actualPage - 1
+                this.actualPage = paginaAnt
+                let ini = (paginaAnt * this.pageElements) - this.pageElements;
+                let end = (paginaAnt * this.pageElements);
+                let total = this.tareas.length;
+                if(end < total){
+                    for (let index = ini; index < end; index++){
+                        this.paginateData.push(this.tareas[index]);
+                    }
+                } else{
+                    for (let index = ini; index < total; index++){
+                        this.paginateData.push(this.tareas[index]);
+                    }
                 }
-            } else{
-                for (let index = ini; index < total; index++){
-                    this.paginateData.push(this.tareas[index]);
-                }
+                await this.cutPages();
             }
-            await this.cutPages();
         },
 
         goNext: async function() {
-            this.paginateData = []
-            let paginaAnt = this.actualPage + 1
-            this.actualPage = paginaAnt
-            let ini = (paginaAnt * this.pageElements) - this.pageElements;
-            let end = (paginaAnt * this.pageElements);
-            let total = this.tareas.length;
-            if(end < total){
-                for (let index = ini; index < end; index++){
-                    this.paginateData.push(this.tareas[index]);
+            if (this.actualPage == this.pageNumeration.length || this.actualPage > this.pageNumeration.length) {
+                return
+            } else {
+                this.paginateData = []
+                let paginaAnt = this.actualPage + 1
+                this.actualPage = paginaAnt
+                let ini = (paginaAnt * this.pageElements) - this.pageElements;
+                let end = (paginaAnt * this.pageElements);
+                let total = this.tareas.length;
+                if(end < total){
+                    for (let index = ini; index < end; index++){
+                        this.paginateData.push(this.tareas[index]);
+                    }
+                } else{
+                    for (let index = ini; index < total; index++){
+                        this.paginateData.push(this.tareas[index]);
+                    }
                 }
-            } else{
-                for (let index = ini; index < total; index++){
-                    this.paginateData.push(this.tareas[index]);
-                }
+                await this.cutPages();
             }
-            await this.cutPages();
         },
 
         cutPages: async function () {
@@ -1309,7 +1318,7 @@ export default {
 
         validatePaginate: function () {
             let quantity = this.tareas.length
-            if(quantity < 5){
+            if(quantity < 11){
                 this.paginate = false
             } else {
                 this.paginate = true
@@ -1427,8 +1436,7 @@ export default {
     margin-bottom: 15px;
     display: flex;
     justify-content: space-evenly;
-    background: #0a3a66;
-    color: white;
+    color: black;
 }
 
 #header {
@@ -1588,7 +1596,7 @@ ul, ol {
 
 .contenidoTabla {
     max-width: 2100px;
-    overflow-x: hidden !important;
+    overflow-x: auto !important;
     margin-top: 25px;
 }
 
@@ -1749,6 +1757,7 @@ ul, ol {
 .tablaPersonalizadaRowSubTareas{
     font-size: medium;
     cursor: pointer;
+    margin-left: 50px;
 }
 
 .listadoSubtareas{

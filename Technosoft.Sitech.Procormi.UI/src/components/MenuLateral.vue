@@ -205,15 +205,15 @@ ul, ol {
 
 .posicion0 {
     z-index: 0;
+    min-height: 100vh !important;
 }
 
 .posicion1 {
     z-index: 1;
     max-width: 280px;
-    min-height: 107vh;
+    min-height: 100vh !important;
     background-color: #0a3a66;
     min-width: 15em;
-    border-bottom: 1px solid white;
 }
 
 @media screen and (max-width: 900px) {
@@ -348,19 +348,8 @@ ul, ol {
 }
 
 .vistaPrincipal{
-    min-height: 85vh;
-}
-
-@media screen and (max-width: 900px) {
-    .vistaPrincipal{
-        min-height: 98vh;
-    }
-}
-
-@media screen and (max-width: 400px) {
-    .vistaPrincipal{
-        min-height: 100vh;
-    }
+    min-height: 100vh !important;
+    background-color: rgba(10,58,102,1);
 }
 
 .botonEncuestas{

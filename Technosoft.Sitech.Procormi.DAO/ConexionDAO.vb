@@ -112,6 +112,7 @@ Public Class ConexionDAO
             dr = sql.ExecuteReader(CommandBehavior.CloseConnection)
             sql.Dispose()
             sql = Nothing
+            conn.Close()
             Return dr
 
         Catch ex As MySqlException
@@ -154,6 +155,7 @@ Public Class ConexionDAO
             dr = sql.ExecuteReader(CommandBehavior.CloseConnection)
             sql.Dispose()
             sql = Nothing
+            conn.Close()
             Return dr
 
         Catch ex As MySqlException
@@ -176,6 +178,7 @@ Public Class ConexionDAO
             dr = sql.ExecuteReader(CommandBehavior.CloseConnection)
             sql.Dispose()
             sql = Nothing
+            conn.Close()
             Return dr
 
         Catch ex As MySqlException
@@ -200,6 +203,7 @@ Public Class ConexionDAO
             dr = sql.ExecuteReader(CommandBehavior.CloseConnection)
             sql.Dispose()
             sql = Nothing
+            conn.Close()
             Return dr
 
         Catch ex As MySqlException
@@ -222,6 +226,7 @@ Public Class ConexionDAO
             dr = sql.ExecuteReader(CommandBehavior.CloseConnection)
             sql.Dispose()
             sql = Nothing
+            conn.Close()
             Return dr
 
         Catch ex As MySqlException

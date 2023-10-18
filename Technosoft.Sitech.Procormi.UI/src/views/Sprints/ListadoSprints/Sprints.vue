@@ -330,8 +330,8 @@
 
                         <!--Lista de Sprints /-->
 
-                        <div class="row" style="padding:15px; min-height: 95vh; padding-right: 45px;">
-                            <div class="col-12 estiloTabla tableHeight" style="padding:15px;">
+                        <div class="row" style="padding:15px; min-height: 95vh; padding-right: 45px; position: relative;">
+                            <div class="col-12 estiloTabla tableHeight" style="padding:15px; margin-bottom: 10px;">
                                 <div class="card" style="border: none;" ref="cuadroLoader">
                                     <div class="encabezado">
                                         <ul style="text-align: left;">
@@ -444,21 +444,22 @@
                                                         {{ $filters.FormatearFecha(sprint.End_Date) }}</td>
                                                     <td @click="verTareas(sprint.Id_Sprint)" class="claseTD">
                                                         {{ sprint.Id_Status == 1 ? "Activo" : (sprint.Id_Status == 5 ?
-                                                            "Finalizada" : "Inactivo") }}</td>
+                                                            "Finalizado" : "Inactivo") }}</td>
                                                     <td class="text-white" style="min-width: 130px;">
-
-                                                        <button @click="() => selectCurrentSprint(sprint)"
-                                                            class="btn btn-primary" role="button" data-bs-toggle="modal"
-                                                            data-bs-target="#verSprint">
-                                                            <span class="fas fa-eye" b-tooltip.hover
-                                                                title="Ver Sprint"></span>
-                                                        </button>
 
                                                         <!-- Agregar botón para completar el sprint -->
 
-                                                        <button style="margin-left: 5px;"
+                                                        <button v-if="sprint.Id_Status != 5" style="margin-left: 5px;"
                                                             @click="saveIdSprintDelete(sprint.Id_Sprint)" type="button"
                                                             class="btn btn-success" data-bs-toggle="modal"
+                                                            data-bs-target="#completarSprint">
+                                                            <span class="fas fa-check" b-tooltip.hover
+                                                                title="Completar Sprint"></span>
+                                                        </button>
+
+                                                        <button v-if="sprint.Id_Status == 5" style="margin-left: 5px;"
+                                                            @click="saveIdSprintDelete(sprint.Id_Sprint)" type="button"
+                                                            class="btn btn-primary" data-bs-toggle="modal"
                                                             data-bs-target="#completarSprint">
                                                             <span class="fas fa-check" b-tooltip.hover
                                                                 title="Completar Sprint"></span>
@@ -487,8 +488,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <nav v-if="paginate" aria-label="Page navigation example"
-                                style="position: absolute; bottom: 25px; margin-left: 25px;">
+                            <nav v-if="paginate" aria-label="Page navigation example" style="margin-top: 10px;">
                                 <ul class="pagination cursorPaginados">
                                     <li class="page-item"><a class="page-link" v-on:click="goBack()">Anterior</a></li>
                                     <li v-for="pagina in pageNumeration" v-bind:key="pagina" class="page-item">
@@ -545,7 +545,7 @@ export default {
                 usuario: "",
             },
 
-            pageElements: 4,
+            pageElements: 10,
             actualPage: 1,
             pageNumeration: [],
             paginate: true,
@@ -675,41 +675,47 @@ export default {
         },
 
         goBack: async function () {
-            this.paginateData = []
-            let paginaAnt = this.actualPage - 1
-            this.actualPage = paginaAnt
-            let ini = (paginaAnt * this.pageElements) - this.pageElements;
-            let end = (paginaAnt * this.pageElements);
-            let total = this.sprints.length;
-            if (end < total) {
-                for (let index = ini; index < end; index++) {
-                    this.paginateData.push(this.sprints[index]);
+            if (this.actualPage > 1){
+                this.paginateData = []
+                let paginaAnt = this.actualPage - 1
+                this.actualPage = paginaAnt
+                let ini = (paginaAnt * this.pageElements) - this.pageElements;
+                let end = (paginaAnt * this.pageElements);
+                let total = this.sprints.length;
+                if (end < total) {
+                    for (let index = ini; index < end; index++) {
+                        this.paginateData.push(this.sprints[index]);
+                    }
+                } else {
+                    for (let index = ini; index < total; index++) {
+                        this.paginateData.push(this.sprints[index]);
+                    }
                 }
-            } else {
-                for (let index = ini; index < total; index++) {
-                    this.paginateData.push(this.sprints[index]);
-                }
+                await this.cutPages();
             }
-            await this.cutPages();
         },
 
         goNext: async function () {
-            this.paginateData = []
-            let paginaAnt = this.actualPage + 1
-            this.actualPage = paginaAnt
-            let ini = (paginaAnt * this.pageElements) - this.pageElements;
-            let end = (paginaAnt * this.pageElements);
-            let total = this.sprints.length;
-            if (end < total) {
-                for (let index = ini; index < end; index++) {
-                    this.paginateData.push(this.sprints[index]);
-                }
+            if (this.actualPage == this.pageNumeration.length) {
+                return
             } else {
-                for (let index = ini; index < total; index++) {
-                    this.paginateData.push(this.sprints[index]);
+                this.paginateData = []
+                let paginaAnt = this.actualPage + 1
+                this.actualPage = paginaAnt
+                let ini = (paginaAnt * this.pageElements) - this.pageElements;
+                let end = (paginaAnt * this.pageElements);
+                let total = this.sprints.length;
+                if (end < total) {
+                    for (let index = ini; index < end; index++) {
+                        this.paginateData.push(this.sprints[index]);
+                    }
+                } else {
+                    for (let index = ini; index < total; index++) {
+                        this.paginateData.push(this.sprints[index]);
+                    }
                 }
+                await this.cutPages();
             }
-            await this.cutPages();
         },
 
         cutPages: async function () {
@@ -783,7 +789,7 @@ export default {
 
         validatePaginate: function () {
             let quantity = this.sprints.length
-            if (quantity < 5) {
+            if (quantity < 11) {
                 this.paginate = false
             } else {
                 this.paginate = true

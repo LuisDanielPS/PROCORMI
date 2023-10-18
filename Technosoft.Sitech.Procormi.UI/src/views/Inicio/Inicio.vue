@@ -10,7 +10,7 @@
 
                 <div class="modal fade" id="staticBackdrop">
                     <div class="modal-dialog modal-dialog-scrollable modal-xl">
-                        <div class="modal-content bg-gradient-gray">
+                        <div class="modal-content">
                             <div class="modal-header">
                                 <div class="col-12">
                                     <div class="row" style="text-align: right;">
@@ -181,8 +181,8 @@
 
                         <!--Lista de proyectos /-->
 
-                        <div class="row" style="padding:15px; min-height: 95vh; padding-right: 45px;">
-                            <div class="col-12 estiloTabla tableHeight">
+                        <div class="row" style="padding:15px; min-height: 95vh; padding-right: 45px; position: relative;">
+                            <div class="col-12 estiloTabla tableHeight" style="margin-bottom: 10px;">
                                 <div class="card" style="border: none;" ref="cuadroLoader">
 
                                     <div class="encabezado">
@@ -305,8 +305,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <nav v-if="paginate" aria-label="Page navigation example"
-                                style="position: absolute; bottom: 25px; margin-left: 25px;">
+                            <nav v-if="paginate" aria-label="Page navigation example" style="margin-top: 10px;">
                                 <ul class="pagination cursorPaginados">
                                     <li class="page-item"><a class="page-link" v-on:click="goBack()">Anterior</a></li>
                                     <li v-for="pagina in pageNumeration" v-bind:key="pagina" class="page-item">
@@ -365,7 +364,7 @@ export default {
                 estado: "",
             },
 
-            pageElements: 4,
+            pageElements: 10,
             actualPage: 1,
             pageNumeration: [],
             paginate: true,
@@ -551,41 +550,47 @@ export default {
         },
 
         goBack: async function () {
-            this.paginateData = []
-            let paginaAnt = this.actualPage - 1
-            this.actualPage = paginaAnt
-            let ini = (paginaAnt * this.pageElements) - this.pageElements;
-            let end = (paginaAnt * this.pageElements);
-            let total = this.proyectos.length;
-            if (end < total) {
-                for (let index = ini; index < end; index++) {
-                    this.paginateData.push(this.proyectos[index]);
+            if (this.actualPage > 1){
+                this.paginateData = []
+                let paginaAnt = this.actualPage - 1
+                this.actualPage = paginaAnt
+                let ini = (paginaAnt * this.pageElements) - this.pageElements;
+                let end = (paginaAnt * this.pageElements);
+                let total = this.proyectos.length;
+                if (end < total) {
+                    for (let index = ini; index < end; index++) {
+                        this.paginateData.push(this.proyectos[index]);
+                    }
+                } else {
+                    for (let index = ini; index < total; index++) {
+                        this.paginateData.push(this.proyectos[index]);
+                    }
                 }
-            } else {
-                for (let index = ini; index < total; index++) {
-                    this.paginateData.push(this.proyectos[index]);
-                }
+                await this.cutPages();
             }
-            await this.cutPages();
         },
 
         goNext: async function () {
-            this.paginateData = []
-            let paginaAnt = this.actualPage + 1
-            this.actualPage = paginaAnt
-            let ini = (paginaAnt * this.pageElements) - this.pageElements;
-            let end = (paginaAnt * this.pageElements);
-            let total = this.proyectos.length;
-            if (end < total) {
-                for (let index = ini; index < end; index++) {
-                    this.paginateData.push(this.proyectos[index]);
-                }
+            if (this.actualPage == this.pageNumeration.length) {
+                return
             } else {
-                for (let index = ini; index < total; index++) {
-                    this.paginateData.push(this.proyectos[index]);
+                this.paginateData = []
+                let paginaAnt = this.actualPage + 1
+                this.actualPage = paginaAnt
+                let ini = (paginaAnt * this.pageElements) - this.pageElements;
+                let end = (paginaAnt * this.pageElements);
+                let total = this.proyectos.length;
+                if (end < total) {
+                    for (let index = ini; index < end; index++) {
+                        this.paginateData.push(this.proyectos[index]);
+                    }
+                } else {
+                    for (let index = ini; index < total; index++) {
+                        this.paginateData.push(this.proyectos[index]);
+                    }
                 }
+                await this.cutPages();
             }
-            await this.cutPages();
         },
 
         cutPages: async function () {
@@ -659,7 +664,7 @@ export default {
 
         validatePaginate: function () {
             let quantity = this.proyectos.length
-            if (quantity < 5) {
+            if (quantity < 11) {
                 this.paginate = false
             } else {
                 this.paginate = true

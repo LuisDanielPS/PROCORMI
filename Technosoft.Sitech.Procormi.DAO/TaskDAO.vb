@@ -70,7 +70,7 @@ Public Class TaskDao
 
         Try
 
-            sentence = "SELECT * FROM task where Id_Sprint=@filtro1"
+            sentence = "SELECT * FROM task where not Id_Status = 2 and Id_Sprint=@filtro1"
             dr = ConexionDAO.Instancia.ExecuteConsultGetAllTasks(sentence, sprintId)
 
             While dr.Read
