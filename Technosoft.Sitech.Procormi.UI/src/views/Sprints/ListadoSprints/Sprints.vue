@@ -79,7 +79,7 @@
                             <div class="modal-body">
                                 <div>
                                     <label>Nombre<span style="color: red;"> *</span></label>
-                                    <br />
+                                    <br/>
                                     <div style="margin-top: 15px;">
                                         <input v-model.trim="sprint.Sprint_Name" ref="inputSprintName" maxlength="45"
                                             required style="border-radius: 5px;" type="text" placeholder="Nombre">
@@ -142,15 +142,15 @@
                             </div>
                             <div class="modal-body">
                                 <div>
-                                    <p>¿Está seguro de que desea completar el sprint?</p>
+                                    <p>¿Está seguro de que desea completar el sprint? Para confirmar, primero valide su contraseña.</p>
                                 </div>
                                 <div>
-                                    <label>Digite su contraseña</label>
-                                    <br />
+                                    <label><strong>(Nota: <u>No se podrá recuperar el sprint una vez completado</u>)</strong></label>
+                                    <br/>
                                     <div class="row" style="margin-top: 15px;">
                                         <input v-model="verifyPassword" class="col-10"
-                                            style="margin-left: 10px; border-radius: 5px;" type="password" required
-                                            placeholder="Contraseña">
+                                            style="margin-left: 10px; border-radius: 5px;" type="password" required                                        
+                                            placeholder="Contraseña" maxlength="20">
                                         <button @click="getPasswordVerifyDeleteRow()" type="button"
                                             class="btn btn-success col-1" style="margin-left: 5px;"><span
                                                 class="fas fa-check"></span></button>
@@ -222,7 +222,7 @@
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal" @click="limpiarContenido()">Cancelar</button>
                                 <button @click="editSprint" type="button" class="btn btn-success" data-bs-dismiss="modal"
                                     ref="editDate">Guardar</button>
                             </div>
@@ -244,15 +244,15 @@
                             </div>
                             <div class="modal-body">
                                 <div>
-                                    <p>¿Está seguro de que desea eliminar el sprint?</p>
+                                    <p>¿Está seguro de que desea eliminar el sprint? Para confirmar, primero valide su contraseña.</p>
                                 </div>
                                 <div>
-                                    <label>Digite su contraseña</label>
-                                    <br />
+                                    <label><strong>(Nota: <u>No se podrá recuperar el sprint una vez eliminado</u>)</strong></label>
+                                    <br/>
                                     <div class="row" style="margin-top: 15px;">
                                         <input v-model="verifyPassword" class="col-10"
                                             style="margin-left: 10px; border-radius: 5px;" type="password" required
-                                            placeholder="Contraseña">
+                                            placeholder="Contraseña" maxlength="20">
                                         <button @click="getPasswordVerifyDeleteRow()" type="button"
                                             class="btn btn-success col-1" style="margin-left: 5px;"><span
                                                 class="fas fa-check"></span></button>
@@ -380,11 +380,8 @@
                                             </div>
                                             <select class="form-select diseñoSelectLateral" v-model="Filtros.estado">
                                                 <option value="">Todos</option>
-                                                <option value="1">Activa</option>
-                                                <option value="2">Inactiva</option>
-                                                <option value="3">Pendiente</option>
-                                                <option value="4">En Proceso</option>
-                                                <option value="5">Finalizada</option>
+                                                <option value="1">Activo</option>
+                                                <option value="5">Finalizado</option>
                                             </select>
                                         </div>
 
@@ -447,20 +444,11 @@
                                                             "Finalizado" : "Inactivo") }}</td>
                                                     <td class="text-white" style="min-width: 130px;">
 
-                                                        <!-- Agregar botón para completar el sprint -->
-
-                                                        <button v-if="sprint.Id_Status != 5" style="margin-left: 5px;"
+                                                        <button style="margin-left: 5px;"
                                                             @click="saveIdSprintDelete(sprint.Id_Sprint)" type="button"
                                                             class="btn btn-success" data-bs-toggle="modal"
-                                                            data-bs-target="#completarSprint">
-                                                            <span class="fas fa-check" b-tooltip.hover
-                                                                title="Completar Sprint"></span>
-                                                        </button>
-
-                                                        <button v-if="sprint.Id_Status == 5" style="margin-left: 5px;"
-                                                            @click="saveIdSprintDelete(sprint.Id_Sprint)" type="button"
-                                                            class="btn btn-primary" data-bs-toggle="modal"
-                                                            data-bs-target="#completarSprint">
+                                                            data-bs-target="#completarSprint"
+                                                            :disabled = "sprint.Id_Status == 5">
                                                             <span class="fas fa-check" b-tooltip.hover
                                                                 title="Completar Sprint"></span>
                                                         </button>
@@ -468,7 +456,8 @@
                                                         <button v-if="recuperarUsuTipo() == 'Administrador'"
                                                             @click="() => startSprintEditing(sprint)"
                                                             style="margin-left: 5px;" type="button" class="btn btn-warning"
-                                                            data-bs-toggle="modal" data-bs-target="#editarSprint">
+                                                            data-bs-toggle="modal" data-bs-target="#editarSprint"
+                                                            :disabled = "sprint.Id_Status == 5">
                                                             <span class="fas fa-pen" style="color:white" b-tooltip.hover
                                                                 title="Editar Sprint"></span>
                                                         </button>
@@ -476,7 +465,8 @@
                                                         <button v-if="recuperarUsuTipo() == 'Administrador'"
                                                             @click="saveIdSprintDelete(sprint.Id_Sprint)" type="button"
                                                             class="btn btn-danger" style="margin-left: 5px;"
-                                                            data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                                            data-bs-toggle="modal" data-bs-target="#exampleModal"
+                                                            :disabled = "sprint.Id_Status == 5">
                                                             <span class="fas fa-trash" b-tooltip.hover
                                                                 title="Eliminar Sprint"></span>
                                                         </button>
@@ -909,6 +899,7 @@ export default {
                 End_Date: "",
                 User_Login: "",
             }
+            this.verifyPassword='';
         },
 
         formatDateToYYYYMMDD(date) {
@@ -1049,8 +1040,6 @@ export default {
 
                 const response = await AdminApi.GetPasswordVerifyDeleteRow(login, this.verifyPassword);
                 const message = response.data.ok;
-                console.log(message == true ? "Se verifico" : "No se verifico")
-
                 if (message == true) {
 
                     this.confimPassworsDelete = true
@@ -1060,12 +1049,11 @@ export default {
                 }
                 else {
                     this.$swal({ icon: 'warning', text: 'Contraseña Incorrecta' });
-
+                    this.verifyPassword ="";
                 }
 
-
             } catch (error) {
-                this.$swal('Error al cargar los sprints desde la API:', error);
+                console.error({message : 'Error al cargar los proyectos desde la API:', error});
             }
 
         },
@@ -1130,6 +1118,7 @@ export default {
 
         saveIdSprintDelete: function (idSprint) {
             this.idSprintDeleteVerify = idSprint
+            this.limpiarContenido();
 
         },
 

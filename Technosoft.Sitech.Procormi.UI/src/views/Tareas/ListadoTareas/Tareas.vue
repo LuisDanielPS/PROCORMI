@@ -1061,7 +1061,7 @@ export default {
                     
                 }
                 else{
-                    this.$swal({ position: 'center', icon: 'error', text: 'La contraseña que insertaste no es correcta' });
+                    this.$swal({ position: 'center', icon: 'warning', text: 'Contraseña Incorrecta' });
 
                 }
 
