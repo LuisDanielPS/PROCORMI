@@ -180,20 +180,19 @@ Public Class SprintDAO
         Dim UserListSprint As New List(Of UserListSprintVM)()
         Try
 
-            sentence = "SELECT p.Id_Sprint, su.usu_Login, usu_Nombre 
+            sentence = "SELECT su.usu_Login, usu_Nombre 
                         FROM seg_usu AS su 
                         JOIN seg_usu_project AS sup ON su.usu_Login = sup.User_Login 
                         JOIN project AS p ON sup.Id_Project = p.Id_Project
                         JOIN sprint AS s ON p.Id_Project = s.Id_Project
-                        WHERE p.Id_Project = @filtro1"
+                        WHERE s.Id_Sprint = @filtro1"
 
             dr = ConexionDAO.Instancia.ExecuteConsultOneParameterInteger(sentence, pIdSprint)
 
             While dr.Read
                 Dim user As New UserListSprintVM
-                user.Id_Sprint = dr(0)
-                user.Usu_Login = dr(1)
-                user.Usu_Nombre = dr(2)
+                user.Usu_Login = dr(0)
+                user.Usu_Nombre = dr(1)
 
                 UserListSprint.Add(user)
 
