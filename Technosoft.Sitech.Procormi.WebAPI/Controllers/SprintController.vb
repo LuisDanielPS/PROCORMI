@@ -26,6 +26,15 @@ Namespace Controllers
 
         End Function
 
+        <HttpGet>
+        Public Function GetUserListSprint(ByVal pIdSprint As Integer) As Reply(Of List(Of UserListSprintVM))
+
+            Dim reply As Reply(Of List(Of UserListSprintVM))
+            reply = SprintBLL.Instance.GetUserListSprintBLL(pIdSprint)
+            Return reply
+
+        End Function
+
         <HttpPost>
         Public Function PostSprint(pSprint As SprintEN) As Reply(Of SprintEN)
 

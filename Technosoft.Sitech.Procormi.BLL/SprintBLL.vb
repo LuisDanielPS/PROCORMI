@@ -76,6 +76,28 @@ Public Class SprintBLL
 
     End Function
 
+    Public Function GetUserListSprintBLL(ByVal pIdSprint As Integer) As Reply(Of List(Of UserListSprintVM))
+
+
+        Dim reply As Reply(Of List(Of UserListSprintVM)) = Nothing
+
+        Try
+            If pIdSprint <> 0 Then
+
+                reply = SprintDAO.Instance.GetUserListSprintDAO(pIdSprint)
+
+            End If
+
+        Catch ex As Exception
+            EscritorVisorEventos.Instancia().EscribirEvento(nameClass, MethodBase.GetCurrentMethod().Name, ex)
+            reply.ok = False
+            reply.msg = "Error al tratar de buscar la lista de usuarios en el sprint"
+        End Try
+
+        Return reply
+
+    End Function
+
     Public Function PostSprintBLL(ByVal pSprint As SprintEN) As Reply(Of SprintEN)
 
 

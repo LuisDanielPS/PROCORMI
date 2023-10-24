@@ -173,6 +173,59 @@ Public Class SprintDAO
 
     End Function
 
+    Public Function GetUserListSprintDAO(ByVal pIdSprint As Integer) As Reply(Of List(Of UserListSprintVM))
+
+        Dim reply As New Reply(Of List(Of UserListSprintVM))
+        Dim dr As MySqlDataReader
+        Dim UserListSprint As New List(Of UserListSprintVM)()
+        Try
+
+            sentence = "SELECT p.Id_Sprint, su.usu_Login, usu_Nombre 
+                        FROM seg_usu AS su 
+                        JOIN seg_usu_project AS sup ON su.usu_Login = sup.User_Login 
+                        JOIN project AS p ON sup.Id_Project = p.Id_Project
+                        JOIN sprint AS s ON p.Id_Project = s.Id_Project
+                        WHERE p.Id_Project = @filtro1"
+
+            dr = ConexionDAO.Instancia.ExecuteConsultOneParameterInteger(sentence, pIdSprint)
+
+            While dr.Read
+                Dim user As New UserListSprintVM
+                user.Id_Sprint = dr(0)
+                user.Usu_Login = dr(1)
+                user.Usu_Nombre = dr(2)
+
+                UserListSprint.Add(user)
+
+            End While
+
+            If UserListSprint.Count > 0 Then
+                reply.obj = UserListSprint
+                reply.ok = True
+                reply.msg = "Sprints encontrados"
+            Else
+                reply.obj = Nothing
+                reply.ok = False
+                reply.msg = "Sprints no encontrados"
+            End If
+
+        Catch ex As Exception
+            EscritorVisorEventos.Instancia().EscribirEvento(nameClass, MethodBase.GetCurrentMethod().Name, ex)
+            reply.ok = False
+            reply.msg = "No fue posible ejecutar la consulta: " & ex.Message
+            Return reply
+
+
+        End Try
+
+        dr.Close()
+        dr.Dispose()
+
+        Return reply
+
+
+    End Function
+
     Public Function PostSprintDAO(ByVal pSprintEn As SprintEN) As Reply(Of SprintEN)
 
         Dim reply As New Reply(Of SprintEN)

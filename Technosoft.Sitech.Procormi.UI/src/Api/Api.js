@@ -132,6 +132,17 @@ export default {
 
     }
     ,
+
+    GetUserListSprint(IdSprint)
+    {
+        return apicliente.get('Sprint/GetUserListSprint?pIdSprint='+ IdSprint, {
+            withCredentials: false,
+            headers: { 'Content-Type': 'application/json; charset=UTF-8' }
+        })
+
+    }
+    ,
+
     GetFileListProject(IdProject)
     {
         return apicliente.get('Project/GetFileListProject?pIdProject='+ IdProject, {
@@ -279,8 +290,6 @@ export default {
             headers: { 'Content-Type': 'application/json; charset=UTF-8' }
         })
     },
-
-
 
     PutSubTaskAsFinished(subTaskId) {
         return apicliente.put(`SubTask/PutSubTaskAsFinished?pSubTaskId=${subTaskId}`, {

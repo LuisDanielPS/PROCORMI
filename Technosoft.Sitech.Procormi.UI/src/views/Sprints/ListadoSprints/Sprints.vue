@@ -145,7 +145,7 @@
                                     <p>¿Está seguro de que desea completar el sprint? Para confirmar, primero valide su contraseña.</p>
                                 </div>
                                 <div>
-                                    <label><strong>(Nota: <u>No se podrá recuperar el sprint una vez completado</u>)</strong></label>
+                                    <label><strong>(Nota: <u>No se podrá volver a activar el sprint una vez completado</u>)</strong></label>
                                     <br/>
                                     <div class="row" style="margin-top: 15px;">
                                         <input v-model="verifyPassword" class="col-10"
@@ -426,7 +426,7 @@
                                                     <th class="col-2" style="min-width: 125px;">Fecha inicio</th>
                                                     <th class="col-2" style="min-width: 125px;">Fecha finalización</th>
                                                     <th class="col-1" style="min-width: 125px;">Estado</th>
-                                                    <th class="col-2" style="min-width: 125px;">Opciones</th>
+                                                    <th v-if="recuperarUsuTipo() == 'Administrador'" class="col-2" style="min-width: 125px;">Opciones</th>
                                                 </tr>
                                             </thead>
                                             <tbody style="font-size: large;">
@@ -444,7 +444,7 @@
                                                             "Finalizado" : "Inactivo") }}</td>
                                                     <td class="text-white" style="min-width: 130px;">
 
-                                                        <button style="margin-left: 5px;"
+                                                        <button v-if="recuperarUsuTipo() == 'Administrador'" style="margin-left: 5px;"
                                                             @click="saveIdSprintDelete(sprint.Id_Sprint)" type="button"
                                                             class="btn btn-success" data-bs-toggle="modal"
                                                             data-bs-target="#completarSprint"
@@ -540,8 +540,10 @@ export default {
             pageNumeration: [],
             paginate: true,
             paginateData: [],
+            Idsprint: (this.$route.params.id != undefined) ? this.$route.params.id : 0,
 
             sprint: {
+                Id_Sprint: this.Idsprint,
                 Id_Project: "",
                 Sprint_Name: "",
                 Start_Date: "",
@@ -556,6 +558,10 @@ export default {
             SprintStartDateEdit: "",
             SprintEndDateEdit: "",
             SprintUsuLoginEdit: "",
+
+            SegUsuSprint: {
+                User_Login: "",
+            }
 
         }
     },
@@ -788,13 +794,13 @@ export default {
 
         loadUserSelect: async function () {
             try {
-                const response = await AdminApi.GetALLUsers();
+                const response = await AdminApi.GetUserListSprint(this.Id_Sprint);
                 const userList = response.data.obj;
                 this.listUsers = userList;
+                
             } catch (error) {
                 console.error('Error al cargar los sprints desde la API:', error);
             }
-
         }
         ,
 
@@ -1119,6 +1125,7 @@ export default {
         saveIdSprintDelete: function (idSprint) {
             this.idSprintDeleteVerify = idSprint
             this.limpiarContenido();
+            this.isButtonEnabled = false;
 
         },
 
