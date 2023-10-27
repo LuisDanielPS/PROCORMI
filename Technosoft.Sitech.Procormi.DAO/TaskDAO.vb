@@ -17,37 +17,35 @@ Public Class TaskDao
     Public Function GetTasksAllDAO(idSprint As Integer) As Reply(Of List(Of TaskEN))
 
         Dim reply As New Reply(Of List(Of TaskEN))
-        Dim dr As MySqlDataReader
-        Dim dr1 As MySqlDataReader
         Dim tareas As New List(Of TaskEN)()
 
         Try
 
             sentence = "SELECT * FROM task where not Id_Status = 2 and Id_Sprint = " & idSprint & ";"
 
-            dr = ConexionDAO.Instancia.ExecuteConsult(sentence)
+            Using dr As MySqlDataReader = ConexionDAO.Instancia.ExecuteConsult(sentence)
 
-            While dr.Read
-                Dim task As New TaskEN
-                task.Id_Task = dr(0)
-                task.Task_Name = dr(1)
-                task.Description_Task = dr(2)
-                task.Id_Sprint = dr(3)
-                task.Id_Status = dr(4)
+                While dr.Read
+                    Dim task As New TaskEN
+                    task.Id_Task = dr(0)
+                    task.Task_Name = dr(1)
+                    task.Description_Task = dr(2)
+                    task.Id_Sprint = dr(3)
+                    task.Id_Status = dr(4)
 
-                tareas.Add(task)
-            End While
+                    tareas.Add(task)
+                End While
 
-            If tareas.Count > 0 Then
-                reply.obj = tareas
-                reply.ok = True
-                reply.msg = "Tareas encontradas"
-            Else
-                reply.obj = Nothing
-                reply.ok = False
-                reply.msg = "Tareas no encontrados"
-            End If
-
+                If tareas.Count > 0 Then
+                    reply.obj = tareas
+                    reply.ok = True
+                    reply.msg = "Tareas encontradas"
+                Else
+                    reply.obj = Nothing
+                    reply.ok = False
+                    reply.msg = "Tareas no encontrados"
+                End If
+            End Using
         Catch ex As Exception
             EscritorVisorEventos.Instancia().EscribirEvento(nameClass, MethodBase.GetCurrentMethod().Name, ex)
             reply.ok = False
@@ -55,8 +53,7 @@ Public Class TaskDao
             Return reply
 
         End Try
-        dr.Close()
-        dr.Dispose()
+
 
         Return reply
     End Function
@@ -64,42 +61,40 @@ Public Class TaskDao
     Public Function GetTasksAllDAO(ByVal sprintId As String) As Reply(Of List(Of TaskEN))
 
         Dim reply As New Reply(Of List(Of TaskEN))
-        Dim dr As MySqlDataReader
-        Dim dr1 As MySqlDataReader
         Dim tareas As New List(Of TaskEN)()
 
         Try
 
             sentence = "SELECT * FROM task where not Id_Status = 2 and Id_Sprint=@filtro1"
-            dr = ConexionDAO.Instancia.ExecuteConsultOneParameterString(sentence, sprintId)
+            Using dr As MySqlDataReader = ConexionDAO.Instancia.ExecuteConsultOneParameterString(sentence, sprintId)
 
-            While dr.Read
-                Dim task As New TaskEN
-                task.Id_Task = dr(0)
-                task.Task_Name = dr(1)
-                task.Description_Task = dr(2)
-                task.Id_Sprint = dr(3)
-                task.Id_Status = dr(4)
+                While dr.Read
+                    Dim task As New TaskEN
+                    task.Id_Task = dr(0)
+                    task.Task_Name = dr(1)
+                    task.Description_Task = dr(2)
+                    task.Id_Sprint = dr(3)
+                    task.Id_Status = dr(4)
 
-                ' Get state name instead of id
-                dr1 = ConexionDAO.Instancia.ExecuteStateById(task.Id_Status)
-                If (dr1.Read) Then
-                    task.Id_Status = dr1(0)
+                    ' Get state name instead of id
+                    Using dr1 = ConexionDAO.Instancia.ExecuteStateById(task.Id_Status)
+                        If (dr1.Read) Then
+                            task.Id_Status = dr1(0)
+                        End If
+                    End Using
+                    tareas.Add(task)
+                End While
+
+                If tareas.Count > 0 Then
+                    reply.obj = tareas
+                    reply.ok = True
+                    reply.msg = "Tareas encontradas"
+                Else
+                    reply.obj = Nothing
+                    reply.ok = False
+                    reply.msg = "Tareas no encontrados"
                 End If
-
-                tareas.Add(task)
-            End While
-
-            If tareas.Count > 0 Then
-                reply.obj = tareas
-                reply.ok = True
-                reply.msg = "Tareas encontradas"
-            Else
-                reply.obj = Nothing
-                reply.ok = False
-                reply.msg = "Tareas no encontrados"
-            End If
-
+            End Using
         Catch ex As Exception
             EscritorVisorEventos.Instancia().EscribirEvento(nameClass, MethodBase.GetCurrentMethod().Name, ex)
             reply.ok = False
@@ -107,8 +102,6 @@ Public Class TaskDao
             Return reply
 
         End Try
-        dr.Close()
-        dr.Dispose()
 
         Return reply
     End Function
@@ -117,7 +110,6 @@ Public Class TaskDao
     Public Function GetTaskReportUserDAO(ByVal pUsuLogin As String) As Reply(Of List(Of SpringTaskStatusReportVM))
 
         Dim reply As New Reply(Of List(Of SpringTaskStatusReportVM))
-        Dim dr As MySqlDataReader
         Dim tasks As New List(Of SpringTaskStatusReportVM)()
 
         Try
@@ -139,31 +131,31 @@ Public Class TaskDao
             JOIN 
             seg_usu u ON u.usu_Login = spr.User_Login where u.usu_Login = @filtro1"
 
-            dr = ConexionDAO.Instancia.ExecuteConsultOneParameterString(sentence, pUsuLogin)
+            Using dr As MySqlDataReader = ConexionDAO.Instancia.ExecuteConsultOneParameterString(sentence, pUsuLogin)
 
-            While dr.Read
-                Dim task As New SpringTaskStatusReportVM
-                task.Id_Sprint = dr(0)
-                task.Sprint_Name = dr(1)
-                task.Id_Project = dr(2)
-                task.Id_Task = dr(3)
-                task.Task_Name = dr(4)
-                task.Description_Task = dr(5)
-                task.Status_Name = dr(6)
+                While dr.Read
+                    Dim task As New SpringTaskStatusReportVM
+                    task.Id_Sprint = dr(0)
+                    task.Sprint_Name = dr(1)
+                    task.Id_Project = dr(2)
+                    task.Id_Task = dr(3)
+                    task.Task_Name = dr(4)
+                    task.Description_Task = dr(5)
+                    task.Status_Name = dr(6)
 
-                tasks.Add(task)
-            End While
+                    tasks.Add(task)
+                End While
 
-            If tasks.Count > 0 Then
-                reply.obj = tasks
-                reply.ok = True
-                reply.msg = "La tarea encontrados"
-            Else
-                reply.obj = Nothing
-                reply.ok = False
-                reply.msg = "La tarea no encontrados"
-            End If
-
+                If tasks.Count > 0 Then
+                    reply.obj = tasks
+                    reply.ok = True
+                    reply.msg = "La tarea encontrados"
+                Else
+                    reply.obj = Nothing
+                    reply.ok = False
+                    reply.msg = "La tarea no encontrados"
+                End If
+            End Using
         Catch ex As Exception
             EscritorVisorEventos.Instancia().EscribirEvento(nameClass, MethodBase.GetCurrentMethod().Name, ex)
             reply.ok = False
@@ -172,8 +164,6 @@ Public Class TaskDao
 
 
         End Try
-        dr.Close()
-        dr.Dispose()
 
         Return reply
     End Function
@@ -181,33 +171,32 @@ Public Class TaskDao
     Public Function GetTaskDAO(ByVal pIdTask As String) As Reply(Of TaskEN)
 
         Dim reply As New Reply(Of TaskEN)
-        Dim dr As MySqlDataReader
 
         Try
 
             sentence = "SELECT * FROM task WHERE Id_Task = @filtro1 "
 
-            dr = ConexionDAO.Instancia.ExecuteConsultOneParameterString(sentence, pIdTask)
+            Using dr As MySqlDataReader = ConexionDAO.Instancia.ExecuteConsultOneParameterString(sentence, pIdTask)
 
-            While dr.Read
-                Dim task As New TaskEN
-                task.Id_Task = dr(0)
-                task.Task_Name = dr(1)
-                task.Description_Task = dr(2)
-                task.Id_Sprint = dr(3)
-                task.Id_Status = dr(4)
+                While dr.Read
+                    Dim task As New TaskEN
+                    task.Id_Task = dr(0)
+                    task.Task_Name = dr(1)
+                    task.Description_Task = dr(2)
+                    task.Id_Sprint = dr(3)
+                    task.Id_Status = dr(4)
 
-                reply.obj = task
-            End While
+                    reply.obj = task
+                End While
 
-            If reply.obj IsNot Nothing Then
-                reply.ok = True
-                reply.msg = "Tarea encontrada"
-            ElseIf reply.obj Is Nothing Then
-                reply.ok = False
-                reply.msg = "Tarea no encontrada"
-            End If
-
+                If reply.obj IsNot Nothing Then
+                    reply.ok = True
+                    reply.msg = "Tarea encontrada"
+                ElseIf reply.obj Is Nothing Then
+                    reply.ok = False
+                    reply.msg = "Tarea no encontrada"
+                End If
+            End Using
         Catch ex As Exception
             EscritorVisorEventos.Instancia().EscribirEvento(nameClass, MethodBase.GetCurrentMethod().Name, ex)
             reply.ok = False
@@ -215,8 +204,6 @@ Public Class TaskDao
             Return reply
         End Try
 
-        dr.Close()
-        dr.Dispose()
 
         Return reply
 

@@ -17,39 +17,39 @@ Public Class SprintDAO
     Public Function GetSprintsAllDAO(idProyect As Integer) As Reply(Of List(Of SprintEN))
 
         Dim reply As New Reply(Of List(Of SprintEN))
-        Dim dr As MySqlDataReader
+
         Dim sprints As New List(Of SprintEN)()
 
         Try
 
             sentence = "SELECT * FROM sprint where not Id_Status = 2 and Id_Project = " & idProyect & ";"
 
-            dr = ConexionDAO.Instancia.ExecuteConsult(sentence)
+            Using dr As MySqlDataReader = ConexionDAO.Instancia.ExecuteConsult(sentence)
 
-            While dr.Read
-                Dim sprint As New SprintEN
-                sprint.Id_Sprint = dr(0)
-                sprint.Sprint_Name = dr(1)
-                sprint.Start_Date = dr(2)
-                sprint.End_Date = dr(3)
-                sprint.Id_Project = dr(4)
-                sprint.Id_Status = dr(5)
-                sprint.User_Login = dr(6)
+                While dr.Read
+                    Dim sprint As New SprintEN
+                    sprint.Id_Sprint = dr(0)
+                    sprint.Sprint_Name = dr(1)
+                    sprint.Start_Date = dr(2)
+                    sprint.End_Date = dr(3)
+                    sprint.Id_Project = dr(4)
+                    sprint.Id_Status = dr(5)
+                    sprint.User_Login = dr(6)
 
-                sprints.Add(sprint)
+                    sprints.Add(sprint)
 
-            End While
+                End While
 
-            If sprints.Count > 0 Then
-                reply.obj = sprints
-                reply.ok = True
-                reply.msg = "Sprints encontrados"
-            Else
-                reply.obj = Nothing
-                reply.ok = False
-                reply.msg = "Sprints no encontrados"
-            End If
-
+                If sprints.Count > 0 Then
+                    reply.obj = sprints
+                    reply.ok = True
+                    reply.msg = "Sprints encontrados"
+                Else
+                    reply.obj = Nothing
+                    reply.ok = False
+                    reply.msg = "Sprints no encontrados"
+                End If
+            End Using
         Catch ex As Exception
             EscritorVisorEventos.Instancia().EscribirEvento(nameClass, MethodBase.GetCurrentMethod().Name, ex)
             reply.ok = False
@@ -58,8 +58,6 @@ Public Class SprintDAO
 
 
         End Try
-        dr.Close()
-        dr.Dispose()
 
         Return reply
     End Function
@@ -67,7 +65,6 @@ Public Class SprintDAO
     Public Function GetSprintsAllReportUserDAO(ByVal pUsuLogin As String) As Reply(Of List(Of SprintStatusReportVM))
 
         Dim reply As New Reply(Of List(Of SprintStatusReportVM))
-        Dim dr As MySqlDataReader
         Dim sprints As New List(Of SprintStatusReportVM)()
 
         Try
@@ -85,32 +82,32 @@ Public Class SprintDAO
         JOIN seg_usu usu ON spr.User_Login = usu.usu_Login
         JOIN status st ON spr.Id_Status = st.Id_Status WHERE spr.User_Login = @filtro1"
 
-            dr = ConexionDAO.Instancia.ExecuteConsultOneParameterString(sentence, pUsuLogin)
+            Using dr As MySqlDataReader = ConexionDAO.Instancia.ExecuteConsultOneParameterString(sentence, pUsuLogin)
 
-            While dr.Read
-                Dim sprint As New SprintStatusReportVM
-                sprint.Id_Sprint = dr(0)
-                sprint.Sprint_Name = dr(1)
-                sprint.Start_Date = dr(2)
-                sprint.End_Date = dr(3)
-                sprint.Id_Project = dr(4)
-                sprint.User_Login = dr(5)
-                sprint.Status_Name = dr(6)
+                While dr.Read
+                    Dim sprint As New SprintStatusReportVM
+                    sprint.Id_Sprint = dr(0)
+                    sprint.Sprint_Name = dr(1)
+                    sprint.Start_Date = dr(2)
+                    sprint.End_Date = dr(3)
+                    sprint.Id_Project = dr(4)
+                    sprint.User_Login = dr(5)
+                    sprint.Status_Name = dr(6)
 
-                sprints.Add(sprint)
+                    sprints.Add(sprint)
 
-            End While
+                End While
 
-            If sprints.Count > 0 Then
-                reply.obj = sprints
-                reply.ok = True
-                reply.msg = "Sprints encontrados"
-            Else
-                reply.obj = Nothing
-                reply.ok = False
-                reply.msg = "Sprints no encontrados"
-            End If
-
+                If sprints.Count > 0 Then
+                    reply.obj = sprints
+                    reply.ok = True
+                    reply.msg = "Sprints encontrados"
+                Else
+                    reply.obj = Nothing
+                    reply.ok = False
+                    reply.msg = "Sprints no encontrados"
+                End If
+            End Using
         Catch ex As Exception
             EscritorVisorEventos.Instancia().EscribirEvento(nameClass, MethodBase.GetCurrentMethod().Name, ex)
             reply.ok = False
@@ -119,8 +116,6 @@ Public Class SprintDAO
 
 
         End Try
-        dr.Close()
-        dr.Dispose()
 
         Return reply
     End Function
@@ -129,35 +124,35 @@ Public Class SprintDAO
     Public Function GetSprintDAO(ByVal pIdSprint As String) As Reply(Of SprintEN)
 
         Dim reply As New Reply(Of SprintEN)
-        Dim dr As MySqlDataReader
+
 
         Try
 
             sentence = "SELECT * FROM Sprint WHERE Id_Sprint = @filtro1 "
 
-            dr = ConexionDAO.Instancia.ExecuteConsultOneParameterString(sentence, pIdSprint)
+            Using dr As MySqlDataReader = ConexionDAO.Instancia.ExecuteConsultOneParameterString(sentence, pIdSprint)
 
-            While dr.Read
-                Dim sprint As New SprintEN
-                sprint.Id_Sprint = dr(0)
-                sprint.Sprint_Name = dr(1)
-                sprint.Start_Date = dr(2)
-                sprint.End_Date = dr(3)
-                sprint.Id_Project = dr(4)
-                sprint.Id_Status = dr(5)
-                sprint.User_Login = dr(6)
+                While dr.Read
+                    Dim sprint As New SprintEN
+                    sprint.Id_Sprint = dr(0)
+                    sprint.Sprint_Name = dr(1)
+                    sprint.Start_Date = dr(2)
+                    sprint.End_Date = dr(3)
+                    sprint.Id_Project = dr(4)
+                    sprint.Id_Status = dr(5)
+                    sprint.User_Login = dr(6)
 
-                reply.obj = sprint
-            End While
+                    reply.obj = sprint
+                End While
 
-            If reply.obj IsNot Nothing Then
-                reply.ok = True
-                reply.msg = "Sprint encontrado"
-            ElseIf reply.obj Is Nothing Then
-                reply.ok = False
-                reply.msg = "Sprint no encontrado"
-            End If
-
+                If reply.obj IsNot Nothing Then
+                    reply.ok = True
+                    reply.msg = "Sprint encontrado"
+                ElseIf reply.obj Is Nothing Then
+                    reply.ok = False
+                    reply.msg = "Sprint no encontrado"
+                End If
+            End Using
         Catch ex As Exception
             EscritorVisorEventos.Instancia().EscribirEvento(nameClass, MethodBase.GetCurrentMethod().Name, ex)
             reply.ok = False
@@ -165,8 +160,6 @@ Public Class SprintDAO
             Return reply
         End Try
 
-        dr.Close()
-        dr.Dispose()
 
         Return reply
 
@@ -176,7 +169,6 @@ Public Class SprintDAO
     Public Function GetUserListSprintDAO(ByVal pIdSprint As Integer) As Reply(Of List(Of UserListSprintVM))
 
         Dim reply As New Reply(Of List(Of UserListSprintVM))
-        Dim dr As MySqlDataReader
         Dim UserListSprint As New List(Of UserListSprintVM)()
         Try
 
@@ -187,27 +179,27 @@ Public Class SprintDAO
                         JOIN sprint AS s ON p.Id_Project = s.Id_Project
                         WHERE s.Id_Sprint = @filtro1"
 
-            dr = ConexionDAO.Instancia.ExecuteConsultOneParameterInteger(sentence, pIdSprint)
+            Using dr As MySqlDataReader = ConexionDAO.Instancia.ExecuteConsultOneParameterInteger(sentence, pIdSprint)
 
-            While dr.Read
-                Dim user As New UserListSprintVM
-                user.Usu_Login = dr(0)
-                user.Usu_Nombre = dr(1)
+                While dr.Read
+                    Dim user As New UserListSprintVM
+                    user.Usu_Login = dr(0)
+                    user.Usu_Nombre = dr(1)
 
-                UserListSprint.Add(user)
+                    UserListSprint.Add(user)
 
-            End While
+                End While
 
-            If UserListSprint.Count > 0 Then
-                reply.obj = UserListSprint
-                reply.ok = True
-                reply.msg = "Sprints encontrados"
-            Else
-                reply.obj = Nothing
-                reply.ok = False
-                reply.msg = "Sprints no encontrados"
-            End If
-
+                If UserListSprint.Count > 0 Then
+                    reply.obj = UserListSprint
+                    reply.ok = True
+                    reply.msg = "Sprints encontrados"
+                Else
+                    reply.obj = Nothing
+                    reply.ok = False
+                    reply.msg = "Sprints no encontrados"
+                End If
+            End Using
         Catch ex As Exception
             EscritorVisorEventos.Instancia().EscribirEvento(nameClass, MethodBase.GetCurrentMethod().Name, ex)
             reply.ok = False
@@ -216,9 +208,6 @@ Public Class SprintDAO
 
 
         End Try
-
-        dr.Close()
-        dr.Dispose()
 
         Return reply
 

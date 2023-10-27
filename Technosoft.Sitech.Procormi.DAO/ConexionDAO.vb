@@ -7,7 +7,6 @@ Imports System.Data.SqlClient
 Public Class ConexionDAO
 
     Private nombreClase As String = MethodBase.GetCurrentMethod().DeclaringType.Name
-
     Private conStr As String
     Private conn As MySqlConnection
     Public sql As MySqlCommand
@@ -96,9 +95,12 @@ Public Class ConexionDAO
         Catch ex As MySqlException
             EscritorVisorEventos.Instancia().EscribirEvento(nombreClase, MethodBase.GetCurrentMethod().Name, ex)
             Throw New Exception("Error al ejecutar la consulta")
+
         End Try
 
     End Function
+
+
 
     'Este metodo se utiliza cuando quieres mandar un solo parametro de tipo string se tiene que utilizar @filtro1'
     Public Function ExecuteConsultOneParameterString(ByVal psSql As String, ByVal pParam As String) As MySqlDataReader

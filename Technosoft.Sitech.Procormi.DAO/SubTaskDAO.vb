@@ -17,47 +17,45 @@ Public Class SubTaskDao
     Public Function GetSubTasksAllDAO(ByVal taskId As String) As Reply(Of List(Of SubTaskEN))
 
         Dim reply As New Reply(Of List(Of SubTaskEN))
-        Dim dr As MySqlDataReader
-        Dim dr1 As MySqlDataReader
         Dim subTareas As New List(Of SubTaskEN)()
 
         Try
             sentence = "SELECT * FROM sub_task where Id_Task=@filtro1 and not Id_Status = 2"
-            dr = ConexionDAO.Instancia.ExecuteConsultOneParameterString(sentence, taskId)
+            Using dr As MySqlDataReader = ConexionDAO.Instancia.ExecuteConsultOneParameterString(sentence, taskId)
 
-            While dr.Read
-                Dim subTask As New SubTaskEN
-                subTask.Id_Sub_Task = dr(0)
-                subTask.Title = dr(1)
-                subTask.Description = dr(2)
-                subTask.Required_Time = dr(3)
-                subTask.Id_Task = dr(4)
-                subTask.Id_Status = dr(5)
+                While dr.Read
+                    Dim subTask As New SubTaskEN
+                    subTask.Id_Sub_Task = dr(0)
+                    subTask.Title = dr(1)
+                    subTask.Description = dr(2)
+                    subTask.Required_Time = dr(3)
+                    subTask.Id_Task = dr(4)
+                    subTask.Id_Status = dr(5)
 
-                dr1 = ConexionDAO.Instancia.ExecuteStateById(subTask.Id_Status)
-                If (dr1.Read) Then
-                    subTask.Id_Status = dr1(0)
+                    Using dr1 As MySqlDataReader = ConexionDAO.Instancia.ExecuteStateById(subTask.Id_Status)
+                        If (dr1.Read) Then
+                            subTask.Id_Status = dr1(0)
+                        End If
+                    End Using
+                    subTask.Id_Priority = dr(6)
+                    Using dr1 As MySqlDataReader = ConexionDAO.Instancia.ExecutePriorityById(subTask.Id_Priority)
+                        If (dr1.Read) Then
+                            subTask.Id_Priority = dr1(0)
+                        End If
+                    End Using
+                    subTareas.Add(subTask)
+                End While
+
+                If subTareas.Count > 0 Then
+                    reply.obj = subTareas
+                    reply.ok = True
+                    reply.msg = "SubTareas encontradas"
+                Else
+                    reply.obj = Nothing
+                    reply.ok = False
+                    reply.msg = "SubTareas no encontrados"
                 End If
-
-                subTask.Id_Priority = dr(6)
-                dr1 = ConexionDAO.Instancia.ExecutePriorityById(subTask.Id_Priority)
-                If (dr1.Read) Then
-                    subTask.Id_Priority = dr1(0)
-                End If
-
-                subTareas.Add(subTask)
-            End While
-
-            If subTareas.Count > 0 Then
-                reply.obj = subTareas
-                reply.ok = True
-                reply.msg = "SubTareas encontradas"
-            Else
-                reply.obj = Nothing
-                reply.ok = False
-                reply.msg = "SubTareas no encontrados"
-            End If
-
+            End Using
         Catch ex As Exception
             EscritorVisorEventos.Instancia().EscribirEvento(nameClass, MethodBase.GetCurrentMethod().Name, ex)
             reply.ok = False
@@ -65,8 +63,7 @@ Public Class SubTaskDao
             Return reply
 
         End Try
-        dr.Close()
-        dr.Dispose()
+
 
         Return reply
     End Function
@@ -75,7 +72,6 @@ Public Class SubTaskDao
     Public Function GetSubTaskReportUserDAO(ByVal pUsuLogin As String) As Reply(Of List(Of SubTaskReportVM))
 
         Dim reply As New Reply(Of List(Of SubTaskReportVM))
-        Dim dr As MySqlDataReader
         Dim subtasks As New List(Of SubTaskReportVM)()
 
         Try
@@ -98,34 +94,34 @@ Public Class SubTaskDao
         JOIN priority AS p ON st.Id_Priority = p.Id_Priority
         JOIN status AS st1 ON st.Id_Status = st1.Id_Status   where s.User_Login=@filtro1"
 
-            dr = ConexionDAO.Instancia.ExecuteConsultOneParameterString(sentence, pUsuLogin)
+            Using dr As MySqlDataReader = ConexionDAO.Instancia.ExecuteConsultOneParameterString(sentence, pUsuLogin)
 
-            While dr.Read
-                Dim subtask As New SubTaskReportVM
-                subtask.Id_Sub_Task = dr(0)
-                subtask.Title = dr(1)
-                subtask.Description = dr(2)
-                subtask.Id_Task = dr(3)
-                subtask.Task_Name = dr(4)
-                subtask.Description_Task = dr(5)
-                subtask.Id_Project = dr(6)
-                subtask.Sprint_Name = dr(7)
-                subtask.Priority_Name = dr(8)
-                subtask.Status_Name = dr(9)
+                While dr.Read
+                    Dim subtask As New SubTaskReportVM
+                    subtask.Id_Sub_Task = dr(0)
+                    subtask.Title = dr(1)
+                    subtask.Description = dr(2)
+                    subtask.Id_Task = dr(3)
+                    subtask.Task_Name = dr(4)
+                    subtask.Description_Task = dr(5)
+                    subtask.Id_Project = dr(6)
+                    subtask.Sprint_Name = dr(7)
+                    subtask.Priority_Name = dr(8)
+                    subtask.Status_Name = dr(9)
 
-                subtasks.Add(subtask)
-            End While
+                    subtasks.Add(subtask)
+                End While
 
-            If subtasks.Count > 0 Then
-                reply.obj = subtasks
-                reply.ok = True
-                reply.msg = "La tarea encontrados"
-            Else
-                reply.obj = Nothing
-                reply.ok = False
-                reply.msg = "La tarea no encontrados"
-            End If
-
+                If subtasks.Count > 0 Then
+                    reply.obj = subtasks
+                    reply.ok = True
+                    reply.msg = "La sub tarea encontrados"
+                Else
+                    reply.obj = Nothing
+                    reply.ok = False
+                    reply.msg = "Las sub tarea no encontrados"
+                End If
+            End Using
         Catch ex As Exception
             EscritorVisorEventos.Instancia().EscribirEvento(nameClass, MethodBase.GetCurrentMethod().Name, ex)
             reply.ok = False
@@ -134,8 +130,6 @@ Public Class SubTaskDao
 
 
         End Try
-        dr.Close()
-        dr.Dispose()
 
         Return reply
     End Function
@@ -143,28 +137,28 @@ Public Class SubTaskDao
     Public Function GetAllPriorityInfo() As Reply(Of List(Of String))
 
         Dim reply As New Reply(Of List(Of String))
-        Dim dr As MySqlDataReader
+
         Dim priorities As New List(Of String)()
 
         Try
             sentence = "SELECT Priority_Name FROM priority"
-            dr = ConexionDAO.Instancia.ExecuteConsult(sentence)
+            Using dr As MySqlDataReader = ConexionDAO.Instancia.ExecuteConsult(sentence)
 
-            While dr.Read
-                Dim priorityName As String = dr(0)
-                priorities.Add(priorityName)
-            End While
+                While dr.Read
+                    Dim priorityName As String = dr(0)
+                    priorities.Add(priorityName)
+                End While
 
-            If priorities.Count > 0 Then
-                reply.obj = priorities
-                reply.ok = True
-                reply.msg = "Prioridades encontradas"
-            Else
-                reply.obj = Nothing
-                reply.ok = False
-                reply.msg = "Prioridades no encontrados"
-            End If
-
+                If priorities.Count > 0 Then
+                    reply.obj = priorities
+                    reply.ok = True
+                    reply.msg = "Prioridades encontradas"
+                Else
+                    reply.obj = Nothing
+                    reply.ok = False
+                    reply.msg = "Prioridades no encontrados"
+                End If
+            End Using
         Catch ex As Exception
             EscritorVisorEventos.Instancia().EscribirEvento(nameClass, MethodBase.GetCurrentMethod().Name, ex)
             reply.ok = False
@@ -172,8 +166,7 @@ Public Class SubTaskDao
             Return reply
 
         End Try
-        dr.Close()
-        dr.Dispose()
+
 
         Return reply
     End Function
@@ -181,28 +174,27 @@ Public Class SubTaskDao
     Public Function GetAllStatusInfo() As Reply(Of List(Of String))
 
         Dim reply As New Reply(Of List(Of String))
-        Dim dr As MySqlDataReader
         Dim priorities As New List(Of String)()
 
         Try
             sentence = "SELECT Status_Name FROM status"
-            dr = ConexionDAO.Instancia.ExecuteConsult(sentence)
+            Using dr As MySqlDataReader = ConexionDAO.Instancia.ExecuteConsult(sentence)
 
-            While dr.Read
-                Dim priorityName As String = dr(0)
-                priorities.Add(priorityName)
-            End While
+                While dr.Read
+                    Dim priorityName As String = dr(0)
+                    priorities.Add(priorityName)
+                End While
 
-            If priorities.Count > 0 Then
-                reply.obj = priorities
-                reply.ok = True
-                reply.msg = "Status encontradas"
-            Else
-                reply.obj = Nothing
-                reply.ok = False
-                reply.msg = "Status no encontrados"
-            End If
-
+                If priorities.Count > 0 Then
+                    reply.obj = priorities
+                    reply.ok = True
+                    reply.msg = "Status encontradas"
+                Else
+                    reply.obj = Nothing
+                    reply.ok = False
+                    reply.msg = "Status no encontrados"
+                End If
+            End Using
         Catch ex As Exception
             EscritorVisorEventos.Instancia().EscribirEvento(nameClass, MethodBase.GetCurrentMethod().Name, ex)
             reply.ok = False
@@ -210,8 +202,6 @@ Public Class SubTaskDao
             Return reply
 
         End Try
-        dr.Close()
-        dr.Dispose()
 
         Return reply
     End Function

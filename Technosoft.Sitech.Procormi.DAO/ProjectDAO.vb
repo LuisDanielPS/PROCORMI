@@ -17,39 +17,37 @@ Public Class ProjectDAO
     Public Function GetProjectsAllDAO() As Reply(Of List(Of ProjectEN))
 
         Dim reply As New Reply(Of List(Of ProjectEN))
-        Dim dr As MySqlDataReader
         Dim proyectos As New List(Of ProjectEN)()
 
         Try
 
             sentence = "SELECT * FROM project WHERE Id_Status = 1"
 
-            dr = ConexionDAO.Instancia.ExecuteConsult(sentence)
+            Using dr As MySqlDataReader = ConexionDAO.Instancia.ExecuteConsult(sentence)
 
-            While dr.Read
-                Dim proyecto As New ProjectEN
-                proyecto.Id_project = dr(0)
-                proyecto.Project_Name = dr(1)
-                proyecto.Description_Project = dr(2)
-                proyecto.Id_State = dr(3)
-                proyecto.Creation_Date = dr(4)
+                While dr.Read
+                    Dim proyecto As New ProjectEN
+                    proyecto.Id_project = dr(0)
+                    proyecto.Project_Name = dr(1)
+                    proyecto.Description_Project = dr(2)
+                    proyecto.Id_State = dr(3)
+                    proyecto.Creation_Date = dr(4)
 
+                    proyectos.Add(proyecto)
 
+                End While
 
+                If proyectos.Count > 0 Then
+                    reply.obj = proyectos
+                    reply.ok = True
+                    reply.msg = "Proyectos encontrados"
+                Else
+                    reply.obj = Nothing
+                    reply.ok = False
+                    reply.msg = "Proyectos no encontrados"
+                End If
 
-                proyectos.Add(proyecto)
-
-            End While
-
-            If proyectos.Count > 0 Then
-                reply.obj = proyectos
-                reply.ok = True
-                reply.msg = "Proyectos encontrados"
-            Else
-                reply.obj = Nothing
-                reply.ok = False
-                reply.msg = "Proyectos no encontrados"
-            End If
+            End Using
 
         Catch ex As Exception
             EscritorVisorEventos.Instancia().EscribirEvento(nameClass, MethodBase.GetCurrentMethod().Name, ex)
@@ -57,54 +55,51 @@ Public Class ProjectDAO
             reply.msg = "No fue posible ejecutar la consulta: " & ex.Message
             Return reply
 
-
         End Try
-        dr.Close()
-        dr.Dispose()
 
         Return reply
+
     End Function
+
 
     Public Function GetProjectsAllOperatorDAO(ByVal pUsuLogin As String) As Reply(Of List(Of ProjectEN))
 
         Dim reply As New Reply(Of List(Of ProjectEN))
-        Dim dr As MySqlDataReader
         Dim proyectos As New List(Of ProjectEN)()
 
         Try
 
             sentence = "SELECT p.Id_Project, p.Project_Name, p.Description_Project, p.Id_Status, p.Date_Creation
-            FROM project AS p
-            JOIN seg_usu_project AS sp ON p.Id_Project = sp.Id_Project
-            JOIN seg_usu AS u ON sp.User_Login = u.usu_Login
-            WHERE u.usu_Login = @filtro1 AND u.usu_Tipo = 'Operador' AND p.Id_Status<>2"
+        FROM project AS p
+        JOIN seg_usu_project AS sp ON p.Id_Project = sp.Id_Project
+        JOIN seg_usu AS u ON sp.User_Login = u.usu_Login
+        WHERE u.usu_Login = @filtro1 AND u.usu_Tipo = 'Operador' AND p.Id_Status<>2"
 
-            dr = ConexionDAO.Instancia.ExecuteConsultOneParameterString(sentence, pUsuLogin)
+            Using dr As MySqlDataReader = ConexionDAO.Instancia.ExecuteConsultOneParameterString(sentence, pUsuLogin)
 
-            While dr.Read
-                Dim proyecto As New ProjectEN
-                proyecto.Id_project = dr(0)
-                proyecto.Project_Name = dr(1)
-                proyecto.Description_Project = dr(2)
-                proyecto.Id_State = dr(3)
-                proyecto.Creation_Date = dr(4)
+                While dr.Read
+                    Dim proyecto As New ProjectEN
+                    proyecto.Id_project = dr(0)
+                    proyecto.Project_Name = dr(1)
+                    proyecto.Description_Project = dr(2)
+                    proyecto.Id_State = dr(3)
+                    proyecto.Creation_Date = dr(4)
 
+                    proyectos.Add(proyecto)
 
+                End While
 
+                If proyectos.Count > 0 Then
+                    reply.obj = proyectos
+                    reply.ok = True
+                    reply.msg = "Proyectos encontrados"
+                Else
+                    reply.obj = Nothing
+                    reply.ok = False
+                    reply.msg = "Proyectos no encontrados"
+                End If
 
-                proyectos.Add(proyecto)
-
-            End While
-
-            If proyectos.Count > 0 Then
-                reply.obj = proyectos
-                reply.ok = True
-                reply.msg = "Proyectos encontrados"
-            Else
-                reply.obj = Nothing
-                reply.ok = False
-                reply.msg = "Proyectos no encontrados"
-            End If
+            End Using
 
         Catch ex As Exception
             EscritorVisorEventos.Instancia().EscribirEvento(nameClass, MethodBase.GetCurrentMethod().Name, ex)
@@ -112,47 +107,47 @@ Public Class ProjectDAO
             reply.msg = "No fue posible ejecutar la consulta: " & ex.Message
             Return reply
 
-
         End Try
-        dr.Close()
-        dr.Dispose()
 
         Return reply
+
     End Function
+
+
 
 
     Public Function GetProjectDAO(ByVal pIdProject As String) As Reply(Of ProjectEN)
 
         Dim reply As New Reply(Of ProjectEN)
-        Dim dr As MySqlDataReader
 
         Try
 
             sentence = "SELECT * FROM project WHERE Id_Project = @filtro1 "
 
-            dr = ConexionDAO.Instancia.ExecuteConsultOneParameterString(sentence, pIdProject)
+            Using dr As MySqlDataReader = ConexionDAO.Instancia.ExecuteConsultOneParameterString(sentence, pIdProject)
 
-            While dr.Read
-                Dim proyecto As New ProjectEN
-                proyecto.Id_project = dr(0)
-                proyecto.Project_Name = dr(1)
-                proyecto.Description_Project = dr(2)
-                proyecto.Id_State = dr(3)
-                proyecto.Creation_Date = dr(4)
+                While dr.Read
+                    Dim proyecto As New ProjectEN
+                    proyecto.Id_project = dr(0)
+                    proyecto.Project_Name = dr(1)
+                    proyecto.Description_Project = dr(2)
+                    proyecto.Id_State = dr(3)
+                    proyecto.Creation_Date = dr(4)
 
-                reply.obj = proyecto
-            End While
+                    reply.obj = proyecto
 
-            If reply.obj IsNot Nothing Then
-                reply.ok = True
-                reply.msg = "Proyecto encontrado"
+                End While
 
-            ElseIf reply.obj Is Nothing Then
-                reply.ok = False
-                reply.msg = "Proyecto no encontrado"
+                If reply.obj IsNot Nothing Then
+                    reply.ok = True
+                    reply.msg = "Proyecto encontrado"
 
-            End If
+                ElseIf reply.obj Is Nothing Then
+                    reply.ok = False
+                    reply.msg = "Proyecto no encontrado"
 
+                End If
+            End Using
         Catch ex As Exception
             EscritorVisorEventos.Instancia().EscribirEvento(nameClass, MethodBase.GetCurrentMethod().Name, ex)
             reply.ok = False
@@ -160,8 +155,6 @@ Public Class ProjectDAO
             Return reply
         End Try
 
-        dr.Close()
-        dr.Dispose()
 
         Return reply
 
@@ -171,34 +164,33 @@ Public Class ProjectDAO
     Public Function GetUserListProjectDAO(ByVal pIdProject As Integer) As Reply(Of List(Of UserListProjectVM))
 
         Dim reply As New Reply(Of List(Of UserListProjectVM))
-        Dim dr As MySqlDataReader
         Dim UserListProject As New List(Of UserListProjectVM)()
         Try
 
             sentence = "SELECT p.Id_Project , su.usu_Login , usu_Nombre FROM seg_usu AS su JOIN seg_usu_project AS sup ON su.usu_Login = sup.User_Login JOIN project AS p ON sup.Id_Project = p.Id_Project where p.Id_Project = @filtro1"
 
-            dr = ConexionDAO.Instancia.ExecuteConsultOneParameterInteger(sentence, pIdProject)
+            Using dr As MySqlDataReader = ConexionDAO.Instancia.ExecuteConsultOneParameterInteger(sentence, pIdProject)
 
-            While dr.Read
-                Dim user As New UserListProjectVM
-                user.Id_project = dr(0)
-                user.Usu_Login = dr(1)
-                user.Usu_Nombre = dr(2)
+                While dr.Read
+                    Dim user As New UserListProjectVM
+                    user.Id_project = dr(0)
+                    user.Usu_Login = dr(1)
+                    user.Usu_Nombre = dr(2)
 
-                UserListProject.Add(user)
+                    UserListProject.Add(user)
 
-            End While
+                End While
 
-            If UserListProject.Count > 0 Then
-                reply.obj = UserListProject
-                reply.ok = True
-                reply.msg = "Proyectos encontrados"
-            Else
-                reply.obj = Nothing
-                reply.ok = False
-                reply.msg = "Proyectos no encontrados"
-            End If
-
+                If UserListProject.Count > 0 Then
+                    reply.obj = UserListProject
+                    reply.ok = True
+                    reply.msg = "Proyectos encontrados"
+                Else
+                    reply.obj = Nothing
+                    reply.ok = False
+                    reply.msg = "Proyectos no encontrados"
+                End If
+            End Using
         Catch ex As Exception
             EscritorVisorEventos.Instancia().EscribirEvento(nameClass, MethodBase.GetCurrentMethod().Name, ex)
             reply.ok = False
@@ -208,8 +200,6 @@ Public Class ProjectDAO
 
         End Try
 
-        dr.Close()
-        dr.Dispose()
 
         Return reply
 
@@ -221,36 +211,35 @@ Public Class ProjectDAO
     Public Function GetFileListProjectDAO(ByVal pIdProject As Integer) As Reply(Of List(Of FileEN))
 
         Dim reply As New Reply(Of List(Of FileEN))
-        Dim dr As MySqlDataReader
         Dim FileListProject As New List(Of FileEN)()
         Try
 
             sentence = "SELECT f.File_ID, f.File_Name , f.File_Type, f.File_Size, f.Creation_Date FROM project p INNER JOIN project_files pf ON p.Id_Project = pf.Id_Project INNER JOIN files f ON pf.File_ID = f.File_ID WHERE p.Id_Project=@filtro1"
 
-            dr = ConexionDAO.Instancia.ExecuteConsultOneParameterInteger(sentence, pIdProject)
+            Using dr As MySqlDataReader = ConexionDAO.Instancia.ExecuteConsultOneParameterInteger(sentence, pIdProject)
 
-            While dr.Read
-                Dim file As New FileEN
-                file.File_ID = dr(0)
-                file.File_Name = dr(1)
-                file.File_Type = dr(2)
-                file.File_Size = dr(3)
-                file.Creation_Date = dr(4)
+                While dr.Read
+                    Dim file As New FileEN
+                    file.File_ID = dr(0)
+                    file.File_Name = dr(1)
+                    file.File_Type = dr(2)
+                    file.File_Size = dr(3)
+                    file.Creation_Date = dr(4)
 
-                FileListProject.Add(file)
+                    FileListProject.Add(file)
 
-            End While
+                End While
 
-            If FileListProject.Count > 0 Then
-                reply.obj = FileListProject
-                reply.ok = True
-                reply.msg = "Archivos encontrados"
-            Else
-                reply.obj = Nothing
-                reply.ok = False
-                reply.msg = "Archivos no encontrados"
-            End If
-
+                If FileListProject.Count > 0 Then
+                    reply.obj = FileListProject
+                    reply.ok = True
+                    reply.msg = "Archivos encontrados"
+                Else
+                    reply.obj = Nothing
+                    reply.ok = False
+                    reply.msg = "Archivos no encontrados"
+                End If
+            End Using
         Catch ex As Exception
             EscritorVisorEventos.Instancia().EscribirEvento(nameClass, MethodBase.GetCurrentMethod().Name, ex)
             reply.ok = False
@@ -259,10 +248,6 @@ Public Class ProjectDAO
 
 
         End Try
-
-        dr.Close()
-        dr.Dispose()
-
         Return reply
 
 
@@ -271,7 +256,6 @@ Public Class ProjectDAO
     Public Function GetProjectsReportUserDAO(ByVal pUsuLogin As String) As Reply(Of List(Of ProjectStatusVM))
 
         Dim reply As New Reply(Of List(Of ProjectStatusVM))
-        Dim dr As MySqlDataReader
         Dim proyectos As New List(Of ProjectStatusVM)()
 
         Try
@@ -292,30 +276,30 @@ Public Class ProjectDAO
         status AS s ON p.Id_Status = s.Id_Status 
     WHERE  u.usu_Login = @filtro1"
 
-            dr = ConexionDAO.Instancia.ExecuteConsultOneParameterString(sentence, pUsuLogin)
+            Using dr As MySqlDataReader = ConexionDAO.Instancia.ExecuteConsultOneParameterString(sentence, pUsuLogin)
 
-            While dr.Read
-                Dim proyecto As New ProjectStatusVM
-                proyecto.Id_project = dr(0)
-                proyecto.Project_Name = dr(1)
-                proyecto.Description_Project = dr(2)
-                proyecto.Status_Name = dr(3)
-                proyecto.Creation_Date = dr(4)
+                While dr.Read
+                    Dim proyecto As New ProjectStatusVM
+                    proyecto.Id_project = dr(0)
+                    proyecto.Project_Name = dr(1)
+                    proyecto.Description_Project = dr(2)
+                    proyecto.Status_Name = dr(3)
+                    proyecto.Creation_Date = dr(4)
 
-                proyectos.Add(proyecto)
+                    proyectos.Add(proyecto)
 
-            End While
+                End While
 
-            If proyectos.Count > 0 Then
-                reply.obj = proyectos
-                reply.ok = True
-                reply.msg = "Proyectos encontrados"
-            Else
-                reply.obj = Nothing
-                reply.ok = False
-                reply.msg = "Proyectos no encontrados"
-            End If
-
+                If proyectos.Count > 0 Then
+                    reply.obj = proyectos
+                    reply.ok = True
+                    reply.msg = "Proyectos encontrados"
+                Else
+                    reply.obj = Nothing
+                    reply.ok = False
+                    reply.msg = "Proyectos no encontrados"
+                End If
+            End Using
         Catch ex As Exception
             EscritorVisorEventos.Instancia().EscribirEvento(nameClass, MethodBase.GetCurrentMethod().Name, ex)
             reply.ok = False
@@ -324,9 +308,6 @@ Public Class ProjectDAO
 
 
         End Try
-        dr.Close()
-        dr.Dispose()
-
         Return reply
     End Function
 
@@ -441,39 +422,36 @@ Public Class ProjectDAO
     Public Function GetLastInsertIdDAO() As Reply(Of Integer)
 
         Dim reply As New Reply(Of Integer)
-        Dim dr As MySqlDataReader
+
 
         Try
 
             sentence = "SELECT LAST_INSERT_ID()"
 
-            dr = ConexionDAO.Instancia.ExecuteConsult(sentence)
+            Using dr As MySqlDataReader = ConexionDAO.Instancia.ExecuteConsult(sentence)
 
-            While dr.Read
-                Dim Last_Id_Insert As Integer
-                Last_Id_Insert = dr(0)
+                While dr.Read
+                    Dim Last_Id_Insert As Integer
+                    Last_Id_Insert = dr(0)
 
 
-                reply.obj = Last_Id_Insert
-            End While
+                    reply.obj = Last_Id_Insert
+                End While
 
-            If reply.obj <> 0 Then
-                reply.ok = True
-                reply.msg = "Se encontro el ultimo id insertado"
-            ElseIf reply.obj = 0 Then
-                reply.ok = False
-                reply.msg = "No se encontro el ultimo id insertado"
-            End If
-
+                If reply.obj <> 0 Then
+                    reply.ok = True
+                    reply.msg = "Se encontro el ultimo id insertado"
+                ElseIf reply.obj = 0 Then
+                    reply.ok = False
+                    reply.msg = "No se encontro el ultimo id insertado"
+                End If
+            End Using
         Catch ex As Exception
             EscritorVisorEventos.Instancia().EscribirEvento(nameClass, MethodBase.GetCurrentMethod().Name, ex)
             reply.ok = False
             reply.msg = "No fue posible ejecutar la consulta: " & ex.Message
             Return reply
         End Try
-
-        dr.Close()
-        dr.Dispose()
 
         Return reply
 
@@ -656,7 +634,7 @@ Public Class ProjectDAO
     Public Function GetPasswordVerifyDeleteRowDAO(ByVal pUsu As String, ByVal pPass As String) As Reply(Of UsuarioEN)
 
         Dim reply As New Reply(Of UsuarioEN)
-        Dim dr As MySqlDataReader
+
 
 
 
@@ -664,23 +642,23 @@ Public Class ProjectDAO
 
             sentence = "SELECT usu_Login , usu_Password FROM seg_usu WHERE usu_Login = @filtro1 And usu_Password = @filtro2"
 
-            dr = ConexionDAO.Instancia.ExecuteConsultTwoParameterString(sentence, pUsu, pPass)
+            Using dr As MySqlDataReader = ConexionDAO.Instancia.ExecuteConsultTwoParameterString(sentence, pUsu, pPass)
 
-            While dr.Read
-                Dim usu As New UsuarioEN
-                usu.usu_Login = dr(0)
-                usu.usu_Password = dr(1)
-                reply.obj = usu
-            End While
+                While dr.Read
+                    Dim usu As New UsuarioEN
+                    usu.usu_Login = dr(0)
+                    usu.usu_Password = dr(1)
+                    reply.obj = usu
+                End While
 
-            If reply.obj IsNot Nothing Then
-                reply.ok = True
-                reply.msg = "Usuario verificado para eliminar"
-            ElseIf reply.obj Is Nothing Then
-                reply.ok = False
-                reply.msg = "Usuario o contraseña incorrectos"
-            End If
-
+                If reply.obj IsNot Nothing Then
+                    reply.ok = True
+                    reply.msg = "Usuario verificado para eliminar"
+                ElseIf reply.obj Is Nothing Then
+                    reply.ok = False
+                    reply.msg = "Usuario o contraseña incorrectos"
+                End If
+            End Using
         Catch ex As Exception
             EscritorVisorEventos.Instancia().EscribirEvento(nameClass, MethodBase.GetCurrentMethod().Name, ex)
             reply.ok = False
@@ -688,8 +666,6 @@ Public Class ProjectDAO
             Return reply
         End Try
 
-        dr.Close()
-        dr.Dispose()
 
         Return reply
 
