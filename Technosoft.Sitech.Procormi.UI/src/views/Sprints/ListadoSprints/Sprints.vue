@@ -74,12 +74,13 @@
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h1 class="modal-title fs-5" id="exampleModalLabel">Crear Sprint</h1>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                                    @click="limpiarContenido()"></button>
                             </div>
                             <div class="modal-body">
                                 <div>
                                     <label>Nombre<span style="color: red;"> *</span></label>
-                                    <br/>
+                                    <br />
                                     <div style="margin-top: 15px;">
                                         <input v-model.trim="sprint.Sprint_Name" ref="inputSprintName" maxlength="45"
                                             required style="border-radius: 5px;" type="text" placeholder="Nombre">
@@ -113,16 +114,17 @@
                                             style="min-height: 48px;">
                                             <option :value="null">Seleccione una opción</option>
                                             <option v-for="item in listUsers" :key="item.usu_Login" :value="item.usu_Login">
-                                                {{ item.usu_Nombre }}</option>
+                                                {{ item.usu_Nombre }}
+                                            </option>
                                         </select>
                                     </div>
                                 </div>
                             </div>
-                            <div class="modal-footer">
+                            <div class="modal-footer" ref="miModal">
                                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal"
                                     @click="limpiarContenido()">Cancelar</button>
                                 <button @click="createSprint" type="button" ref="inputDate" class="btn btn-success"
-                                    data-bs-dismiss="modal">Guardar</button>
+                                    data-bs-dismiss="modal" >Guardar</button>
                             </div>
                         </div>
                     </div>
@@ -142,14 +144,16 @@
                             </div>
                             <div class="modal-body">
                                 <div>
-                                    <p>¿Está seguro de que desea completar el sprint? Para confirmar, primero valide su contraseña.</p>
+                                    <p>¿Está seguro de que desea completar el sprint? Para confirmar, primero valide su
+                                        contraseña.</p>
                                 </div>
                                 <div>
-                                    <label><strong>(Nota: <u>No se podrá volver a activar el sprint una vez completado</u>)</strong></label>
-                                    <br/>
+                                    <label><strong>(Nota: <u>No se podrá volver a activar el sprint una vez
+                                                completado</u>)</strong></label>
+                                    <br />
                                     <div class="row" style="margin-top: 15px;">
                                         <input v-model="verifyPassword" class="col-10"
-                                            style="margin-left: 10px; border-radius: 5px;" type="password" required                                        
+                                            style="margin-left: 10px; border-radius: 5px;" type="password" required
                                             placeholder="Contraseña" maxlength="20">
                                         <button @click="getPasswordVerifyDeleteRow()" type="button"
                                             class="btn btn-success col-1" style="margin-left: 5px;"><span
@@ -184,8 +188,9 @@
                                     <label>Nombre<span style="color: red;"> *</span></label>
                                     <br />
                                     <div style="margin-top: 15px;">
-                                        <input v-model.trim="SprintNameEdit" @input="handleChanges" ref="EditarSprintName" maxlength="45" required
-                                            style="border-radius: 5px;" type="text" placeholder="Nombre">
+                                        <input v-model.trim="SprintNameEdit" @input="handleChanges" ref="EditarSprintName"
+                                            maxlength="45" required style="border-radius: 5px;" type="text"
+                                            placeholder="Nombre">
                                     </div>
                                 </div>
                                 <br />
@@ -193,8 +198,8 @@
                                     <label>Fecha de Inicio<span style="color: red;"> *</span></label>
                                     <br />
                                     <div style="margin-top: 15px;">
-                                        <input v-model="SprintStartDateEdit" @input="handleChanges" ref="EditarStartDate" required
-                                            style="border-radius: 5px;" type="date">
+                                        <input v-model="SprintStartDateEdit" @input="handleChanges" ref="EditarStartDate"
+                                            required style="border-radius: 5px;" type="date">
                                     </div>
                                 </div>
                                 <br />
@@ -202,8 +207,8 @@
                                     <label>Fecha de Finalización<span style="color: red;"> *</span></label>
                                     <br />
                                     <div style="margin-top: 15px;">
-                                        <input v-model="SprintEndDateEdit" @input="handleChanges" ref="EditarEndDate" required
-                                            style="border-radius: 5px;" type="date">
+                                        <input v-model="SprintEndDateEdit" @input="handleChanges" ref="EditarEndDate"
+                                            required style="border-radius: 5px;" type="date">
                                     </div>
                                 </div>
                                 <br />
@@ -211,9 +216,9 @@
                                     <label>Usario asignado<span style="color: red;"> *</span></label>
                                     <br />
                                     <div class="left-content" style="margin-top: 15px;">
-                                        <select v-model="SprintUsuLoginEdit" @input="handleChanges" ref="EditarUserLogin" required name="usuarios"
-                                            id="usuarios" class="form-select text-black inputsGeneral"
-                                            style="min-height: 48px;">
+                                        <select v-model="SprintUsuLoginEdit" @input="handleChanges" ref="EditarUserLogin"
+                                            required name="usuarios" id="usuarios"
+                                            class="form-select text-black inputsGeneral" style="min-height: 48px;">
                                             <option :value="null">Seleccione una opción</option>
                                             <option v-for="item in listUsers" :key="item.usu_Login" :value="item.usu_Login">
                                                 {{ item.usu_Nombre }}</option>
@@ -222,7 +227,8 @@
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal" @click="limpiarContenido()">Cancelar</button>
+                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal"
+                                    @click="limpiarContenido()">Cancelar</button>
                                 <button @click="editSprint" type="button" class="btn btn-success" data-bs-dismiss="modal"
                                     ref="editDate">Guardar</button>
                             </div>
@@ -244,11 +250,13 @@
                             </div>
                             <div class="modal-body">
                                 <div>
-                                    <p>¿Está seguro de que desea eliminar el sprint? Para confirmar, primero valide su contraseña.</p>
+                                    <p>¿Está seguro de que desea eliminar el sprint? Para confirmar, primero valide su
+                                        contraseña.</p>
                                 </div>
                                 <div>
-                                    <label><strong>(Nota: <u>No se podrá recuperar el sprint una vez eliminado</u>)</strong></label>
-                                    <br/>
+                                    <label><strong>(Nota: <u>No se podrá recuperar el sprint una vez
+                                                eliminado</u>)</strong></label>
+                                    <br />
                                     <div class="row" style="margin-top: 15px;">
                                         <input v-model="verifyPassword" class="col-10"
                                             style="margin-left: 10px; border-radius: 5px;" type="password" required
@@ -394,7 +402,7 @@
                                                 <option value="">Todos</option>
                                                 <option v-bind:value="Usuario.usu_Login" v-for="Usuario in listUsers"
                                                     v-bind:key="Usuario.usu_Login">
-                                                    {{ Usuario.usu_Login }}
+                                                    {{ Usuario.usu_Nombre }}
                                                 </option>
                                             </select>
                                         </div>
@@ -426,7 +434,8 @@
                                                     <th class="col-2" style="min-width: 125px;">Fecha inicio</th>
                                                     <th class="col-2" style="min-width: 125px;">Fecha finalización</th>
                                                     <th class="col-1" style="min-width: 125px;">Estado</th>
-                                                    <th v-if="recuperarUsuTipo() == 'Administrador'" class="col-2" style="min-width: 125px;">Opciones</th>
+                                                    <th v-if="recuperarUsuTipo() == 'Administrador'" class="col-2"
+                                                        style="min-width: 125px;">Opciones</th>
                                                 </tr>
                                             </thead>
                                             <tbody style="font-size: large;">
@@ -444,11 +453,12 @@
                                                             "Finalizado" : "Inactivo") }}</td>
                                                     <td class="text-white" style="min-width: 130px;">
 
-                                                        <button v-if="recuperarUsuTipo() == 'Administrador'" style="margin-left: 5px;"
+                                                        <button v-if="recuperarUsuTipo() == 'Administrador'"
+                                                            style="margin-left: 5px;"
                                                             @click="saveIdSprintDelete(sprint.Id_Sprint)" type="button"
                                                             class="btn btn-success" data-bs-toggle="modal"
                                                             data-bs-target="#completarSprint"
-                                                            :disabled = "sprint.Id_Status == 5">
+                                                            :disabled="sprint.Id_Status == 5">
                                                             <span class="fas fa-check" b-tooltip.hover
                                                                 title="Completar Sprint"></span>
                                                         </button>
@@ -457,7 +467,7 @@
                                                             @click="() => startSprintEditing(sprint)"
                                                             style="margin-left: 5px;" type="button" class="btn btn-warning"
                                                             data-bs-toggle="modal" data-bs-target="#editarSprint"
-                                                            :disabled = "sprint.Id_Status == 5">
+                                                            :disabled="sprint.Id_Status == 5">
                                                             <span class="fas fa-pen" style="color:white" b-tooltip.hover
                                                                 title="Editar Sprint"></span>
                                                         </button>
@@ -466,7 +476,7 @@
                                                             @click="saveIdSprintDelete(sprint.Id_Sprint)" type="button"
                                                             class="btn btn-danger" style="margin-left: 5px;"
                                                             data-bs-toggle="modal" data-bs-target="#exampleModal"
-                                                            :disabled = "sprint.Id_Status == 5">
+                                                            :disabled="sprint.Id_Status == 5">
                                                             <span class="fas fa-trash" b-tooltip.hover
                                                                 title="Eliminar Sprint"></span>
                                                         </button>
@@ -518,6 +528,7 @@ export default {
             selectedUser: null,
             UserlistAdd: [],
             listUsers: [],
+            filteredUsers: [],
             sprints: [],
             verifyPassword: false,
             validationMessage: '',
@@ -671,7 +682,7 @@ export default {
         },
 
         goBack: async function () {
-            if (this.actualPage > 1){
+            if (this.actualPage > 1) {
                 this.paginateData = []
                 let paginaAnt = this.actualPage - 1
                 this.actualPage = paginaAnt
@@ -794,15 +805,17 @@ export default {
 
         loadUserSelect: async function () {
             try {
-                const response = await AdminApi.GetUserListSprint(this.Id_Sprint);
+                const currentSprintId = localStorage.getItem("currentProjectId");
+                const response = await AdminApi.GetUserListSprint(currentSprintId);
                 const userList = response.data.obj;
+                console.log('Usuarios', userList);
                 this.listUsers = userList;
-                
+                console.log('UsuariosArray', this.listUsers);
+
             } catch (error) {
                 console.error('Error al cargar los sprints desde la API:', error);
             }
-        }
-        ,
+        },
 
         async postSprintToAPI(sprint) {
             try {
@@ -828,8 +841,9 @@ export default {
                     position: 'center',
                     icon: 'error',
                     title: '¡Error!',
-                    text: 'Se tiene que completar el campo del nombre del sprint',
+                    text: 'No se ingresó el nombre del sprint',
                 })
+
             }
 
             if (this.sprint.Start_Date == "") {
@@ -880,6 +894,7 @@ export default {
             }
 
             await AdminApi.PostSprint(this.sprint)
+
                 .then(response => {
                     if (response.data.ok == true) {
                         this.$swal(response.data.msg, '', 'success')
@@ -905,7 +920,7 @@ export default {
                 End_Date: "",
                 User_Login: "",
             }
-            this.verifyPassword='';
+            this.verifyPassword = '';
         },
 
         formatDateToYYYYMMDD(date) {
@@ -915,10 +930,10 @@ export default {
             return `${year}-${month}-${day}`;
         },
 
-        startSprintEditing(sprint) {
+        async startSprintEditing(sprint) {
+
             this.selectCurrentSprint(sprint);
-            console.log('sprint:', sprint);
-            this.SprintIdEdit = sprint.Id_Sprint
+            this.SprintIdEdit = sprint.Id_Sprint;
             this.SprintNameEdit = sprint.Sprint_Name;
             this.SprintStartDateEdit = this.formatDateToYYYYMMDD(new Date(sprint.Start_Date));
             this.SprintEndDateEdit = this.formatDateToYYYYMMDD(new Date(sprint.End_Date));
@@ -952,7 +967,7 @@ export default {
                     position: 'center',
                     icon: 'error',
                     title: '¡Error!',
-                    text: 'Se tiene que completar el campo del nombre del sprint',
+                    text: 'No se ingresó el nombre del Sprint',
                 })
             }
 
@@ -1007,8 +1022,7 @@ export default {
                 return this.$swal.fire({
                     position: 'center',
                     icon: 'warning',
-                    title: '¡Advertencia!',
-                    text: 'No se realizó ningún cambio',
+                    title: '¡No se realizó ningún cambio!',
                 });
             }
 
@@ -1055,11 +1069,11 @@ export default {
                 }
                 else {
                     this.$swal({ icon: 'warning', text: 'Contraseña Incorrecta' });
-                    this.verifyPassword ="";
+                    this.verifyPassword = "";
                 }
 
             } catch (error) {
-                console.error({message : 'Error al cargar los proyectos desde la API:', error});
+                console.error({ message: 'Error al cargar los proyectos desde la API:', error });
             }
 
         },

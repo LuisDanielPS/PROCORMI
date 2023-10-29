@@ -17,7 +17,7 @@ Public Class UserListSprintVM
 
     <DataMember()>
     Private _usu_Login As String
-    Public Property Usu_Login() As String
+    Public Property usu_Login() As String
         Get
             Return _usu_Login
         End Get
@@ -28,7 +28,7 @@ Public Class UserListSprintVM
 
     <DataMember()>
     Private _usu_Nombre As String
-    Public Property Usu_Nombre() As String
+    Public Property usu_Nombre() As String
         Get
             Return _usu_Nombre
         End Get

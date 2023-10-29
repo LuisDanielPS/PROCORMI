@@ -133,9 +133,9 @@ export default {
     }
     ,
 
-    GetUserListSprint(IdSprint)
+    GetUserListSprint(IdProject)
     {
-        return apicliente.get('Sprint/GetUserListSprint?pIdSprint='+ IdSprint, {
+        return apicliente.get('Sprint/GetUserListSprint?pIdSprint='+ IdProject, {
             withCredentials: false,
             headers: { 'Content-Type': 'application/json; charset=UTF-8' }
         })

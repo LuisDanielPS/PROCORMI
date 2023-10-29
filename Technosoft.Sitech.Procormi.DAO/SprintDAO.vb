@@ -166,25 +166,24 @@ Public Class SprintDAO
 
     End Function
 
-    Public Function GetUserListSprintDAO(ByVal pIdSprint As Integer) As Reply(Of List(Of UserListSprintVM))
+    Public Function GetUserListSprintDAO(ByVal pIdProject As Integer) As Reply(Of List(Of UserListSprintVM))
 
         Dim reply As New Reply(Of List(Of UserListSprintVM))
-        Dim UserListSprint As New List(Of UserListSprintVM)()
+        Dim UserListSprint As New List(Of UserListSprintVM)
         Try
 
-            sentence = "SELECT su.usu_Login, usu_Nombre 
-                        FROM seg_usu AS su 
+            sentence = "SELECT p.Id_Project, su.usu_Login , usu_Nombre FROM seg_usu AS su 
                         JOIN seg_usu_project AS sup ON su.usu_Login = sup.User_Login 
-                        JOIN project AS p ON sup.Id_Project = p.Id_Project
-                        JOIN sprint AS s ON p.Id_Project = s.Id_Project
-                        WHERE s.Id_Sprint = @filtro1"
+                        JOIN project AS p ON sup.Id_Project = p.Id_Project 
+                        where p.Id_Project = @filtro1"
 
-            Using dr As MySqlDataReader = ConexionDAO.Instancia.ExecuteConsultOneParameterInteger(sentence, pIdSprint)
+            Using dr As MySqlDataReader = ConexionDAO.Instancia.ExecuteConsultOneParameterInteger(sentence, pIdProject)
 
                 While dr.Read
                     Dim user As New UserListSprintVM
-                    user.Usu_Login = dr(0)
-                    user.Usu_Nombre = dr(1)
+                    user.Id_Sprint = dr(0)
+                    user.usu_Login = dr(1)
+                    user.usu_Nombre = dr(2)
 
                     UserListSprint.Add(user)
 
