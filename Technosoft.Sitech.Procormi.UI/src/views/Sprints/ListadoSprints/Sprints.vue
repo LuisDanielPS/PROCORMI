@@ -6,66 +6,6 @@
         <div class="posicion0" v-on:click="cerrarMenu()">
             <div class="d-flex">
 
-                <!--Modal Ver Sprint-->
-
-                <div class="modal fade" id="verSprint" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-                    aria-labelledby="verSprint" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-scrollable modal-xl">
-                        <div class="modal-content bg-gradient-gray">
-                            <div class="modal-header">
-                                <div class="col-12">
-                                    <div class="row" style="text-align: right;">
-                                        <div class="col-md-12 col-xs-12">
-                                            <button
-                                                style="border: none; background-color: transparent; min-height: 15px; min-width: 25px; font-size: 30px;"
-                                                type="button" data-bs-dismiss="modal">&times;</button>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                    </div>
-                                </div>
-                            </div>
-                            <br />
-                            <div class="modal-body">
-                                <div class="col-md-12 col-xs-12" style="min-height: 350px; max-height: 400px">
-                                    <div>
-                                        <div class="col-12">
-                                            <h1 style="text-align:center"><strong>{{ currentSprint ?
-                                                currentSprint.Sprint_Name : '' }}</strong></h1>
-                                        </div>
-                                    </div>
-                                    <br />
-                                    <div class="col-md-12 col-xs-12" style="min-height: 350px; max-height: 400px">
-                                        <div class="row">
-                                            <div class="col-12">
-                                                <h4 class="modal-title" style="text-align: left">
-                                                    <strong>{{ 'Fecha de Inicio: ' + (currentSprint ?
-                                                        formatoFecha(currentSprint.Start_Date) : '') }}</strong>
-                                                </h4>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-12">
-                                                <h4 class="modal-title" style="text-align: left">
-                                                    <strong>{{ 'Fecha de Finalización: ' + (currentSprint ?
-                                                        formatoFecha(currentSprint.End_Date) : '') }}</strong>
-                                                </h4>
-                                            </div>
-                                        </div>
-                                        <br />
-                                        <div class="row justify-content-center" style="position: relative;">
-                                        </div>
-                                        <br />
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!--Modal Ver Sprint-->
-
                 <!--Modal crear Sprint-->
 
                 <div class="modal fade" id="staticBackdrop" tabindex="-1" aria-labelledby="exampleModalLabel"
@@ -106,13 +46,13 @@
                                 </div>
                                 <br />
                                 <div>
-                                    <label>Usario asignado<span style="color: red;"> *</span></label>
+                                    <label>Usuario asignado<span style="color: red;"> *</span></label>
                                     <br />
                                     <div class="left-content" style="margin-top: 15px;">
                                         <select v-model="sprint.User_Login" ref="inputUserLogin" required name="usuarios"
                                             id="usuarios" class="form-select text-black inputsGeneral"
                                             style="min-height: 48px;">
-                                            <option :value="null">Seleccione una opción</option>
+                                            <option value="" disabled select>Seleccione una opción</option>
                                             <option v-for="item in listUsers" :key="item.usu_Login" :value="item.usu_Login">
                                                 {{ item.usu_Nombre }}
                                             </option>
@@ -120,7 +60,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="modal-footer" ref="miModal">
+                            <div class="modal-footer">
                                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal"
                                     @click="limpiarContenido()">Cancelar</button>
                                 <button @click="createSprint" type="button" ref="inputDate" class="btn btn-success"
@@ -213,13 +153,12 @@
                                 </div>
                                 <br />
                                 <div>
-                                    <label>Usario asignado<span style="color: red;"> *</span></label>
+                                    <label>Usuario asignado<span style="color: red;"> *</span></label>
                                     <br />
                                     <div class="left-content" style="margin-top: 15px;">
                                         <select v-model="SprintUsuLoginEdit" @input="handleChanges" ref="EditarUserLogin"
                                             required name="usuarios" id="usuarios"
                                             class="form-select text-black inputsGeneral" style="min-height: 48px;">
-                                            <option :value="null">Seleccione una opción</option>
                                             <option v-for="item in listUsers" :key="item.usu_Login" :value="item.usu_Login">
                                                 {{ item.usu_Nombre }}</option>
                                         </select>
@@ -435,7 +374,7 @@
                                                     <th class="col-2" style="min-width: 125px;">Fecha finalización</th>
                                                     <th class="col-1" style="min-width: 125px;">Estado</th>
                                                     <th v-if="recuperarUsuTipo() == 'Administrador'" class="col-2"
-                                                        style="min-width: 125px;">Opciones</th>
+                                                    style="min-width: 125px;">Opciones</th>
                                                 </tr>
                                             </thead>
                                             <tbody style="font-size: large;">
@@ -808,9 +747,7 @@ export default {
                 const currentSprintId = localStorage.getItem("currentProjectId");
                 const response = await AdminApi.GetUserListSprint(currentSprintId);
                 const userList = response.data.obj;
-                console.log('Usuarios', userList);
                 this.listUsers = userList;
-                console.log('UsuariosArray', this.listUsers);
 
             } catch (error) {
                 console.error('Error al cargar los sprints desde la API:', error);
