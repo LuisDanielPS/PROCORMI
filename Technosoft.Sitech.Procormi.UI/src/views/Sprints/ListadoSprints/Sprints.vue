@@ -9,7 +9,7 @@
                 <!--Modal crear Sprint-->
 
                 <div class="modal fade" id="staticBackdrop" tabindex="-1" aria-labelledby="exampleModalLabel"
-                    aria-hidden="true" data-backdrop="static" data-keyboard="false">
+                    aria-hidden="true" data-backdrop="static" data-keyboard="false" v-if="modalShow">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -64,7 +64,7 @@
                                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal"
                                     @click="limpiarContenido()">Cancelar</button>
                                 <button @click="createSprint" type="button" ref="inputDate" class="btn btn-success"
-                                    data-bs-dismiss="modal" >Guardar</button>
+                                 >Guardar</button>
                             </div>
                         </div>
                     </div>
@@ -117,7 +117,7 @@
                 <!--Modal editar Sprint-->
 
                 <div class="modal fade" id="editarSprint" tabindex="-1" aria-labelledby="editarSprint" aria-hidden="true">
-                    <div class="modal-dialog">
+                    <div class="modal-dialog" v-if="modalShow">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h1 class="modal-title fs-5" id="exampleModalLabel">Editar Sprint</h1>
@@ -168,7 +168,7 @@
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal"
                                     @click="limpiarContenido()">Cancelar</button>
-                                <button @click="editSprint" type="button" class="btn btn-success" data-bs-dismiss="modal"
+                                <button @click="editSprint" type="button" class="btn btn-success"
                                     ref="editDate">Guardar</button>
                             </div>
                         </div>
@@ -477,6 +477,7 @@ export default {
             isButtonEnabled: false,
             currentSprint: null,
             hasChanges: false,
+            modalShow: true,
 
             Filtros: {
                 fechaI: "",
@@ -834,9 +835,20 @@ export default {
 
                 .then(response => {
                     if (response.data.ok == true) {
-                        this.$swal(response.data.msg, '', 'success')
+                        const swal = this.$swal({
+                            title: response.data.msg,
+                            icon:'success',
+                            showConfirmButton:false,
+                        });
+
                         this.limpiarContenido()
                         this.getSprintsDesdeAPI()
+                        this.modalShow = false,
+                        setTimeout(() => {
+                        swal.close();
+                        location.reload();
+                    }, 1000);
+
                     } else {
                         this.$swal(response.data.msg, '', 'error')
                     }
@@ -974,8 +986,9 @@ export default {
                     this.SprintEndDateEdit = ''
                     this.SprintUsuLoginEdit = ''
 
-                    this.$swal({ icon: 'success', text: 'Se editó correctamente el sprint' });
+                    this.$swal({ icon: 'success',showConfirmButton:false, text: 'Se editó correctamente el sprint' });
                     this.getSprintsDesdeAPI();
+                    this.modalShow = false,
                     setTimeout(() => {
                         location.reload()
                     }, 1000);
