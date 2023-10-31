@@ -126,6 +126,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="PollDAO.vb" />
     <Compile Include="ProjectDAO.vb" />
     <Compile Include="SprintDAO.vb" />
     <Compile Include="SubTaskDAO.vb" />

@@ -12,84 +12,39 @@
 
                                 <!--Preguntas-->
                                 
-                                <br />
                                 <div>
-                                    <h4 style="text-align: center; font-size: 25px; color: #0a3a66;">Listado de preguntas</h4>
+                                    <h4 style="text-align: center; font-size: 25px; color: #0a3a66;">{{ poll.Name }}</h4>
+                                    <br>
+                                    <p style="text-align: center; font-size: 15px; color: #000000;">{{ QuitarHTML(poll.Description) }}</p>
+                                    <br>
+                                    <p style="text-align: center; font-size: 15px; color: #000000;"><b>Link:</b> <a>{{ fullLink }}</a></p>
                                     <div>
                                         <div>
-                                            <div class="cardPersonalizado">
+                                            <div class="cardPersonalizado" v-for="(question, index) in poll.Questions" :key="index">
                                                 <div class="cardInside">
-                                                    <h5 style="text-align: center; font-size: 25px; background-color: #0a3a66; color: #fff; border-radius: 15px;">Escriba su opinión con respecto a este sistema</h5>
+                                                    <h5 style="text-align: center; font-size: 25px; background-color: #0a3a66; color: #fff; border-radius: 15px;">{{ question.TextQuestion }}</h5>
                                                     <hr />
-                                                    <input style="border-radius: 15px; margin-bottom: 10px;" placeholder="Respuesta" />
+                                                    <input v-if="question.Id_Question_Type == 1" style="border-radius: 15px; margin-bottom: 10px;" placeholder="Respuesta" />
                                                     <br />
                                                     <br />
-                                                    <div>
+                                                    <div v-if="question.Id_Question_Type == 2 || question.Id_Question_Type == 3">
                                                         <h5 class="margin-5px-bottom" style="font-size: 20px; color: #0a3a66;">Opciones</h5>
                                                         <br />
-                                                        <div class="form-check">
-                                                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-                                                            <label class="form-check-label" for="flexRadioDefault1">
-                                                                Opción 1
-                                                            </label>
+                                                        <div v-if="question.Id_Question_Type == 2">
+                                                            <div class="form-check" v-for="(option, index) in question.Question_Options" :key="index">
+                                                                <input type="radio" class="estiloRadios" :id="'opcion' + index" name="options" v-model="selectedOption">
+                                                                <label class="form-check-label">
+                                                                    {{ option.Option_Text }}
+                                                                </label>
+                                                            </div>
                                                         </div>
-                                                        <div class="form-check">
-                                                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
-                                                            <label class="form-check-label" for="flexRadioDefault2">
-                                                                Opción 2
-                                                            </label>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="cardPersonalizado">
-                                                <div class="cardInside">
-                                                    <h5 style="text-align: center; font-size: 25px; background-color: #0a3a66; color: #fff; border-radius: 15px;">Escriba su opinión con respecto a este sistema</h5>
-                                                    <hr />
-                                                    <input style="border-radius: 15px; margin-bottom: 10px;" placeholder="Respuesta" />
-                                                    <br />
-                                                    <br />
-                                                    <div>
-                                                        <h5 class="margin-5px-bottom" style="font-size: 20px; color: #0a3a66;">Opciones</h5>
-                                                        <br />
-                                                        <div class="form-check">
-                                                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-                                                            <label class="form-check-label" for="flexRadioDefault1">
-                                                                Opción 1
-                                                            </label>
-                                                        </div>
-                                                        <div class="form-check">
-                                                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
-                                                            <label class="form-check-label" for="flexRadioDefault2">
-                                                                Opción 2
-                                                            </label>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="cardPersonalizado">
-                                                <div class="cardInside">
-                                                    <h5 style="text-align: center; font-size: 25px; background-color: #0a3a66; color: #fff; border-radius: 15px;">Escriba su opinión con respecto a este sistema</h5>
-                                                    <hr />
-                                                    <input style="border-radius: 15px; margin-bottom: 10px;" placeholder="Respuesta" />
-                                                    <br />
-                                                    <br />
-                                                    <div>
-                                                        <h5 class="margin-5px-bottom" style="font-size: 20px; color: #0a3a66;">Opciones</h5>
-                                                        <br />
-                                                        <div class="form-check">
-                                                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-                                                            <label class="form-check-label" for="flexRadioDefault1">
-                                                                Opción 1
-                                                            </label>
-                                                        </div>
-                                                        <div class="form-check">
-                                                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
-                                                            <label class="form-check-label" for="flexRadioDefault2">
-                                                                Opción 2
-                                                            </label>
+                                                        <div v-if="question.Id_Question_Type == 3">
+                                                            <div class="form-check" v-for="(option, index) in question.Question_Options" :key="index">
+                                                                <input type="checkbox" class="estiloRadios" id="opcion1">
+                                                                <label class="form-check-label">
+                                                                    {{ option.Option_Text }}
+                                                                </label>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -100,6 +55,14 @@
                                 </div>
 
                                 <!--Preguntas-->
+
+                                <br />
+                                <br />
+                                <div class="row justify-content-end">
+                                    <div class="col-2">
+                                        <button class="btn btn-success" style="min-width: 120px; font-size: 20px; float: right;">Enviar respuestas</button>
+                                    </div>
+                                </div>
 
                             </div>
                         </div>
@@ -116,6 +79,7 @@
 import HeaderPrincipal from '@/components/HeaderPrincipal.vue'
 import 'quill/dist/quill.snow.css'
 import Cookies from 'js-cookie';
+import AdminApi from '@/Api/Api';
 
 export default {
 
@@ -125,11 +89,40 @@ export default {
 
     data() {
         return {
-
+            poll: [],
+            link: "",
+            fullLink: ""
         }
     },
 
     methods: {
+
+        getPoll: async function () {
+            let id = this.$route.params.encuesta
+            await AdminApi.getLink()
+                .then(async response => {
+                    if (response.data != null) {
+                        this.link = response.data
+                    }
+                })
+
+            this.fullLink = this.link + "/" + id
+
+            await AdminApi.GetPoll(id)
+                .then(async response => {
+                    if (response.data != null) {
+                        this.poll = response.data
+                    }
+                })
+
+            console.log(this.poll)
+        },
+
+        QuitarHTML(html) {
+            var temporal = document.createElement('div')
+            temporal.innerHTML = html
+            return temporal.textContent || temporal.innerText || ""
+        },
 
         limpiarEditor: function () {
             this.quill.root.innerHTML = ""
@@ -169,6 +162,7 @@ export default {
     },
 
     created: async function () {
+        await this.getPoll()
         await this.$root.validarLoginFooter.call();
     }
 
@@ -282,6 +276,14 @@ export default {
 
 .cardInside{
     padding: 15px;
+}
+
+.estiloRadios {
+    margin-right: 10px;
+}
+
+.labelGen {
+    color: #000000;
 }
 
 </style>

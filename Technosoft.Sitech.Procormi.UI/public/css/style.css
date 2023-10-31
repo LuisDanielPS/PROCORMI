@@ -97,6 +97,10 @@ button, button:focus, button:hover { outline: none; }
     min-height: 85vh;
 }
 
+.posicion0 {
+    z-index: 0;
+}
+
 .claseTD{
     cursor: pointer;
 }

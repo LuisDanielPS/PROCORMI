@@ -1,0 +1,368 @@
+﻿Imports System.Configuration
+Imports System.IO
+Imports System.Reflection
+Imports System.Security.Cryptography
+Imports System.Text
+Imports MySql.Data.MySqlClient
+Imports Technosoft.Sitech.Procormi.EN
+Imports Technosoft.Sitech.Procormi.UT
+Imports Technosoft.Sitech.Procormi.UT.Technosoft.Sitech.Procormi.UT
+
+Public Class PollDAO
+
+    Public rutaEncuesta As String = ConfigurationManager.AppSettings("rutaEncuesta")
+    Private nombreClase As String = MethodBase.GetCurrentMethod().DeclaringType.Name
+
+    Public Shared Function Instance() As PollDAO
+        Return New PollDAO
+    End Function
+
+    Dim sentence As String = ""
+
+    Public Function PostNewPoll(poll As PollEN) As Reply(Of Boolean)
+
+        Dim reply As New Reply(Of Boolean)
+        Dim creationDate As New DateTime
+        Dim idPoll As New Integer
+        creationDate = DateTime.Now
+        Dim format As String = "yyyy-MM-dd HH:mm:ss"
+        Dim formatDate As String = creationDate.ToString(format)
+        Dim idEncriptado As String
+
+        Try
+
+            sentence = "INSERT INTO poll (Name, Description, Creation_Date) VALUES ('" & poll.Name & "', '" & poll.Description & "', '" & formatDate & "');"
+
+            ConexionDAO.Instancia.EjecutarSentenciaSimple(sentence)
+
+            idPoll = LastPoll()
+
+            For Each question In poll.Questions
+
+                sentence = ""
+                sentence = "INSERT INTO question (TextQuestion, Id_Poll, Id_Question_Type) VALUES ('" & question.TextQuestion & "', " & idPoll & ", " & question.Id_Question_Type & ");"
+
+                ConexionDAO.Instancia.EjecutarSentenciaSimple(sentence)
+
+                Dim idQuestion As New Integer
+                idQuestion = LastQuestion()
+
+                If question.Question_Options IsNot Nothing Then
+                    For Each opt In question.Question_Options
+                        sentence = ""
+                        sentence = "INSERT INTO question_options (Id_Question, Option_Text) VALUES (" & idQuestion & ", '" & opt.Option_Text & "');"
+
+                        ConexionDAO.Instancia.EjecutarSentenciaSimple(sentence)
+                    Next
+                End If
+
+            Next
+
+            idEncriptado = Encrypt(idPoll)
+
+            reply.ok = True
+            reply.obj = True
+            reply.msg = "Encuesta registrada con éxito. El link de la encuesta es el siguiente: " & rutaEncuesta & "/" & idEncriptado
+
+        Catch ex As Exception
+
+            reply.ok = False
+            reply.obj = False
+            reply.msg = "Error al registrar la encuesta: " & ex.Message
+
+        End Try
+
+        Return reply
+
+    End Function
+
+    Public Function getLink() As String
+        Try
+            Return rutaEncuesta
+        Catch ex As Exception
+            Return ex.Message
+        End Try
+    End Function
+
+#Region "Listados"
+
+    Public Function GetAllPolls() As Reply(Of List(Of PollEN))
+
+        Dim reply As New Reply(Of List(Of PollEN))
+        Dim polls As New List(Of PollEN)
+        Dim list As MySqlDataReader
+
+        Try
+            sentence = "SELECT * FROM poll"
+
+            list = ConexionDAO.Instancia.EjecutarConsultaListados(sentence)
+
+            While list.Read
+                Dim poll As New PollEN
+                poll.Id_Poll = list(0)
+                poll.Name = list(1)
+                poll.Description = list(2)
+                poll.Creation_Date = list(3)
+                polls.Add(poll)
+            End While
+
+            reply.obj = polls
+
+        Catch ex As Exception
+            EscritorVisorEventos.Instancia().EscribirEvento(nombreClase, MethodBase.GetCurrentMethod().Name, ex)
+        End Try
+
+        list.Close()
+        list.Dispose()
+
+        Return reply
+
+    End Function
+
+    Public Function GetPoll(pollIdEncrypted As String) As PollEN
+        Dim poll As New PollEN
+        Dim pollId = Desencrypt(pollIdEncrypted)
+
+        Try
+            Dim sentence As String = "SELECT Id_Poll, Name, Description, Creation_Date FROM poll WHERE Id_Poll = " & pollId & ";"
+            Dim pollList As MySqlDataReader = ConexionDAO.Instancia.EjecutarConsultaListados(sentence)
+            While pollList.Read
+                poll.Id_Poll = pollList(0)
+                poll.Name = pollList(1)
+                poll.Description = pollList(2)
+                poll.Creation_Date = pollList(3)
+            End While
+            pollList.Close()
+
+            If poll IsNot Nothing Then
+                poll.Questions = New List(Of QuestionEN)()
+                Dim questionsSentence As String = "SELECT Id_Question, TextQuestion, Id_Poll, Id_Question_Type FROM question WHERE Id_Poll = " & pollId & ";"
+                Dim questionsList As MySqlDataReader = ConexionDAO.Instancia.EjecutarConsultaListados(questionsSentence)
+                While questionsList.Read()
+                    Dim question As New QuestionEN()
+                    question.Id_Question = questionsList(0)
+                    question.TextQuestion = questionsList(1)
+                    question.Id_Poll = questionsList(2)
+                    question.Id_Question_Type = questionsList(3)
+
+                    question.Question_Options = New List(Of QuestionOptionsEN)()
+                    Dim optionsSentence As String = "SELECT Id_Question_Option, Option_Text FROM question_options WHERE Id_Question = " & question.Id_Question & ";"
+                    Dim optionsList As MySqlDataReader = ConexionDAO.Instancia.EjecutarConsultaListados(optionsSentence)
+                    While optionsList.Read()
+                        Dim opt As New QuestionOptionsEN()
+                        opt.Id_Question_Option = optionsList(0)
+                        opt.Option_Text = optionsList(1)
+                        question.Question_Options.Add(opt)
+                    End While
+                    optionsList.Close()
+
+                    poll.Questions.Add(question)
+                End While
+                questionsList.Close()
+            End If
+
+            Return poll
+
+        Catch ex As Exception
+            EscritorVisorEventos.Instancia().EscribirEvento(nombreClase, MethodBase.GetCurrentMethod().Name, ex)
+        End Try
+
+        Return poll
+    End Function
+
+
+#End Region
+
+#Region "Selects"
+
+    Public Function LastPoll() As Integer
+
+        Dim reply As New Reply(Of Integer)
+        Dim dr As MySqlDataReader
+        Dim consecutivo As Integer = 0
+
+        Try
+
+            sentence = "SELECT Id_Poll FROM poll ORDER BY Id_Poll DESC LIMIT 1"
+
+            dr = ConexionDAO.Instancia.EjecutarConsultaListados(sentence)
+
+            While dr.Read
+                consecutivo = dr(0)
+            End While
+
+            reply.ok = True
+
+        Catch ex As Exception
+            System.Diagnostics.EventLog.WriteEntry("Application", ex.TargetSite.ToString & " / " & ex.Message & " / " & ex.InnerException.Message, EventLogEntryType.Error, EventLogEntryType.Error, EventLogEntryType.Error)
+            reply.obj = Nothing
+            reply.ok = False
+        End Try
+
+        dr.Close()
+        dr.Dispose()
+
+        Return consecutivo
+
+    End Function
+
+    Public Function LastQuestion() As Integer
+
+        Dim reply As New Reply(Of Integer)
+        Dim dr As MySqlDataReader
+        Dim consecutivo As Integer = 0
+
+        Try
+
+            sentence = "SELECT Id_Question FROM question ORDER BY Id_Question DESC LIMIT 1"
+
+            dr = ConexionDAO.Instancia.EjecutarConsultaListados(sentence)
+
+            While dr.Read
+                consecutivo = dr(0)
+            End While
+
+            reply.ok = True
+
+        Catch ex As Exception
+            System.Diagnostics.EventLog.WriteEntry("Application", ex.TargetSite.ToString & " / " & ex.Message & " / " & ex.InnerException.Message, EventLogEntryType.Error, EventLogEntryType.Error, EventLogEntryType.Error)
+            reply.obj = Nothing
+            reply.ok = False
+        End Try
+
+        dr.Close()
+        dr.Dispose()
+
+        Return consecutivo
+
+    End Function
+
+#End Region
+
+#Region "Deletes"
+
+    Public Async Function DeletePoll(pollId As Integer) As Task(Of Reply(Of Boolean))
+        Dim reply As New Reply(Of Boolean)
+        Dim Id_Question As New Integer
+        Dim Id_Question_Type As String
+        Dim dr As MySqlDataReader
+
+        Try
+
+            sentence = "select Id_Question, Id_Question_Type from question where Id_Poll = " & pollId & ";"
+            dr = ConexionDAO.Instancia.EjecutarConsultaListados(sentence)
+
+            While dr.Read
+                Id_Question = dr(0)
+                Id_Question_Type = dr(1)
+
+                If Id_Question_Type = 2 Or Id_Question_Type = 3 Then
+                    Await DeleteQuestionOptions(Id_Question)
+                End If
+
+            End While
+
+            Await DeleteQuestions(pollId)
+
+            sentence = "DELETE from poll where Id_Poll = " & pollId & ";"
+            ConexionDAO.Instancia.EjecutarSentenciaSimple(sentence)
+
+            reply.ok = True
+            reply.obj = True
+            reply.msg = "Encuesta eliminada con éxito"
+
+        Catch ex As Exception
+
+            reply.ok = False
+            reply.obj = False
+            reply.msg = "Error al eliminar la encuesta: " & ex.Message
+
+        End Try
+
+        Return reply
+
+    End Function
+
+    Public Async Function DeleteQuestions(pollId As Integer) As Task(Of Reply(Of Boolean))
+
+        Dim reply As New Reply(Of Boolean)
+        Dim Id_Question As New Integer
+
+        Try
+
+            sentence = "DELETE from question where Id_Poll = " & pollId & ";"
+            ConexionDAO.Instancia.EjecutarSentenciaSimple(sentence)
+
+            reply.ok = True
+            reply.obj = True
+            reply.msg = "Pregunta eliminada con éxito"
+
+        Catch ex As Exception
+
+            reply.ok = False
+            reply.obj = False
+            reply.msg = "Error al eliminar la pregunta: " & ex.Message
+
+        End Try
+
+        Return reply
+
+    End Function
+
+    Public Async Function DeleteQuestionOptions(QId As Integer) As Task(Of Reply(Of Boolean))
+
+        Dim reply As New Reply(Of Boolean)
+        Dim Id_Question As New Integer
+
+        Try
+
+            sentence = "DELETE from question_options where Id_Question = " & QId & ";"
+            ConexionDAO.Instancia.EjecutarSentenciaSimple(sentence)
+
+            reply.ok = True
+            reply.obj = True
+            reply.msg = "Opción eliminada con éxito"
+
+        Catch ex As Exception
+
+            reply.ok = False
+            reply.obj = False
+            reply.msg = "Error al eliminar la opción: " & ex.Message
+
+        End Try
+
+        Return reply
+
+    End Function
+
+#End Region
+
+#Region "Encriptación"
+
+    Public Function Encrypt(ByVal valor As String) As String
+
+        Dim IV() As Byte = ASCIIEncoding.ASCII.GetBytes("cmprmasr")
+        Dim EncryptionKey() As Byte = Convert.FromBase64String("prmDMvIvPNlrmcsgLM1/c34GHjA7D2P2")
+        Dim buffer() As Byte = Encoding.UTF8.GetBytes(valor)
+        Dim des As TripleDESCryptoServiceProvider = New TripleDESCryptoServiceProvider
+        des.Key = EncryptionKey
+        des.IV = IV
+
+        Return Convert.ToBase64String(des.CreateEncryptor().TransformFinalBlock(buffer, 0, buffer.Length()))
+
+    End Function
+
+
+    Public Function Desencrypt(ByVal valor As String) As String
+        Dim EncryptionKey() As Byte = Convert.FromBase64String("prmDMvIvPNlrmcsgLM1/c34GHjA7D2P2")
+        Dim IV() As Byte = ASCIIEncoding.ASCII.GetBytes("cmprmasr")
+        Dim buffer() As Byte = Convert.FromBase64String(valor)
+        Dim des As TripleDESCryptoServiceProvider = New TripleDESCryptoServiceProvider
+        des.Key = EncryptionKey
+        des.IV = IV
+        Return Encoding.UTF8.GetString(des.CreateDecryptor().TransformFinalBlock(buffer, 0, buffer.Length()))
+    End Function
+
+#End Region
+
+End Class

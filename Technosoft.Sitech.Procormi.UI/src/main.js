@@ -34,6 +34,13 @@ app.config.globalProperties.$filters = {
         }
         return texto
     },
+
+    CortarTexto(texto, limite){
+        if(texto.length > limite){
+            texto = texto.substring(0, limite) + '...'
+        }
+        return texto
+    },
 }
 
 app.use(store).use(router).mount('#app')

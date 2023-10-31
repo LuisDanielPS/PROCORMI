@@ -105,80 +105,68 @@
                                     </div>
 
                                     <div class="row">
-                                        <div class="col-3">
+                                        <div class="col-5" style="min-width: 105px;">
                                             <div>
                                                 <a class="text-black fas fa-calendar-alt"></a>
-                                                <label class="text-black p-3 Td">Fecha inicio</label>
+                                                <label class="text-black p-3 Td">Fecha</label>
                                             </div>
-                                            <input type="date" id="fechaInicio" class="diseñoSelectLateral" style="cursor: pointer; border-radius: 5px;" v-model="Filtros.fechaI">
+                                            <input type="date" id="fechaInicio" class="diseñoSelectLateral"
+                                                style="cursor: pointer; border-radius: 5px;" v-model="Filtros.fecha">
                                         </div>
 
-                                        <div class="col-3">
+                                        <div class="col-6" style="min-width: 95px;">
                                             <div>
-                                                <a class="text-black fas fa-calendar-alt"></a>
-                                                <label class="text-black p-3 Td">Fecha Fin</label>
+                                                <a class="text-black fas fa-pen-square" style="text-decoration: none;"></a>
+                                                <label class="text-black p-3 Td">Palabra</label>
                                             </div>
-                                            <input type="date" id="fechaFin" class="diseñoSelectLateral" style="cursor: pointer; border-radius: 5px;" v-model="Filtros.fechaF">
-                                        </div>
-                                        
-                                        <div class="col-3">
                                             <div>
-                                                <a class="text-black fas fa-check-square" style="text-decoration: none;"></a>
-                                                <label class="text-black p-3 Td">Estado</label>
+                                                <input autocomplete="off" maxlength="70" class="diseñoSelectLateral"
+                                                    type="search" id="pClaveInput" placeholder="Buscar"
+                                                    v-model="Filtros.palabra">
                                             </div>
-                                            <select class="form-select diseñoSelectLateral" v-model="Filtros.estado">
-                                                <option value="">Todos</option>
-                                                <!--<option v-bind:value="Estado.gen_EstadoCodigo"
-                                                        v-for="Estado in ListaEstados"
-                                                        v-bind:key="Estado.gen_EstadoID">
-                                                    {{Estado.gen_EstadoDescripcion}}
-                                                </option>-->
-                                            </select>
                                         </div>
 
-                                        <div v-if="recuperarUsuTipo() == 'Administrador'" class="col-3">
+                                        <div class="col-1">
                                             <div>
-                                                <a class="text-black fas fa-user"></a>
-                                                <label class="text-black p-3 Td">Usuario</label>
+                                                <label class="text-white p-3 Td">.</label>
                                             </div>
-                                            <select class="form-select diseñoSelectLateral" v-model="Filtros.usuario">
-                                                <option value="">Todos</option>
-                                                <!--<option v-bind:value="Usuario.usu_Login"
-                                                        v-for="Usuario in ListaUsuarios"
-                                                        v-bind:key="Usuario.usu_Login">
-                                                    {{Usuario.usu_Login}}
-                                                </option>-->
-                                            </select>
+                                            <div>
+                                                <button type="button" class="btn btn-success"
+                                                    @click="aplyFilter(Filtros.fecha, Filtros.palabra)"><span
+                                                        class="fas fa-search"></span></button>
+                                            </div>
                                         </div>
+
                                     </div>
 
-                                    <!--<div class="sinResultadosAct">
+                                    <div v-if="paginateData.length == 0" class="sinResultadosAct">
                                         <p>No hay encuestas para mostrar</p>
-                                    </div>-->
-                                    <div class="contenidoTabla">
+                                    </div>
+
+                                    <div v-if="paginateData.length > 0" class="contenidoTabla">
                                         <table class="table table-stryped" style="text-align: center;">
                                             <thead>
                                                 <tr>
-                                                    <th class="col-1" style="min-width: 75px;"># Encuesta</th>
-                                                    <th class="col-4" style="min-width: 150px;">Nombre</th>
+                                                    <th class="col-1" style="min-width: 75px;">Nombre</th>
+                                                    <th class="col-4" style="min-width: 150px;">Descripción</th>
                                                     <th class="col-3" style="min-width: 125px;">Fecha de creación</th>
                                                     <th class="col-2" style="min-width: 125px;">Opciones</th>
                                                 </tr>
                                             </thead>
                                             <tbody style="font-size: large;">
-                                                <tr>
-                                                    <td>1</td>
-                                                    <td>Encuesta Procormi</td>
-                                                    <td>01/05/2023</td>
+                                                <tr v-for="poll in paginateData" :key="poll.Id_Poll">
+                                                    <td>{{ $filters.CortarTexto(poll.Name, 20) }}</td>
+                                                    <td><p>{{ QuitarHTML($filters.CortarTexto(poll.Description, 25)) }}</p></td>
+                                                    <td>{{ $filters.FormatearFecha(poll.Creation_Date) }}</td>
                                                     <td class="text-white">
-                                                        <button class="btn btn-primary" role="button" @click="VerEncuesta">
+                                                        <button class="btn btn-primary" role="button" @click="VerEncuesta(poll.Id_Poll)">
                                                             <span class="fas fa-eye" b-tooltip.hover title="Ver Encuesta"></span>
                                                         </button>
                                                         <button style="margin-left: 5px;" type="button" class="btn btn-success" @click="EditarEncuesta(1)">
                                                             <span class="fas fa-pen" b-tooltip.hover title="Editar Encuesta"></span>
                                                         </button>
-                                                        <button type="button" class="btn btn-danger" style="margin-left: 5px;">
-                                                            <span class="fas fa-trash" b-tooltip.hover title="Eliminar Encuesta" data-bs-toggle="modal" data-bs-target="#eliminarEncuesta"></span>
+                                                        <button type="button" class="btn btn-danger" style="margin-left: 5px;" @click="DeletePoll(poll.Id_Poll)">
+                                                            <span class="fas fa-trash" b-tooltip.hover title="Eliminar Encuesta"></span>
                                                         </button>
                                                     </td>
                                                 </tr>
@@ -188,13 +176,14 @@
                                     </div>
                                 </div>
                             </div>
-                            <nav aria-label="Page navigation example" style="position: absolute; bottom: 25px; margin-left: 25px;">
-                                <ul class="pagination">
-                                    <li class="page-item"><a class="page-link" href="#">Anterior</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">Siguiente</a></li>
+                            <nav v-if="paginate" aria-label="Page navigation example" style="margin-top: 10px;">
+                                <ul class="pagination cursorPaginados">
+                                    <li class="page-item"><a class="page-link" v-on:click="goBack()">Anterior</a></li>
+                                    <li v-for="pagina in pageNumeration" v-bind:key="pagina" class="page-item">
+                                        <a class="page-link" v-on:click="changePage(pagina)"
+                                            v-bind:class="{ active: (pagina == actualPage) }">{{ pagina }}</a>
+                                    </li>
+                                    <li class="page-item"><a class="page-link" v-on:click="goNext()">Siguiente</a></li>
                                 </ul>
                             </nav>
                         </div>
@@ -214,7 +203,8 @@ import Cookies from 'js-cookie';
 import HeaderPrincipal from '@/components/HeaderPrincipal.vue'
 import MenuLateral from '@/components/MenuLateral.vue'
 import FiltroSuperior from '@/components/FiltroSuperior.vue'
-//import AdminApi from '@/Api/Api';
+import AdminApi from '@/Api/Api';
+import CryptoJS from 'crypto-js';
 
 export default {
 
@@ -224,75 +214,106 @@ export default {
 
     data() {
         return {
-            esConocormi: false,
-            esActicormi: false,
-            esIncormi: false,
             filtroDesplegar: false,
 
             Filtros: {
-            fechaI: "",
-            fechaF: "",
-            estado: "",
-            usuario: "",
+                fecha: "",
+                palabra: ""
             },
 
+            pollList: [],
 
-            //Incormi
-            IDCon: 0,
-            ListaContenido: [],
-            ListaContenidoTemporal: [],
-            ListaDepartamentos: [],
-            ListaCategorias: [],
-            ListaObservaciones: [],
-            ListaAdjuntos: [],
-            paginate: ['ListaContenido'],
-            NombreContenido: '',
-            ModalContenido: false,
-            ModalObservacion: false,
-            ModalConfirmacion: false,
-            ModalImagen: false,
-            FiltroDepartamento: 400,
-            FiltroCategoria: 400,
-            BtnConfirmaciones: true,
-            BtnAdministrador: false,
-            FiltDepartamento: false,
-            TablaObservaciones: true,
-            TablaAdjuntos: true,
-            RangoFecha: "0",
-            Contenido: {
-                id_gen_contenido: 0,
-                id_categoria: 0,
-                id_departamento: 0,
-                usu_Login: "",
-                titulo: "",
-                descripcion: "",
-                fecha: new Date().toISOString().slice(0, 10),
-                obligatorio: true,
-                visualizar_observacion: true,
-                envio_correo: true,
-                nombre_departamento: "",
-                nombre_categoria: "",
-                nombre_adjunto: "",
-                tipo_archivo: "",
-                adjunto: ""
-            },
-            Observacion: {
-                usu_Login: "",
-                asunto: "",
-                mensaje: "",
-                fecha: new Date().toISOString().slice(0, 10),
-                id_contenido: 0
-            },
-            Confirmacion: {
-                id_contenido: 0,
-                usu_Login: "",
-                Contraseña: "",
-                fecha: new Date().toISOString().slice(0, 10),
-            }
+            pageElements: 10,
+            actualPage: 1,
+            pageNumeration: [],
+            paginate: true,
+            paginateData: [],
+
         }
     },
 
     methods: {
+
+        GetAllPolls: async function () {
+            this.actualPage = 1
+
+            try {
+                if (this.pollList.length == 0) {
+                    await AdminApi.GetAllPolls()
+                        .then(response => {
+                            if (response.data != null) {
+                                response.data.obj.forEach(element => {
+                                    this.pollList.push({
+                                        Id_Poll: element.Id_Poll,
+                                        Name: element.Name,
+                                        Description: element.Description,
+                                        Creation_Date: element.Creation_Date
+                                    })
+                                })
+                            }
+                        })
+
+
+                    this.paginateData = [];
+
+                    if (this.pollList.length < this.pageElements) {
+                        for (let index = 0; index < this.pollList.length; index++) {
+                            this.paginateData.push(this.pollList[index]);
+                        }
+                    } else {
+                        for (let index = 0; index < this.pageElements; index++) {
+                            this.paginateData.push(this.pollList[index]);
+                        }
+                    }
+                } else {
+                    this.paginateData = [];
+                    if (this.pollList.length < this.pageElements) {
+                        for (let index = 0; index < this.pollList.length; index++) {
+                            this.paginateData.push(this.pollList[index]);
+                        }
+                    } else {
+                        for (let index = 0; index < this.pageElements; index++) {
+                            this.paginateData.push(this.pollList[index]);
+                        }
+                    }
+                }
+            } catch (error) {
+                console.error('Error al cargar los proyectos desde la API:', error);
+            }
+
+        },
+
+        aplyFilter: async function (date, word) {
+            const response = await AdminApi.GetAllPolls();
+            const tempPollList = response.data.obj;
+            this.pollList = tempPollList;
+
+            const filteredPolls = [];
+            let success = false;
+
+            for (const poll of this.pollList) {
+                const matchesDate = (!date || poll.Creation_Date.includes(date));
+                const matchesWord = (!word || poll.Name.toLowerCase().includes(word.toLowerCase()) || poll.Description.toLowerCase().includes(word.toLowerCase()));
+
+                if (matchesDate && matchesWord) {
+                    filteredPolls.push(poll);
+                    success = true;
+                }
+            }
+
+            if ((!success && (date || word))) {
+                this.paginateData = []
+                this.paginate = false
+                this.Filtros.fecha = "";
+                return
+            }
+
+            this.pollList = filteredPolls;
+            await this.GetAllPolls();
+            await this.cutPages();
+            this.actualPage = 1;
+            this.Filtros.fecha = "";
+        },
 
         EditarEncuesta: function(EncuestaID) {
             this.$router.push({
@@ -303,10 +324,206 @@ export default {
             })
         },
 
-        VerEncuesta: function() {
+        DeletePoll: async function (id) {
+            this.$swal({
+                position: 'top-end',
+                text: '¿Seguro de que desea eliminar la encuesta?',
+                showDenyButton: true,
+                confirmButtonText: `Aceptar`,
+                denyButtonText: `Cancelar`,
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    let loader = this.$loading.show({
+                        container: this.$refs.cuadroLoader,
+                        opacity: 1
+                    })
+                    await AdminApi.DeletePoll(id)
+                            .then(response => {
+                                if (response.data != null) {
+                                    this.$swal.fire({
+                                        position: 'top-end',
+                                        text: response.data.msg,
+                                        showConfirmButton: false,
+                                        timer: 3000
+                                    })
+                                }
+                            })
+                    this.pollList = []
+                    await this.GetAllPolls();
+                    await this.cutPages();
+                    loader.hide()
+                }
+            })
+        },
+
+        VerEncuesta: function(id) {
+            var idEncripted = this.Encrypt(id)
             this.$router.push({
                 name: "FormularioCliente",
+                params: { encuesta: idEncripted }
             })
+        },
+
+        Encrypt: function (value) {
+            const clave = CryptoJS.enc.Base64.parse("prmDMvIvPNlrmcsgLM1/c34GHjA7D2P2");
+            const iv = CryptoJS.enc.Utf8.parse("cmprmasr");
+
+            const valueAsString = value.toString();
+
+            const encrypted = CryptoJS.TripleDES.encrypt(valueAsString, clave, {
+                iv: iv
+            });
+
+            return encrypted.toString();
+        },
+
+        totalPages: function () {
+            return Math.ceil(this.pollList.length / this.pageElements)
+        },
+
+        changePage: async function (pageNum) {
+            if (pageNum != "...") {
+                this.paginateData = []
+                if (pageNum == undefined) {
+                    pageNum = 1
+                }
+                this.actualPage = pageNum
+                let ini = (pageNum * this.pageElements) - this.pageElements;
+                let end = (pageNum * this.pageElements);
+                let total = this.pollList.length;
+                if (end < total) {
+                    for (let index = ini; index < end; index++) {
+                        this.paginateData.push(this.pollList[index]);
+                    }
+                } else {
+                    for (let index = ini; index < total; index++) {
+                        this.paginateData.push(this.pollList[index]);
+                    }
+                }
+                await this.cutPages();
+            }
+        },
+
+        goBack: async function () {
+            if (this.actualPage > 1){
+                this.paginateData = []
+                let paginaAnt = this.actualPage - 1
+                this.actualPage = paginaAnt
+                let ini = (paginaAnt * this.pageElements) - this.pageElements;
+                let end = (paginaAnt * this.pageElements);
+                let total = this.pollList.length;
+                if (end < total) {
+                    for (let index = ini; index < end; index++) {
+                        this.paginateData.push(this.pollList[index]);
+                    }
+                } else {
+                    for (let index = ini; index < total; index++) {
+                        this.paginateData.push(this.pollList[index]);
+                    }
+                }
+                await this.cutPages();
+            }
+        },
+
+        goNext: async function () {
+            if (this.actualPage == this.pageNumeration.length) {
+                return
+            } else {
+                this.paginateData = []
+                let paginaAnt = this.actualPage + 1
+                this.actualPage = paginaAnt
+                let ini = (paginaAnt * this.pageElements) - this.pageElements;
+                let end = (paginaAnt * this.pageElements);
+                let total = this.pollList.length;
+                if (end < total) {
+                    for (let index = ini; index < end; index++) {
+                        this.paginateData.push(this.pollList[index]);
+                    }
+                } else {
+                    for (let index = ini; index < total; index++) {
+                        this.paginateData.push(this.pollList[index]);
+                    }
+                }
+                await this.cutPages();
+            }
+        },
+
+        cutPages: async function () {
+            let pages = []
+            let numberOfPages = Math.ceil(this.pollList.length / this.pageElements)
+            let actualPage = this.actualPage
+            let numeration = 2
+            let numerationSide = Math.floor(numeration / 2)
+            let initialPage = 1
+            let finalPage = numberOfPages
+
+            if (numberOfPages > numeration) {
+
+                if (actualPage > numerationSide) {
+
+                    initialPage = actualPage - numerationSide
+
+                    finalPage = actualPage + numerationSide
+
+                } else {
+
+                    initialPage = 1
+
+                    finalPage = actualPage + numerationSide
+
+                    finalPage += (numerationSide - (actualPage - 1))
+
+                }
+
+                if (finalPage > numberOfPages) {
+
+                    finalPage = numberOfPages
+
+                    initialPage = numberOfPages - numeration + 1
+
+                }
+
+            }
+
+            for (let i = initialPage; i <= finalPage; i++) {
+
+                pages.push(i)
+
+            }
+
+            if (actualPage > (numerationSide + 2)) { pages.unshift("...") }
+
+            if (actualPage > (numerationSide + 1)) { pages.unshift(1) }
+
+            if (
+
+                (actualPage < (numberOfPages - numerationSide - 1)) &&
+
+                numberOfPages != finalPage
+
+            ) { pages.push("...") }
+
+            if (
+
+                (actualPage < (numberOfPages - numerationSide)) &&
+
+                numberOfPages != finalPage
+
+            ) { pages.push(numberOfPages) }
+
+            this.pageNumeration = pages
+
+            await this.validatePaginate();
+
+        },
+
+        validatePaginate: function () {
+            let quantity = this.pollList.length
+            if (quantity < 11) {
+                this.paginate = false
+            } else {
+                this.paginate = true
+            }
         },
 
         desplegarFiltros: function () {
@@ -317,8 +534,10 @@ export default {
             this.filtroDesplegar = false;
         },
 
-        seleccionarAplicacion: async function() {
-            await this.$root.designarAplicacionHeaderPrincipal.call();
+        QuitarHTML(html) {
+            var temporal = document.createElement('div')
+            temporal.innerHTML = html
+            return temporal.textContent || temporal.innerText || ""
         },
 
         cerrarMenu: async function () {
@@ -365,6 +584,8 @@ export default {
     created: async function () {
         await this.verificarLog();
         await this.$root.validarLoginFooter.call();
+        await this.GetAllPolls()
+        await this.cutPages();
     }
 
 }

@@ -541,6 +541,39 @@ Public Class ConexionDAO
         End Try
     End Sub
 
+    Public Sub EjecutarSentenciaSimple(ByVal psSql As String)
+        Try
+            conn = New MySqlConnection(conStr)
+            conn.Open()
+            sql = New MySqlCommand(psSql, conn)
+            sql.ExecuteNonQuery()
+            sql.Dispose()
+            conn.Close()
+            sql = Nothing
+            conn = Nothing
+        Catch ex As Exception
+            EscritorVisorEventos.Instancia().EscribirEvento(nombreClase, MethodBase.GetCurrentMethod().Name, ex)
+            Throw New Exception("Error al Ejecutar Consulta")
+        End Try
+    End Sub
+
+    Public Function EjecutarConsultaListados(ByVal psSql As String) As MySqlDataReader
+        Try
+            If dr IsNot Nothing Then dr.Close()
+
+            conn = New MySqlConnection(conStr)
+            sql = New MySqlCommand(psSql, conn)
+            sql.CommandType = CommandType.Text
+            conn.Open()
+            dr = sql.ExecuteReader(CommandBehavior.CloseConnection)
+            sql.Dispose()
+            sql = Nothing
+            Return dr
+        Catch ex As MySqlException
+            EscritorVisorEventos.Instancia().EscribirEvento(nombreClase, MethodBase.GetCurrentMethod().Name, ex)
+            Throw New Exception("Error al ejecutar la consulta")
+        End Try
+    End Function
 
     Public Sub Cerrar()
         If dr IsNot Nothing Then dr.Close()

@@ -146,7 +146,7 @@ export default {
         async DesplegarMenu() {
             await this.CerrarMenuAplicaciones();
             this.menuDesplegableDerecho = !this.menuDesplegableDerecho
-            this.$root.cerrarMenuFiltros.call();
+            this.$root.cerrarMenuFiltros;
         },
 
         CerrarMenu: function () {
@@ -156,7 +156,7 @@ export default {
         async DesplegarMenuAplicaciones() {
             await this.CerrarMenu();
             this.menuDesplegableAplicaciones = !this.menuDesplegableAplicaciones
-            this.$root.cerrarMenuFiltros.call();
+            this.$root.cerrarMenuFiltros;
         },
 
         CerrarMenuAplicaciones: function () {
@@ -185,7 +185,7 @@ export default {
             Cookies.remove("tipoU");
             Cookies.remove("nombreUsu")
             Cookies.remove("palabraClave")
-            this.$root.validarLoginFooter.call();
+            this.$root.validarLoginFooter;
             router.push({ name: 'Login' })
         },
 

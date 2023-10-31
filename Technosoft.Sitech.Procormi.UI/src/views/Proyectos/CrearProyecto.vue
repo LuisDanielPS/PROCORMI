@@ -1,151 +1,196 @@
 <template>
     <div class="vistaPrincipal fondoGeneral">
         <HeaderPrincipal />
-        <div>
-            <div class="col-12" style="margin-top: 30px;">
-                <h4 style="text-align: center; font-size: 25px; color: #0a3a66;" v-if="!esEditar">Crear proyecto</h4>
-                <h4 style="text-align: center; font-size: 25px; color: #0a3a66;" v-if="esEditar">Editar proyecto</h4>
-                <br />
-                <div>
-                    <div>
-                        <form class="estiloForm">
-                            <div style="padding: 50px;">
-                                <div>
-                                    <label class="margin-15px-bottom text-black">Nombre<span style="color: red;">
-                                            *</span></label>
-                                    <input v-model.trim="project.Project_Name" maxlength="100"
-                                        class="small-input inputsGeneral" ref="inputProjectName" type="text" required>
-                                </div>
-                                <br />
-                                <div class="row">
-                                    <div class="col-12">
+
+        <div class="posicion0" v-on:click="cerrarMenu()">
+            <div class="d-flex">
+                <MenuLateral />
+                <div class="w-100">
+
+                <!--Filtros responsive /-->
+
+                <div class="row justify-content-center filtrosCelularBotones">
+                    <div class="col-5"></div>
+                    <div class="col-2 filtrosCelularBoton" v-if="!filtroDesplegar" v-on:click="desplegarFiltros()">
+                        <a class="text-gradient-yellow-orange-black fas fa-bars"></a>
+                    </div>
+                    <div class="col-5"></div>
+                </div>
+
+                <div class="filtrosCelular row justify-content-center" v-if="filtroDesplegar">
+
+                    <div class="col-lg-4 col-md-4 col-sm-12 row justify-content-center" style="margin-top: 40px;">
+                        <div class="col-8 textoBlanco" style="text-align: center; min-width: 150px;">
+                            <router-link role="button" :to="{ name: 'Inicio' }" class="textoBlanco textoEncuestas" style="text-decoration: none;" exact-active-class="active-link">Proyectos&nbsp;&nbsp;<i class="text-white fas fa-project-diagram" style="cursor: pointer; font-size: 14px;"></i></router-link>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-4 col-md-4 col-sm-12 row justify-content-center" style="margin-top: 40px;">
+                        <div class="col-8 textoBlanco" style="text-align: center; min-width: 150px;">
+                            <router-link role="button" :to="{ name: 'Encuestas' }" class="textoBlanco textoEncuestas" style="text-decoration: none;" exact-active-class="active-link">Encuestas&nbsp;&nbsp;<i class="text-white fas fa-chart-line" style="cursor: pointer;"></i></router-link>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-4 col-sm-12 row justify-content-center" style="margin-top: 40px;">
+                        <div class="col-8 textoBlanco" style="text-align: center;">
+                            <router-link role="button" :to="{ name: 'Reportes' }" class="textoBlanco textoEncuestas" style="text-decoration: none;" exact-active-class="active-link">Reportes&nbsp;&nbsp;<i class="text-white far fa-file-alt" style="cursor: pointer;"></i></router-link>
+                        </div>
+                    </div>
+
+                    <div style="text-align: center; font-size: large; padding-top: 40px; cursor: pointer; margin-left: 20px;" v-if="filtroDesplegar" v-on:click="desplegarFiltros()">
+                        <a class="text-white fas fa-angle-up" style="text-decoration: none;"></a>
+                    </div>
+
+                </div>
+
+                <!--Filtros responsive /-->
+
+                    <div class="col-12" style="margin-top: 30px;">
+                        <h4 style="text-align: center; font-size: 25px; color: #0a3a66;" v-if="!esEditar">Crear proyecto</h4>
+                        <h4 style="text-align: center; font-size: 25px; color: #0a3a66;" v-if="esEditar">Editar proyecto</h4>
+                        <br />
+                        <div>
+                            <div>
+                                <form class="estiloForm">
+                                    <div style="padding: 50px;">
                                         <div>
-                                            <label class="margin-15px-bottom text-black">Descripción<span
-                                                    style="color: red;"> *</span></label>
-                                            <div>
-                                                <div ref="Quill"
-                                                    style="border: 1px solid gray; min-height: 200px; border-bottom-left-radius: 15px; border-bottom-right-radius: 15px;">
+                                            <label class="margin-15px-bottom text-black">Nombre<span style="color: red;">
+                                                    *</span></label>
+                                            <input v-model.trim="project.Project_Name" maxlength="100"
+                                                class="small-input inputsGeneral" ref="inputProjectName" type="text" required>
+                                        </div>
+                                        <br />
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div>
+                                                    <label class="margin-15px-bottom text-black">Descripción<span
+                                                            style="color: red;"> *</span></label>
+                                                    <div>
+                                                        <div ref="Quill"
+                                                            style="border: 1px solid gray; min-height: 200px; border-bottom-left-radius: 15px; border-bottom-right-radius: 15px;">
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
-                                <br />
-                                <div>
-                                    <label class="margin-15px-bottom text-black">Usuarios<span style="color: red;">
-                                            *</span></label>
-                                    <div class="containerPlus">
-                                        <div class="left-content">
-                                            <select v-model="selectedUser" required name="usuarios" id="usuarios"
-                                                class="form-select text-black inputsGeneral" style="min-height: 48px;">
-                                                <option :value="null">Seleccione una opción</option>
-                                                <option v-for="item in listUsers" :key="item.usu_Login"
-                                                    :value="JSON.stringify(item)">{{ item.usu_Nombre }}</option>
-                                            </select>
-                                        </div>
-                                        <div class="right-content">
-                                            <button type="button" @click="addListUser()" class="btn btn-success"
-                                                style="min-height: 48px; min-width: 48px; float: right;"><span
-                                                    class="fas fa-plus"></span></button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row" style="margin-top: 4%">
-                                    <div class="col-12">
-                                        <div class="table-responsive">
-                                            <label class="margin-15px-bottom text-black">Listado de usuarios</label>
-                                            <table class="table bootstrap-datatable datatable">
-                                                <thead>
-                                                    <tr>
-                                                        <th style="min-width: 40px;">login</th>
-                                                        <th style="min-width: 60px;">Nombre</th>
-                                                        <th style="min-width: 40px;">Opciones</th>
-                                                    </tr>
-                                                </thead>
-
-                                                <tbody>
-                                                    <tr v-for="item in UserlistAdd" :key="item.usu_Login">
-                                                        <td>{{ item.usu_Login }}</td>
-                                                        <td>{{ item.usu_Nombre }}</td>
-                                                        <td>
-                                                            <button @click="deleteElementListUser(item.usu_Login)"
-                                                                type="button" class="btn btn-danger">
-                                                                <span class="fas fa-trash" b-tooltip.hover
-                                                                    title="Eliminar Adjunto"></span>
-                                                            </button>
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                                <br />
-                                <div>
-                                    <label class="margin-15px-bottom text-black">Agregar adjuntos</label>
-                                    <div class="containerPlus">
-                                        <div class="left-content">
-                                            <div class="form-group">
-                                                <div class="custom-file col-md-12" style="margin-left: 0px; padding: 0px;">
-                                                    <input id="SelectFile" @change="onFileSelected" class="inputsGeneral"
-                                                        type="file" ref="fileupload"
-                                                        accept=".pdf, .docx, .xlsx, .jpg, .jpeg, .png, .txt"
-                                                        style="min-height: 48px;" />
+                                        <br />
+                                        <div>
+                                            <label class="margin-15px-bottom text-black">Usuarios<span style="color: red;">
+                                                    *</span></label>
+                                            <div class="containerPlus">
+                                                <div class="left-content">
+                                                    <select v-model="selectedUser" required name="usuarios" id="usuarios"
+                                                        class="form-select text-black inputsGeneral" style="min-height: 48px;">
+                                                        <option :value="null">Seleccione una opción</option>
+                                                        <option v-for="item in listUsers" :key="item.usu_Login"
+                                                            :value="JSON.stringify(item)">{{ item.usu_Nombre }}</option>
+                                                    </select>
+                                                </div>
+                                                <div class="right-content">
+                                                    <button type="button" @click="addListUser()" class="btn btn-success"
+                                                        style="min-height: 48px; min-width: 48px; float: right;"><span
+                                                            class="fas fa-plus"></span></button>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="right-content">
-                                            <button type="button" class="btn btn-success"
-                                                style="min-height: 48px; min-width: 48px; float: right;"><span
-                                                    class="fas fa-plus"></span></button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row" style="margin-top: 4%">
-                                    <div class="col-12">
-                                        <div class="table-responsive">
-                                            <label class="margin-15px-bottom text-black">Listado de adjuntos</label>
-                                            <table class="table bootstrap-datatable datatable">
-                                                <thead>
-                                                    <tr>
-                                                        <th style="min-width: 70px;">Nombre</th>
-                                                        <th style="min-width: 30px;">Tipo</th>
-                                                        <th style="min-width: 40px;">Opciones</th>
-                                                    </tr>
-                                                </thead>
+                                        <div class="row" style="margin-top: 4%">
+                                            <div class="col-12">
+                                                <div class="table-responsive">
+                                                    <label class="margin-15px-bottom text-black">Listado de usuarios</label>
+                                                    <table class="table bootstrap-datatable datatable">
+                                                        <thead>
+                                                            <tr>
+                                                                <th style="min-width: 40px;">login</th>
+                                                                <th style="min-width: 60px;">Nombre</th>
+                                                                <th style="min-width: 40px;">Opciones</th>
+                                                            </tr>
+                                                        </thead>
 
-                                                <tbody>
-                                                    <tr v-for="item in FileList" :key="item">
-                                                        <td>{{ item.File_Name }}</td>
-                                                        <td>{{ item.File_Type }}</td>
-                                                        <td>
-                                                            <button @click="deleteElementListFile(item.File_Name)"
-                                                                type="button" class="btn btn-danger">
-                                                                <span class="fas fa-trash" b-tooltip.hover
-                                                                    title="Eliminar Adjunto"></span>
-                                                            </button>
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
+                                                        <tbody>
+                                                            <tr v-for="item in UserlistAdd" :key="item.usu_Login">
+                                                                <td>{{ item.usu_Login }}</td>
+                                                                <td>{{ item.usu_Nombre }}</td>
+                                                                <td>
+                                                                    <button @click="deleteElementListUser(item.usu_Login)"
+                                                                        type="button" class="btn btn-danger">
+                                                                        <span class="fas fa-trash" b-tooltip.hover
+                                                                            title="Eliminar Adjunto"></span>
+                                                                    </button>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <br />
+                                        <div>
+                                            <label class="margin-15px-bottom text-black">Agregar adjuntos</label>
+                                            <div class="containerPlus">
+                                                <div class="left-content">
+                                                    <div class="form-group">
+                                                        <div class="custom-file col-md-12" style="margin-left: 0px; padding: 0px;">
+                                                            <input id="SelectFile" @change="onFileSelected" class="inputsGeneral"
+                                                                type="file" ref="fileupload"
+                                                                accept=".pdf, .docx, .xlsx, .jpg, .jpeg, .png, .txt"
+                                                                style="min-height: 48px;" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="right-content">
+                                                    <button type="button" class="btn btn-success"
+                                                        style="min-height: 48px; min-width: 48px; float: right;"><span
+                                                            class="fas fa-plus"></span></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row" style="margin-top: 4%">
+                                            <div class="col-12">
+                                                <div class="table-responsive">
+                                                    <label class="margin-15px-bottom text-black">Listado de adjuntos</label>
+                                                    <table class="table bootstrap-datatable datatable">
+                                                        <thead>
+                                                            <tr>
+                                                                <th style="min-width: 70px;">Nombre</th>
+                                                                <th style="min-width: 30px;">Tipo</th>
+                                                                <th style="min-width: 40px;">Opciones</th>
+                                                            </tr>
+                                                        </thead>
+
+                                                        <tbody>
+                                                            <tr v-for="item in FileList" :key="item">
+                                                                <td>{{ item.File_Name }}</td>
+                                                                <td>{{ item.File_Type }}</td>
+                                                                <td>
+                                                                    <button @click="deleteElementListFile(item.File_Name)"
+                                                                        type="button" class="btn btn-danger">
+                                                                        <span class="fas fa-trash" b-tooltip.hover
+                                                                            title="Eliminar Adjunto"></span>
+                                                                    </button>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <br />
+                                        <br />
+                                        <div class="BotonesJ">
+                                            <div><button type="button" @click="insertOrEditProject" class="btn btn-success"
+                                                    style="font-size: 16px; min-width: 100px;">Guardar</button></div>
+                                            <br />
+                                            <div><a href="/Inicio" class="btn btn-danger"
+                                                    style="font-size: 16px; min-width: 100px;">Cancelar</a></div>
                                         </div>
                                     </div>
-                                </div>
-                                <br />
-                                <br />
-                                <div class="BotonesJ">
-                                    <div><button type="button" @click="insertOrEditProject" class="btn btn-success"
-                                            style="font-size: 16px; min-width: 100px;">Guardar</button></div>
-                                    <br />
-                                    <div><a href="/Inicio" class="btn btn-danger"
-                                            style="font-size: 16px; min-width: 100px;">Cancelar</a></div>
-                                </div>
+                                </form>
                             </div>
-                        </form>
+                        </div>
+                        <br />
+                        <br />
                     </div>
                 </div>
-                <br />
-                <br />
             </div>
         </div>
     </div>
@@ -153,6 +198,7 @@
 
 <script>
 import HeaderPrincipal from '@/components/HeaderPrincipal.vue'
+import MenuLateral from '@/components/MenuLateral.vue'
 import Quill from 'quill'
 import 'quill/dist/quill.snow.css'
 import Cookies from 'js-cookie';
@@ -161,7 +207,7 @@ export default {
 
     components: {
         /* eslint-disable */
-        HeaderPrincipal, Quill
+        HeaderPrincipal, MenuLateral, Quill
         /* eslint-enable */
     },
 
@@ -188,16 +234,27 @@ export default {
                 Id: 0,
                 User_Login: "",
                 Id_project: ""
-            }
-
-
-
+            },
+            filtroDesplegar: false,
         }
 
 
     },
 
     methods: {
+
+        desplegarFiltros: function () {
+            this.filtroDesplegar = !this.filtroDesplegar;
+        },
+
+        cerrarFiltros: function () {
+            this.filtroDesplegar = false;
+        },
+
+        cerrarMenu: async function () {
+            await this.$root.CerrarMenu.call();
+            await this.$root.CerrarMenuAplicaciones.call();
+        },
 
         validarEditar: function () {
             let usutipo = this.recuperarUsuTipo()
@@ -873,4 +930,43 @@ export default {
         align-content: center;
     }
 }
+
+/*-----------------------------------------*/
+
+.filtrosCelular{
+    padding-top: 20px;
+    padding-left: 50px;
+    padding-right: 50px;
+    padding-bottom: 20px;
+    background: rgba(10,58,102,1);
+}
+
+@media screen and (min-width: 901px) {
+
+    .filtrosCelular{
+        display: none;
+    }
+}
+
+.filtrosCelularBoton{
+    text-align: center;
+    font-size: large;
+    cursor: pointer;
+    background-color: rgba(10,58,102,1);
+    height: 30px;
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    max-width: 50px;
+}
+
+@media screen and (min-width: 901px) {
+    .filtrosCelularBotones{
+        display: none;
+    }
+
+    .filtrosCelularBoton{
+        display: none;
+    }
+}
+
 </style>

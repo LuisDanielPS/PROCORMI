@@ -2,7 +2,6 @@
 
 Public Class ProjectEN
 
-
     Private _Id_project As Integer
 
     <DataMember()>
@@ -64,8 +63,5 @@ Public Class ProjectEN
             _Creation_Date = value
         End Set
     End Property
-
-
-
 
 End Class

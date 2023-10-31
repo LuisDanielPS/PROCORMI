@@ -2,7 +2,7 @@ import FormularioCliente from "./FormularioCliente.vue"
 
 const route = [
     {
-        path: '/FormularioCliente',
+        path: '/FormularioCliente/:encuesta',
         name: 'FormularioCliente',
         component: FormularioCliente
     }

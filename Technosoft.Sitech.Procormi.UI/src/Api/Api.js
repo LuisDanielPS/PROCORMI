@@ -392,6 +392,45 @@ export default {
             headers: { 'Content-Type': 'application/json; charset=UTF-8' }
         })
 
-    }
+    },
+
+    ///////////////////////////////////////////////////Poll/////////////////////////////////////////////////////////
+
+    PostNewPoll(poll) {
+        return apicliente.post('Poll/PostNewPoll', poll, {
+            withCredentials: false,
+            headers: { 'Content-Type': 'application/json; charset=UTF-8' }
+        })
+    },
+
+    GetAllPolls() {
+        return apicliente.get('Poll/GetAllPolls', {
+            withCredentials: false,
+            headers: { 'Content-Type': 'application/json; charset=UTF-8' }
+        })
+    },
+
+    GetPoll(id) {
+        return apicliente.get('Poll/GetPoll?pollIdEncrypted=' + id, {
+            withCredentials: false,
+            headers: { 'Content-Type': 'application/json; charset=UTF-8' }
+        })
+    },
+
+    getLink() {
+        return apicliente.get('Poll/getLink', {
+            withCredentials: false,
+            headers: { 'Content-Type': 'application/json; charset=UTF-8' }
+        })
+    },
+
+    DeletePoll(id) {
+        return apicliente.delete('Poll/DeletePoll?pollId=' + id, {
+            withCredentials: false,
+            headers: { 'Content-Type': 'application/json; charset=UTF-8' }
+        })
+    },
+
+    ///////////////////////////////////////////////////Poll/////////////////////////////////////////////////////////
 
 }

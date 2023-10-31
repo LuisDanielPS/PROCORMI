@@ -1,10 +1,10 @@
-CREATE DATABASE  IF NOT EXISTS `procormi` /*!40100 DEFAULT CHARACTER SET latin1 */ /*!80016 DEFAULT ENCRYPTION='N' */;
+CREATE DATABASE  IF NOT EXISTS `procormi` /*!40100 DEFAULT CHARACTER SET latin1 */;
 USE `procormi`;
--- MySQL dump 10.13  Distrib 8.0.34, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.30, for Win64 (x86_64)
 --
 -- Host: localhost    Database: procormi
 -- ------------------------------------------------------
--- Server version	8.0.34
+-- Server version	5.7.39-log
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -25,7 +25,7 @@ DROP TABLE IF EXISTS `actions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `actions` (
-  `Id_Actions` int NOT NULL AUTO_INCREMENT,
+  `Id_Actions` int(11) NOT NULL AUTO_INCREMENT,
   `Action_Description` varchar(500) NOT NULL,
   PRIMARY KEY (`Id_Actions`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -41,30 +41,54 @@ LOCK TABLES `actions` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `answer`
+-- Table structure for table `answer_options`
 --
 
-DROP TABLE IF EXISTS `answer`;
+DROP TABLE IF EXISTS `answer_options`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `answer` (
-  `Id_Answer` int NOT NULL AUTO_INCREMENT,
-  `Text` varchar(400) NOT NULL,
-  `Id_Question` int NOT NULL,
-  `Answer_Counter` int DEFAULT NULL,
-  PRIMARY KEY (`Id_Answer`),
-  KEY `Fk_Question_Answer_idx` (`Id_Question`),
-  CONSTRAINT `Fk_Question_Answer` FOREIGN KEY (`Id_Question`) REFERENCES `question` (`Id_Question`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `answer_options` (
+  `Id_Answer_Option` int(11) NOT NULL AUTO_INCREMENT,
+  `Id_Question_Option` int(11) NOT NULL,
+  PRIMARY KEY (`Id_Answer_Option`),
+  KEY `Fk_Question_Option_Answer_idx` (`Id_Question_Option`),
+  CONSTRAINT `Fk_Question_Option_Answer` FOREIGN KEY (`Id_Question_Option`) REFERENCES `question_options` (`Id_Question_Option`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `answer`
+-- Dumping data for table `answer_options`
 --
 
-LOCK TABLES `answer` WRITE;
-/*!40000 ALTER TABLE `answer` DISABLE KEYS */;
-/*!40000 ALTER TABLE `answer` ENABLE KEYS */;
+LOCK TABLES `answer_options` WRITE;
+/*!40000 ALTER TABLE `answer_options` DISABLE KEYS */;
+/*!40000 ALTER TABLE `answer_options` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `answer_text`
+--
+
+DROP TABLE IF EXISTS `answer_text`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `answer_text` (
+  `Id_Answer` int(11) NOT NULL AUTO_INCREMENT,
+  `Text` varchar(400) NOT NULL,
+  `Id_Question` int(11) NOT NULL,
+  PRIMARY KEY (`Id_Answer`),
+  KEY `Fk_Question_Answer_idx` (`Id_Question`),
+  CONSTRAINT `Fk_Question_Answer` FOREIGN KEY (`Id_Question`) REFERENCES `question` (`Id_Question`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `answer_text`
+--
+
+LOCK TABLES `answer_text` WRITE;
+/*!40000 ALTER TABLE `answer_text` DISABLE KEYS */;
+/*!40000 ALTER TABLE `answer_text` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -75,7 +99,7 @@ DROP TABLE IF EXISTS `errors`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `errors` (
-  `Id_Error` int NOT NULL AUTO_INCREMENT,
+  `Id_Error` int(11) NOT NULL AUTO_INCREMENT,
   `Error_Description` varchar(500) DEFAULT NULL,
   PRIMARY KEY (`Id_Error`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -98,11 +122,11 @@ DROP TABLE IF EXISTS `files`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `files` (
-  `File_ID` int NOT NULL AUTO_INCREMENT,
+  `File_ID` int(11) NOT NULL AUTO_INCREMENT,
   `File_Name` varchar(255) NOT NULL,
   `File_Path` varchar(255) DEFAULT NULL,
   `File_Type` varchar(200) NOT NULL,
-  `File_Size` int DEFAULT NULL,
+  `File_Size` int(11) DEFAULT NULL,
   `Creation_Date` datetime NOT NULL,
   PRIMARY KEY (`File_ID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
@@ -119,6 +143,37 @@ INSERT INTO `files` VALUES (8,'00_SC_702_DISPOSICIONES GENERALES.pdf',NULL,'appl
 UNLOCK TABLES;
 
 --
+-- Table structure for table `notification`
+--
+
+DROP TABLE IF EXISTS `notification`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `notification` (
+  `Id_Notification` int(11) NOT NULL AUTO_INCREMENT,
+  `Message` varchar(250) NOT NULL,
+  `Title` varchar(45) NOT NULL,
+  `Creation_Date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `Read` tinyint(4) NOT NULL DEFAULT '0',
+  `Action` varchar(45) NOT NULL,
+  `Type` varchar(45) NOT NULL,
+  `Type_Ref_Id` int(11) NOT NULL,
+  `Usu_Login` varchar(20) NOT NULL,
+  PRIMARY KEY (`Id_Notification`),
+  KEY `Fk_SegUsu_Notification_idx` (`Usu_Login`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `notification`
+--
+
+LOCK TABLES `notification` WRITE;
+/*!40000 ALTER TABLE `notification` DISABLE KEYS */;
+/*!40000 ALTER TABLE `notification` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `poll`
 --
 
@@ -126,12 +181,12 @@ DROP TABLE IF EXISTS `poll`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `poll` (
-  `Id_Poll` int NOT NULL AUTO_INCREMENT,
+  `Id_Poll` int(11) NOT NULL AUTO_INCREMENT,
   `Name` varchar(45) DEFAULT NULL,
-  `Description` varchar(45) DEFAULT NULL,
+  `Description` longtext,
   `Creation_Date` datetime DEFAULT NULL,
   PRIMARY KEY (`Id_Poll`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -140,6 +195,7 @@ CREATE TABLE `poll` (
 
 LOCK TABLES `poll` WRITE;
 /*!40000 ALTER TABLE `poll` DISABLE KEYS */;
+INSERT INTO `poll` VALUES (14,'Esto es una encuesta de prueba','<p>Esto es una encuesta de prueba.<strong> Esto es una encuesta de prueba.</strong> Esto es una encuesta de prueba.<strong> Esto es una encuesta de prueba. </strong>Esto es una encuesta de prueba.<strong> Esto es una encuesta de prueba.</strong> Esto es una encuesta de prueba.<strong> Esto es una encuesta de prueba. </strong>Esto es una encuesta de prueba.<strong> Esto es una encuesta de prueba.</strong> Esto es una encuesta de prueba.<strong> Esto es una encuesta de prueba. </strong>Esto es una encuesta de prueba.<strong> Esto es una encuesta de prueba.</strong> Esto es una encuesta de prueba.<strong> Esto es una encuesta de prueba.</strong></p>','2023-10-31 00:42:09'),(30,'Prueba radio','<p>Prueba radio</p>','2023-10-31 12:18:21');
 /*!40000 ALTER TABLE `poll` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -151,10 +207,10 @@ DROP TABLE IF EXISTS `priority`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `priority` (
-  `Id_Priority` int NOT NULL,
+  `Id_Priority` int(11) NOT NULL,
   `Priority_Name` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`Id_Priority`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -163,6 +219,7 @@ CREATE TABLE `priority` (
 
 LOCK TABLES `priority` WRITE;
 /*!40000 ALTER TABLE `priority` DISABLE KEYS */;
+INSERT INTO `priority` VALUES (1,'Alta'),(2,'Media'),(3,'Baja');
 /*!40000 ALTER TABLE `priority` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -174,15 +231,15 @@ DROP TABLE IF EXISTS `project`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `project` (
-  `Id_Project` int NOT NULL AUTO_INCREMENT,
+  `Id_Project` int(11) NOT NULL AUTO_INCREMENT,
   `Project_Name` varchar(100) NOT NULL,
   `Description_Project` varchar(1000) NOT NULL,
-  `Id_Status` int NOT NULL,
+  `Id_Status` int(11) NOT NULL,
   `Date_Creation` datetime NOT NULL,
   PRIMARY KEY (`Id_Project`),
   KEY `Fk_Status_idx` (`Id_Status`),
   CONSTRAINT `Fk_Status_Project` FOREIGN KEY (`Id_Status`) REFERENCES `status` (`Id_Status`)
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -191,7 +248,7 @@ CREATE TABLE `project` (
 
 LOCK TABLES `project` WRITE;
 /*!40000 ALTER TABLE `project` DISABLE KEYS */;
-INSERT INTO `project` VALUES (15,'123','AAA\n12\n',1,'2023-09-30 14:15:16'),(16,'222','2222222\n',1,'2023-09-30 14:19:46'),(17,'1982892819282','2121222\n',1,'2023-09-30 14:21:54'),(19,'sass','sassss\n',1,'2023-09-30 14:31:47'),(20,'ssssss','12222222222222222222\n',1,'2023-09-30 14:34:39'),(21,'TestLuis','TestLuis\n',1,'2023-10-01 15:50:41'),(22,'Danieltest','Danieltest\n',1,'2023-10-01 17:01:37'),(23,'ASDASD','asdasd',2,'2023-10-05 21:40:56');
+INSERT INTO `project` VALUES (15,'123','AAA\n12\n',1,'2023-09-30 14:15:16'),(16,'222','2222222\n',1,'2023-09-30 14:19:46'),(17,'1982892819282','2121222\n',1,'2023-09-30 14:21:54'),(19,'sass','sassss\n',1,'2023-09-30 14:31:47'),(20,'ssssss','12222222222222222222\n',1,'2023-09-30 14:34:39'),(21,'TestLuis','TestLuis\n',1,'2023-10-01 15:50:41'),(22,'Danieltest','Danieltest\n',1,'2023-10-01 17:01:37'),(23,'ASDASD','asdasd',2,'2023-10-05 21:40:56'),(24,'Prueba','Prueba',1,'2023-10-10 11:05:18'),(25,'Prueba','Prueba',1,'2023-10-10 11:05:36'),(26,'Prueba','Prueba',1,'2023-10-10 11:05:47'),(27,'Prueba','Prueba',1,'2023-10-10 11:06:04'),(28,'Prueba','Prueba',2,'2023-10-10 11:06:26'),(29,'Prueba','DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD',2,'2023-10-17 18:35:35');
 /*!40000 ALTER TABLE `project` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -203,9 +260,9 @@ DROP TABLE IF EXISTS `project_files`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `project_files` (
-  `ID_Project_File` int NOT NULL AUTO_INCREMENT,
-  `Id_Project` int NOT NULL,
-  `File_ID` int NOT NULL,
+  `ID_Project_File` int(11) NOT NULL AUTO_INCREMENT,
+  `Id_Project` int(11) NOT NULL,
+  `File_ID` int(11) NOT NULL,
   PRIMARY KEY (`ID_Project_File`),
   KEY `Id_Project` (`Id_Project`),
   KEY `File_ID` (`File_ID`),
@@ -232,17 +289,16 @@ DROP TABLE IF EXISTS `question`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `question` (
-  `Id_Question` int NOT NULL AUTO_INCREMENT,
+  `Id_Question` int(11) NOT NULL AUTO_INCREMENT,
   `TextQuestion` varchar(600) DEFAULT NULL,
-  `TypeQuestion` varchar(45) DEFAULT NULL,
-  `Id_Poll` int NOT NULL,
-  `Id_Question_Type` int NOT NULL,
+  `Id_Poll` int(11) NOT NULL,
+  `Id_Question_Type` int(11) NOT NULL,
   PRIMARY KEY (`Id_Question`),
   KEY `Fk_Question_Type_idx` (`Id_Question_Type`),
   KEY `Fk_Poll_idx` (`Id_Poll`),
   CONSTRAINT `Fk_Poll` FOREIGN KEY (`Id_Poll`) REFERENCES `poll` (`Id_Poll`),
   CONSTRAINT `Fk_Question_Type` FOREIGN KEY (`Id_Question_Type`) REFERENCES `question_type` (`Id_Question_Type`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -251,6 +307,7 @@ CREATE TABLE `question` (
 
 LOCK TABLES `question` WRITE;
 /*!40000 ALTER TABLE `question` DISABLE KEYS */;
+INSERT INTO `question` VALUES (12,'Díganos su opinión sobre la empresa',14,1),(13,'¿Cómo prefiere ser atendido?',14,2),(31,'Texto',30,1),(32,'Respuesta única',30,2),(33,'Selección múltiple',30,3);
 /*!40000 ALTER TABLE `question` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -262,13 +319,13 @@ DROP TABLE IF EXISTS `question_options`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `question_options` (
-  `Id_Question_Option` int NOT NULL AUTO_INCREMENT,
-  `Id_Question` int NOT NULL,
-  `Option_Text` int NOT NULL,
+  `Id_Question_Option` int(11) NOT NULL AUTO_INCREMENT,
+  `Id_Question` int(11) NOT NULL,
+  `Option_Text` varchar(200) COLLATE latin1_general_ci NOT NULL,
   PRIMARY KEY (`Id_Question_Option`),
   KEY `Fk_Question_idx` (`Id_Question`),
   CONSTRAINT `Fk_Question` FOREIGN KEY (`Id_Question`) REFERENCES `question` (`Id_Question`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -277,6 +334,7 @@ CREATE TABLE `question_options` (
 
 LOCK TABLES `question_options` WRITE;
 /*!40000 ALTER TABLE `question_options` DISABLE KEYS */;
+INSERT INTO `question_options` VALUES (3,13,'Teléfono'),(4,13,'WhatsApp'),(5,13,'Presencial'),(10,32,'A'),(11,32,'B'),(12,32,'C'),(13,33,'D'),(14,33,'E'),(15,33,'F');
 /*!40000 ALTER TABLE `question_options` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -288,7 +346,7 @@ DROP TABLE IF EXISTS `question_type`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `question_type` (
-  `Id_Question_Type` int NOT NULL,
+  `Id_Question_Type` int(11) NOT NULL,
   `Question_Type_Name` varchar(50) NOT NULL,
   PRIMARY KEY (`Id_Question_Type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -300,6 +358,7 @@ CREATE TABLE `question_type` (
 
 LOCK TABLES `question_type` WRITE;
 /*!40000 ALTER TABLE `question_type` DISABLE KEYS */;
+INSERT INTO `question_type` VALUES (1,'Texto'),(2,'Respuesta única'),(3,'Selección múltiple');
 /*!40000 ALTER TABLE `question_type` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -316,12 +375,12 @@ CREATE TABLE `seg_usu` (
   `usu_Password` varchar(20) DEFAULT NULL,
   `usu_Tipo` varchar(50) DEFAULT NULL,
   `usu_Fecha` varchar(255) DEFAULT NULL,
-  `usu_Vigencia` int DEFAULT NULL,
+  `usu_Vigencia` int(11) DEFAULT NULL,
   `usu_email` varchar(45) DEFAULT NULL,
-  `usu_remote` smallint NOT NULL DEFAULT '0',
-  `horario_numero` bigint NOT NULL DEFAULT '1',
+  `usu_remote` smallint(6) NOT NULL DEFAULT '0',
+  `horario_numero` bigint(20) NOT NULL DEFAULT '1',
   PRIMARY KEY (`usu_Login`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -342,15 +401,15 @@ DROP TABLE IF EXISTS `seg_usu_project`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `seg_usu_project` (
-  `Id` int NOT NULL AUTO_INCREMENT,
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
   `User_Login` varchar(20) NOT NULL,
-  `Id_Project` int NOT NULL,
+  `Id_Project` int(11) NOT NULL,
   PRIMARY KEY (`Id`),
   KEY `Fk_User_Login_idx` (`User_Login`),
   KEY `Fk_Id_Project_idx` (`Id_Project`),
   CONSTRAINT `Fk_Id_Project` FOREIGN KEY (`Id_Project`) REFERENCES `project` (`Id_Project`),
   CONSTRAINT `Fk_User_Login` FOREIGN KEY (`User_Login`) REFERENCES `seg_usu` (`usu_Login`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -359,7 +418,7 @@ CREATE TABLE `seg_usu_project` (
 
 LOCK TABLES `seg_usu_project` WRITE;
 /*!40000 ALTER TABLE `seg_usu_project` DISABLE KEYS */;
-INSERT INTO `seg_usu_project` VALUES (16,'cristian',21),(18,'cristian',22),(19,'cristian',23);
+INSERT INTO `seg_usu_project` VALUES (16,'cristian',21),(18,'cristian',22),(19,'cristian',23),(20,'jaguilar',24),(21,'adrian',25),(22,'jaguilar',26),(23,'cristian',27),(24,'luis',28),(25,'adrian',29),(26,'cristian',29),(27,'jaguilar',29);
 /*!40000 ALTER TABLE `seg_usu_project` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -371,12 +430,12 @@ DROP TABLE IF EXISTS `sprint`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `sprint` (
-  `Id_Sprint` int NOT NULL AUTO_INCREMENT,
+  `Id_Sprint` int(11) NOT NULL AUTO_INCREMENT,
   `Sprint_Name` varchar(45) DEFAULT NULL,
   `Start_Date` datetime DEFAULT NULL,
   `End_Date` datetime DEFAULT NULL,
-  `Id_Project` int NOT NULL,
-  `Id_Status` int NOT NULL,
+  `Id_Project` int(11) NOT NULL,
+  `Id_Status` int(11) NOT NULL,
   `User_Login` varchar(20) NOT NULL,
   PRIMARY KEY (`Id_Sprint`),
   KEY `Fk_Project_idx` (`Id_Project`),
@@ -385,7 +444,7 @@ CREATE TABLE `sprint` (
   CONSTRAINT `Fk_Project` FOREIGN KEY (`Id_Project`) REFERENCES `project` (`Id_Project`),
   CONSTRAINT `Fk_Status_Sprint` FOREIGN KEY (`Id_Status`) REFERENCES `status` (`Id_Status`),
   CONSTRAINT `Fk_User` FOREIGN KEY (`User_Login`) REFERENCES `seg_usu` (`usu_Login`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -394,7 +453,7 @@ CREATE TABLE `sprint` (
 
 LOCK TABLES `sprint` WRITE;
 /*!40000 ALTER TABLE `sprint` DISABLE KEYS */;
-INSERT INTO `sprint` VALUES (1,'Test_Sprint','2022-10-01 00:00:00','2022-10-05 00:00:00',15,1,'cristian'),(2,'Test_Sprint2','2022-09-30 00:00:00','2022-10-05 00:00:00',16,1,'jaguilar');
+INSERT INTO `sprint` VALUES (1,'Test_Sprint','2022-10-01 00:00:00','2022-10-05 00:00:00',15,5,'cristian'),(2,'Test_Sprint2','2022-09-30 00:00:00','2022-10-05 00:00:00',16,1,'jaguilar'),(3,'Prueba','2023-10-10 00:00:00','2023-10-17 00:00:00',15,2,'jaguilar'),(4,'Prueba','2023-10-09 00:00:00','2023-10-23 00:00:00',15,2,'cristian'),(5,'Prueba','2023-10-03 00:00:00','2023-10-17 00:00:00',15,1,'jaguilar'),(6,'Prueba','2023-10-04 00:00:00','2023-10-18 00:00:00',15,1,'cristian'),(7,'Prueba','2023-10-02 00:00:00','2023-10-16 00:00:00',15,1,'adrian'),(8,'Prueba','2023-10-10 00:00:00','2023-10-17 00:00:00',15,1,'luis'),(9,'Prueba','2023-10-10 00:00:00','2023-10-17 00:00:00',15,1,'jaguilar'),(10,'Prueba','2023-10-10 00:00:00','2023-10-24 00:00:00',15,1,'luis'),(11,'Prueba','2023-10-10 00:00:00','2023-10-17 00:00:00',15,1,'adrian'),(12,'Prueba','2023-10-10 00:00:00','2023-10-17 00:00:00',15,1,'jaguilar'),(13,'Prueba','2023-10-10 00:00:00','2023-10-17 00:00:00',15,1,'luis'),(14,'Prueba','2023-10-10 00:00:00','2023-10-17 00:00:00',15,1,'cristian');
 /*!40000 ALTER TABLE `sprint` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -406,10 +465,10 @@ DROP TABLE IF EXISTS `status`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `status` (
-  `Id_Status` int NOT NULL,
+  `Id_Status` int(11) NOT NULL,
   `Status_Name` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`Id_Status`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -430,13 +489,13 @@ DROP TABLE IF EXISTS `sub_task`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `sub_task` (
-  `Id_Sub_Task` int NOT NULL AUTO_INCREMENT,
+  `Id_Sub_Task` int(11) NOT NULL AUTO_INCREMENT,
   `Title` varchar(45) DEFAULT NULL,
   `Description` varchar(300) DEFAULT NULL,
-  `Required_Time` int DEFAULT NULL,
-  `Id_Task` int NOT NULL,
-  `Id_Status` int NOT NULL,
-  `Id_Priority` int NOT NULL,
+  `Required_Time` int(11) DEFAULT NULL,
+  `Id_Task` int(11) NOT NULL,
+  `Id_Status` int(11) NOT NULL,
+  `Id_Priority` int(11) NOT NULL,
   PRIMARY KEY (`Id_Sub_Task`),
   KEY `Fk_Status_idx` (`Id_Status`),
   KEY `Fk_Priority_idx` (`Id_Priority`),
@@ -444,7 +503,7 @@ CREATE TABLE `sub_task` (
   CONSTRAINT `Fk_Priority` FOREIGN KEY (`Id_Priority`) REFERENCES `priority` (`Id_Priority`),
   CONSTRAINT `Fk_Status` FOREIGN KEY (`Id_Status`) REFERENCES `status` (`Id_Status`),
   CONSTRAINT `Fk_Task` FOREIGN KEY (`Id_Task`) REFERENCES `task` (`Id_Task`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -453,6 +512,7 @@ CREATE TABLE `sub_task` (
 
 LOCK TABLES `sub_task` WRITE;
 /*!40000 ALTER TABLE `sub_task` DISABLE KEYS */;
+INSERT INTO `sub_task` VALUES (1,'Prueba','Prueba',8,4,3,1),(2,'Prueba','Prueba',8,4,3,1);
 /*!40000 ALTER TABLE `sub_task` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -464,17 +524,17 @@ DROP TABLE IF EXISTS `task`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `task` (
-  `Id_Task` int NOT NULL AUTO_INCREMENT,
+  `Id_Task` int(11) NOT NULL AUTO_INCREMENT,
   `Task_Name` varchar(45) DEFAULT NULL,
   `Description_Task` varchar(300) DEFAULT NULL,
-  `Id_Sprint` int NOT NULL,
-  `Id_Status` int NOT NULL DEFAULT '3',
+  `Id_Sprint` int(11) NOT NULL,
+  `Id_Status` int(11) NOT NULL DEFAULT '3',
   PRIMARY KEY (`Id_Task`),
   KEY `Fk_Status_Task_idx` (`Id_Status`),
   KEY `Fk_Sprint_idx` (`Id_Sprint`),
   CONSTRAINT `Fk_Sprint` FOREIGN KEY (`Id_Sprint`) REFERENCES `sprint` (`Id_Sprint`),
   CONSTRAINT `Fk_Status_Task` FOREIGN KEY (`Id_Status`) REFERENCES `status` (`Id_Status`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -483,7 +543,7 @@ CREATE TABLE `task` (
 
 LOCK TABLES `task` WRITE;
 /*!40000 ALTER TABLE `task` DISABLE KEYS */;
-INSERT INTO `task` VALUES (1,'Prueba1','Task1',1,2),(2,'Prueba2','Task2',1,3),(3,'Prueba','Task3',1,2),(4,'Sasss','Prueba1',1,2);
+INSERT INTO `task` VALUES (1,'ASD','ASD',1,2),(2,'asdasd','asdasdasd',1,2),(3,'asdasd','asdasd',1,5),(4,'Prueba','Prueba',1,1),(5,'Prueba','Prueba',1,1),(6,'Prueba','Prueba',1,1),(7,'Prueba','Prueba',1,1),(8,'Prueba','Prueba',1,2),(9,'Prueba','Prueba',1,1),(10,'Prueba','Prueba',1,1),(11,'Prueba','Prueba',1,2),(12,'Prueba','Prueba',1,2),(13,'Prueba','Prueba',1,2),(14,'Prueba','Prueba',1,2),(15,'Prueba','Prueba',1,2),(16,'Prueba','Prueba',1,1),(17,'Prueba','Prueba',1,1),(18,'Prueba 2','Prueba 2',1,1);
 /*!40000 ALTER TABLE `task` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -496,4 +556,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-10-10 19:01:27
+-- Dump completed on 2023-10-31 13:27:03
