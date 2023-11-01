@@ -575,6 +575,27 @@ Public Class ConexionDAO
         End Try
     End Function
 
+    Public Sub ExecuteInsertNotification(ByVal psSql As String, ByVal pNotification As NotificationEN)
+        Try
+            conn = New MySqlConnection(conStr)
+            sql = New MySqlCommand(psSql, conn)
+            sql.Parameters.AddWithValue("@Message", pNotification.Message)
+            sql.Parameters.AddWithValue("@Title", pNotification.Title)
+            sql.Parameters.AddWithValue("@Action", pNotification.Action)
+            sql.Parameters.AddWithValue("@Type", pNotification.Type)
+            sql.Parameters.AddWithValue("@Type_Ref_Id", pNotification.Type_Ref_Id)
+            sql.Parameters.AddWithValue("@Usu_Login", pNotification.Usu_Login)
+
+            sql.CommandType = CommandType.Text
+            conn.Open()
+            sql.ExecuteNonQuery()
+            conn.Close()
+        Catch ex As MySqlException
+            EscritorVisorEventos.Instancia().EscribirEvento(nombreClase, MethodBase.GetCurrentMethod().Name, ex)
+            Throw New Exception("ExecuteInsertNotification: Error al ejecutar la inserción")
+        End Try
+    End Sub
+
     Public Sub Cerrar()
         If dr IsNot Nothing Then dr.Close()
         If conn IsNot Nothing Then

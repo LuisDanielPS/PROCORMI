@@ -313,7 +313,10 @@ Public Class SubTaskDao
                 reply.msg = "El id de subtarea no es valido"
 
             ElseIf pSubTaskEnId IsNot Nothing Then
-                sentence = "UPDATE sub_task SET Id_Status = (SELECT s.Id_Status FROM status s where s.Status_Name = 'Finalizada') WHERE Id_Sub_Task = @Condition"
+                sentence = "UPDATE sub_task 
+                            SET Id_Status = (SELECT s.Id_Status FROM status s where s.Status_Name = 'Finalizada'),
+                                Required_Time = 0 
+                            WHERE Id_Sub_Task = @Condition"
 
                 ConexionDAO.Instancia.ExecuteConsultCondition(sentence, pSubTaskEnId)
                 reply.ok = True

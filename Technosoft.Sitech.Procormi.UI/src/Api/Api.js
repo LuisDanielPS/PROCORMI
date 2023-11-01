@@ -14,6 +14,13 @@ export default {
         })
     },
 
+    GetNotificationsByUser(Usuario) {
+        return apicliente.get(`Notification/GetAllNotificationByUser?username=${Usuario}`, {
+            withCredentials: false,
+            headers: { 'Content-Type': 'application/json; charset=UTF-8' }
+        })
+    },
+
     GetProjectsAllOperator(usulogin)
     {
         return apicliente.get('Project/GetProjectsAllOperator?UsuLogin=' +usulogin, {

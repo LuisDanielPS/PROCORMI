@@ -127,6 +127,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="PollDAO.vb" />
+    <Compile Include="NotificationDAO.vb" />
     <Compile Include="ProjectDAO.vb" />
     <Compile Include="SprintDAO.vb" />
     <Compile Include="SubTaskDAO.vb" />

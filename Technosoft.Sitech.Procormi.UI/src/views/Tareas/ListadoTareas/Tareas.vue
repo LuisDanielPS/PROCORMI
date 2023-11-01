@@ -127,6 +127,9 @@
                 </div>
                 <!--Modal eliminar Tarea-->
 
+
+                
+
                 <!--Modal Ver Tarea-->
 
                 <div class="modal fade" id="verTarea" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="verTarea" aria-hidden="true">
@@ -172,9 +175,9 @@
                                         <br>
 
                                         <div class=" modal-footer   row justify-content-center" style="position: relative;">
-                                            <div class="row justify-content-center" style="position: relative;">
+                                            <!-- <div class="row justify-content-center" style="position: relative;">
                                                 <button class="btn btn-success" v-if="currentTask ? currentTask.Id_Status != 'Finalizada' : false" style="width: 150px; min-height: 15px;" type="button" data-bs-dismiss="modal" @click="finishTask"><span class="fas fa-check"></span></button>
-                                            </div>
+                                            </div> -->
                                         </div>
 
                                         <br />
@@ -213,6 +216,12 @@
                                         </div>
                                     </div>
                                     <br/>
+                                    <div class="row">
+                                            <div class="col-12" style="text-align: right;">
+                                                <p style="text-align: right;">Tiempo requerido: <b>{{ currentSubTask ? currentSubTask.Required_Time : 0.0 }}
+                                                    </b> horas</p>
+                                            </div>
+                                        </div>
                                     <div class="col-md-12 col-xs-12" style="min-height: 350px; max-height: 400px">
                                         <div class="row">
                                             <div class="col-12">
@@ -232,8 +241,8 @@
                                         </div>
                                         <br>
                                         <div class=" modal-footer  row justify-content-center" style="position: relative;">
-                                            <button v-if="currentSubTask ? currentSubTask.Id_Status != 'Finalizada' : false" style="width: 150px;color: white; background-color: green; min-height: 15px; min-width: 25px;" type="button" data-bs-dismiss="modal" @click="finishSubTask">Finalizar subtarea</button>
- 
+                                            <!-- <button v-if="currentSubTask ? currentSubTask.Id_Status != 'Finalizada' : false" style="width: 150px;color: white; background-color: green; min-height: 15px; min-width: 25px;" type="button" data-bs-dismiss="modal" @click="finishSubTask">Finalizar subtarea</button>
+  -->
                                         </div>
                                         <br />
                                     </div>
@@ -380,6 +389,7 @@
                 </div>
 
                 <!--Modal editar Subtarea-->
+                
 
                 <!--Modal eliminar Subtarea-->
 
@@ -404,6 +414,53 @@
                 </div>
 
                 <!--Modal eliminar Subtarea-->
+
+                   <!-- Modal finalizar tarea -->
+
+                   <div class="modal fade" id="finalizarTarea" tabindex="-1" aria-labelledby="finalizarTarea" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="exampleModalLabel">Finalizar tarea</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div>
+                                    <p>¿Está seguro de que desea finalizar la tarea?</p>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                                <button type="button" class="btn btn-success" data-bs-dismiss="modal" @click="() => finishTask()">Aceptar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                  <!-- Modal finalizar tarea -->
+
+                  <!-- Modal finalizar subtarea -->
+
+                <div class="modal fade" id="finalizarSubTarea" tabindex="-1" aria-labelledby="finalizarSubTarea" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="exampleModalLabel">Finalizar subtarea</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div>
+                                    <p>¿Está seguro de que desea finalizar la subtarea?</p>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                                <button type="button" class="btn btn-success" data-bs-dismiss="modal" @click="() => finishSubTask()">Aceptar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                  <!-- Modal finalizar subtarea -->
 
                 <!------------------------------------------------Modales------------------------------------------------>
 
@@ -559,8 +616,11 @@
                                                     <button  @click="() => selectCurrentTask(tarea)" class="btn btn-primary" role="button" data-bs-toggle="modal" data-bs-target="#verTarea">
                                                         <span class="fas fa-eye" b-tooltip.hover title="Ver Tarea"></span>
                                                     </button>
-                                                    <button v-if="recuperarUsuTipo() == 'Administrador'" @click="() => startTaskEditing(tarea)" style="margin-left: 5px;" type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#editarTarea">
-                                                        <span class="fas fa-pen" b-tooltip.hover title="Editar Tarea"></span>
+                                                    <button  @click="() => selectCurrentTask(tarea)" class="btn btn-success"  role="button" :disabled = "tarea.Id_Status == 'Finalizada'" style="margin-left: 5px;" data-bs-toggle="modal" data-bs-target="#finalizarTarea">
+                                                        <span class="fas fa-check" b-tooltip.hover title="Finalizar"></span>
+                                                    </button>
+                                                    <button v-if="recuperarUsuTipo() == 'Administrador'" @click="() => startTaskEditing(tarea)" :disabled = "tarea.Id_Status == 'Finalizada'" style="margin-left: 5px;" type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editarTarea">
+                                                        <span class="fas fa-pen" style= "color:white" b-tooltip.hover title="Editar Tarea"></span>
                                                     </button>
                                                     <button v-if="recuperarUsuTipo() == 'Administrador'" @click="() => deleteTask(tarea)" type="button" class="btn btn-danger" style="margin-left: 5px;" data-bs-toggle="modal" data-bs-target="#exampleModal">
                                                         <span class="fas fa-trash" b-tooltip.hover title="Eliminar Tarea"></span>
@@ -602,9 +662,33 @@
                                                 </div>
                                                 <div>
                                                     <div class="tablaPersonalizadaRow" style="min-width: 200px;">
-                                                        <a style="text-decoration: none; margin-right: 20px;" class="fas fa-eye" b-tooltip.hover title="Ver subtarea" data-bs-toggle="modal" data-bs-target="#verSubTarea" @click="() => selectCurrentSubTask(subTask)"></a>
-                                                        <a style="text-decoration: none; margin-right: 20px;" class="fas fa-pen" data-bs-toggle="modal" data-bs-target="#editarSubtarea" @click="startSubTaskEditing(subTask)"></a>
-                                                        <a style="text-decoration: none;" class="fas fa-trash" data-bs-toggle="modal" data-bs-target="#eliminarSubtarea" @click="() => selectCurrentSubTask(subTask)"></a>
+                                                        <a style="text-decoration: none; margin-right: 20px;" 
+                                                            class="fas fa-eye" b-tooltip.hover 
+                                                            title="Ver subtarea" 
+                                                            data-bs-toggle="modal" 
+                                                            data-bs-target="#verSubTarea" 
+                                                            @click="() => selectCurrentSubTask(subTask)"
+                                                        ></a>
+                                                        <a style="text-decoration: none; margin-right: 20px; " 
+                                                            :style="subTask.Id_Status == 'Finalizada' ? 'cursor: not-allowed' : ''" 
+                                                            class="fas fa-check" 
+                                                            data-bs-toggle="modal" 
+                                                            :data-bs-target=" subTask.Id_Status == 'Finalizada' ? '' : '#finalizarSubTarea'" 
+                                                            @click="() => subTask.Id_Status == 'Finalizada' ? null :selectCurrentSubTask(subTask)"
+                                                        ></a>
+                                                        <a style="text-decoration: none; margin-right: 20px;" 
+                                                            :style="subTask.Id_Status == 'Finalizada' ? 'cursor: not-allowed' : ''" 
+                                                            class="fas fa-pen" 
+                                                            data-bs-toggle="modal" 
+                                                            :data-bs-target=" subTask.Id_Status == 'Finalizada' ? '' : '#editarSubtarea'" 
+                                                            @click="subTask.Id_Status == 'Finalizada' ? null : startSubTaskEditing(subTask)"
+                                                        ></a>
+                                                        <a style="text-decoration: none;" 
+                                                            class="fas fa-trash"
+                                                            data-bs-toggle="modal" 
+                                                            data-bs-target="#eliminarSubtarea" 
+                                                            @click="() => selectCurrentSubTask(subTask)"
+                                                         ></a>
                                                     </div>
                                                 </div>
                                                
@@ -914,9 +998,10 @@ export default {
         },
 
 
-        async finishSubTask() {
-            const selectedCurrentTaskid = this.currentSubTask.Id_Task;
-            const selectedCurrentSubTaskid = this.currentSubTask.Id_Sub_Task;
+        async finishSubTask(subTask) {
+            subTask = subTask == null ? this.currentSubTask : subTask;
+            const selectedCurrentTaskid = subTask.Id_Task || this.currentSubTask.Id_Task;
+            const selectedCurrentSubTaskid = subTask.Id_Sub_Task || this.currentSubTask.Id_Sub_Task;
 
             const response = await AdminApi.PutSubTaskAsFinished(selectedCurrentSubTaskid);
             if (response.data.ok) {
@@ -928,8 +1013,8 @@ export default {
             }
         },
 
-        async finishTask() {
-            const selectedCurrentTaskid = this.currentTask.Id_Task;
+        async finishTask(taskId) {
+            const selectedCurrentTaskid = taskId || this.currentTask.Id_Task;
 
             const response = await AdminApi.PutTaskAsFinished(selectedCurrentTaskid);
             if (response.data.ok) {

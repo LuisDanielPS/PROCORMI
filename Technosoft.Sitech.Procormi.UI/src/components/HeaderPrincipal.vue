@@ -61,8 +61,34 @@
                     <div class="nav-link textoBlanco" v-if="AgregarPublicacion" style="padding-top: 25px;">
                         <p style="cursor: default;"><a class="text-gradient-yellow-orange-black" style="font-size: 16px;"><b>Notificaciones</b></a></p>
                     </div>
-                    <div class="nav-link textoBlanco" style="padding-top: 7px;">
-                        <div style="max-width: 100%;"><hr /></div>
+                    <div class="textoBlanco" style="padding-top: 7px;">
+                        <div style="max-width: 100%;">
+                            <hr />
+                            <div v-for="notif in notifications" :key="notif.Id_Notification" class="notification container">
+                                <div class="notification-top row ">
+                                    <a style="text-decoration:none; color:white;" class="notification-title col-4" data-toggle="collapse" :data-target="`#descriptionCollapse-${notif.Id_Notification}`" role="button" aria-expanded="false" :aria-controls="`descriptionCollapse-${notif.Id_Notification}`" >
+                                       {{ notif.Title }}
+                                    </a>
+                                    <div class="notification-actions col">
+                                        <small>{{ new Date(notif.Creation_Date).toLocaleString() }}</small>
+                                        <button class="btn btn-danger" >
+                                            <span class="fas fa-trash"></span>
+                                        </button>
+                                        <button class="btn btn-warning" >
+                                            <span class="fas fa-eye"></span>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div :id="`descriptionCollapse-${notif.Id_Notification}`">
+                                    <div class="notification-description" >
+                                        <p>
+                                            {{ notif.Message }}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
                     </div>
                 </ul>
             </nav>
@@ -128,10 +154,28 @@ export default {
             usuario: "",
             },
 
+            notifications : []
         }
     },
 
+    computed : {
+        displayedNotifications() {
+            return this.notifications
+        }
+    }, 
+
     methods: {
+
+
+        fetchNotifications : async function() {
+            const username = this.recuperarUsuLog();
+            const response = await AdminApi.GetNotificationsByUser(username);
+            if (response.data.ok) {
+                this.notifications = response.data.obj;
+            } else {
+                console.error('Error fetching notifications');
+            }
+        },
 
         cambiarAplicacion: function () {
             this.esProyecto = !this.esProyecto
@@ -146,7 +190,7 @@ export default {
         async DesplegarMenu() {
             await this.CerrarMenuAplicaciones();
             this.menuDesplegableDerecho = !this.menuDesplegableDerecho
-            this.$root.cerrarMenuFiltros;
+            this.$root.cerrarMenuFiltros.call();
         },
 
         CerrarMenu: function () {
@@ -156,7 +200,7 @@ export default {
         async DesplegarMenuAplicaciones() {
             await this.CerrarMenu();
             this.menuDesplegableAplicaciones = !this.menuDesplegableAplicaciones
-            this.$root.cerrarMenuFiltros;
+            this.$root.cerrarMenuFiltros.call();
         },
 
         CerrarMenuAplicaciones: function () {
@@ -185,7 +229,7 @@ export default {
             Cookies.remove("tipoU");
             Cookies.remove("nombreUsu")
             Cookies.remove("palabraClave")
-            this.$root.validarLoginFooter;
+            this.$root.validarLoginFooter.call();
             router.push({ name: 'Login' })
         },
 
@@ -374,6 +418,8 @@ export default {
         this.$root.CerrarMenu = this.CerrarMenu;
         this.$root.CerrarMenuAplicaciones = this.CerrarMenuAplicaciones;
         this.$root.cerrarSesionGeneral = this.cerrarSesion;
+
+        await this.fetchNotifications();
         //this.$root.designarAplicacionHeaderPrincipal = this.designarAplicacion;
     },
 
@@ -393,6 +439,11 @@ export default {
 </script>
 
 <style scoped>
+
+    .notification {
+        color : white;
+        font-size: medium;
+    }
 
     .textoBlanco {
         color: #ffffff;

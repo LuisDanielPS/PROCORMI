@@ -74,6 +74,7 @@
     <Compile Include="Modelos\SegUsuProjectEN.vb" />
     <Compile Include="Modelos\SpringTaskStatusReportVM.vb" />
     <Compile Include="Modelos\SprintStatusReportVM.vb" />
+    <Compile Include="Modelos\NotificationEN.vb" />
     <Compile Include="Modelos\SubTaskEN.vb" />
     <Compile Include="Modelos\SubTaskReportVM.vb" />
     <Compile Include="Modelos\TaskEN.vb" />
