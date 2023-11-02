@@ -2,9 +2,11 @@
     <div>
         <header class="header bg-azul">
             <nav class="gridEncabezado">
-                <div style="padding-top: 10px; text-align: center; max-width: 17em; min-width: 15em;" v-on:click="CerrarMenus()">
+                <div style="padding-top: 10px; text-align: center; max-width: 17em; min-width: 15em;"
+                    v-on:click="CerrarMenus()">
                     <router-link :to="{ name: 'Inicio' }">
-                        <img src="/images/MilleniumLogoBlanco.png" class="default-logo ml-4 imagenResponsive" height="60" width="60">
+                        <img src="/images/MilleniumLogoBlanco.png" class="default-logo ml-4 imagenResponsive" height="60"
+                            width="60">
                     </router-link>
                 </div>
                 <ul>
@@ -12,14 +14,16 @@
 
                         <div class="row col-12 justify-content-end botonesSesion">
                             <div class="col-1">
-                                <button style="float: right; position: relative;" class="nav-toggle" @click.prevent="DesplegarMenuAplicaciones()">
+                                <button v-if="recuperarUsuTipo() == 'Operador'" style="float: right; position: relative;"
+                                    class="nav-toggle" @click.prevent="DesplegarMenuAplicaciones()">
                                     <i class="fas fa-bell"></i>
-                                    <span class="notification-badge">1</span>
+                                    <span class="notification-badge">{{ notifications.length }}</span>
                                 </button>
                             </div>
 
                             <div class="col-1 botonAplicaciones">
-                                <button style="float: right;" class="nav-toggle nav-toggleColor" @click.prevent="DesplegarMenu()">
+                                <button style="float: right;" class="nav-toggle nav-toggleColor"
+                                    @click.prevent="DesplegarMenu()">
                                     <i class="fas fa-user-circle"></i>
                                 </button>
                             </div>
@@ -27,16 +31,20 @@
 
                     </li>
                 </ul>
-                <ul class="nav-menu"
-                    :class="{
-                        'nav-menu_visible': menuDesplegableDerecho
-                    }">
+                <ul class="nav-menu" :class="{
+                    'nav-menu_visible': menuDesplegableDerecho
+                }">
                     <div class="nav-link textoBlanco" v-if="AgregarPublicacion" style="padding-top: 25px;">
-                        <p style="cursor: default;"><a class="text-gradient-yellow-orange-black" style="font-size: 16px;"><b>Usuario: {{recuperarUsuNombre()}}</b></a></p>
+                        <p style="cursor: default;"><a class="text-gradient-yellow-orange-black"
+                                style="font-size: 16px;"><b>Usuario: {{ recuperarUsuNombre() }}</b></a></p>
                     </div>
                     <div class="nav-link textoBlanco" v-if="AgregarPublicacion" style="padding-top: 25px;">
-                        <p style="cursor: default;"><a class="text-gradient-yellow-orange-black" style="font-size: 16px; position: relative; top: -20px;"><b>Perfil: {{recuperarUsuTipo()}}</b></a></p>
-                        <div style="max-width: 100%;"><hr /></div>
+                        <p style="cursor: default;"><a class="text-gradient-yellow-orange-black"
+                                style="font-size: 16px; position: relative; top: -20px;"><b>Perfil:
+                                    {{ recuperarUsuTipo() }}</b></a></p>
+                        <div style="max-width: 100%;">
+                            <hr />
+                        </div>
                     </div>
                     <div class="nav-link" style="color: white; padding-top: 25px;">
                         <p style="cursor: default;">Acerca de Procormi: Versión 1.0</p>
@@ -48,53 +56,55 @@
                     </li>-->
                     <div style="display: flex; align-items: center; justify-content: center;">
                         <div class="nav-link textoBlanco">
-                            <a role="button" v-on:click="cerrarSesion" class="textoBlanco" style="font-size: 17px; text-decoration: none;">Cerrar Sesión&nbsp;&nbsp;<i class="fas fa-sign-out-alt"></i></a>
+                            <a role="button" v-on:click="cerrarSesion" class="textoBlanco"
+                                style="font-size: 17px; text-decoration: none;">Cerrar Sesión&nbsp;&nbsp;<i
+                                    class="fas fa-sign-out-alt"></i></a>
                         </div>
                     </div>
 
                 </ul>
 
-                <ul class="nav-menuAplicaciones"
-                    :class="{
-                        'nav-menuAplicaciones_visible': menuDesplegableAplicaciones
-                    }">
-                    <div class="nav-link textoBlanco" v-if="AgregarPublicacion" style="padding-top: 25px;">
-                        <p style="cursor: default;"><a class="text-gradient-yellow-orange-black" style="font-size: 16px;"><b>Notificaciones</b></a></p>
+                <ul class="nav-menuAplicaciones" :class="{
+                    'nav-menuAplicaciones_visible': menuDesplegableAplicaciones
+                }">
+                    <div class="nav-link textoBlanco" v-if="AgregarPublicacion" style="padding-top: 15px;">
+                        <p style="cursor: default;">
+                            <a class="text-gradient-yellow-orange-black" style="font-size: 16px;"><b>Notificaciones</b></a>
+                        </p>
                     </div>
-                    <div class="textoBlanco" style="padding-top: 7px;">
+                    <div>
                         <div style="max-width: 100%;">
-                            <hr />
-                            <div v-for="notif in notifications" :key="notif.Id_Notification" class="notification container">
-                                <div class="notification-top row ">
-                                    <a style="text-decoration:none; color:white;" class="notification-title col-4" data-toggle="collapse" :data-target="`#descriptionCollapse-${notif.Id_Notification}`" role="button" aria-expanded="false" :aria-controls="`descriptionCollapse-${notif.Id_Notification}`" >
-                                       {{ notif.Title }}
+                            <hr class="textoBlanco">
+                            <div  class="textoBlanco" v-for="notif in notifications" :key="notif.Id_Notification" style="cursor: pointer;">
+                                <div class="notification-top" style="text-align: left;">
+                                    <a style="text-decoration:none; color:white; font-weight: bold;"
+                                        class="notification-title" data-toggle="collapse"
+                                        :data-target="`#descriptionCollapse-${notif.Id_Notification}`" role="button"
+                                        aria-expanded="false"
+                                        :aria-controls="`descriptionCollapse-${notif.Id_Notification}`">
+                                        {{ notif.Title}}
                                     </a>
-                                    <div class="notification-actions col">
-                                        <small>{{ new Date(notif.Creation_Date).toLocaleString() }}</small>
-                                        <button class="btn btn-danger" >
-                                            <span class="fas fa-trash"></span>
-                                        </button>
-                                        <button class="btn btn-warning" >
-                                            <span class="fas fa-eye"></span>
-                                        </button>
-                                    </div>
                                 </div>
                                 <div :id="`descriptionCollapse-${notif.Id_Notification}`">
-                                    <div class="notification-description" >
+                                    <div style="text-align: justify;">
                                         <p>
                                             {{ notif.Message }}
                                         </p>
                                     </div>
                                 </div>
+                                <div style="text-align: left;">
+                                    <small>Fecha: {{ new Date(notif.Creation_Date).toLocaleString() }}</small>
+                                    <hr class="textoBlanco">
+                                </div>
                             </div>
-
                         </div>
                     </div>
                 </ul>
             </nav>
         </header>
 
-        <button hidden type="button" id="abrirModal" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalDocumentos">Open modal</button>
+        <button hidden type="button" id="abrirModal" class="btn btn-primary" data-bs-toggle="modal"
+            data-bs-target="#modalDocumentos">Open modal</button>
 
     </div>
 </template>
@@ -142,32 +152,31 @@ export default {
                 categoria: 400,
                 subcategoria: 400,
             },
-            
+
             esEncuesta: false,
             esProyecto: true,
             mostrarFiltro: false,
 
             FiltroActicormi: {
-            fechaI: "",
-            fechaF: "",
-            estado: "P",
-            usuario: "",
+                fechaI: "",
+                fechaF: "",
+                estado: "P",
+                usuario: "",
             },
 
-            notifications : []
+            notifications: []
         }
     },
 
-    computed : {
+    computed: {
         displayedNotifications() {
             return this.notifications
         }
-    }, 
+    },
 
     methods: {
 
-
-        fetchNotifications : async function() {
+        fetchNotifications: async function () {
             const username = this.recuperarUsuLog();
             const response = await AdminApi.GetNotificationsByUser(username);
             if (response.data.ok) {
@@ -261,7 +270,7 @@ export default {
             let nombre = this.recuperarUsuNombre()
             if (role == "Administrador" && (nombre !== undefined && nombre !== null && nombre !== '')) {
                 this.AgregarPublicacion = true,
-                this.AgregarDepartamento = true
+                    this.AgregarDepartamento = true
                 this.AgregarCategoria = true
                 this.AgregarSubcategoria = true
                 this.AgregarUsuario = true
@@ -393,12 +402,12 @@ export default {
             }
         },
 
-        validarFiltro: function() {
+        validarFiltro: function () {
             const url = window.location.href;
             const partesURL = url.split('/');
             const ultimaParte = partesURL[partesURL.length - 1];
 
-            if(ultimaParte == "Inicio" || ultimaParte == "Encuestas" || ultimaParte == "Sprints" || ultimaParte == "Tareas"){
+            if (ultimaParte == "Inicio" || ultimaParte == "Encuestas" || ultimaParte == "Sprints" || ultimaParte == "Tareas") {
                 this.mostrarFiltro = true;
             } else {
                 this.mostrarFiltro = false;
@@ -439,82 +448,121 @@ export default {
 </script>
 
 <style scoped>
+.notification {
+    color: white;
+    font-size: medium;
+}
 
-    .notification {
-        color : white;
-        font-size: medium;
+.textoBlanco {
+    color: #ffffff;
+    font-size: medium;
+}
+
+.textoBlanco:hover {
+    background: linear-gradient(to right, #F7FF0A 0%, #CF8E2E 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.filtro {
+    min-width: 9em;
+    height: 3em;
+    background: #000;
+    border-radius: 0.5em;
+}
+
+.filtro button {
+    background-color: #000;
+    border-radius: 0.5em;
+    border: none;
+}
+
+.filtro:hover {
+    background: #000;
+    border: 1px solid #000;
+}
+
+@media screen and (min-width: 501px) {
+    .menuLateralCelularScoped {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .botonesSesion {
+        position: relative;
+        top: -10px;
+    }
+}
+
+@media screen and (max-width: 400px) {
+    .buscador {
+        margin-right: 25px;
     }
 
-    .textoBlanco {
-        color: #ffffff;
-        font-size: medium;
+    .botonAplicaciones {
+        margin-left: 20px;
     }
 
-        .textoBlanco:hover {
-            background: linear-gradient(to right, #F7FF0A 0%, #CF8E2E 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-    .filtro {
-        min-width: 9em;
-        height: 3em;
-        background: #000;
-        border-radius: 0.5em;
+    .imagenResponsive {
+        display: none;
     }
+}
 
-        .filtro button {
-            background-color: #000;
-            border-radius: 0.5em;
-            border: none;
-        }
-
-        .filtro:hover {
-            background: #000;
-            border: 1px solid #000;
-        }
-
-    @media screen and (min-width: 501px) {
-        .menuLateralCelularScoped {
-            display: none;
-        }
+@media screen and (max-width: 950px) {
+    .botonAplicaciones {
+        margin-left: 20px;
     }
+}
 
-    @media screen and (max-width: 767px) {
-        .botonesSesion{
-            position: relative;
-            top: -10px;
-        }
-    }
+body {
+    overflow-x: hidden !important;
+}
 
-    @media screen and (max-width: 400px) {
-        .buscador{
-            margin-right: 25px;
-        }
+.header {
+    height: 60px;
+}
 
-        .botonAplicaciones{
-            margin-left: 20px;
-        }
+.nav-menu {
+    flex-direction: column;
+    align-items: center;
+    list-style: none;
+    background-color: #0a3a66;
+    position: absolute;
+    right: 0;
+    top: 60px;
+    width: 25%;
+    text-align: center;
+    min-height: 50vh;
+    overflow-y: auto;
+    z-index: 3;
+    display: none;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
 
-        .imagenResponsive{
-            display: none;
-        }
-    }
-    
-    @media screen and (max-width: 950px) {
-        .botonAplicaciones{
-            margin-left: 20px;
-        }
-    }
+.nav-menuAplicaciones {
+    flex-direction: column;
+    align-items: center;
+    list-style: none;
+    background-color: #0a3a66;
+    position: absolute;
+    right: 40px;
+    top: 65px;
+    width: 25%;
+    text-align: center;
+    min-height: 50vh;
+    overflow-y: auto;
+    z-index: 3;
+    display: none;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
 
-    body {
-        overflow-x: hidden !important;
-    }
+}
 
-    .header {
-        height: 60px;
-    }
-
+@media screen and (max-width: 900px) {
     .nav-menu {
         flex-direction: column;
         align-items: center;
@@ -523,9 +571,8 @@ export default {
         position: absolute;
         right: 0;
         top: 60px;
-        width: 25%;
+        width: 200px;
         text-align: center;
-        min-height: 50vh;
         overflow-y: auto;
         z-index: 3;
         display: none;
@@ -541,170 +588,134 @@ export default {
         position: absolute;
         right: 0;
         top: 60px;
-        width: 25%;
+        width: 200px;
         text-align: center;
-        min-height: 50vh;
         overflow-y: auto;
         z-index: 3;
         display: none;
         border-bottom-left-radius: 10px;
         border-bottom-right-radius: 10px;
     }
+}
 
-    @media screen and (max-width: 900px) {
-        .nav-menu {
-            flex-direction: column;
-            align-items: center;
-            list-style: none;
-            background-color: #0a3a66;
-            position: absolute;
-            right: 0;
-            top: 60px;
-            width: 200px;
-            text-align: center;
-            overflow-y: auto;
-            z-index: 3;
-            display: none;
-            border-bottom-left-radius: 10px;
-            border-bottom-right-radius: 10px;
-        }
-
-        .nav-menuAplicaciones {
-            flex-direction: column;
-            align-items: center;
-            list-style: none;
-            background-color: #0a3a66;
-            position: absolute;
-            right: 0;
-            top: 60px;
-            width: 200px;
-            text-align: center;
-            overflow-y: auto;
-            z-index: 3;
-            display: none;
-            border-bottom-left-radius: 10px;
-            border-bottom-right-radius: 10px;
-        }
+@media screen and (max-width: 400px) {
+    .nav-menu {
+        flex-direction: column;
+        align-items: center;
+        list-style: none;
+        background-color: #0a3a66;
+        position: absolute;
+        right: 0;
+        top: 60px;
+        width: 50%;
+        text-align: center;
+        min-height: 89vh;
+        max-height: 89vh;
+        overflow-y: auto;
+        z-index: 3;
+        display: none;
+        border: none;
     }
 
-    @media screen and (max-width: 400px) {
-        .nav-menu {
-            flex-direction: column;
-            align-items: center;
-            list-style: none;
-            background-color: #0a3a66;
-            position: absolute;
-            right: 0;
-            top: 60px;
-            width: 50%;
-            text-align: center;
-            min-height: 89vh;
-            max-height: 89vh;
-            overflow-y: auto;
-            z-index: 3;
-            display: none;
-            border: none;
-        }
+    .nav-menuAplicaciones {
+        flex-direction: column;
+        align-items: center;
+        list-style: none;
+        background-color: #0a3a66;
+        position: absolute;
+        right: 0;
+        top: 60px;
+        width: 50%;
+        text-align: center;
+        min-height: 89vh;
+        max-height: 89vh;
+        overflow-y: auto;
+        z-index: 3;
+        display: none;
+        border: none;
+    }
+}
 
-        .nav-menuAplicaciones {
-            flex-direction: column;
-            align-items: center;
-            list-style: none;
-            background-color: #0a3a66;
-            position: absolute;
-            right: 0;
-            top: 60px;
-            width: 50%;
-            text-align: center;
-            min-height: 89vh;
-            max-height: 89vh;
-            overflow-y: auto;
-            z-index: 3;
-            display: none;
-            border: none;
-        }
+.nav-toggle {
+    display: block;
+}
+
+.nav-toggleColor:hover {
+    display: block;
+    background: linear-gradient(to right, #F7FF0A 0%, #CF8E2E 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.nav-menu_visible {
+    display: block;
+}
+
+.nav-menuAplicaciones_visible {
+    display: block;
+}
+
+@media screen and (max-width: 400px) {
+
+    .nav-menu {
+        flex-direction: column;
+        align-items: center;
+        list-style: none;
+        background-color: #0a3a66;
+        position: absolute;
+        right: 0;
+        top: 60px;
+        min-width: 50%;
+        text-align: center;
+        min-height: 91.7vh;
+        overflow-y: auto;
+        left: 100%;
+        z-index: 4;
+    }
+
+    .nav-menuAplicaciones {
+        flex-direction: column;
+        align-items: center;
+        list-style: none;
+        background-color: #0a3a66;
+        position: absolute;
+        right: 0;
+        top: 60px;
+        min-width: 50%;
+        text-align: center;
+        min-height: 91.7vh;
+        overflow-y: auto;
+        left: 100%;
+        z-index: 4;
     }
 
     .nav-toggle {
         display: block;
     }
 
-        .nav-toggleColor:hover {
-            display: block;
-            background: linear-gradient(to right, #F7FF0A 0%, #CF8E2E 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
+    .nav-toggleColor:hover {
+        display: block;
+        background: linear-gradient(to right, #F7FF0A 0%, #CF8E2E 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
 
     .nav-menu_visible {
-        display: block;
+        left: 50%;
+        transition: left 0.3s;
     }
 
     .nav-menuAplicaciones_visible {
-        display: block;
+        left: 50%;
+        transition: left 0.3s;
     }
+}
 
-    @media screen and (max-width: 400px) {
+.sitioMenu:hover {
+    cursor: pointer;
+}
 
-        .nav-menu {
-            flex-direction: column;
-            align-items: center;
-            list-style: none;
-            background-color: #0a3a66;
-            position: absolute;
-            right: 0;
-            top: 60px;
-            min-width: 50%;
-            text-align: center;
-            min-height: 91.7vh;
-            overflow-y: auto;
-            left: 100%;
-            z-index: 4;
-        }
-
-        .nav-menuAplicaciones {
-            flex-direction: column;
-            align-items: center;
-            list-style: none;
-            background-color: #0a3a66;
-            position: absolute;
-            right: 0;
-            top: 60px;
-            min-width: 50%;
-            text-align: center;
-            min-height: 91.7vh;
-            overflow-y: auto;
-            left: 100%;
-            z-index: 4;
-        }
-
-        .nav-toggle {
-            display: block;
-        }
-
-            .nav-toggleColor:hover {
-                display: block;
-                background: linear-gradient(to right, #F7FF0A 0%, #CF8E2E 100%);
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;
-            }
-
-        .nav-menu_visible {
-            left: 50%;
-            transition: left 0.3s;
-        }
-
-        .nav-menuAplicaciones_visible {
-            left: 50%;
-            transition: left 0.3s;
-        }
-    }
-
-    .sitioMenu:hover{
-        cursor: pointer;
-    }
-
-@media screen and (min-width: 400px){
+@media screen and (min-width: 400px) {
     .posicion1 {
         z-index: 1;
         min-height: 85vh;
@@ -742,7 +753,7 @@ export default {
     right: 45px;
 }
 
-@media screen and (max-width: 400px){
+@media screen and (max-width: 400px) {
     .notification-badge {
         display: inline-block;
         background-color: red;
@@ -757,6 +768,4 @@ export default {
         top: 30px;
         right: 30px;
     }
-}
-
-</style>
+}</style>

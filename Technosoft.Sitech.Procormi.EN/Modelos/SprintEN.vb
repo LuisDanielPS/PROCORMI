@@ -87,5 +87,4 @@ Public Class SprintEN
         End Set
     End Property
 
-
 End Class

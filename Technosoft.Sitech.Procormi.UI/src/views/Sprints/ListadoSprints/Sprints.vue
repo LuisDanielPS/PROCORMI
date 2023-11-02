@@ -63,8 +63,8 @@
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal"
                                     @click="limpiarContenido()">Cancelar</button>
-                                <button @click="createSprint" type="button" ref="inputDate" class="btn btn-success"
-                                 >Guardar</button>
+                                <button @click="createSprint" type="button" ref="inputDate"
+                                    class="btn btn-success">Guardar</button>
                             </div>
                         </div>
                     </div>
@@ -369,12 +369,13 @@
                                             <thead>
                                                 <tr>
                                                     <th class="col-1" style="min-width: 75px;"># Sprint</th>
-                                                    <th class="col-4" style="min-width: 150px;">Nombre</th>
-                                                    <th class="col-2" style="min-width: 125px;">Fecha inicio</th>
-                                                    <th class="col-2" style="min-width: 125px;">Fecha finalización</th>
+                                                    <th class="col-2" style="min-width: 150px;">Nombre del Sprint</th>
+                                                    <th class="col-2" style="min-width: 150px;">Usuario asignado</th>
+                                                    <th class="col-1" style="min-width: 125px;">Fecha inicio</th>
+                                                    <th class="col-1" style="min-width: 125px;">Fecha finalización</th>
                                                     <th class="col-1" style="min-width: 125px;">Estado</th>
                                                     <th v-if="recuperarUsuTipo() == 'Administrador'" class="col-2"
-                                                    style="min-width: 125px;">Opciones</th>
+                                                        style="min-width: 125px;">Opciones</th>
                                                 </tr>
                                             </thead>
                                             <tbody style="font-size: large;">
@@ -384,13 +385,16 @@
                                                     <td @click="verTareas(sprint.Id_Sprint)" class="claseTD">
                                                         {{ sprint.Sprint_Name }}</td>
                                                     <td @click="verTareas(sprint.Id_Sprint)" class="claseTD">
+                                                        {{ sprint.User_Login }}</td>
+                                                    <td @click="verTareas(sprint.Id_Sprint)" class="claseTD">
                                                         {{ $filters.FormatearFecha(sprint.Start_Date) }}</td>
                                                     <td @click="verTareas(sprint.Id_Sprint)" class="claseTD">
                                                         {{ $filters.FormatearFecha(sprint.End_Date) }}</td>
-                                                    <td @click="verTareas(sprint.Id_Sprint)" class="claseTD">
+                                                    <td @click="verTareas(sprint.Id_Sprint)"  class="claseTD">
                                                         {{ sprint.Id_Status == 1 ? "Activo" : (sprint.Id_Status == 5 ?
                                                             "Finalizado" : "Inactivo") }}</td>
-                                                    <td class="text-white" style="min-width: 130px;">
+                                                    <td class="text-white" v-if="recuperarUsuTipo() == 'Administrador'"
+                                                        style="min-width: 130px;">
 
                                                         <button v-if="recuperarUsuTipo() == 'Administrador'"
                                                             style="margin-left: 5px;"
@@ -414,8 +418,7 @@
                                                         <button v-if="recuperarUsuTipo() == 'Administrador'"
                                                             @click="saveIdSprintDelete(sprint.Id_Sprint)" type="button"
                                                             class="btn btn-danger" style="margin-left: 5px;"
-                                                            data-bs-toggle="modal" data-bs-target="#exampleModal"
-                                                            :disabled="sprint.Id_Status == 5">
+                                                            data-bs-toggle="modal" data-bs-target="#exampleModal">
                                                             <span class="fas fa-trash" b-tooltip.hover
                                                                 title="Eliminar Sprint"></span>
                                                         </button>
@@ -837,17 +840,17 @@ export default {
                     if (response.data.ok == true) {
                         const swal = this.$swal({
                             title: response.data.msg,
-                            icon:'success',
-                            showConfirmButton:false,
+                            icon: 'success',
+                            showConfirmButton: false,
                         });
 
                         this.limpiarContenido()
                         this.getSprintsDesdeAPI()
                         this.modalShow = false,
-                        setTimeout(() => {
-                        swal.close();
-                        location.reload();
-                    }, 1000);
+                            setTimeout(() => {
+                                swal.close();
+                                location.reload();
+                            }, 1000);
 
                     } else {
                         this.$swal(response.data.msg, '', 'error')
@@ -986,12 +989,12 @@ export default {
                     this.SprintEndDateEdit = ''
                     this.SprintUsuLoginEdit = ''
 
-                    this.$swal({ icon: 'success',showConfirmButton:false, text: 'Se editó correctamente el sprint' });
+                    this.$swal({ icon: 'success', showConfirmButton: false, text: 'Se editó correctamente el sprint' });
                     this.getSprintsDesdeAPI();
                     this.modalShow = false,
-                    setTimeout(() => {
-                        location.reload()
-                    }, 1000);
+                        setTimeout(() => {
+                            location.reload()
+                        }, 1000);
                 } else {
                     this.$swal("Hubo un error al editar el sprint");
                 }

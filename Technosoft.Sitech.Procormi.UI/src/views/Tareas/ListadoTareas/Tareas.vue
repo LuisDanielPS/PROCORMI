@@ -67,7 +67,7 @@
                                         <div>
                                             <label class="margin-15px-bottom text-black">Descripción<span style="color: red;"> *</span></label>
                                             <div>
-                                                <input v-model="taskDescriptionUnderEdit" required style="border-radius: 5px;" maxLength="100" type="textarea" placeholder="Descripcion...">
+                                                <input v-model="taskDescriptionUnderEdit" required style="border-radius: 5px;" maxLength="100" type="textarea" placeholder="Descripción">
                                             </div>
                                         </div>
                                     </div>
@@ -277,9 +277,10 @@
                                 <div class="row">
                                     <div class="col-12">
                                         <div>
+                                            <br/>
                                             <label class="margin-15px-bottom text-black">Descripción<span style="color: red;"> *</span></label>
                                             <div>
-                                                <input v-model="descriptionSubTarea" required style="border-radius: 5px;" type="textarea" maxLength="100" placeholder="Descripción...">
+                                                <input v-model="descriptionSubTarea" required style="border-radius: 5px;" type="textarea" maxLength="100" placeholder="Descripción">
                                             </div>
                                         </div>
                                     </div>
@@ -344,6 +345,7 @@
                                 <div class="row">
                                     <div class="col-12">
                                         <div>
+                                            <br/>
                                             <label class="margin-15px-bottom text-black">Descripción<span style="color: red;"> *</span></label>
                                             <div>
                                                 <input v-model="descriptionSubTarea" required style="border-radius: 5px;" type="textarea"  maxLength="100" placeholder="Descripción...">
