@@ -88,3 +88,13 @@ C:\Users\User\OneDrive\Documentos\GithubProcormi\PROCORMI\Technosoft.Sitech.Proc
 C:\Users\User\OneDrive\Documentos\GithubProcormi\PROCORMI\Technosoft.Sitech.Procormi.EN\obj\Debug\Technosoft.Sitech.Procormi.EN.dll
 C:\Users\User\OneDrive\Documentos\GithubProcormi\PROCORMI\Technosoft.Sitech.Procormi.EN\obj\Debug\Technosoft.Sitech.Procormi.EN.xml
 C:\Users\User\OneDrive\Documentos\GithubProcormi\PROCORMI\Technosoft.Sitech.Procormi.EN\obj\Debug\Technosoft.Sitech.Procormi.EN.pdb
+C:\Users\User\OneDrive\Documentos\ProcormiGIT\PROCORMI\Technosoft.Sitech.Procormi.EN\bin\Debug\Technosoft.Sitech.Procormi.EN.dll
+C:\Users\User\OneDrive\Documentos\ProcormiGIT\PROCORMI\Technosoft.Sitech.Procormi.EN\bin\Debug\Technosoft.Sitech.Procormi.EN.pdb
+C:\Users\User\OneDrive\Documentos\ProcormiGIT\PROCORMI\Technosoft.Sitech.Procormi.EN\bin\Debug\Technosoft.Sitech.Procormi.EN.xml
+C:\Users\User\OneDrive\Documentos\ProcormiGIT\PROCORMI\Technosoft.Sitech.Procormi.EN\obj\Debug\Technosoft.Sitech.Procormi.EN.vbproj.AssemblyReference.cache
+C:\Users\User\OneDrive\Documentos\ProcormiGIT\PROCORMI\Technosoft.Sitech.Procormi.EN\obj\Debug\Technosoft.Sitech.Procormi.EN.Resources.resources
+C:\Users\User\OneDrive\Documentos\ProcormiGIT\PROCORMI\Technosoft.Sitech.Procormi.EN\obj\Debug\Technosoft.Sitech.Procormi.EN.vbproj.GenerateResource.cache
+C:\Users\User\OneDrive\Documentos\ProcormiGIT\PROCORMI\Technosoft.Sitech.Procormi.EN\obj\Debug\Technosoft.Sitech.Procormi.EN.vbproj.CoreCompileInputs.cache
+C:\Users\User\OneDrive\Documentos\ProcormiGIT\PROCORMI\Technosoft.Sitech.Procormi.EN\obj\Debug\Technosoft.Sitech.Procormi.EN.dll
+C:\Users\User\OneDrive\Documentos\ProcormiGIT\PROCORMI\Technosoft.Sitech.Procormi.EN\obj\Debug\Technosoft.Sitech.Procormi.EN.xml
+C:\Users\User\OneDrive\Documentos\ProcormiGIT\PROCORMI\Technosoft.Sitech.Procormi.EN\obj\Debug\Technosoft.Sitech.Procormi.EN.pdb

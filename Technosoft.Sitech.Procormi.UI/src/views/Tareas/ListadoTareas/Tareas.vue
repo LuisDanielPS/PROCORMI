@@ -10,7 +10,7 @@
 
                 <!--Modal crear Tarea-->
 
-                <div class="modal fade" id="staticBackdrop" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div v-if="modalShowTask" class="modal fade" id="staticBackdrop" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -39,15 +39,15 @@
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
-                                <button @click="createTask" type="button" class="btn btn-success" data-bs-dismiss="modal">Guardar</button>
+                                <button @click="resetTaskCreation" type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                                <button @click="createTask" type="button" class="btn btn-success">Guardar</button>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <!--Modal editar Tarea-->
-                <div class="modal fade" id="editarTarea" tabindex="-1" aria-labelledby="editarTarea" aria-hidden="true">
+                <div v-if="modalShowTask" class="modal fade" id="editarTarea" tabindex="-1" aria-labelledby="editarTarea" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -59,7 +59,7 @@
                                     <label>Nombre<span style="color: red;"> *</span></label>
                                     <br />
                                     <div style="margin-top: 15px;">
-                                        <input v-model="taskNameUnderEdit" required style="border-radius: 5px;" maxLength="45" type="text" placeholder="Nombre">
+                                        <input v-model="taskNameUnderEdit" required @input="handleChanges" style="border-radius: 5px;" maxLength="45" type="text" placeholder="Nombre">
                                     </div>
                                 </div>
                                 <div class="row">
@@ -67,7 +67,7 @@
                                         <div>
                                             <label class="margin-15px-bottom text-black">Descripción<span style="color: red;"> *</span></label>
                                             <div>
-                                                <input v-model="taskDescriptionUnderEdit" required style="border-radius: 5px;" maxLength="100" type="textarea" placeholder="Descripción">
+                                                <input v-model="taskDescriptionUnderEdit" required @input="handleChanges" style="border-radius: 5px;" maxLength="100" type="textarea" placeholder="Descripcion...">
                                             </div>
                                         </div>
                                     </div>
@@ -78,7 +78,7 @@
                                     <br />
                                     <!--:selected="currentTask?.Task_State === 'Finalizada'" -->
                                     <div class="left-content" style="margin-top: 15px;">
-                                        <select v-model="taskStateUnderEdit" required name="estado" id="estado" class="form-select text-black inputsGeneral" style="min-height: 48px;">
+                                        <select v-model="taskStateUnderEdit" required name="estado" id="estado" class="form-select text-black inputsGeneral" style="min-height: 48px;" @input="handleChanges">
                                             <option v-for="status in statusOptions" :key="status" :value="status">{{ status }}</option>
                                         </select>
                                     </div>
@@ -86,7 +86,7 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
-                                <button @click="editCurrentTask" type="button" class="btn btn-success" data-bs-dismiss="modal">Aceptar</button>
+                                <button @click="editCurrentTask" type="button" class="btn btn-success">Aceptar</button>
                             </div>
                         </div>
                     </div>
@@ -108,6 +108,8 @@
                                     <p>¿Está seguro de que desea eliminar la tarea?</p>
                                 </div>
                                 <div>
+                                    <label><strong>(Nota: <u>No se podrá volver a activar la tarea una vez
+                                                completado</u>)</strong></label>
                                     <label>Digite su contraseña</label>
                                     <br />
                                     <div class="row" style="margin-top: 15px;">
@@ -119,8 +121,8 @@
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
-                                <button @click="deleteRowList()"  class="btn btn-success">Aceptar</button>
+                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal" >Cancelar</button>
+                                <button @click="deleteRowList()"  :disabled="!confimPassworsDelete" class="btn btn-success">Aceptar</button>
                             </div>
                         </div>
                     </div>
@@ -220,6 +222,7 @@
                                             <div class="col-12" style="text-align: right;">
                                                 <p style="text-align: right;">Tiempo requerido: <b>{{ currentSubTask ? currentSubTask.Required_Time : 0.0 }}
                                                     </b> horas</p>
+                                                    <p style="text-align: right;">Estado actual:<b>{{ currentSubTask ? currentSubTask.Id_Status : 0.0 }}</b></p>
                                             </div>
                                         </div>
                                     <div class="col-md-12 col-xs-12" style="min-height: 350px; max-height: 400px">
@@ -255,11 +258,8 @@
                 
                 <!-- final ver subtarea -->
 
-
-
                 <!--Modal crear Subtarea-->
-
-                <div class="modal fade" id="crearSubtarea" tabindex="-1" aria-labelledby="crearSubtarea" aria-hidden="true">
+                <div v-if="modalShowSubTask" data-backdrop="static" data-keyboard="false" class="modal fade" id="crearSubtarea" tabindex="-1" aria-labelledby="crearSubtarea" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -277,10 +277,9 @@
                                 <div class="row">
                                     <div class="col-12">
                                         <div>
-                                            <br/>
                                             <label class="margin-15px-bottom text-black">Descripción<span style="color: red;"> *</span></label>
                                             <div>
-                                                <input v-model="descriptionSubTarea" required style="border-radius: 5px;" type="textarea" maxLength="100" placeholder="Descripción">
+                                                <input v-model="descriptionSubTarea" required style="border-radius: 5px;" type="textarea" maxLength="100" placeholder="Descripción...">
                                             </div>
                                         </div>
                                     </div>
@@ -315,8 +314,8 @@
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
-                                <button type="button" class="btn btn-success" data-bs-dismiss="modal" @click="createSubTask">Aceptar</button>
+                                <button type="button" class="btn btn-danger" @click="resetSubTaskCreation" data-bs-dismiss="modal">Cancelar</button>
+                                <button type="button" class="btn btn-success" @click="createSubTask">Aceptar</button>
                             </div>
                         </div>
                     </div>
@@ -327,7 +326,7 @@
 
                 <!--Modal editar Subtarea-->
 
-                <div class="modal fade" id="editarSubtarea" tabindex="-1" aria-labelledby="editarSubtarea" aria-hidden="true">
+                <div v-if="modalShowSubTask" class="modal fade" id="editarSubtarea" tabindex="-1" aria-labelledby="editarSubtarea" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -339,16 +338,15 @@
                                     <label>Título<span style="color: red;"> *</span></label>
                                     <br />
                                     <div style="margin-top: 15px;">
-                                        <input v-model="tituloSubTarea" required style="border-radius: 5px;" type="text" maxLength="45" placeholder="Nombre">
+                                        <input v-model="tituloSubTarea" required @input="handleChanges" style="border-radius: 5px;" type="text" maxLength="45" placeholder="Nombre">
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-12">
                                         <div>
-                                            <br/>
                                             <label class="margin-15px-bottom text-black">Descripción<span style="color: red;"> *</span></label>
                                             <div>
-                                                <input v-model="descriptionSubTarea" required style="border-radius: 5px;" type="textarea"  maxLength="100" placeholder="Descripción...">
+                                                <input v-model="descriptionSubTarea" @input="handleChanges" required style="border-radius: 5px;" type="textarea"  maxLength="100" placeholder="Descripción...">
                                             </div>
                                         </div>
                                     </div>
@@ -358,7 +356,7 @@
                                     <label>Estado<span style="color: red;"> *</span></label>
                                     <br />
                                     <div class="left-content" style="margin-top: 15px;">
-                                        <select v-model="statusSubTarea" required name="estado" id="estado" class="form-select text-black inputsGeneral" style="min-height: 48px;">
+                                        <select v-model="statusSubTarea" required @input="handleChanges" name="estado" id="estado" class="form-select text-black inputsGeneral" style="min-height: 48px;">
                                             <option v-for="status in statusOptions" :key="status" :value="status">{{ status }}</option>
                                         </select>
                                     </div>
@@ -368,7 +366,7 @@
                                     <label>Tiempo requerido (horas)<span style="color: red;"> *</span></label>
                                     <br />
                                     <div style="margin-top: 15px;">
-                                        <input v-model="requiredTimeSubTarea" required style="border-radius: 5px;" type="number" min="1" placeholder="1">
+                                        <input v-model="requiredTimeSubTarea" required @input="handleChanges" style="border-radius: 5px;" type="number" min="1" placeholder="1">
                                     </div>
                                 </div>
                                 <br />
@@ -376,7 +374,7 @@
                                     <label>Prioridad<span style="color: red;"> *</span></label>
                                     <br />
                                     <div class="left-content" style="margin-top: 15px;">
-                                        <select v-model="prioritySubTarea" required name="estado" id="estado" class="form-select text-black inputsGeneral" style="min-height: 48px;">
+                                        <select v-model="prioritySubTarea" required @input="handleChanges" name="estado" id="estado" class="form-select text-black inputsGeneral" style="min-height: 48px;">
                                             <option v-for="priority in priorityOptions" :key="priority" :value="priority">{{priority}}</option>
                                         </select>
                                     </div>
@@ -384,7 +382,7 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
-                                <button type="button" class="btn btn-success" data-bs-dismiss="modal" @click="editCurrentSubTask">Aceptar</button>
+                                <button type="button" class="btn btn-success" @click="editCurrentSubTask">Aceptar</button>
                             </div>
                         </div>
                     </div>
@@ -527,8 +525,8 @@
                                             <h4>Listado de Tareas</h4>
                                         </div>
                                         <ul style="text-align: right;">
-                                            <a v-if="recuperarUsuTipo() == 'Administrador'" class="li agregarBlt agregarResponsive" role="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop"><span class="fas fa-plus"></span> Crear Tarea</a>
-                                            <a v-if="recuperarUsuTipo() == 'Administrador'" class="li agregarBlt agregarResponsivePlus" role="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop"><span class="fas fa-plus"></span></a>
+                                            <a class="li agregarBlt agregarResponsive" @click="startTaskCreation" role="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop"><span class="fas fa-plus"></span> Crear Tarea</a>
+                                            <a class="li agregarBlt agregarResponsivePlus" @click="startTaskCreation" role="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop"><span class="fas fa-plus"></span></a>
                                         </ul>
                                     </div>
 
@@ -622,7 +620,7 @@
                                                         <span class="fas fa-check" b-tooltip.hover title="Finalizar"></span>
                                                     </button>
                                                     <button v-if="recuperarUsuTipo() == 'Administrador'" @click="() => startTaskEditing(tarea)" :disabled = "tarea.Id_Status == 'Finalizada'" style="margin-left: 5px;" type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editarTarea">
-                                                        <span class="fas fa-pen" style= "color:white" b-tooltip.hover title="Editar Tarea"></span>
+                                                        <span class="fas fa-pen" b-tooltip.hover title="Editar Tarea"></span>
                                                     </button>
                                                     <button v-if="recuperarUsuTipo() == 'Administrador'" @click="() => deleteTask(tarea)" type="button" class="btn btn-danger" style="margin-left: 5px;" data-bs-toggle="modal" data-bs-target="#exampleModal">
                                                         <span class="fas fa-trash" b-tooltip.hover title="Eliminar Tarea"></span>
@@ -790,7 +788,11 @@ export default {
 
             currentSprintId : 0,
 
-            subtareasPorTask : { }
+            subtareasPorTask : { },
+
+
+            modalShowTask : false,
+            modalShowSubTask : false
         }
     },
 
@@ -826,10 +828,15 @@ export default {
                 this.taskNameUnderEdit = ''
                 this.taskDescriptionUnderEdit = ''
                 this.taskStateUnderEdit = ''
-
-                this.$swal({ icon: 'success', text: 'Se modifico correctamente la tarea' });
+                this.modalShowTask = false
+                this.$swal({ icon: 'success', showConfirmButton:false, text: 'Se modifico correctamente la tarea' });
                 this.tareas = [];
                 this.getTareasDesdeAPI(); 
+
+                 setTimeout(() => {
+                    location.reload();
+                }, 1000);
+
             } else {
                 console.error({message : "Hubo un error al editar tarea", result});
             }
@@ -861,9 +868,15 @@ export default {
                 this.descriptionSubTarea = '';
                 this.statusSubTarea = '';
                 this.requiredTimeSubTarea = 0;
+                this.modalShowSubTask = false
+                this.$swal({ icon: 'success', showConfirmButton:false, text: 'Se modifico correctamente la subtarea' });
 
-                this.$swal({ icon: 'success', text: 'Se modifico correctamente la subtarea' });
                 this.getSubTareasDesdeAPI(this.currentSelectedTaskId);
+
+                setTimeout(() => {
+                    location.reload();
+                }, 1000);
+
             } else {
                 console.error({message : "Hubo un error al editar subtarea", result});
             }
@@ -930,13 +943,20 @@ export default {
 
             const validStates = [ "Pendiente", "En Proceso", "Finalizada" ]
             if (isEdit && !validStates.includes(task.Id_Status.trim())) {
-                
                 return this.$swal.fire({
                     position: 'center',
                     icon: 'error',
                     title: '¡Error!',
                     text: 'Se tiene que completar el campo del estado de la tarea',
                 })
+            }   
+
+            if (isEdit && !this.hasChanges) {
+                return this.$swal.fire({
+                    position: 'center',
+                    icon: 'warning',
+                    title: '¡No se realizó ningún cambio!',
+                });
             }
 
             return 'VALID';
@@ -994,6 +1014,14 @@ export default {
                     title: '¡Error!',
                     text: 'Se tiene que completar el campo de la prioridad de la subtarea',
                 })
+            }
+
+            if (isEdit && !this.hasChanges) {
+                return this.$swal.fire({
+                    position: 'center',
+                    icon: 'warning',
+                    title: '¡No se realizó ningún cambio!',
+                });
             }
 
             return 'VALID';
@@ -1079,6 +1107,7 @@ export default {
         },
 
         startTaskEditing(task) {
+            this.modalShowTask = true;
             this.selectCurrentTask(task);
 
             // cargar los campos para edicion
@@ -1088,7 +1117,12 @@ export default {
             this.taskNameUnderEdit = task.Task_Name
         },
 
+        startTaskCreation() {
+            this.modalShowTask = true;
+        },
+
         startSubTaskEditing(subTask) {
+            this.modalShowSubTask = true;
             this.selectCurrentSubTask(subTask);
 
             // cargar los campos para edicion
@@ -1100,7 +1134,7 @@ export default {
         },
 
         startSubTaskCreation(task) {
-
+            this.modalShowSubTask = true;
             this.currentSelectedTaskId = task.Id_Task;
 
             // reset de campos
@@ -1169,11 +1203,20 @@ export default {
             if (this.validateTask(task, false) !== 'VALID') {
                 return;
             }
+
+
+
             this.actualPage = 1
             await this.postTaskToAPI(task);
+            this.resetTaskCreation();
             this.tareas = []
             await this.getTareasDesdeAPI()
             await this.cutPages()
+        },
+
+        resetTaskCreation() {
+            this.taskName = ''
+            this.taskDescription = ''
         },
 
         createSubTask() {
@@ -1191,7 +1234,16 @@ export default {
             }
 
             this.postSubTaskToAPI(subTask);
+            this.resetSubTaskCreation();
             this.getSubTareasDesdeAPI(this.currentSelectedTaskId);
+        },
+
+        resetSubTaskCreation() {
+            this.tituloSubTarea = '',
+            this.descriptionSubTarea = ''
+            this.requiredTimeSubTarea = 0
+            this.prioritySubTarea = ''
+            this.statusSubTarea = ''
         },
 
         async getTareasDesdeAPI() {
@@ -1429,8 +1481,19 @@ export default {
                     this.taskName = ''
                     this.taskDescription = ''
                     // caso exitoso para creacion de tarea
-                    this.$swal({ icon: 'success', text: 'Se creo correctamente la tarea' });
+                    this.modalShowTask = false
+                    
+                    const swal = this.$swal({
+                            title: 'Se creo correctamente la tarea',
+                            icon:'success',
+                            showConfirmButton:false,
+                        });
                     this.getTareasDesdeAPI(); // llamamos a get tareas
+
+                    setTimeout(() => {
+                        swal.close();
+                        location.reload();
+                    }, 1000);
                 } else {
                     console.error({ message : 'Error al crear la tarea' , response});
                 }
@@ -1448,8 +1511,19 @@ export default {
                     this.taskDescription = ''
                     // caso exitoso para creacion de subtarea
                     const taskId = subTarea.Id_Task;
-                    this.$swal({ icon: 'success', text: 'Se creo correctamente la subtarea' });
+                    this.modalShowSubTask = false
+
+                    const swal = this.$swal({
+                            title: 'Se creo correctamente la subtarea',
+                            icon:'success',
+                            showConfirmButton:false,
+                        });
                     this.getSubTareasDesdeAPI(taskId); // llamamos a get subtareas
+
+                    setTimeout(() => {
+                        swal.close();
+                        location.reload();
+                    }, 1000);
                 } else {
                     console.error({ message : 'Error al crear la subtarea' , response});
                 }
@@ -1468,6 +1542,10 @@ export default {
             if (responsePriorities.data.ok) {
                 this.priorityOptions = responsePriorities.data.obj;
             }
+        },
+
+        handleChanges() {
+            this.hasChanges = true;
         },
     },
 
