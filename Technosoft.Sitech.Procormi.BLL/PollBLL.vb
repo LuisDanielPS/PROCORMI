@@ -12,6 +12,14 @@ Public Class PollBLL
         Return New PollBLL
     End Function
 
+    Public Function PostSendAnswer(poll As PollEN) As Reply(Of Boolean)
+
+        Dim reply As New Reply(Of Boolean)
+        reply = PollDAO.Instance.PostSendAnswer(poll)
+        Return reply
+
+    End Function
+
     Public Function PostNewPoll(poll As PollEN) As Reply(Of Boolean)
 
         Dim reply As New Reply(Of Boolean)

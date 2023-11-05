@@ -118,6 +118,16 @@ Namespace Controllers
 
         End Function
 
+
+        <HttpPut>
+        Public Function PutDisableComplete(pIdProject As Integer) As Reply(Of ProjectEN)
+
+            Dim reply As Reply(Of ProjectEN) = New Reply(Of ProjectEN)
+            reply = ProjectBLL.Instance.PutCompleteStatusBLL(pIdProject)
+            Return reply
+
+        End Function
+
         <HttpDelete>
         Public Function DeleteProject(pIdProject As String) As Reply(Of ProjectEN)
             Dim reply As Reply(Of ProjectEN) = New Reply(Of ProjectEN)

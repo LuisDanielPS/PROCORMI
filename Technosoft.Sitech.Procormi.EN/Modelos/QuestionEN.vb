@@ -62,4 +62,27 @@ Public Class QuestionEN
         End Set
     End Property
 
+    Private _AnswerOptions As List(Of AnswerOptionsEN)
+
+    <DataMember()>
+    Public Property AnswerOptions() As List(Of AnswerOptionsEN)
+        Get
+            Return _AnswerOptions
+        End Get
+        Set(value As List(Of AnswerOptionsEN))
+            _AnswerOptions = value
+        End Set
+    End Property
+
+    Private _AnswerText As AnswerTextEN
+
+    <DataMember()>
+    Public Property AnswerText() As AnswerTextEN
+        Get
+            Return _AnswerText
+        End Get
+        Set(value As AnswerTextEN)
+            _AnswerText = value
+        End Set
+    End Property
 End Class

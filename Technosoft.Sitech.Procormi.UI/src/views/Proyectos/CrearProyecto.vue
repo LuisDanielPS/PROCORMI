@@ -7,47 +7,57 @@
                 <MenuLateral />
                 <div class="w-100">
 
-                <!--Filtros responsive /-->
+                    <!--Filtros responsive /-->
 
-                <div class="row justify-content-center filtrosCelularBotones">
-                    <div class="col-5"></div>
-                    <div class="col-2 filtrosCelularBoton" v-if="!filtroDesplegar" v-on:click="desplegarFiltros()">
-                        <a class="text-gradient-yellow-orange-black fas fa-bars"></a>
-                    </div>
-                    <div class="col-5"></div>
-                </div>
-
-                <div class="filtrosCelular row justify-content-center" v-if="filtroDesplegar">
-
-                    <div class="col-lg-4 col-md-4 col-sm-12 row justify-content-center" style="margin-top: 40px;">
-                        <div class="col-8 textoBlanco" style="text-align: center; min-width: 150px;">
-                            <router-link role="button" :to="{ name: 'Inicio' }" class="textoBlanco textoEncuestas" style="text-decoration: none;" exact-active-class="active-link">Proyectos&nbsp;&nbsp;<i class="text-white fas fa-project-diagram" style="cursor: pointer; font-size: 14px;"></i></router-link>
+                    <div class="row justify-content-center filtrosCelularBotones">
+                        <div class="col-5"></div>
+                        <div class="col-2 filtrosCelularBoton" v-if="!filtroDesplegar" v-on:click="desplegarFiltros()">
+                            <a class="text-gradient-yellow-orange-black fas fa-bars"></a>
                         </div>
+                        <div class="col-5"></div>
                     </div>
-                    
-                    <div class="col-lg-4 col-md-4 col-sm-12 row justify-content-center" style="margin-top: 40px;">
-                        <div class="col-8 textoBlanco" style="text-align: center; min-width: 150px;">
-                            <router-link role="button" :to="{ name: 'Encuestas' }" class="textoBlanco textoEncuestas" style="text-decoration: none;" exact-active-class="active-link">Encuestas&nbsp;&nbsp;<i class="text-white fas fa-chart-line" style="cursor: pointer;"></i></router-link>
+
+                    <div class="filtrosCelular row justify-content-center" v-if="filtroDesplegar">
+
+                        <div class="col-lg-4 col-md-4 col-sm-12 row justify-content-center" style="margin-top: 40px;">
+                            <div class="col-8 textoBlanco" style="text-align: center; min-width: 150px;">
+                                <router-link role="button" :to="{ name: 'Inicio' }" class="textoBlanco textoEncuestas"
+                                    style="text-decoration: none;" exact-active-class="active-link">Proyectos&nbsp;&nbsp;<i
+                                        class="text-white fas fa-project-diagram"
+                                        style="cursor: pointer; font-size: 14px;"></i></router-link>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="col-lg-4 col-md-4 col-sm-12 row justify-content-center" style="margin-top: 40px;">
-                        <div class="col-8 textoBlanco" style="text-align: center;">
-                            <router-link role="button" :to="{ name: 'Reportes' }" class="textoBlanco textoEncuestas" style="text-decoration: none;" exact-active-class="active-link">Reportes&nbsp;&nbsp;<i class="text-white far fa-file-alt" style="cursor: pointer;"></i></router-link>
+                        <div class="col-lg-4 col-md-4 col-sm-12 row justify-content-center" style="margin-top: 40px;">
+                            <div class="col-8 textoBlanco" style="text-align: center; min-width: 150px;">
+                                <router-link role="button" :to="{ name: 'Encuestas' }" class="textoBlanco textoEncuestas"
+                                    style="text-decoration: none;" exact-active-class="active-link">Encuestas&nbsp;&nbsp;<i
+                                        class="text-white fas fa-chart-line" style="cursor: pointer;"></i></router-link>
+                            </div>
                         </div>
+
+                        <div class="col-lg-4 col-md-4 col-sm-12 row justify-content-center" style="margin-top: 40px;">
+                            <div class="col-8 textoBlanco" style="text-align: center;">
+                                <router-link role="button" :to="{ name: 'Reportes' }" class="textoBlanco textoEncuestas"
+                                    style="text-decoration: none;" exact-active-class="active-link">Reportes&nbsp;&nbsp;<i
+                                        class="text-white far fa-file-alt" style="cursor: pointer;"></i></router-link>
+                            </div>
+                        </div>
+
+                        <div style="text-align: center; font-size: large; padding-top: 40px; cursor: pointer; margin-left: 20px;"
+                            v-if="filtroDesplegar" v-on:click="desplegarFiltros()">
+                            <a class="text-white fas fa-angle-up" style="text-decoration: none;"></a>
+                        </div>
+
                     </div>
 
-                    <div style="text-align: center; font-size: large; padding-top: 40px; cursor: pointer; margin-left: 20px;" v-if="filtroDesplegar" v-on:click="desplegarFiltros()">
-                        <a class="text-white fas fa-angle-up" style="text-decoration: none;"></a>
-                    </div>
-
-                </div>
-
-                <!--Filtros responsive /-->
+                    <!--Filtros responsive /-->
 
                     <div class="col-12" style="margin-top: 30px;">
-                        <h4 style="text-align: center; font-size: 25px; color: #0a3a66;" v-if="!esEditar">Crear proyecto</h4>
-                        <h4 style="text-align: center; font-size: 25px; color: #0a3a66;" v-if="esEditar">Editar proyecto</h4>
+                        <h4 style="text-align: center; font-size: 25px; color: #0a3a66;" v-if="!esEditar">Crear proyecto
+                        </h4>
+                        <h4 style="text-align: center; font-size: 25px; color: #0a3a66;" v-if="esEditar">Editar proyecto
+                        </h4>
                         <br />
                         <div>
                             <div>
@@ -57,7 +67,9 @@
                                             <label class="margin-15px-bottom text-black">Nombre<span style="color: red;">
                                                     *</span></label>
                                             <input v-model.trim="project.Project_Name" maxlength="100"
-                                                class="small-input inputsGeneral" ref="inputProjectName" type="text" required>
+                                                class="small-input inputsGeneral" ref="inputProjectName" type="text"
+                                                required>
+                                            <span class="error-message">*Debes completar este campo.</span>
                                         </div>
                                         <br />
                                         <div class="row">
@@ -69,21 +81,25 @@
                                                         <div ref="Quill"
                                                             style="border: 1px solid gray; min-height: 200px; border-bottom-left-radius: 15px; border-bottom-right-radius: 15px;">
                                                         </div>
+                                                        <span id="error-message" style="color: red; display: none;"> *Debes
+                                                            completar este campo.</span>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                         <br />
                                         <div>
-                                            <label class="margin-15px-bottom text-black">Usuarios<span style="color: red;">
+                                            <label class=" margin-15px-bottom text-black">Usuarios<span style="color: red;">
                                                     *</span></label>
                                             <div class="containerPlus">
                                                 <div class="left-content">
                                                     <select v-model="selectedUser" required name="usuarios" id="usuarios"
-                                                        class="form-select text-black inputsGeneral" style="min-height: 48px;">
+                                                        class="form-select text-black inputsGeneral"
+                                                        style="min-height: 48px;">
                                                         <option :value="null">Seleccione una opción</option>
                                                         <option v-for="item in listUsers" :key="item.usu_Login"
-                                                            :value="JSON.stringify(item)">{{ item.usu_Nombre }}</option>
+                                                            :value="JSON.stringify(item)">{{ item.usu_Nombre
+                                                            }}</option>
                                                     </select>
                                                 </div>
                                                 <div class="right-content">
@@ -96,7 +112,8 @@
                                         <div class="row" style="margin-top: 4%">
                                             <div class="col-12">
                                                 <div class="table-responsive">
-                                                    <label class="margin-15px-bottom text-black">Listado de usuarios</label>
+                                                    <label class="margin-15px-bottom text-black">Listado de
+                                                        usuarios</label>
                                                     <table class="table bootstrap-datatable datatable">
                                                         <thead>
                                                             <tr>
@@ -125,13 +142,15 @@
                                         </div>
                                         <br />
                                         <div>
-                                            <label class="margin-15px-bottom text-black">Agregar adjuntos</label>
+                                            <label class="margin-15px-bottom text-black">Agregar
+                                                adjuntos</label>
                                             <div class="containerPlus">
                                                 <div class="left-content">
                                                     <div class="form-group">
-                                                        <div class="custom-file col-md-12" style="margin-left: 0px; padding: 0px;">
-                                                            <input id="SelectFile" @change="onFileSelected" class="inputsGeneral"
-                                                                type="file" ref="fileupload"
+                                                        <div class="custom-file col-md-12"
+                                                            style="margin-left: 0px; padding: 0px;">
+                                                            <input id="SelectFile" @change="onFileSelected"
+                                                                class="inputsGeneral" type="file" ref="fileupload"
                                                                 accept=".pdf, .docx, .xlsx, .jpg, .jpeg, .png, .txt"
                                                                 style="min-height: 48px;" />
                                                         </div>
@@ -147,7 +166,8 @@
                                         <div class="row" style="margin-top: 4%">
                                             <div class="col-12">
                                                 <div class="table-responsive">
-                                                    <label class="margin-15px-bottom text-black">Listado de adjuntos</label>
+                                                    <label class="margin-15px-bottom text-black">Listado de
+                                                        adjuntos</label>
                                                     <table class="table bootstrap-datatable datatable">
                                                         <thead>
                                                             <tr>
@@ -178,10 +198,12 @@
                                         <br />
                                         <div class="BotonesJ">
                                             <div><button type="button" @click="insertOrEditProject" class="btn btn-success"
-                                                    style="font-size: 16px; min-width: 100px;">Guardar</button></div>
+                                                    style="font-size: 16px; min-width: 100px;">Guardar</button>
+                                            </div>
                                             <br />
                                             <div><a href="/Inicio" class="btn btn-danger"
-                                                    style="font-size: 16px; min-width: 100px;">Cancelar</a></div>
+                                                    style="font-size: 16px; min-width: 100px;">Cancelar</a>
+                                            </div>
                                         </div>
                                     </div>
                                 </form>
@@ -258,16 +280,16 @@ export default {
 
         validarEditar: function () {
             let usutipo = this.recuperarUsuTipo()
-            
+
             if (usutipo === "Operador") {
-                
+
                 this.$router.push({ name: 'Inicio' });
 
                 this.$swal({ icon: 'warning', text: 'No tienes permiso para acceder' });
-                   
-                        
+
+
             }
-            
+
             if (this.idProyecto != 0) {
                 this.esEditar = true;
             } else {
@@ -319,7 +341,16 @@ export default {
             const maxLength = 1000;
 
             if (this.project.Project_Name.trim() == "") {
+                
                 this.$refs.inputProjectName.focus();
+                var content = this.quill.getText().trim(); 
+                var errorMessage = document.getElementById('error-message');
+
+                if (content === '') {
+                    errorMessage.style.display = 'block'; 
+                } else {
+                    errorMessage.style.display = 'none'; 
+                }
 
                 return this.$swal.fire({
                     position: 'top-end',
@@ -535,7 +566,7 @@ export default {
 
                                     this.listNewFileEdit.push(addFile);
                                     console.log(addFile);
-    
+
                                 }
                             }
                             try {
@@ -648,7 +679,7 @@ export default {
                         console.log(mensaje);
                         const response2 = await AdminApi.DeleteFileUplouds(fileToDelete.File_Name);
                         console.log(response2);
-                        
+
                     } catch (error) {
                         console.error('Error al eliminar el archivo de la base de datos:', error);
                     }
@@ -933,26 +964,26 @@ export default {
 
 /*-----------------------------------------*/
 
-.filtrosCelular{
+.filtrosCelular {
     padding-top: 20px;
     padding-left: 50px;
     padding-right: 50px;
     padding-bottom: 20px;
-    background: rgba(10,58,102,1);
+    background: rgba(10, 58, 102, 1);
 }
 
 @media screen and (min-width: 901px) {
 
-    .filtrosCelular{
+    .filtrosCelular {
         display: none;
     }
 }
 
-.filtrosCelularBoton{
+.filtrosCelularBoton {
     text-align: center;
     font-size: large;
     cursor: pointer;
-    background-color: rgba(10,58,102,1);
+    background-color: rgba(10, 58, 102, 1);
     height: 30px;
     border-bottom-right-radius: 10px;
     border-bottom-left-radius: 10px;
@@ -960,13 +991,23 @@ export default {
 }
 
 @media screen and (min-width: 901px) {
-    .filtrosCelularBotones{
+    .filtrosCelularBotones {
         display: none;
     }
 
-    .filtrosCelularBoton{
+    .filtrosCelularBoton {
         display: none;
     }
 }
 
+.error-message {
+    color: red;
+    display: none;
+    /* Inicialmente oculto */
+}
+
+input:invalid+.error-message {
+    display: block;
+    /* Mostrar el mensaje de error cuando el input sea inválido */
+}
 </style>

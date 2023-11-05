@@ -22,6 +22,15 @@ Namespace Controllers
 
         End Function
 
+        <HttpPost>
+        Public Function PostSendAnswer(poll As PollEN)
+
+            Dim reply As New Reply(Of Boolean)
+            reply = PollBLL.Instance.PostSendAnswer(poll)
+            Return reply
+
+        End Function
+
         Public Function getLink() As String
             Dim reply As String
             reply = PollBLL.Instance.getLink()

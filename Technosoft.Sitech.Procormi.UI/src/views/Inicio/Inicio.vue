@@ -84,6 +84,47 @@
 
                 <!--Modal Ver Proyecto-->
 
+                <!--Modal completar Sprint-->
+
+                <div class="modal fade" id="completarProyecto" tabindex="-1" aria-labelledby="completarProyecto"
+                    aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="completarSprint">Completar Proyecto</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div>
+                                    <p>¿Está seguro de que desea completar el proyecto? Para confirmar, primero valide su
+                                        contraseña.</p>
+                                </div>
+                                <div>
+                                    <label><strong>(Nota: <u>No se podrá volver a activar el proyecto una vez
+                                                completado</u>)</strong></label>
+                                    <br />
+                                    <div class="row" style="margin-top: 15px;">
+                                        <input v-model="verifyPassword" class="col-10"
+                                            style="margin-left: 10px; border-radius: 5px;" type="password" required
+                                            placeholder="Contraseña" maxlength="20">
+                                        <button @click="getPasswordVerifyDeleteRow()" type="button"
+                                            class="btn btn-success col-1" style="margin-left: 5px;"><span
+                                                class="fas fa-check"></span></button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                                <button class="btn btn-success" @click="CompleteStatusProject()"
+                                    :disabled="!isButtonEnabled">Aceptar</button>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--Modal completar Sprint-->
+
 
 
                 <!--Modal eliminar Proyecto-->
@@ -98,11 +139,14 @@
                             </div>
                             <div class="modal-body">
                                 <div>
-                                    <p>¿Está seguro de que desea eliminar el proyecto?</p>
+                                    <p>¿Está seguro de que desea eliminar el proyecto? Para confirmar, primero valide su
+                                        contraseña.</p>
+
+                                    <label><strong>(Nota: <u>No se podrá recuperar el proyecto una vez
+                                                eliminado</u>)</strong></label>
                                 </div>
                                 <div>
-                                    <label>Digite su contraseña</label>
-                                    <br />
+
                                     <div class="row" style="margin-top: 15px;">
                                         <input type="password" v-model="verifyPassword" class="col-10"
                                             style="margin-left: 10px; border-radius: 5px;" required
@@ -115,7 +159,8 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
-                                <button @click="deleteRowList()" class="btn btn-success">Aceptar</button>
+                                <button :disabled="!isButtonEnabled" @click="deleteRowList()"
+                                    class="btn btn-success">Aceptar</button>
                             </div>
                         </div>
                     </div>
@@ -276,7 +321,8 @@
                                                     <td @click="verSprints(proyecto.Id_project)" class="claseTD">{{
                                                         $filters.FormatearFecha(proyecto.Creation_Date) }}</td>
                                                     <td @click="verSprints(proyecto.Id_project)" class="claseTD">{{
-                                                        proyecto.Id_State == 1 ? "Activo" : "Inactivo" }}</td>
+                                                        proyecto.Id_State == 1 ? "Activo" : (proyecto.Id_State == 5 ?
+                                                            "Finalizado" : "Inactivo") }}</td>
                                                     <td class="text-white">
                                                         <button @click="saveViewProjectModal(proyecto)" type="button"
                                                             class="btn btn-primary" data-bs-toggle="modal"
@@ -284,10 +330,21 @@
                                                             <span class="fas fa-eye" b-tooltip.hover
                                                                 title="Ver Proyecto"></span>
                                                         </button>
+
+
+                                                        <button v-show="showElement" style="margin-left: 5px;"
+                                                            @click="saveIdProjectDelete(proyecto.Id_project)" type="button"
+                                                            class="btn btn-success" data-bs-toggle="modal"
+                                                            data-bs-target="#completarProyecto"
+                                                            :disabled="proyecto.Id_State == 5">
+                                                            <span class="fas fa-check" b-tooltip.hover
+                                                                title="Completar Proyecto"></span>
+                                                        </button>
+
                                                         <button v-show="showElement" style="margin-left: 5px;" type="button"
-                                                            class="btn btn-success"
+                                                            class="btn btn-warning"
                                                             @click="EditarProyecto(proyecto.Id_project)">
-                                                            <span class="fas fa-pen" b-tooltip.hover
+                                                            <span  class="fas fa-pen" style="color: white"  b-tooltip.hover
                                                                 title="Editar Proyecto"></span>
                                                         </button>
                                                         <button v-show="showElement"
@@ -341,6 +398,8 @@ export default {
 
     data() {
         return {
+
+            isButtonEnabled: false,
             ViewProject: {
                 Id_project: this.idProyecto,
                 Project_Name: "",
@@ -550,7 +609,7 @@ export default {
         },
 
         goBack: async function () {
-            if (this.actualPage > 1){
+            if (this.actualPage > 1) {
                 this.paginateData = []
                 let paginaAnt = this.actualPage - 1
                 this.actualPage = paginaAnt
@@ -682,12 +741,10 @@ export default {
 
                     this.confimPassworsDelete = true
                     this.$swal({ icon: 'success', text: 'Se verifico correctamente la contraseña' });
+                    this.isButtonEnabled = true;
 
                 }
-                else {
-                    this.$swal({ icon: 'warning', text: 'La contraseña que insertaste no es correcta' });
 
-                }
 
             } catch (error) {
                 console.error('Error al cargar los proyectos desde la API:', error);
@@ -716,6 +773,25 @@ export default {
 
         }
         ,
+        CompleteStatusProject: async function () {
+
+            try {
+
+                if (this.confimPassworsDelete) {
+                    const response = await AdminApi.PutCompleteStatus(this.idProjectDeleteVerify);
+                    const mensage = response.data.ok;
+                    console.log(mensage)
+                    location.reload()
+
+                }
+
+
+            } catch (error) {
+                console.error('Error al cargar los proyectos desde la API:', error);
+            }
+
+        }
+        ,
         saveIdProjectDelete: function (idProject) {
             this.idProjectDeleteVerify = idProject
 
@@ -734,28 +810,28 @@ export default {
             const response = await AdminApi.GetFileListProject(idProject);
             const fileListIndex = response.data.obj;
 
-            if (fileListIndex &&fileListIndex.length>0) { 
-            
-            for (const item of fileListIndex) {
-            
-                try {
+            if (fileListIndex && fileListIndex.length > 0) {
 
-                    const response = await AdminApi.GetDownloadFile(item.File_Name)
-                    const url = window.URL.createObjectURL(new Blob([response.data]));
-                    const link = document.createElement('a');
-                    link.href = url;
-                    link.setAttribute('download', item.File_Name);
-                    document.body.appendChild(link);
-                    link.click();
+                for (const item of fileListIndex) {
+
+                    try {
+
+                        const response = await AdminApi.GetDownloadFile(item.File_Name)
+                        const url = window.URL.createObjectURL(new Blob([response.data]));
+                        const link = document.createElement('a');
+                        link.href = url;
+                        link.setAttribute('download', item.File_Name);
+                        document.body.appendChild(link);
+                        link.click();
+                    }
+                    catch (error) {
+
+                        this.$swal({ icon: 'info', text: 'No se encontro archivos relacionados con este proyecto' });
+                    }
                 }
-                catch (error) {
-                    
-                    this.$swal({ icon: 'info', text: 'No se encontro archivos relacionados con este proyecto' });
-                }
+            } else {
+                this.$swal({ icon: 'info', text: 'No se encontro archivos relacionados con este proyecto' });
             }
-        }else{
-            this.$swal({ icon: 'info', text: 'No se encontro archivos relacionados con este proyecto' });
-        }
 
 
         }

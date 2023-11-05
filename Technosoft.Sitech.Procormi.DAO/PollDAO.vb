@@ -76,6 +76,54 @@ Public Class PollDAO
 
     End Function
 
+    Public Function PostSendAnswer(poll As PollEN) As Reply(Of Boolean)
+
+        Dim reply As New Reply(Of Boolean)
+
+
+        Try
+
+
+            For Each question In poll.Questions
+
+                If question.AnswerText IsNot Nothing Then
+
+                    sentence = "INSERT INTO answer_text (Text, Id_Question) VALUES ('" & question.AnswerText.Text & "', " & question.Id_Question & ");"
+
+                    ConexionDAO.Instancia.EjecutarSentenciaSimple(sentence)
+                End If
+
+
+                If question.AnswerOptions IsNot Nothing Then
+                    For Each opt In question.AnswerOptions
+                        sentence = ""
+                        sentence = "INSERT INTO answer_options (Id_Question_Option) VALUES ('" & opt.Id_Question_Option & "');"
+
+                        ConexionDAO.Instancia.EjecutarSentenciaSimple(sentence)
+                    Next
+                End If
+
+            Next
+
+
+            reply.ok = True
+            reply.obj = True
+            reply.msg = "Se envio correctamente la encuesta"
+
+        Catch ex As Exception
+
+            reply.ok = False
+            reply.obj = False
+            reply.msg = "Error al enviar la encuesta " & ex.Message
+
+        End Try
+
+        Return reply
+
+    End Function
+
+
+
     Public Function getLink() As String
         Try
             Return rutaEncuesta

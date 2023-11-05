@@ -21,7 +21,7 @@ Public Class ProjectDAO
 
         Try
 
-            sentence = "SELECT * FROM project WHERE Id_Status = 1"
+            sentence = "SELECT * FROM project WHERE Id_Status <> 2"
 
             Using dr As MySqlDataReader = ConexionDAO.Instancia.ExecuteConsult(sentence)
 
@@ -507,6 +507,40 @@ Public Class ProjectDAO
 
             ElseIf pIdProject <> 0 Then
                 sentence = "UPDATE project SET Id_Status = 2  WHERE Id_project = @Condition"
+
+                ConexionDAO.Instancia.ExecuteConsultCondition(sentence, pIdProject)
+                reply.ok = True
+                reply.msg = "Se ha eliminado el proyecto"
+
+            End If
+
+
+
+        Catch ex As Exception
+            EscritorVisorEventos.Instancia().EscribirEvento(nameClass, MethodBase.GetCurrentMethod().Name, ex)
+            reply.ok = False
+            reply.msg = "No fue posible ejecutar la consulta: " & ex.Message
+            Return reply
+        End Try
+
+
+        Return reply
+
+
+    End Function
+
+    Public Function PutCompleteStatusDAO(ByVal pIdProject As Integer) As Reply(Of ProjectEN)
+
+        Dim reply As New Reply(Of ProjectEN)
+
+        Try
+            If pIdProject = 0 Then
+                reply.ok = False
+                reply.msg = "El objeto del projecto esta Vacio"
+
+
+            ElseIf pIdProject <> 0 Then
+                sentence = "UPDATE project SET Id_Status = 5  WHERE Id_project = @Condition"
 
                 ConexionDAO.Instancia.ExecuteConsultCondition(sentence, pIdProject)
                 reply.ok = True

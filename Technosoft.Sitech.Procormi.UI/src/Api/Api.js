@@ -313,6 +313,14 @@ export default {
         })
 
     }, 
+    PutCompleteStatus(IdProject)
+    {
+        return apicliente.put('Project/PutDisableComplete?pIdProject='+ IdProject, {
+            withCredentials: false,
+            headers: { 'Content-Type': 'application/json; charset=UTF-8' }
+        })
+
+    }, 
 
     PutTaskAsFinished(IdTask) {
         return apicliente.put(`Task/PutTaskAsFinished?pTaskId=${IdTask}`, {
@@ -409,6 +417,14 @@ export default {
             headers: { 'Content-Type': 'application/json; charset=UTF-8' }
         })
     },
+
+    PostSendAnswer(poll) {
+        return apicliente.post('Poll/PostSendAnswer', poll, {
+            withCredentials: false,
+            headers: { 'Content-Type': 'application/json; charset=UTF-8' }
+        })
+    }
+    ,
 
     GetAllPolls() {
         return apicliente.get('Poll/GetAllPolls', {
