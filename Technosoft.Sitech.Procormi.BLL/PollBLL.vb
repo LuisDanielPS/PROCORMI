@@ -28,6 +28,14 @@ Public Class PollBLL
 
     End Function
 
+    Public Function UpdatePull(poll As PollEN) As Reply(Of Boolean)
+
+        Dim reply As New Reply(Of Boolean)
+        reply = PollDAO.Instance.UpdatePull(poll)
+        Return reply
+
+    End Function
+
     Public Function getLink() As String
         Dim reply As String
         reply = PollDAO.Instance.getLink()

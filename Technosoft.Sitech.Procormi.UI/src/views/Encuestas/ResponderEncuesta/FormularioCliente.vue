@@ -81,9 +81,9 @@
                                 <br />
                                 <br />
                                 <div class="row justify-content-end">
-                                    <div class="col-2">
+                                    <div class="col-12">
                                         <button type="submit"  class="btn btn-success"
-                                            style="min-width: 120px; font-size: 20px; float: right;">Enviar
+                                            style="min-width: 150px !important; font-size: 20px; float: right;">Enviar
                                             respuestas</button>
                                     </div>
                                 </div>
@@ -166,7 +166,11 @@ export default {
     methods: {
 
         getPoll: async function () {
-            let id = this.$route.params.encuesta
+            //let id = this.$route.params.encuesta
+            var url = window.location.href;
+            let id = url.substring(url.lastIndexOf('/') + 1);
+
+
             await AdminApi.getLink()
                 .then(async response => {
                     if (response.data != null) {
@@ -182,11 +186,9 @@ export default {
                         this.poll = response.data
                     }
                 })
-
-            console.log(this.poll)
         },
+        
         SendAnswer: async function () {
-            console.log(this.poll)
             await AdminApi.PostSendAnswer(this.poll)
                 .then(response => {
                     if (response.data.obj == true) {
@@ -209,9 +211,6 @@ export default {
 
 
             question.AnswerOptions = [];
-
-
-
 
             const newAnswerOption = {
                 Id_Answer_Option: 0,

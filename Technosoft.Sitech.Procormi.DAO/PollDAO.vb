@@ -27,7 +27,7 @@ Public Class PollDAO
         creationDate = DateTime.Now
         Dim format As String = "yyyy-MM-dd HH:mm:ss"
         Dim formatDate As String = creationDate.ToString(format)
-        Dim idEncriptado As String
+        'Dim idEncriptado As String
 
         Try
 
@@ -58,17 +58,80 @@ Public Class PollDAO
 
             Next
 
-            idEncriptado = Encrypt(idPoll)
+            'idEncriptado = Encrypt(idPoll)
 
             reply.ok = True
             reply.obj = True
-            reply.msg = "Encuesta registrada con éxito. El link de la encuesta es el siguiente: " & rutaEncuesta & "/" & idEncriptado
+            reply.msg = "Encuesta registrada con éxito. Puede consultar el link desde la sección de visualizar encuesta."
 
         Catch ex As Exception
 
             reply.ok = False
             reply.obj = False
             reply.msg = "Error al registrar la encuesta: " & ex.Message
+
+        End Try
+
+        Return reply
+
+    End Function
+
+    Public Function UpdatePull(poll As PollEN) As Reply(Of Boolean)
+        Dim reply As New Reply(Of Boolean)
+        Dim editingPoll As New PollEN
+
+        Try
+
+            editingPoll = GetPoll(Encrypt(poll.Id_Poll))
+
+            sentence = "UPDATE Poll set Name = '" & poll.Name & "', Description = '" & poll.Description & "' WHERE Id_Poll = " & poll.Id_Poll & ";"
+
+            ConexionDAO.Instancia.EjecutarSentenciaSimple(sentence)
+
+            For Each question In editingPoll.Questions
+
+                sentence = ""
+                sentence = "Delete FROM question_options WHERE Id_Question = " & question.Id_Question & ";"
+
+                ConexionDAO.Instancia.EjecutarSentenciaSimple(sentence)
+
+                sentence = ""
+                sentence = "Delete FROM question WHERE Id_Question = " & question.Id_Question & ";"
+
+                ConexionDAO.Instancia.EjecutarSentenciaSimple(sentence)
+
+            Next
+
+            For Each question In poll.Questions
+
+                sentence = ""
+                sentence = "INSERT INTO question (TextQuestion, Id_Poll, Id_Question_Type) VALUES ('" & question.TextQuestion & "', " & poll.Id_Poll & ", " & question.Id_Question_Type & ");"
+
+                ConexionDAO.Instancia.EjecutarSentenciaSimple(sentence)
+
+                Dim idQuestion As New Integer
+                idQuestion = LastQuestion()
+
+                If question.Question_Options IsNot Nothing Then
+                    For Each opt In question.Question_Options
+                        sentence = ""
+                        sentence = "INSERT INTO question_options (Id_Question, Option_Text) VALUES (" & idQuestion & ", '" & opt.Option_Text & "');"
+
+                        ConexionDAO.Instancia.EjecutarSentenciaSimple(sentence)
+                    Next
+                End If
+
+            Next
+
+            reply.ok = True
+            reply.obj = True
+            reply.msg = "Encuesta modificada con éxito."
+
+        Catch ex As Exception
+
+            reply.ok = False
+            reply.obj = False
+            reply.msg = "Error al modificar la encuesta: " & ex.Message
 
         End Try
 

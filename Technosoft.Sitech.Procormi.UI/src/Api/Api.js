@@ -418,6 +418,13 @@ export default {
         })
     },
 
+    UpdatePull(poll) {
+        return apicliente.post('Poll/UpdatePull', poll, {
+            withCredentials: false,
+            headers: { 'Content-Type': 'application/json; charset=UTF-8' }
+        })
+    },
+
     PostSendAnswer(poll) {
         return apicliente.post('Poll/PostSendAnswer', poll, {
             withCredentials: false,

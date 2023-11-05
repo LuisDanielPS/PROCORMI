@@ -22,6 +22,14 @@ Namespace Controllers
 
         End Function
 
+        Public Function UpdatePull(poll As PollEN) As Reply(Of Boolean)
+
+            Dim reply As New Reply(Of Boolean)
+            reply = PollBLL.Instance.UpdatePull(poll)
+            Return reply
+
+        End Function
+
         <HttpPost>
         Public Function PostSendAnswer(poll As PollEN)
 

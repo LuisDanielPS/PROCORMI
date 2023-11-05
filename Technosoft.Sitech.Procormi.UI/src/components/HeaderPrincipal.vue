@@ -22,7 +22,7 @@
                             </div>
 
                             <div class="col-1 botonAplicaciones">
-                                <button style="float: right;" class="nav-toggle nav-toggleColor"
+                                <button v-if="recuperarUsuLog() != undefined" style="float: right;" class="nav-toggle nav-toggleColor"
                                     @click.prevent="DesplegarMenu()">
                                     <i class="fas fa-user-circle"></i>
                                 </button>

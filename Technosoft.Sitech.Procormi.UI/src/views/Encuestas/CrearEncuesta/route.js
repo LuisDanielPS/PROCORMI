@@ -7,8 +7,8 @@ const route = [
         component: CrearEncuesta
     },
     {
-        path: '/CrearEncuesta/:id',
-        name: 'CrearEncuestaEdit',
+        path: '/EditarEncuesta/:id',
+        name: 'EditarEncuesta',
         component: CrearEncuesta,
     },
 ];

@@ -162,7 +162,7 @@
                                                         <button class="btn btn-primary" role="button" @click="VerEncuesta(poll.Id_Poll)">
                                                             <span class="fas fa-eye" b-tooltip.hover title="Ver Encuesta"></span>
                                                         </button>
-                                                        <button style="margin-left: 5px;" type="button" class="btn btn-success" @click="EditarEncuesta(1)">
+                                                        <button style="margin-left: 5px;" type="button" class="btn btn-success" @click="EditarEncuesta(poll.Id_Poll)">
                                                             <span class="fas fa-pen" b-tooltip.hover title="Editar Encuesta"></span>
                                                         </button>
                                                         <button type="button" class="btn btn-danger" style="margin-left: 5px;" @click="DeletePoll(poll.Id_Poll)">
@@ -317,7 +317,7 @@ export default {
 
         EditarEncuesta: function(EncuestaID) {
             this.$router.push({
-                name: "CrearEncuestaEdit",
+                name: "EditarEncuesta",
                 params: {
                     id: EncuestaID,
                 }

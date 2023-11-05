@@ -159,7 +159,7 @@
                                         <br />
                                         <br />
                                         <div class="row justify-content-end">
-                                            <div class="col-2">
+                                            <div>
                                                 <button class="btn btn-success" style="min-width: 100px; position: absolute; right: 210px;" @click="sendPoll">Guardar</button>
                                             </div>
                                             <div class="col-2">
@@ -187,6 +187,7 @@ import Quill from 'quill'
 import 'quill/dist/quill.snow.css'
 import Cookies from 'js-cookie';
 import AdminApi from '@/Api/Api';
+import CryptoJS from 'crypto-js';
 
 export default {
 
@@ -242,31 +243,32 @@ export default {
             this.encuesta.Description = description
 
             if (this.encuesta.Name.trim() == "") {
-                this.$swal.fire({
+                loader.hide()
+                return this.$swal.fire({
                         position: 'top-end',
                         text: 'Por favor, digite el título de la encuesta',
                         showConfirmButton: false,
                         timer: 3000
                     })
-                loader.hide()
             } else if (this.encuesta.Description.trim() == "") {
-                this.$swal.fire({
+                loader.hide()
+                return this.$swal.fire({
                         position: 'top-end',
                         text: 'Por favor, digite la descripción de la encuesta',
                         showConfirmButton: false,
                         timer: 3000
                     })
-                loader.hide()
             } else if (this.encuesta.Questions.length == 0) {
-                this.$swal.fire({
+                loader.hide()
+                return this.$swal.fire({
                         position: 'top-end',
                         text: 'Por favor, digite al menos una pregunta',
                         showConfirmButton: false,
                         timer: 3000
                     })
-                loader.hide()
             }
-            await AdminApi.PostNewPoll(this.encuesta)
+            if (this.idEncuesta == 0) {
+                await AdminApi.PostNewPoll(this.encuesta)
                 .then(response => {
                     if (response.data.obj == true) {
                         this.$swal.fire({
@@ -275,9 +277,23 @@ export default {
                             text: response.data.msg,
                             showConfirmButton: true
                         })
-                        //this.limpiarContenido()
+                        this.limpiarContenido()
                     }
                 })
+            } else {
+                await AdminApi.UpdatePull(this.encuesta)
+                .then(response => {
+                    if (response.data.obj == true) {
+                        this.$swal.fire({
+                            icon: 'success',
+                            position: 'center',
+                            text: response.data.msg,
+                            showConfirmButton: true
+                        })
+                        this.getPoll()
+                    }
+                })
+            }
             loader.hide()
         },
 
@@ -366,6 +382,33 @@ export default {
 
         //Preguntas
 
+        //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!Editar!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+        getPoll: async function () {
+            let id = this.encrypt(this.idEncuesta)
+            await AdminApi.GetPoll(id)
+                .then(async response => {
+                    if (response.data != null) {
+                        this.quill.root.innerHTML = response.data.Description
+                        this.encuesta = response.data
+                    }
+                })
+
+        },
+
+        //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!Editar!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+        encrypt(valor) {
+            const clave = CryptoJS.enc.Base64.parse("prmDMvIvPNlrmcsgLM1/c34GHjA7D2P2");
+            const iv = CryptoJS.enc.Utf8.parse("cmprmasr");
+
+            const encrypted = CryptoJS.TripleDES.encrypt(valor, clave, {
+                iv: iv
+            });
+
+            return encrypted.toString();
+        },
+
         limpiarEditor: function () {
             this.quill.root.innerHTML = ""
         },
@@ -416,6 +459,9 @@ export default {
         await this.verificarLog();
         await this.$root.validarLoginFooter.call();
         await this.validarEditar();
+        if (this.idEncuesta != 0) {
+            await this.getPoll();
+        }
     }
 
 }
