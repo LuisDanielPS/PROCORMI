@@ -69,6 +69,7 @@
     <Compile Include="Modelos\AnswerTextEN.vb" />
     <Compile Include="Modelos\FileEN.vb" />
     <Compile Include="Modelos\PollEN.vb" />
+    <Compile Include="Modelos\PollReportVM.vb" />
     <Compile Include="Modelos\ProjectFileEN.vb" />
     <Compile Include="Modelos\ProjectStatusVM.vb" />
     <Compile Include="Modelos\QuestionEN.vb" />

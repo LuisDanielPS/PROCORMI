@@ -160,6 +160,44 @@
                     </div>
                 </div>
 
+                <div class="modal fade" id="listPollReport" tabindex="-1" aria-labelledby="exampleModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="exampleModalLabel">Generar reporte de encuesta
+
+                                </h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="content-icon">
+
+                                    <span class="fas fa-file-excel"></span>
+
+                                </div>
+
+                                <div>
+                                    <label>Busque el usuario del que desea generar la encuesta</label>
+                                    <br />
+                                    <div class="row" style="margin-top: 15px;">
+                                        <select v-model="elementSelectPoll" required name="poll" id="poll"
+                                            class="form-select text-black inputsGeneral" style="min-height: 48px;">
+                                            <option :value="null">Seleccione una opción</option>
+                                            <option v-for="item in listPoll" :key="item.Id_Poll"
+                                                :value="JSON.stringify(item)">{{ item.Name }}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                                <button @click="downloadExcelReportPoll()" class="btn btn-success">Generar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
                 <div class="w-100 listadoGeneral">
 
@@ -311,6 +349,25 @@
                                                         </button>-->
                                                     </td>
                                                 </tr>
+                                                <tr>
+                                                    <td>Reporte de encuestas</td>
+                                                    <td class="text-white">
+                                                        <button data-bs-toggle="modal" data-bs-target="#listPollReport"
+                                                            type="button" class="btn btn-primary" style="margin-left: 5px;">
+                                                            <span class="fas fa-file-download" b-tooltip.hover
+                                                                title="Excel"></span>
+                                                        </button>
+                                                        <!--<button class="btn btn-success" role="button" @click="verSprints">
+                                                            <span class="fas fa-file-excel" b-tooltip.hover title="EXCEL"></span>
+                                                        </button>
+                                                        <button style="margin-left: 5px;" type="button" class="btn btn-primary">
+                                                            <span class="fas fa-file-word" b-tooltip.hover title="WORD"></span>
+                                                        </button>
+                                                        <button type="button" class="btn btn-danger" style="margin-left: 5px;">
+                                                            <span class="fas fa-file-pdf" b-tooltip.hover title="PDF"></span>
+                                                        </button>-->
+                                                    </td>
+                                                </tr>
                                             </tbody>
                                         </table>
 
@@ -343,15 +400,17 @@ export default {
 
     data() {
         return {
+            elementSelectPoll: null,
             elementSelectUsuLogin: null,
             filtroDesplegar: false,
             selectedUser: null,
             listUsers: [],
+            listPoll: [],
             dataListProjectUser: [],
             dataListSprintUser: [],
             dataListTaskUser: [],
-            dataListSubTaskUser: []
-
+            dataListSubTaskUser: [],
+            dataListPoll: []
         }
     },
 
@@ -382,20 +441,20 @@ export default {
             let login = this.recuperarUsuLog()
             let nombre = this.recuperarUsuNombre()
             let usutipo = this.recuperarUsuTipo()
-            
+
 
             if (login == null || (nombre == undefined || nombre == null || nombre == '')) {
                 this.$router.push("/");
                 this.$swal({ icon: 'warning', text: 'Aún no ha iniciado sesión, por favor verifique' });
             }
-            
+
             if (usutipo === "Operador") {
-                
+
                 this.$router.push({ name: 'Inicio' });
 
                 this.$swal({ icon: 'warning', text: 'No tienes permiso para acceder' });
-                   
-                        
+
+
             }
 
         },
@@ -405,6 +464,16 @@ export default {
                 const response = await AdminApi.GetALLUsers();
                 const userList = response.data.obj;
                 this.listUsers = userList;
+            } catch (error) {
+                console.error('Error al cargar los proyectos desde la API:', error);
+            }
+
+        },
+        loadPollSelect: async function () {
+            try {
+                const response = await AdminApi.GetAllPolls();
+                const listPoll = response.data.obj;
+                this.listPoll = listPoll;
             } catch (error) {
                 console.error('Error al cargar los proyectos desde la API:', error);
             }
@@ -950,7 +1019,7 @@ export default {
                     const cell = worksheet.getCell('A1');
                     cell.width = 100;
                     worksheet.addRow(["#Nombre del usuario", selectedUserObject.usu_Nombre, "Correo Electronico", selectedUserObject.usu_email]);
-                    worksheet.addRow(["#Numero de Sub Tarea", "Titulo", "Descripcion", "#Numero de tarea", "Nombre de tarea", "Descripcion","Numero de proyecto","Nombre sprint","Prioridad","Estado"]);
+                    worksheet.addRow(["#Numero de Sub Tarea", "Titulo", "Descripcion", "#Numero de tarea", "Nombre de tarea", "Descripcion", "Numero de proyecto", "Nombre sprint", "Prioridad", "Estado"]);
                     worksheet.getRow(1).eachCell((cell) => {
                         cell.fill = HeaderStyle.fill;
                         cell.border = HeaderStyle.border;
@@ -967,7 +1036,7 @@ export default {
                         cell.font = fontRowStyle;
                     });
                     for (const item of this.dataListSubTaskUser) {
-                        const row = worksheet.addRow([item.Id_Sub_Task, item.Title, item.Description, item.Id_Task, item.Task_Name, item.Description_Task, item.Id_Project,item.Sprint_Name,item.Priority_Name,item.Status_Name]);
+                        const row = worksheet.addRow([item.Id_Sub_Task, item.Title, item.Description, item.Id_Task, item.Task_Name, item.Description_Task, item.Id_Project, item.Sprint_Name, item.Priority_Name, item.Status_Name]);
 
 
                         row.eachCell({ includeEmpty: true }, (cell) => {
@@ -1014,6 +1083,210 @@ export default {
             }
 
         },
+        downloadExcelReportPoll: async function () {
+
+            const selectedPollObject = JSON.parse(this.elementSelectPoll);
+
+            if (selectedPollObject !== null) {
+
+                try {
+                    const response = await AdminApi.GetPollReport(selectedPollObject.Id_Poll);
+                    const data = response.data.obj;
+                    this.dataListPoll = data;
+                } catch (error) {
+                    console.error('Error al cargar los proyectos desde la API:', error);
+                }
+
+                if (this.dataListPoll && this.dataListPoll.length > 0) {
+
+                    const fontStyle = {
+                        name: 'Arial',
+                        size: 30,
+                        bold: true,
+                        italic: true,
+                        underline: false,
+                        color: { argb: 'FFFFFF' },
+                    };
+
+                    const fontDataUserStyle = {
+                        name: 'Arial',
+                        size: 12,
+                        bold: true,
+                        italic: true,
+                        underline: false,
+                        color: { argb: 'FFFFFF' },
+                    };
+
+                    const fontRowStyle = {
+                        name: 'Arial',
+                        size: 12,
+                        bold: true,
+                        italic: true,
+                        underline: false,
+                        color: { argb: '000000' },
+                    };
+                    const HeaderStyle = {
+                        fill: { type: 'pattern', pattern: 'solid', fgColor: { argb: 'F7F704' } },
+                        border: {
+                            top: { style: 'thin', color: { argb: '000000' } },
+                            left: { style: 'thin', color: { argb: '000000' } },
+                            bottom: { style: 'thin', color: { argb: '000000' } },
+                            right: { style: 'thin', color: { argb: '000000' } },
+                        },
+                    };
+
+                    const DataUserStyle = {
+                        fill: { type: 'pattern', pattern: 'solid', fgColor: { argb: '244062' } },
+                        border: {
+                            top: { style: 'thin', color: { argb: '000000' } },
+                            left: { style: 'thin', color: { argb: '000000' } },
+                            bottom: { style: 'thin', color: { argb: '000000' } },
+                            right: { style: 'thin', color: { argb: '000000' } },
+                        },
+                    };
+                    const rowStyle = {
+                        fill: { type: 'pattern', pattern: 'solid', fgColor: { argb: 'F2F2F2' } },
+                        border: {
+                            top: { style: 'thin', color: { argb: '000000' } },
+                            left: { style: 'thin', color: { argb: '000000' } },
+                            bottom: { style: 'thin', color: { argb: '000000' } },
+                            right: { style: 'thin', color: { argb: '000000' } },
+                        },
+                    };
+
+
+                    const workbook = new ExcelJS.Workbook();
+                    const worksheet = workbook.addWorksheet("Informe tipo pregunta texto");
+
+                    worksheet.getColumn(1).width = 60;
+                    worksheet.getColumn(1).alignment = { horizontal: 'center', vertical: 'middle' };
+                    worksheet.getColumn(2).width = 90;
+                    worksheet.getColumn(3).width = 30;
+                    worksheet.getColumn(4).width = 30;
+                    worksheet.getColumn(5).width = 30;
+                    worksheet.getColumn(6).width = 30;
+                    worksheet.getColumn(7).width = 30;
+                    worksheet.getColumn(8).width = 30;
+                    worksheet.getColumn(9).width = 30;
+                    worksheet.getColumn(10).width = 30;
+                    worksheet.addRow(["Reporte de Encuesta", "Procormi"]);
+                    const cell = worksheet.getCell('A1');
+                    cell.width = 100;
+                    worksheet.addRow(["#Nombre de la encuesta", selectedPollObject.Name]);
+                    worksheet.addRow(["Pregunta", "Respuesta de Texto"]);
+                    worksheet.getRow(1).eachCell((cell) => {
+                        cell.fill = HeaderStyle.fill;
+                        cell.border = HeaderStyle.border;
+                        cell.font = fontStyle;
+                    });
+                    worksheet.getRow(2).eachCell((cell) => {
+                        cell.fill = DataUserStyle.fill;
+                        cell.border = DataUserStyle.border;
+                        cell.font = fontDataUserStyle;
+                    });
+                    worksheet.getRow(3).eachCell((cell) => {
+                        cell.fill = HeaderStyle.fill;
+                        cell.border = HeaderStyle.border;
+                        cell.font = fontRowStyle;
+                    });
+                    for (const item of this.dataListPoll) {
+
+
+                        if (item.Question_Type_Name === null && item.TextQuestionOptions === null) {
+                            const row = worksheet.addRow([item.TextQuestion, item.AnswerTexts]);
+
+                            row.eachCell({ includeEmpty: true }, (cell) => {
+                                cell.fill = rowStyle.fill;
+                                cell.border = rowStyle.border;
+
+                            });
+                        }
+
+                    }
+
+                    const worksheet2 = workbook.addWorksheet("Informe respuetas multiples y respuesta unica");
+                    worksheet2.addRow(["Reporte de Encuesta", "Procormi"]);
+                    worksheet2.addRow(["#Nombre de la encuesta", selectedPollObject.Name]);
+                    worksheet2.addRow(["Pregunta", "Tipo de opcion", "Opcion", "Cantidad de opcione seleccionadas"]);
+                    worksheet2.getColumn(1).width = 60;
+                    worksheet2.getColumn(1).alignment = { horizontal: 'center', vertical: 'middle' };
+                    worksheet2.getColumn(2).width = 90;
+                    worksheet2.getColumn(3).width = 30;
+                    worksheet2.getColumn(4).width = 50;
+                    worksheet2.getColumn(5).width = 30;
+                    worksheet2.getColumn(6).width = 30;
+                    worksheet2.getColumn(7).width = 30;
+                    worksheet2.getColumn(8).width = 30;
+                    worksheet2.getColumn(9).width = 30;
+                    worksheet2.getColumn(10).width = 30;
+
+                    worksheet2.getRow(1).eachCell((cell) => {
+                        cell.fill = HeaderStyle.fill;
+                        cell.border = HeaderStyle.border;
+                        cell.font = fontStyle;
+                    });
+                    worksheet2.getRow(2).eachCell((cell) => {
+                        cell.fill = DataUserStyle.fill;
+                        cell.border = DataUserStyle.border;
+                        cell.font = fontDataUserStyle;
+                    });
+                    worksheet2.getRow(3).eachCell((cell) => {
+                        cell.fill = HeaderStyle.fill;
+                        cell.border = HeaderStyle.border;
+                        cell.font = fontRowStyle;
+                    });
+
+                    for (const item of this.dataListPoll) {
+
+
+                        if (item.Question_Type_Name !== null) {
+                            const row = worksheet2.addRow([item.TextQuestion, item.Question_Type_Name, item.OptionText, item.AnswerOptionCount]);
+
+                            row.eachCell({ includeEmpty: true }, (cell) => {
+                                cell.fill = rowStyle.fill;
+                                cell.border = rowStyle.border;
+
+                            });
+                        }
+
+                    }
+
+                    workbook.xlsx.writeBuffer().then((data) => {
+                        const blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+                        const url = window.URL.createObjectURL(blob);
+
+                        const namewithoutspaces = selectedPollObject.Name.replace(/\s/g, '');
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = 'ReporteEncuesta' + namewithoutspaces + '.xlsx';
+                        a.style.display = 'none';
+                        document.body.appendChild(a);
+                        a.click();
+
+
+                        window.URL.revokeObjectURL(url);
+
+                        this.$swal.fire({
+                            title: 'Descargando archivo',
+                            icon: 'info',
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                        });
+                    });
+                } else {
+                    this.$swal({ icon: 'warning', text: 'No existe ninguna respuesta ' });
+                }
+
+            }
+
+            else {
+                this.$swal({ icon: 'warning', text: 'Tiene que seleccionar una encuesta' });
+            }
+
+        },
     },
 
     mounted: async function () {
@@ -1029,8 +1302,10 @@ export default {
     },
 
     created: async function () {
+
         await this.verificarLog();
         await this.loadUserSelect();
+        await this.loadPollSelect();
         await this.$root.validarLoginFooter.call();
     }
 

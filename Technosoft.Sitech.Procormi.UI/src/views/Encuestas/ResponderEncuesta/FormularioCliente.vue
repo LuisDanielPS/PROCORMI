@@ -12,82 +12,94 @@
 
                                 <!--Preguntas-->
                                 <form @submit.prevent="SendAnswer()">
-                                <div >
-                                    <h4 style="text-align: center; font-size: 25px; color: #0a3a66;">{{ poll.Name }}</h4>
-                                    <br>
-                                    <p style="text-align: center; font-size: 15px; color: #000000;">{{
-                                        QuitarHTML(poll.Description) }}</p>
-                                    <br>
-                                    <p style="text-align: center; font-size: 15px; color: #000000;"><b>Link:</b> <a>{{
-                                        fullLink }}</a></p>
                                     <div>
+                                        <h4 style="text-align: center; font-size: 25px; color: #0a3a66;">{{ poll.Name }}
+                                        </h4>
+                                        <br>
+                                        <p style="text-align: center; font-size: 15px; color: #000000;">{{
+                                            QuitarHTML(poll.Description) }}</p>
+                                        <br>
+                                        <p style="text-align: center; font-size: 15px; color: #000000;"><b>Link:</b> <a>{{
+                                            fullLink }}</a></p>
                                         <div>
-                                            <div class="cardPersonalizado" v-for="(question, index) in poll.Questions"
-                                                :key="index">
-                                                <div class="cardInside">
+                                            <div>
+                                                <div class="cardPersonalizado" v-for="(question, index) in poll.Questions"
+                                                    :key="index">
+                                                    <div class="cardInside">
 
-                                                    <h5
-                                                        style="text-align: center; font-size: 25px; background-color: #0a3a66; color: #fff; border-radius: 15px;">
-                                                        {{ question.TextQuestion }}</h5>
-                                                    <hr />
-                                                    <input v-if="question.Id_Question_Type == 1"
-                                                        style="border-radius: 15px; margin-bottom: 10px;"
-                                                        placeholder="Respuesta"
-                                                        @change="updateAnswerText(question, $event.target.value)"  maxlength="100" required/>
+                                                        <h5
+                                                            style="text-align: center; font-size: 25px; background-color: #0a3a66; color: #fff; border-radius: 15px;">
+                                                            {{ question.TextQuestion }}</h5>
+                                                        <hr />
+                                                        <input v-if="question.Id_Question_Type == 1"
+                                                            style="border-radius: 15px; margin-bottom: 10px;"
+                                                            placeholder="Respuesta"
+                                                            @change="updateAnswerText(question, $event.target.value)"
+                                                            maxlength="100" required />
                                                         <span class="error-message">*Debes completar este campo.</span>
-                                                    <br />
-                                                    <br />
-                                              
-                                                    <div
-                                                        v-if="question.Id_Question_Type == 2 || question.Id_Question_Type == 3">
-                                                        <h5 class="margin-5px-bottom"
-                                                            style="font-size: 20px; color: #0a3a66;">Opciones</h5>
                                                         <br />
-                                                        <div v-if="question.Id_Question_Type == 2">
-                                                            <div class="form-check"
-                                                                v-for="(option, index) in question.Question_Options"
-                                                                :key="index">
-                                                                <input :name="question.Id_Question" type="radio" class="estiloRadios"
-                                                                    :id="'opcion' + option" 
-                                                                    :value="JSON.stringify(option)"
-                                                                    @change="updateAnswerOptions(option, question)" />
-                                                                <label class="form-check-label">
-                                                                    {{ option.Option_Text }}
-                                                                </label>
+                                                        <br />
+
+                                                        <div
+                                                            v-if="question.Id_Question_Type == 2 || question.Id_Question_Type == 3">
+                                                            <h5 class="margin-5px-bottom"
+                                                                style="font-size: 20px; color: #0a3a66;">Opciones</h5>
+                                                            <br />
+                                                            <div v-if="question.Id_Question_Type == 2">
+                                                                <div class="form-check"
+                                                                    v-for="(option, index) in question.Question_Options"
+                                                                    :key="index">
+                                                                   
+                                                                  
+                                                                    <input :name="question.Id_Question" type="radio"
+                                                                        class="estiloRadios" :id="'opcion' + option"
+                                                                        :value="JSON.stringify(option)"
+                                                                        @change="updateAnswerOptions(option, question)" required />
+                                                                   
+                                                                   
+                                                                    <label class="form-check-label">
+                                                                        {{ option.Option_Text }}
+                                                                    </label>
+                                                                    
+                                                                   
+                                                                
+                                                                </div>
+                                                                <span style="color: red;">*Debes seleccionar al menos una opcion</span>
                                                             </div>
-                                                        </div>
-                                                        <div v-if="question.Id_Question_Type == 3">
-                                                            <div class="form-check"
-                                                                v-for="(option, index) in question.Question_Options"
-                                                                :key="index">
-                                                                <input type="checkbox"
-                                                                    @change="updateAnswerOptionsCheckBox(option,question)"
-                                                                    class="estiloRadios" id="opcion1">
-                                                                <label class="form-check-label">
-                                                                    {{ option.Option_Text }}
-                                                                </label>
+                                                            <div v-if="question.Id_Question_Type == 3">
+                                                                <div class="form-check"
+                                                                    v-for="(option, index) in question.Question_Options"
+                                                                    :key="index">
+                                                                    <input :name="question.Id_Question" type="checkbox"
+                                                                        @change="updateAnswerOptionsCheckBox(option, question)"
+                                                                        class="estiloRadios" id="opcion1" >
+                                                                    <label class="form-check-label">
+                                                                        {{ option.Option_Text }}
+                                                                    </label>
+                                                                  
+                                                                </div>
+                                                               
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
 
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
 
-                                <!--Preguntas-->
+                                    <!--Preguntas-->
 
-                                <br />
-                                <br />
-                                <div class="row justify-content-end">
-                                    <div class="col-12">
-                                        <button type="submit"  class="btn btn-success"
-                                            style="min-width: 150px !important; font-size: 20px; float: right;">Enviar
-                                            respuestas</button>
+                                    <br />
+                                    <br />
+                                    <div class="row justify-content-end">
+                                        <div class="col-12">
+                                            <button type="submit" class="btn btn-success"
+                                                style="min-width: 150px !important; font-size: 20px; float: right;">Enviar
+                                                respuestas</button>
+                                        </div>
                                     </div>
-                                </div>
-                            </form>
+                                </form>
                             </div>
 
                         </div>
@@ -133,31 +145,6 @@ export default {
                     }
                 }
             },
-
-            pollWithAnswer: {
-                Name: '',
-                Description: '',
-                Questions: {
-                    Name: '',
-                    Description: '',
-                    Questions:
-                    {
-                        Id_Question: 1,
-                        TextQuestion: "",
-                        Id_Poll: 1,
-                        Id_Question_Type: 1,
-                        Question_Options: [],
-                        AnswerOptions: [],
-                        AnswerText: {
-                            Id_Answer: 1,
-                            Text: "",
-                            Id_Question: ""
-
-                        }
-                    }
-                }
-            },
-
             link: "",
             fullLink: ""
         }
@@ -187,7 +174,7 @@ export default {
                     }
                 })
         },
-        
+
         SendAnswer: async function () {
             await AdminApi.PostSendAnswer(this.poll)
                 .then(response => {
@@ -441,10 +428,12 @@ export default {
 
 .error-message {
     color: red;
-    display: none; /* Inicialmente oculto */
-  }
+    display: none;
+    /* Inicialmente oculto */
+}
 
-  input:invalid + .error-message {
-    display: block; /* Mostrar el mensaje de error cuando el input sea inválido */
-  }
+input:invalid+.error-message {
+    display: block;
+    /* Mostrar el mensaje de error cuando el input sea inválido */
+}
 </style>

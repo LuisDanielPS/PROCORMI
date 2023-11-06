@@ -42,6 +42,16 @@ Namespace Controllers
             Return reply
         End Function
 
+        <HttpGet>
+        Public Function GetPollReport(pollId As String) As Reply(Of List(Of PollReportVM))
+
+            Dim reply As Reply(Of List(Of PollReportVM))
+            reply = PollBLL.Instance.GetPollReportBLL(pollId)
+            Return reply
+        End Function
+
+
+
 
     End Class
 End Namespace

@@ -67,7 +67,18 @@ Public Class PollBLL
         Return poll
 
     End Function
+    Public Function GetPollReportBLL(pollId As String) As Reply(Of List(Of PollReportVM))
 
+        Dim Lista As Reply(Of List(Of PollReportVM)) = Nothing
+
+        Try
+            Lista = PollDAO.Instance.GetPollReportDAO(pollId)
+        Catch ex As Exception
+            EscritorVisorEventos.Instancia().EscribirEvento(nombreClase, MethodBase.GetCurrentMethod().Name, ex)
+        End Try
+        Return Lista
+
+    End Function
     Public Function DeletePoll(pollId As Integer) As Task(Of Reply(Of Boolean))
 
         Dim reply As Task(Of Reply(Of Boolean))

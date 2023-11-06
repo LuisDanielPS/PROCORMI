@@ -186,7 +186,6 @@ Public Class PollDAO
     End Function
 
 
-
     Public Function getLink() As String
         Try
             Return rutaEncuesta
@@ -229,6 +228,7 @@ Public Class PollDAO
         Return reply
 
     End Function
+
 
     Public Function GetPoll(pollIdEncrypted As String) As PollEN
         Dim poll As New PollEN
@@ -279,6 +279,89 @@ Public Class PollDAO
         End Try
 
         Return poll
+    End Function
+
+    Public Function GetPollReportDAO(pollId As String) As Reply(Of List(Of PollReportVM))
+        Dim reply As New Reply(Of List(Of PollReportVM))
+        Dim pollReports As New List(Of PollReportVM)()
+
+        Try
+
+            Dim query1 As String = "SELECT
+            p.Id_Poll,
+            q.TextQuestion,
+            GROUP_CONCAT(at.Text) AS AnswerTexts
+        FROM
+            poll p
+        JOIN
+            question q ON p.Id_Poll = q.Id_Poll
+        LEFT JOIN
+            answer_text at ON q.Id_Question = at.Id_Question
+        WHERE p.Id_Poll = " + pollId + "
+        GROUP BY p.Id_Poll, q.TextQuestion
+        HAVING SUM(at.Text IS NOT NULL) > 0"
+
+            Using dr As MySqlDataReader = ConexionDAO.Instancia.ExecuteConsult(query1)
+                While dr.Read
+                    Dim pollReport As New PollReportVM
+                    pollReport.Id_Poll = dr(0)
+                    pollReport.TextQuestion = dr(1)
+                    pollReport.AnswerTexts = dr(2)
+                    pollReports.Add(pollReport)
+                End While
+            End Using
+
+
+            Dim query2 As String = "SELECT
+            p.Id_Poll,
+            q.TextQuestion,
+            qt.Question_Type_Name,
+            qo.Option_Text AS OptionText,
+            COUNT(DISTINCT ao.Id_Answer_Option) AS AnswerOptionCount
+        FROM
+            poll p
+        JOIN
+            question q ON p.Id_Poll = q.Id_Poll
+        JOIN
+            question_type qt ON q.Id_Question_Type = qt.Id_Question_Type
+        LEFT JOIN
+            question_options qo ON q.Id_Question = qo.Id_Question
+        LEFT JOIN
+            answer_text at ON q.Id_Question = at.Id_Question
+        LEFT JOIN
+            answer_options ao ON qo.Id_Question_Option = ao.Id_Question_Option
+        WHERE p.Id_Poll = " + pollId + " AND qt.Question_Type_Name <> 'Texto'
+        GROUP BY p.Id_Poll, q.TextQuestion, qt.Question_Type_Name, qo.Option_Text"
+
+            Using dr As MySqlDataReader = ConexionDAO.Instancia.ExecuteConsult(query2)
+                While dr.Read
+                    Dim pollReport As New PollReportVM
+                    pollReport.Id_Poll = dr(0)
+                    pollReport.TextQuestion = dr(1)
+                    pollReport.Question_Type_Name = dr(2)
+                    pollReport.OptionText = dr(3)
+                    pollReport.AnswerOptionCount = dr(4)
+                    pollReports.Add(pollReport)
+                End While
+            End Using
+
+            If pollReports.Count > 0 Then
+                reply.obj = pollReports
+                reply.ok = True
+                reply.msg = "Encuesta encontrados"
+            Else
+                reply.obj = Nothing
+                reply.ok = False
+                reply.msg = "Encuesta no encontrados"
+            End If
+
+        Catch ex As Exception
+            reply.ok = False
+            reply.msg = "No fue posible ejecutar la consulta: " & ex.Message
+            Return reply
+        End Try
+
+        Return reply
     End Function
 
 

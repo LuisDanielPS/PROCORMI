@@ -453,6 +453,13 @@ export default {
             headers: { 'Content-Type': 'application/json; charset=UTF-8' }
         })
     },
+    GetPollReport(id) {
+        return apicliente.get('Report/GetPollReport?pollId=' + id, {
+            withCredentials: false,
+            headers: { 'Content-Type': 'application/json; charset=UTF-8' }
+        })
+    },
+    
 
     DeletePoll(id) {
         return apicliente.delete('Poll/DeletePoll?pollId=' + id, {
