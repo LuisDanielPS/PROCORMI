@@ -363,6 +363,8 @@ Public Class ProjectDAO
                 reply.ok = True
                 reply.msg = "Se ha creado Correctamente  encontrado"
 
+                NotificationDAO.Instance.NotifyAssignedProject(pAddUserProject.User_Login, pAddUserProject.Id_Project)
+
             End If
 
 
@@ -545,6 +547,8 @@ Public Class ProjectDAO
                 ConexionDAO.Instancia.ExecuteConsultCondition(sentence, pIdProject)
                 reply.ok = True
                 reply.msg = "Se ha eliminado el proyecto"
+
+                NotificationDAO.Instance.NotifyProjectCompleted(pIdProject)
 
             End If
 

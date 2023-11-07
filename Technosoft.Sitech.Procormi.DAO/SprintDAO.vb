@@ -239,6 +239,14 @@ Public Class SprintDAO
                 reply.ok = True
                 reply.msg = "Sprint registrado con éxito"
 
+                ' notify user
+                sentence = "SELECT MAX(Id_Sprint) from sprint"
+                Dim dr = ConexionDAO.Instancia.ExecuteConsult(sentence)
+                If dr.Read Then
+                    Dim sprintId As Integer = dr(0)
+                    NotificationDAO.Instance.NotifyAssignedSprint(pSprintEn.User_Login, sprintId)
+                End If
+
             End If
 
 
@@ -306,6 +314,8 @@ Public Class SprintDAO
                 ConexionDAO.Instancia.ExecuteConsultCondition(sentence, pIdSprint)
                 reply.ok = True
                 reply.msg = "Se ha eliminado el sprint"
+
+                NotificationDAO.Instance.NotifySprintCompleted(pIdSprint)
 
             End If
 

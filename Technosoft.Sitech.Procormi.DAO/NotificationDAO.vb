@@ -87,4 +87,123 @@ Public Class NotificationDAO
 
     End Function
 
+
+    Public Function NotifyAssignedProject(ByVal pUser As String, ByVal pIdProject As Integer) As Reply(Of NotificationEN)
+        Dim reply As New Reply(Of NotificationEN)
+        Try
+            Dim notification = New NotificationEN()
+            notification.Action = "ASIGNADO"
+            notification.Title = "Asignacion de proyecto"
+
+            sentence = "SELECT Project_Name from project where Id_Project = " & pIdProject
+            Using dr As MySqlDataReader = ConexionDAO.Instancia.ExecuteConsult(sentence)
+                If dr.Read Then
+                    notification.Message = "El proyecto " + dr(0) + " te ha sido asignado"
+                End If
+            End Using
+
+            notification.Usu_Login = pUser
+            notification.Type = "project"
+            notification.Type_Ref_Id = pIdProject
+
+            Return PostNotification(notification)
+        Catch ex As Exception
+            EscritorVisorEventos.Instancia().EscribirEvento(nameClass, MethodBase.GetCurrentMethod().Name, ex)
+            reply.ok = False
+            reply.msg = "NotifyAssignedProject: No fue posible ejecutar la consulta: " & ex.Message
+            Return reply
+        End Try
+    End Function
+
+
+    Public Function NotifyAssignedSprint(ByVal pUser As String, ByVal pIdSprint As Integer) As Reply(Of NotificationEN)
+        Dim reply As New Reply(Of NotificationEN)
+        Try
+            Dim notification = New NotificationEN()
+            notification.Action = "ASIGNADO"
+            notification.Title = "Asignacion de sprint"
+
+            sentence = "SELECT Sprint_Name from sprint where Id_Sprint = " & pIdSprint
+            Using dr As MySqlDataReader = ConexionDAO.Instancia.ExecuteConsult(sentence)
+                If dr.Read Then
+                    notification.Message = "El sprint " + dr(0) + " te ha sido asignado"
+                End If
+            End Using
+
+            notification.Usu_Login = pUser
+            notification.Type = "sprint"
+            notification.Type_Ref_Id = pIdSprint
+
+            Return PostNotification(notification)
+        Catch ex As Exception
+            EscritorVisorEventos.Instancia().EscribirEvento(nameClass, MethodBase.GetCurrentMethod().Name, ex)
+            reply.ok = False
+            reply.msg = "NotifyAssignedSprint: No fue posible ejecutar la consulta: " & ex.Message
+            Return reply
+        End Try
+    End Function
+
+
+
+    Public Function NotifySprintCompleted(ByVal pIdSprint As Integer) As Reply(Of NotificationEN)
+        Dim reply As New Reply(Of NotificationEN)
+        Try
+            Dim pUser As String = ""
+            Dim notification = New NotificationEN()
+            notification.Action = "COMPLETADO"
+            notification.Title = "Sprint completado"
+
+            sentence = "SELECT Sprint_Name, User_Login from sprint where Id_Sprint = " & pIdSprint
+            Using dr As MySqlDataReader = ConexionDAO.Instancia.ExecuteConsult(sentence)
+                If dr.Read Then
+                    notification.Message = "El sprint " + dr(0) + " ha sido completado"
+                    pUser = dr(1)
+                End If
+            End Using
+
+            notification.Usu_Login = pUser
+            notification.Type = "sprint"
+            notification.Type_Ref_Id = pIdSprint
+
+            Return PostNotification(notification)
+        Catch ex As Exception
+            EscritorVisorEventos.Instancia().EscribirEvento(nameClass, MethodBase.GetCurrentMethod().Name, ex)
+            reply.ok = False
+            reply.msg = "NotifySprintCompleted: No fue posible ejecutar la consulta: " & ex.Message
+            Return reply
+        End Try
+    End Function
+
+
+    Public Function NotifyProjectCompleted(ByVal pIdProject As Integer) As Reply(Of NotificationEN)
+        Dim reply As New Reply(Of NotificationEN)
+        Try
+            Dim pUser As String = ""
+            Dim notification = New NotificationEN()
+            notification.Action = "COMPLETADO"
+            notification.Title = "Proyecto completado"
+
+            sentence = "SELECT Project_Name, User_Login from project where Id_Project = " & pIdProject
+            Using dr As MySqlDataReader = ConexionDAO.Instancia.ExecuteConsult(sentence)
+                If dr.Read Then
+                    notification.Message = "El proyecto " + dr(0) + " ha sido completado"
+                    pUser = dr(1)
+                End If
+            End Using
+
+            notification.Usu_Login = pUser
+            notification.Type = "project"
+            notification.Type_Ref_Id = pIdProject
+
+            Return PostNotification(notification)
+        Catch ex As Exception
+            EscritorVisorEventos.Instancia().EscribirEvento(nameClass, MethodBase.GetCurrentMethod().Name, ex)
+            reply.ok = False
+            reply.msg = "NotifyProjectCompleted: No fue posible ejecutar la consulta: " & ex.Message
+            Return reply
+        End Try
+    End Function
+
+
+
 End Class
