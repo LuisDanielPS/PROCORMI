@@ -175,35 +175,6 @@ Public Class NotificationDAO
     End Function
 
 
-    Public Function NotifyProjectCompleted(ByVal pIdProject As Integer) As Reply(Of NotificationEN)
-        Dim reply As New Reply(Of NotificationEN)
-        Try
-            Dim pUser As String = ""
-            Dim notification = New NotificationEN()
-            notification.Action = "COMPLETADO"
-            notification.Title = "Proyecto completado"
-
-            sentence = "SELECT Project_Name, User_Login from project where Id_Project = " & pIdProject
-            Using dr As MySqlDataReader = ConexionDAO.Instancia.ExecuteConsult(sentence)
-                If dr.Read Then
-                    notification.Message = "El proyecto " + dr(0) + " ha sido completado"
-                    pUser = dr(1)
-                End If
-            End Using
-
-            notification.Usu_Login = pUser
-            notification.Type = "project"
-            notification.Type_Ref_Id = pIdProject
-
-            Return PostNotification(notification)
-        Catch ex As Exception
-            EscritorVisorEventos.Instancia().EscribirEvento(nameClass, MethodBase.GetCurrentMethod().Name, ex)
-            reply.ok = False
-            reply.msg = "NotifyProjectCompleted: No fue posible ejecutar la consulta: " & ex.Message
-            Return reply
-        End Try
-    End Function
-
 
 
 End Class

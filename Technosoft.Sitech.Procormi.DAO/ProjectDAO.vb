@@ -548,7 +548,7 @@ Public Class ProjectDAO
                 reply.ok = True
                 reply.msg = "Se ha eliminado el proyecto"
 
-                NotificationDAO.Instance.NotifyProjectCompleted(pIdProject)
+
 
             End If
 
