@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+  <parameter name="Conn-Web.config Connection String" description="Conn Cadena de conexión que usa la aplicación en web.config para obtener acceso a la base de datos." defaultValue="User Id=root;Password=1234;Host=localhost;Database=procormi;Persist Security Info=True; convert zero datetime=True" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="C:\\VSProjects\\PROCORMI\\Technosoft\.Sitech\.Procormi\.WebAPI\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='Conn']/@connectionString" />
+  </parameter>
+</parameters>

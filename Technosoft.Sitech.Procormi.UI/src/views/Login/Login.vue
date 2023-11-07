@@ -257,7 +257,7 @@ export default {
 
                     setTimeout(() => {
                         this.$root.cerrarSesionGeneral.call();
-                    }, (((1000 * 60) * 60)*24));
+                    }, (((1000 * 60) * 60)*5));
 
                 } else {
                     await this.$swal.fire({
