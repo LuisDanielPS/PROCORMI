@@ -159,14 +159,14 @@
                                                     <td><p>{{ QuitarHTML($filters.CortarTexto(poll.Description, 25)) }}</p></td>
                                                     <td>{{ $filters.FormatearFecha(poll.Creation_Date) }}</td>
                                                     <td class="text-white">
-                                                        <button class="btn btn-primary" role="button" @click="VerEncuesta(poll.Id_Poll)">
-                                                            <span class="fas fa-eye" b-tooltip.hover title="Ver Encuesta"></span>
+                                                        <button class="btn btn-primary" role="button" b-tooltip.hover title="Ver Encuesta" @click="VerEncuesta(poll.Id_Poll)">
+                                                            <span class="fas fa-eye"></span>
                                                         </button>
-                                                        <button style="margin-left: 5px;" type="button" class="btn btn-success" @click="EditarEncuesta(poll.Id_Poll)">
-                                                            <span class="fas fa-pen" b-tooltip.hover title="Editar Encuesta"></span>
+                                                        <button style="margin-left: 5px;" type="button" b-tooltip.hover title="Editar Encuesta" class="btn btn-success" @click="EditarEncuesta(poll.Id_Poll)">
+                                                            <span class="fas fa-pen"></span>
                                                         </button>
-                                                        <button type="button" class="btn btn-danger" style="margin-left: 5px;" @click="DeletePoll(poll.Id_Poll)">
-                                                            <span class="fas fa-trash" b-tooltip.hover title="Eliminar Encuesta"></span>
+                                                        <button type="button" b-tooltip.hover title="Eliminar Encuesta" class="btn btn-danger" style="margin-left: 5px;" @click="DeletePoll(poll.Id_Poll)">
+                                                            <span class="fas fa-trash"></span>
                                                         </button>
                                                     </td>
                                                 </tr>
@@ -228,6 +228,11 @@ export default {
             pageNumeration: [],
             paginate: true,
             paginateData: [],
+
+            ActionEN: {
+                Action_Description: "",
+                Action_User: ""
+            },
 
         }
     },
@@ -348,6 +353,11 @@ export default {
                                     })
                                 }
                             })
+
+                    this.ActionEN.Action_Description = "Eliminó la encuesta #" + id
+                    this.ActionEN.Action_User = this.recuperarUsuLog();
+                    await AdminApi.PostNewAction(this.ActionEN)
+
                     this.pollList = []
                     await this.GetAllPolls();
                     await this.cutPages();
@@ -375,6 +385,17 @@ export default {
             });
 
             return encrypted.toString();
+        },
+
+        Decrypt: function (encryptedValue) {
+            const clave = CryptoJS.enc.Base64.parse("prmDMvIvPNlrmcsgLM1/c34GHjA7D2P2");
+            const iv = CryptoJS.enc.Utf8.parse("cmprmasr");
+
+            const decrypted = CryptoJS.TripleDES.decrypt(encryptedValue, clave, {
+                iv: iv
+            });
+
+            return decrypted.toString(CryptoJS.enc.Utf8);
         },
 
         totalPages: function () {

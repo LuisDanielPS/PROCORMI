@@ -262,6 +262,7 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\SampleDirection.vb" />
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.vb" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.vb" />
+    <Compile Include="Controllers\ActionsController.vb" />
     <Compile Include="Controllers\FileController.vb" />
     <Compile Include="Controllers\NotificationController.vb" />
     <Compile Include="Controllers\LoginController.vb" />

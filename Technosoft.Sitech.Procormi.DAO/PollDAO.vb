@@ -281,6 +281,56 @@ Public Class PollDAO
         Return poll
     End Function
 
+    Public Function GetPollSimple(pollId As String) As PollEN
+        Dim poll As New PollEN
+
+        Try
+            Dim sentence As String = "SELECT Id_Poll, Name, Description, Creation_Date FROM poll WHERE Id_Poll = " & pollId & ";"
+            Dim pollList As MySqlDataReader = ConexionDAO.Instancia.EjecutarConsultaListados(sentence)
+            While pollList.Read
+                poll.Id_Poll = pollList(0)
+                poll.Name = pollList(1)
+                poll.Description = pollList(2)
+                poll.Creation_Date = pollList(3)
+            End While
+            pollList.Close()
+
+            If poll IsNot Nothing Then
+                poll.Questions = New List(Of QuestionEN)()
+                Dim questionsSentence As String = "SELECT Id_Question, TextQuestion, Id_Poll, Id_Question_Type FROM question WHERE Id_Poll = " & pollId & ";"
+                Dim questionsList As MySqlDataReader = ConexionDAO.Instancia.EjecutarConsultaListados(questionsSentence)
+                While questionsList.Read()
+                    Dim question As New QuestionEN()
+                    question.Id_Question = questionsList(0)
+                    question.TextQuestion = questionsList(1)
+                    question.Id_Poll = questionsList(2)
+                    question.Id_Question_Type = questionsList(3)
+
+                    question.Question_Options = New List(Of QuestionOptionsEN)()
+                    Dim optionsSentence As String = "SELECT Id_Question_Option, Option_Text FROM question_options WHERE Id_Question = " & question.Id_Question & ";"
+                    Dim optionsList As MySqlDataReader = ConexionDAO.Instancia.EjecutarConsultaListados(optionsSentence)
+                    While optionsList.Read()
+                        Dim opt As New QuestionOptionsEN()
+                        opt.Id_Question_Option = optionsList(0)
+                        opt.Option_Text = optionsList(1)
+                        question.Question_Options.Add(opt)
+                    End While
+                    optionsList.Close()
+
+                    poll.Questions.Add(question)
+                End While
+                questionsList.Close()
+            End If
+
+            Return poll
+
+        Catch ex As Exception
+            EscritorVisorEventos.Instancia().EscribirEvento(nombreClase, MethodBase.GetCurrentMethod().Name, ex)
+        End Try
+
+        Return poll
+    End Function
+
     Public Function GetPollReportDAO(pollId As String) As Reply(Of List(Of PollReportVM))
         Dim reply As New Reply(Of List(Of PollReportVM))
         Dim pollReports As New List(Of PollReportVM)()

@@ -653,11 +653,14 @@
                                                     <div class="tablaPersonalizadaRow" style="min-width: 75px;"></div>
                                                 </div>
                                                 <div>
-                                                    <div class="tablaPersonalizadaRowSubTareas">{{ subTask.Description }}</div>
+                                                    <div class="tablaPersonalizadaRowSubTareas">{{ subTask.Title }}</div>
                                                 </div>
                                                 <div>
-                                                    <div class="tablaPersonalizadaRow">
+                                                    <!--<div class="tablaPersonalizadaRow">
                                                         <p class="fas" :class="`fa-${getPriorityIcon(subTask.Id_Priority)}-circle`" :style="`color: ${getPriorityColor(subTask.Id_Priority)};`"></p>
+                                                    </div>-->
+                                                    <div class="tablaPersonalizadaRow">
+                                                        <div class="tablaPersonalizadaRowSubTareas">{{ subTask.Id_Status }}</div>
                                                     </div>
                                                 </div>
                                                 <div>
@@ -749,6 +752,11 @@ export default {
                 usuario: "",
             },
 
+            ActionEN: {
+                Action_Description: "",
+                Action_User: ""
+            },
+
             pageElements: 10,
             actualPage: 1,
             pageNumeration: [],
@@ -824,12 +832,16 @@ export default {
             const result = await AdminApi.PutTask(modifiedTask);
             if (result.data.ok) {
 
+                this.ActionEN.Action_Description = "Modificó la tarea " + modifiedTask.Task_Name
+                this.ActionEN.Action_User = this.recuperarUsuLog();
+                await AdminApi.PostNewAction(this.ActionEN)
+
                 // limpiar campos
                 this.taskNameUnderEdit = ''
                 this.taskDescriptionUnderEdit = ''
                 this.taskStateUnderEdit = ''
                 this.modalShowTask = false
-                this.$swal({ icon: 'success', showConfirmButton:false, text: 'Se modifico correctamente la tarea' });
+                this.$swal({ icon: 'success', showConfirmButton:false, text: 'Se modificó correctamente la tarea' });
                 this.tareas = [];
                 this.getTareasDesdeAPI(); 
 
@@ -862,6 +874,10 @@ export default {
             const result = await AdminApi.PutSubTask(subTask);
             if (result.data.ok) {
 
+                this.ActionEN.Action_Description = "Modificó la subtarea " + subTask.Title
+                this.ActionEN.Action_User = this.recuperarUsuLog();
+                await AdminApi.PostNewAction(this.ActionEN)
+
                 // limpiar campos
                 this.prioritySubTarea = '';
                 this.tituloSubTarea = '';
@@ -869,7 +885,7 @@ export default {
                 this.statusSubTarea = '';
                 this.requiredTimeSubTarea = 0;
                 this.modalShowSubTask = false
-                this.$swal({ icon: 'success', showConfirmButton:false, text: 'Se modifico correctamente la subtarea' });
+                this.$swal({ icon: 'success', showConfirmButton:false, text: 'Se modificó correctamente la subtarea' });
 
                 this.getSubTareasDesdeAPI(this.currentSelectedTaskId);
 
@@ -905,6 +921,11 @@ export default {
               if(this.confimPassworsDelete){
               const response = await AdminApi.PutTaskDisableStatus(id);
               const mensage=response.data.ok;
+              if (mensage) {
+                this.ActionEN.Action_Description = "Eliminó la tarea #" + id
+                this.ActionEN.Action_User = this.recuperarUsuLog();
+                await AdminApi.PostNewAction(this.ActionEN)
+              }
               location.reload()
                   
               }
@@ -1037,6 +1058,9 @@ export default {
             if (response.data.ok) {
                 this.$swal({ icon: 'success', text: 'Se finalizó la subtarea' });
                 this.getSubTareasDesdeAPI(selectedCurrentTaskid);
+                this.ActionEN.Action_Description = "Finalizó la subtarea #" + selectedCurrentSubTaskid
+                this.ActionEN.Action_User = this.recuperarUsuLog();
+                await AdminApi.PostNewAction(this.ActionEN)
             } else {
                 this.$swal({icon: 'error', text: 'No se pudo finalizar la subtarea' });
                 console.error({message : "Error al finalizar subtarea", response })
@@ -1051,6 +1075,11 @@ export default {
                 this.tareas = [];
                 this.$swal({ icon: 'success', text: 'Se finalizó la tarea' });
                 this.getTareasDesdeAPI(selectedCurrentTaskid);
+
+                this.ActionEN.Action_Description = "Finalizó la tarea #" + selectedCurrentTaskid
+                this.ActionEN.Action_User = this.recuperarUsuLog();
+                await AdminApi.PostNewAction(this.ActionEN)
+
             } else {
                 this.$swal({icon: 'error', text: 'No se pudo finalizar la tarea' });
                 console.error({message : "Error al finalizar tarea", response })
@@ -1161,6 +1190,11 @@ export default {
                 this.currentSubTask = null;
                 this.$swal({ icon: 'success', text: 'Se elimino la subtarea' });
                 this.getSubTareasDesdeAPI(this.currentSelectedTaskId);
+
+                this.ActionEN.Action_Description = "Eliminó la subtarea #" + subTaskId
+                this.ActionEN.Action_User = this.recuperarUsuLog();
+                await AdminApi.PostNewAction(this.ActionEN)
+
             } else {
                 this.$swal({icon: 'error', text: 'No se pudo eliminar la subtarea' });
             }
@@ -1208,6 +1242,9 @@ export default {
 
             this.actualPage = 1
             await this.postTaskToAPI(task);
+            this.ActionEN.Action_Description = "Creó la tarea " + task.Task_Name
+            this.ActionEN.Action_User = this.recuperarUsuLog();
+            await AdminApi.PostNewAction(this.ActionEN)
             this.resetTaskCreation();
             this.tareas = []
             await this.getTareasDesdeAPI()
@@ -1229,9 +1266,9 @@ export default {
                 Id_Status : this.statusSubTarea
             }
 
-            if (this.validateSubTask(subTask, true) !== 'VALID') {
+            /*if (this.validateSubTask(subTask, true) !== 'VALID') {
                 return;
-            }
+            }*/
 
             this.postSubTaskToAPI(subTask);
             this.resetSubTaskCreation();
@@ -1518,6 +1555,11 @@ export default {
                             icon:'success',
                             showConfirmButton:false,
                         });
+
+                        this.ActionEN.Action_Description = "Creó la subtarea " + subTarea.Title
+                        this.ActionEN.Action_User = this.recuperarUsuLog();
+                        await AdminApi.PostNewAction(this.ActionEN)
+
                     this.getSubTareasDesdeAPI(taskId); // llamamos a get subtareas
 
                     setTimeout(() => {

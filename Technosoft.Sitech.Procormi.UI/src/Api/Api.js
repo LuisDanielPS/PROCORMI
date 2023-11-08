@@ -447,6 +447,13 @@ export default {
         })
     },
 
+    GetPollSimple(id) {
+        return apicliente.get('Poll/GetPollSimple?pollId=' + id, {
+            withCredentials: false,
+            headers: { 'Content-Type': 'application/json; charset=UTF-8' }
+        })
+    },
+
     getLink() {
         return apicliente.get('Poll/getLink', {
             withCredentials: false,
@@ -469,5 +476,12 @@ export default {
     },
 
     ///////////////////////////////////////////////////Poll/////////////////////////////////////////////////////////
+
+    PostNewAction(action){
+        return apicliente.post('Actions/PostNewAction', action,{
+            withCredentials: false,
+            headers: { 'Content-Type': 'application/json; charset=UTF-8' }
+        })
+    }
 
 }

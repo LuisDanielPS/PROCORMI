@@ -67,6 +67,20 @@ Public Class PollBLL
         Return poll
 
     End Function
+
+    Public Function GetPollSimple(pollId As String) As PollEN
+
+        Dim poll As PollEN = Nothing
+
+        Try
+            poll = PollDAO.Instance.GetPollSimple(pollId)
+        Catch ex As Exception
+            EscritorVisorEventos.Instancia().EscribirEvento(nombreClase, MethodBase.GetCurrentMethod().Name, ex)
+        End Try
+        Return poll
+
+    End Function
+
     Public Function GetPollReportBLL(pollId As String) As Reply(Of List(Of PollReportVM))
 
         Dim Lista As Reply(Of List(Of PollReportVM)) = Nothing

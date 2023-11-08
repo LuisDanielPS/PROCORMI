@@ -257,6 +257,12 @@ export default {
                 User_Login: "",
                 Id_project: ""
             },
+
+            ActionEN: {
+                Action_Description: "",
+                Action_User: ""
+            },
+
             filtroDesplegar: false,
         }
 
@@ -410,7 +416,11 @@ export default {
 
                         const response = await AdminApi.PostProject(this.project);
                         const mensaje = response.data.ok
-                        console.log(mensaje)
+                        if (mensaje) {
+                            this.ActionEN.Action_Description = "Creó el proyecto " + this.project.Project_Name
+                            this.ActionEN.Action_User = this.recuperarUsuLog();
+                            await AdminApi.PostNewAction(this.ActionEN)
+                        }
 
                         const idProject = await AdminApi.GetLastInsertId();
                         const idInsert = idProject.data.obj;
@@ -424,10 +434,7 @@ export default {
                             };
 
                             try {
-                                const response3 = await AdminApi.PostAddUserProject(addUser);
-                                const mensaje3 = response3.data.ok;
-                                console.log(mensaje3);
-
+                                await AdminApi.PostAddUserProject(addUser);
                             } catch (error) {
                                 console.error('Error al agregar usuario al proyecto:', error);
                             }
@@ -500,7 +507,12 @@ export default {
 
                         const response = await AdminApi.PutProject(this.project);
                         const mensaje = response.data.ok;
-                        console.log(mensaje)
+                        if (mensaje) {
+                            this.ActionEN.Action_Description = "Modificó el proyecto " + this.project.Project_Name
+                            this.ActionEN.Action_User = this.recuperarUsuLog();
+                            await AdminApi.PostNewAction(this.ActionEN)
+                        }
+                        
                         if (this.fileListEdit && this.FileList) {
                             if (this.ArraysEquals(this.fileListEdit, this.FileList) === true) {
                                 const response2 = await AdminApi.DeleteFilesProject(this.$route.params.id);

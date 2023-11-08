@@ -71,6 +71,19 @@ Namespace Controllers
 
         End Function
 
+        Public Function GetPollSimple(pollId As String) As PollEN
+
+            Dim poll As PollEN = Nothing
+
+            Try
+                poll = PollBLL.Instance.GetPollSimple(pollId)
+            Catch ex As Exception
+                EscritorVisorEventos.Instancia().EscribirEvento(nombreClase, MethodBase.GetCurrentMethod().Name, ex)
+            End Try
+            Return poll
+
+        End Function
+
         <HttpDelete>
         Public Function DeletePoll(pollId As Integer) As Task(Of Reply(Of Boolean))
 

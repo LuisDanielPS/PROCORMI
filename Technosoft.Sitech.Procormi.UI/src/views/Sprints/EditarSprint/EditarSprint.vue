@@ -76,6 +76,11 @@ export default {
                 User_Login: "",
             },
 
+            ActionEN: {
+                Action_Description: "",
+                Action_User: ""
+            },
+
             SprintIdEdit : null,
             SprintNameEdit : '',
             SprintEditStartDate: '',

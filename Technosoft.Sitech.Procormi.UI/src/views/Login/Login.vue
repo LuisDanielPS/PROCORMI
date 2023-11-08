@@ -15,11 +15,10 @@
                             <br />
                             <br />
                             <h5 class="alt-font font-weight-500 text-gradient-yellow-orange-black" align="center">Inicio de Sesión</h5>
-                            <br />
-                            <label class="margin-15px-bottom text text-white">Usuario</label>
-                            <input maxlength="20" class="small-input bg-white margin-20px-bottom required" style="border-radius: 10px;" type="text" placeholder="Digite su usuario" v-model="Usuario">
-                            <label class="margin-15px-bottom text-white">Contraseña</label>
-                            <div class="wrap-input">
+
+                            <input maxlength="20" class="small-input bg-white margin-20px-bottom required" style="border-radius: 10px; margin-top: 25px;" type="text" placeholder="Digite su usuario" v-model="Usuario">
+
+                            <div class="wrap-input" style="margin-top: 25px;">
                                 <span class="icon-eye" id="ojo" style="font-size: 20px" v-on:click="mostrarContrasena"><i class="fas fa-eye-slash" id="ojoTechado"></i></span>
                                 <input maxlength="20" class="small-input bg-white margin-20px-bottom required" style="border-radius: 10px;" type="password" placeholder="Digiste su contraseña" v-model="Clave" @keydown.enter="RealizarLogin">
                             </div>
@@ -100,6 +99,12 @@ export default {
             ClaveRegConfirmar: "",
 
             formRegistrarse: false,
+
+            ActionEN: {
+                Action_Description: "",
+                Action_User: ""
+            },
+
         }
     },
 
@@ -248,6 +253,9 @@ export default {
                     var usuario = await this.validarTipo(response.data.obj.usu_Tipo);
                     this.guardarUsuTipo(usuario);
                     this.guardarUsuNombre(response.data.obj.usu_Nombre);
+                    this.ActionEN.Action_Description = "Inicio de sesión"
+                    this.ActionEN.Action_User = this.Usuario
+                    await AdminApi.PostNewAction(this.ActionEN)
                     router.push({ name: 'Inicio' })
                     this.btnDesactivar = false;
                     var mensaje = new SpeechSynthesisUtterance();

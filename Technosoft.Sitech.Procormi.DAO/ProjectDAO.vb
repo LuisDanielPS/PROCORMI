@@ -21,7 +21,7 @@ Public Class ProjectDAO
 
         Try
 
-            sentence = "SELECT * FROM project WHERE Id_Status <> 2"
+            sentence = "SELECT * FROM project WHERE Id_Status <> 2 order by Id_Project desc"
 
             Using dr As MySqlDataReader = ConexionDAO.Instancia.ExecuteConsult(sentence)
 

@@ -108,6 +108,7 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ActionsDAO.vb" />
     <Compile Include="ConexionDAO.vb" />
     <Compile Include="FileDAO.vb" />
     <Compile Include="LoginDAO.vb" />

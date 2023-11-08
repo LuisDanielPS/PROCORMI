@@ -65,6 +65,7 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Modelos\ActionEN.vb" />
     <Compile Include="Modelos\AnswerOptionsEN.vb" />
     <Compile Include="Modelos\AnswerTextEN.vb" />
     <Compile Include="Modelos\FileEN.vb" />

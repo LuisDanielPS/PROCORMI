@@ -428,7 +428,12 @@ export default {
             pageNumeration: [],
             paginate: true,
             paginateData: [],
-            FileList: []
+            FileList: [],
+
+            ActionEN: {
+                Action_Description: "",
+                Action_User: ""
+            },
         }
     },
 
@@ -759,7 +764,11 @@ export default {
                 if (this.confimPassworsDelete) {
                     const response = await AdminApi.PutDisableStatus(this.idProjectDeleteVerify);
                     const mensage = response.data.ok;
-                    console.log(mensage)
+                    if (mensage) {
+                        this.ActionEN.Action_Description = "Eliminó el proyecto #" + this.idProjectDeleteVerify
+                        this.ActionEN.Action_User = this.recuperarUsuLog();
+                        await AdminApi.PostNewAction(this.ActionEN)
+                    }
                     location.reload()
 
                 }
@@ -780,7 +789,11 @@ export default {
                 if (this.confimPassworsDelete) {
                     const response = await AdminApi.PutCompleteStatus(this.idProjectDeleteVerify);
                     const mensage = response.data.ok;
-                    console.log(mensage)
+                    if (mensage) {
+                        this.ActionEN.Action_Description = "Finalizó el proyecto #" + this.idProjectDeleteVerify
+                        this.ActionEN.Action_User = this.recuperarUsuLog();
+                        await AdminApi.PostNewAction(this.ActionEN)
+                    }
                     location.reload()
 
                 }

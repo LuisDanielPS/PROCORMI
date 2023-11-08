@@ -489,6 +489,11 @@ export default {
                 usuario: "",
             },
 
+            ActionEN: {
+                Action_Description: "",
+                Action_User: ""
+            },
+
             pageElements: 10,
             actualPage: 1,
             pageNumeration: [],
@@ -836,8 +841,13 @@ export default {
 
             await AdminApi.PostSprint(this.sprint)
 
-                .then(response => {
+                .then(async response => {
                     if (response.data.ok == true) {
+
+                        this.ActionEN.Action_Description = "Creó el sprint " + this.sprint.Sprint_Name
+                        this.ActionEN.Action_User = this.recuperarUsuLog();
+                        await AdminApi.PostNewAction(this.ActionEN)
+                        
                         const swal = this.$swal({
                             title: response.data.msg,
                             icon: 'success',
@@ -982,6 +992,9 @@ export default {
 
                 const result = await AdminApi.PutSprint(modifiedSprint);
                 if (result.data.ok) {
+                    this.ActionEN.Action_Description = "Modificó el sprint " + this.modifiedSprint.Sprint_Name
+                    this.ActionEN.Action_User = this.recuperarUsuLog();
+                    await AdminApi.PostNewAction(this.ActionEN)
 
                     console.log('Respuesta de la API:', result);
                     this.SprintNameEdit = ''
@@ -1039,7 +1052,11 @@ export default {
 
                     const response = await AdminApi.PutCompleteSprintStatus(this.idSprintDeleteVerify);
                     const message = response.data.ok;
-                    console.log(message)
+                    if (message) {
+                        this.ActionEN.Action_Description = "Ccompletó el sprint #" + this.idSprintDeleteVerify
+                        this.ActionEN.Action_User = this.recuperarUsuLog();
+                        await AdminApi.PostNewAction(this.ActionEN)
+                    }
                     this.$swal({ icon: 'success', text: 'El Sprint se ha completado correctamente' });
                     setTimeout(() => {
                         location.reload()
@@ -1064,7 +1081,11 @@ export default {
                 if (this.confimPassworsDelete == true) {
                     const response = await AdminApi.PutDisableSprintStatus(this.idSprintDeleteVerify);
                     const message = response.data.ok;
-                    console.log(message)
+                    if (message) {
+                        this.ActionEN.Action_Description = "Se eliminó el sprint #" + this.idSprintDeleteVerify
+                        this.ActionEN.Action_User = this.recuperarUsuLog();
+                        await AdminApi.PostNewAction(this.ActionEN)
+                    }
                     this.$swal({ icon: 'success', text: 'El Sprint se ha eliminado correctamente' });
                     setTimeout(() => {
                         location.reload()

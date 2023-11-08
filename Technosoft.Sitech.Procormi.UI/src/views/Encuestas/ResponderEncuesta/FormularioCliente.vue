@@ -117,6 +117,7 @@ import HeaderPrincipal from '@/components/HeaderPrincipal.vue'
 import 'quill/dist/quill.snow.css'
 import Cookies from 'js-cookie';
 import AdminApi from '@/Api/Api';
+import CryptoJS from 'crypto-js';
 
 export default {
 
@@ -167,12 +168,25 @@ export default {
 
             this.fullLink = this.link + "/" + id
 
-            await AdminApi.GetPoll(id)
+            let idDesencrypted = this.Decrypt(id)
+
+            await AdminApi.GetPollSimple(idDesencrypted)
                 .then(async response => {
                     if (response.data != null) {
                         this.poll = response.data
                     }
                 })
+        },
+
+        Decrypt: function (encryptedValue) {
+            const clave = CryptoJS.enc.Base64.parse("prmDMvIvPNlrmcsgLM1/c34GHjA7D2P2");
+            const iv = CryptoJS.enc.Utf8.parse("cmprmasr");
+
+            const decrypted = CryptoJS.TripleDES.decrypt(encryptedValue, clave, {
+                iv: iv
+            });
+
+            return decrypted.toString(CryptoJS.enc.Utf8);
         },
 
         SendAnswer: async function () {

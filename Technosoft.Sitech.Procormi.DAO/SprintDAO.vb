@@ -22,7 +22,7 @@ Public Class SprintDAO
 
         Try
 
-            sentence = "SELECT * FROM sprint where not Id_Status = 2 and Id_Project = " & idProyect & ";"
+            sentence = "SELECT * FROM sprint where not Id_Status = 2 and Id_Project = " & idProyect & " order by Id_Sprint desc;"
 
             Using dr As MySqlDataReader = ConexionDAO.Instancia.ExecuteConsult(sentence)
 

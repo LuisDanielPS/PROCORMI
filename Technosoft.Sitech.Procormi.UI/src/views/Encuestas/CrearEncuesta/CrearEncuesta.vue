@@ -213,6 +213,12 @@ export default {
                 Question_Options: []
             },
             filtroDesplegar: false,
+
+            ActionEN: {
+                Action_Description: "",
+                Action_User: ""
+            },
+
         }
     },
 
@@ -269,7 +275,7 @@ export default {
             }
             if (this.idEncuesta == 0) {
                 await AdminApi.PostNewPoll(this.encuesta)
-                .then(response => {
+                .then(async response => {
                     if (response.data.obj == true) {
                         this.$swal.fire({
                             icon: 'success',
@@ -277,9 +283,13 @@ export default {
                             text: response.data.msg,
                             showConfirmButton: true
                         })
+                        this.ActionEN.Action_Description = "Creó la encuesta " + this.encuesta.Name
+                        this.ActionEN.Action_User = this.recuperarUsuLog();
+                        await AdminApi.PostNewAction(this.ActionEN)
                         this.limpiarContenido()
                     }
                 })
+
             } else {
                 await AdminApi.UpdatePull(this.encuesta)
                 .then(response => {
@@ -293,6 +303,11 @@ export default {
                         this.getPoll()
                     }
                 })
+
+                this.ActionEN.Action_Description = "Modificó la encuesta " + this.encuesta.Name
+                this.ActionEN.Action_User = this.recuperarUsuLog();
+                await AdminApi.PostNewAction(this.ActionEN)
+
             }
             loader.hide()
         },
@@ -385,8 +400,8 @@ export default {
         //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!Editar!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
         getPoll: async function () {
-            let id = this.encrypt(this.idEncuesta)
-            await AdminApi.GetPoll(id)
+            let id = this.idEncuesta
+            await AdminApi.GetPollSimple(id)
                 .then(async response => {
                     if (response.data != null) {
                         this.quill.root.innerHTML = response.data.Description

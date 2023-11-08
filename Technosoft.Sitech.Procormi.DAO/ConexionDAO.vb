@@ -93,6 +93,7 @@ Public Class ConexionDAO
             Return dr
 
         Catch ex As MySqlException
+            GuardarError(ex.Message)
             EscritorVisorEventos.Instancia().EscribirEvento(nombreClase, MethodBase.GetCurrentMethod().Name, ex)
             Throw New Exception("Error al ejecutar la consulta")
 
@@ -118,6 +119,7 @@ Public Class ConexionDAO
             Return dr
 
         Catch ex As MySqlException
+            GuardarError(ex.Message)
             EscritorVisorEventos.Instancia().EscribirEvento(nombreClase, MethodBase.GetCurrentMethod().Name, ex)
             Throw New Exception("Error al ejecutar la consulta")
         End Try
@@ -140,6 +142,7 @@ Public Class ConexionDAO
             Return dr
 
         Catch ex As MySqlException
+            GuardarError(ex.Message)
             EscritorVisorEventos.Instancia().EscribirEvento(nombreClase, MethodBase.GetCurrentMethod().Name, ex)
             Throw New Exception("Error al ejecutar la consulta")
         End Try
@@ -166,6 +169,7 @@ Public Class ConexionDAO
             Return dr
 
         Catch ex As MySqlException
+            GuardarError(ex.Message)
             EscritorVisorEventos.Instancia().EscribirEvento(nombreClase, MethodBase.GetCurrentMethod().Name, ex)
             Throw New Exception("Error al ejecutar la consulta")
         End Try
@@ -186,6 +190,7 @@ Public Class ConexionDAO
             sql.ExecuteNonQuery()
             conn.Close()
         Catch ex As MySqlException
+            GuardarError(ex.Message)
             EscritorVisorEventos.Instancia().EscribirEvento(nombreClase, MethodBase.GetCurrentMethod().Name, ex)
             Throw New Exception("Error al ejecutar la consulta")
         End Try
@@ -208,6 +213,7 @@ Public Class ConexionDAO
                 cmd.Parameters.Add(parametro)
             Next
         Catch ex As Exception
+            GuardarError(ex.Message)
             System.Diagnostics.EventLog.WriteEntry("Application", String.Format("Error ejecutando consulta {0}, Error {1}", p_strConsulta, ex.Message))
             Throw New Exception("Imposible ejecutar consulta.")
         End Try
@@ -231,6 +237,7 @@ Public Class ConexionDAO
             Return dr
 
         Catch ex As MySqlException
+            GuardarError(ex.Message)
             EscritorVisorEventos.Instancia().EscribirEvento(nombreClase, MethodBase.GetCurrentMethod().Name, ex)
             Throw New Exception("Error al ejecutar la consulta")
         End Try
@@ -253,6 +260,7 @@ Public Class ConexionDAO
             Return dr
 
         Catch ex As MySqlException
+            GuardarError(ex.Message)
             EscritorVisorEventos.Instancia().EscribirEvento(nombreClase, MethodBase.GetCurrentMethod().Name, ex)
             Throw New Exception("Error al ejecutar la consulta")
         End Try
@@ -272,6 +280,7 @@ Public Class ConexionDAO
             sql.ExecuteNonQuery()
             conn.Close()
         Catch ex As MySqlException
+            GuardarError(ex.Message)
             EscritorVisorEventos.Instancia().EscribirEvento(nombreClase, MethodBase.GetCurrentMethod().Name, ex)
             Throw New Exception("Error al ejecutar la inserción")
         End Try
@@ -289,6 +298,7 @@ Public Class ConexionDAO
             sql.ExecuteNonQuery()
             conn.Close()
         Catch ex As MySqlException
+            GuardarError(ex.Message)
             EscritorVisorEventos.Instancia().EscribirEvento(nombreClase, MethodBase.GetCurrentMethod().Name, ex)
             Throw New Exception("Error al ejecutar la inserción")
         End Try
@@ -306,6 +316,7 @@ Public Class ConexionDAO
             sql.ExecuteNonQuery()
             conn.Close()
         Catch ex As MySqlException
+            GuardarError(ex.Message)
             EscritorVisorEventos.Instancia().EscribirEvento(nombreClase, MethodBase.GetCurrentMethod().Name, ex)
             Throw New Exception("Error al ejecutar la inserción")
         End Try
@@ -323,6 +334,7 @@ Public Class ConexionDAO
             sql.ExecuteNonQuery()
             conn.Close()
         Catch ex As MySqlException
+            GuardarError(ex.Message)
             EscritorVisorEventos.Instancia().EscribirEvento(nombreClase, MethodBase.GetCurrentMethod().Name, ex)
             Throw New Exception("Error al ejecutar la inserción")
         End Try
@@ -341,6 +353,7 @@ Public Class ConexionDAO
             sql.ExecuteNonQuery()
             conn.Close()
         Catch ex As MySqlException
+            GuardarError(ex.Message)
             EscritorVisorEventos.Instancia().EscribirEvento(nombreClase, MethodBase.GetCurrentMethod().Name, ex)
             Throw New Exception("Error al ejecutar la inserción")
         End Try
@@ -357,6 +370,7 @@ Public Class ConexionDAO
             sql.Dispose()
             conn.Close()
         Catch ex As MySqlException
+            GuardarError(ex.Message)
             EscritorVisorEventos.Instancia().EscribirEvento(nombreClase, MethodBase.GetCurrentMethod().Name, ex)
             Throw New Exception("Error al ejecutar la inserción")
         End Try
@@ -377,6 +391,7 @@ Public Class ConexionDAO
             sql.ExecuteNonQuery()
             conn.Close()
         Catch ex As MySqlException
+            GuardarError(ex.Message)
             EscritorVisorEventos.Instancia().EscribirEvento(nombreClase, MethodBase.GetCurrentMethod().Name, ex)
             Throw New Exception("Error al ejecutar la inserción")
         End Try
@@ -398,6 +413,7 @@ Public Class ConexionDAO
             Return dr
 
         Catch ex As MySqlException
+            GuardarError(ex.Message)
             EscritorVisorEventos.Instancia().EscribirEvento(nombreClase, MethodBase.GetCurrentMethod().Name, ex)
             Throw New Exception("Error al ejecutar la consulta")
         End Try
@@ -419,6 +435,7 @@ Public Class ConexionDAO
             Return dr
 
         Catch ex As MySqlException
+            GuardarError(ex.Message)
             EscritorVisorEventos.Instancia().EscribirEvento(nombreClase, MethodBase.GetCurrentMethod().Name, ex)
             Throw New Exception("Error al ejecutar la consulta")
         End Try
@@ -446,6 +463,7 @@ Public Class ConexionDAO
             sql.ExecuteNonQuery()
             conn.Close()
         Catch ex As MySqlException
+            GuardarError(ex.Message)
             EscritorVisorEventos.Instancia().EscribirEvento(nombreClase, MethodBase.GetCurrentMethod().Name, ex)
             Throw New Exception("Error al ejecutar la inserción")
         End Try
@@ -471,6 +489,7 @@ Public Class ConexionDAO
             sql.ExecuteNonQuery()
             conn.Close()
         Catch ex As MySqlException
+            GuardarError(ex.Message)
             EscritorVisorEventos.Instancia().EscribirEvento(nombreClase, MethodBase.GetCurrentMethod().Name, ex)
             Throw New Exception("Error al ejecutar la inserción")
         End Try
@@ -505,6 +524,7 @@ Public Class ConexionDAO
             sql.ExecuteNonQuery()
             conn.Close()
         Catch ex As MySqlException
+            GuardarError(ex.Message)
             EscritorVisorEventos.Instancia().EscribirEvento(nombreClase, MethodBase.GetCurrentMethod().Name, ex)
             Throw New Exception("Error al ejecutar la inserción")
         End Try
@@ -536,6 +556,7 @@ Public Class ConexionDAO
             sql.ExecuteNonQuery()
             conn.Close()
         Catch ex As MySqlException
+            GuardarError(ex.Message)
             EscritorVisorEventos.Instancia().EscribirEvento(nombreClase, MethodBase.GetCurrentMethod().Name, ex)
             Throw New Exception("Error al ejecutar la inserción")
         End Try
@@ -552,6 +573,7 @@ Public Class ConexionDAO
             sql = Nothing
             conn = Nothing
         Catch ex As Exception
+            GuardarError(ex.Message)
             EscritorVisorEventos.Instancia().EscribirEvento(nombreClase, MethodBase.GetCurrentMethod().Name, ex)
             Throw New Exception("Error al Ejecutar Consulta")
         End Try
@@ -570,6 +592,7 @@ Public Class ConexionDAO
             sql = Nothing
             Return dr
         Catch ex As MySqlException
+            GuardarError(ex.Message)
             EscritorVisorEventos.Instancia().EscribirEvento(nombreClase, MethodBase.GetCurrentMethod().Name, ex)
             Throw New Exception("Error al ejecutar la consulta")
         End Try
@@ -591,8 +614,30 @@ Public Class ConexionDAO
             sql.ExecuteNonQuery()
             conn.Close()
         Catch ex As MySqlException
+            GuardarError(ex.Message)
             EscritorVisorEventos.Instancia().EscribirEvento(nombreClase, MethodBase.GetCurrentMethod().Name, ex)
             Throw New Exception("ExecuteInsertNotification: Error al ejecutar la inserción")
+        End Try
+    End Sub
+
+    Public Sub GuardarError(ByVal exe As String)
+        Dim psSql As String
+        exe = exe.Replace("'", " ")
+
+        psSql = "INSERT INTO errors (Error_Description, Error_Date) VALUES ('" & exe & "', now());"
+
+        Try
+            conn = New MySqlConnection(conStr)
+            conn.Open()
+            sql = New MySqlCommand(psSql, conn)
+            sql.ExecuteNonQuery()
+            sql.Dispose()
+            conn.Close()
+            sql = Nothing
+            conn = Nothing
+        Catch ex As Exception
+            EscritorVisorEventos.Instancia().EscribirEvento(nombreClase, MethodBase.GetCurrentMethod().Name, ex)
+            Throw New Exception("Error al Ejecutar Consulta")
         End Try
     End Sub
 
