@@ -10,14 +10,21 @@
 
                 <div class="modal fade" id="staticBackdrop">
                     <div class="modal-dialog modal-dialog-scrollable modal-xl">
-                        <div class="modal-content">
-                            <div class="modal-header">
+                        <div class="modal-content contenidoModal">
+                            <div class="modal-header encabezadoModal">
                                 <div class="col-12">
                                     <div class="row" style="text-align: right;">
-                                        <div class="col-md-12 col-xs-12">
+                                        <div class="col-md-1 col-xs-1">
+                                            <p> </p>
+                                        </div>
+                                        <div class="col-md-10 col-xs-10">
+                                            <h3 style="color: white; text-align: center;">Información del Proyecto</h3>
+                                        </div>
+                                        <div class="col-md-1 col-xs-1">
                                             <button
                                                 style="border: none; background-color: transparent; min-height: 15px; min-width: 25px; font-size: 30px;"
-                                                type="button" data-bs-dismiss="modal">&times;</button>
+                                                type="button" data-bs-dismiss="modal">&times;
+                                            </button>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -42,6 +49,7 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <hr>
                                     <br />
                                     <div class="col-md-12 col-xs-12" style="min-height: 350px; max-height: 400px">
                                         <div class="row">
@@ -56,8 +64,8 @@
                                         <div class="row">
                                             <div class="col-12">
                                                 <div class="col-md-12 col-xs-12">
-                                                    <div style="text-align: justify;">
-                                                        {{ this.ViewProject.Description_Project }}
+                                                    <div style="text-align: center;">
+                                                        <div style="text-align: center;" v-html="this.ViewProject.Description_Project"></div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -75,7 +83,7 @@
                             </div>
                             <div class="modal-footer row justify-content-center">
                                 <button @click="loadFileList(this.ViewProject.Id_project)" type="button"
-                                    class="btn btn-primary col-3" style="text-align: center;">Descargar archivos
+                                    class="btn btn-primary col-5" style="text-align: center;">Descargar archivos
                                     adjuntos</button>
                             </div>
                         </div>
@@ -268,7 +276,7 @@
                                             <select class="form-select diseñoSelectLateral" v-model="Filtros.estado">
                                                 <option value="">Todos</option>
                                                 <option value="1">Activo</option>
-                                                <option value="2">Pendiente</option>
+                                                <option value="5">Finalizado</option>
                                             </select>
                                         </div>
 
@@ -280,7 +288,7 @@
                                             <div>
                                                 <input autocomplete="off" maxlength="70" class="diseñoSelectLateral"
                                                     type="search" id="pClaveInput" placeholder="Buscar"
-                                                    v-model="Filtros.palabra">
+                                                    v-model="Filtros.palabra" @keyup="aplyFilter(Filtros.fechaI, Filtros.estado, Filtros.palabra)">
                                             </div>
                                         </div>
 
@@ -306,17 +314,17 @@
                                             <thead>
                                                 <tr>
                                                     <th class="col-1" style="min-width: 75px;"># Proyecto</th>
-                                                    <th class="col-4" style="min-width: 150px;">Nombre</th>
+                                                    <th class="col-4" style="min-width: 200px;">Nombre</th>
                                                     <th class="col-3" style="min-width: 125px;">Fecha Creacion</th>
                                                     <th class="col-2" style="min-width: 125px;">Estado</th>
-                                                    <th class="col-2" style="min-width: 150px;">Opciones</th>
+                                                    <th class="col-2" style="min-width: 200px;">Opciones</th>
                                                 </tr>
                                             </thead>
                                             <tbody style="font-size: large;">
                                                 <tr v-for="proyecto in paginateData" :key="proyecto.Id_project">
                                                     <td @click="verSprints(proyecto.Id_project)" class="claseTD">{{
                                                         proyecto.Id_project }}</td>
-                                                    <td @click="verSprints(proyecto.Id_project)" class="claseTD">{{
+                                                    <td @click="verSprints(proyecto.Id_project)" class="claseTD2">{{
                                                         proyecto.Project_Name }}</td>
                                                     <td @click="verSprints(proyecto.Id_project)" class="claseTD">{{
                                                         $filters.FormatearFecha(proyecto.Creation_Date) }}</td>
@@ -496,6 +504,12 @@ export default {
 
         },
 
+        QuitarHTML(html) {
+            var temporal = document.createElement('div')
+            temporal.innerHTML = html
+            return temporal.textContent || temporal.innerText || ""
+        },
+
         getProyectosDesdeAPI: async function () {
             this.actualPage = 1
             let login = this.recuperarUsuLog()
@@ -503,15 +517,43 @@ export default {
             try {
                 if (this.proyectos.length == 0) {
                     if (usutipo === "Operador") {
-                        const response = await AdminApi.GetProjectsAllOperator(login);
+                        /*const response = await AdminApi.GetProjectsAllOperator(login);
                         const Projectlist = response.data.obj;
-                        this.proyectos = Projectlist;
+                        this.proyectos = Projectlist;*/
+
+                        await AdminApi.GetProjectsAllOperator(login)
+                            .then(async response => {
+                                if (response.data != null) {
+                                    response.data.obj.forEach(element => {
+                                        this.proyectos.push({
+                                            Id_project: element.Id_project,
+                                            Project_Name: element.Project_Name,
+                                            Description_Project: element.Description_Project,
+                                            Id_State: element.Id_State,
+                                            Creation_Date: element.Creation_Date,
+                                        })
+                                    })
+                                }
+                            }
+                        )
+
                         this.showElement = !this.showElement;
-                    }
-                    else {
-                        const response = await AdminApi.GetAllProject();
-                        const Projectlist = response.data.obj;
-                        this.proyectos = Projectlist;
+                    } else {
+                        await AdminApi.GetAllProject()
+                            .then(async response => {
+                                if (response.data != null) {
+                                    response.data.obj.forEach(element => {
+                                        this.proyectos.push({
+                                            Id_project: element.Id_project,
+                                            Project_Name: element.Project_Name,
+                                            Description_Project: element.Description_Project,
+                                            Id_State: element.Id_State,
+                                            Creation_Date: element.Creation_Date,
+                                        })
+                                    })
+                                }
+                            }
+                        )
                     }
 
 
@@ -740,7 +782,6 @@ export default {
             try {
                 const response = await AdminApi.GetPasswordVerifyDeleteRow(login, this.verifyPassword);
                 const mensage = response.data.ok;
-                console.log(mensage == true ? "Se verifico" : "No se verifico")
 
                 if (mensage == true) {
 

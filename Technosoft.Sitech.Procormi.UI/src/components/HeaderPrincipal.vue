@@ -548,18 +548,16 @@ body {
     background-color: #0a3a66;
     position: absolute;
     right: 40px;
-    top: 65px;
-    width: 25%;
+    top: 60px;
+    min-width: 200px;
     text-align: center;
     min-height: 50vh;
     overflow-y: auto;
     z-index: 3;
     display: none;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
-
+    max-height: 80vh;
 }
 
 @media screen and (max-width: 900px) {
@@ -588,7 +586,7 @@ body {
         position: absolute;
         right: 0;
         top: 60px;
-        width: 200px;
+        min-width: 200px;
         text-align: center;
         overflow-y: auto;
         z-index: 3;
@@ -607,7 +605,7 @@ body {
         position: absolute;
         right: 0;
         top: 60px;
-        width: 50%;
+        min-width: 50%;
         text-align: center;
         min-height: 89vh;
         max-height: 89vh;
@@ -615,6 +613,7 @@ body {
         z-index: 3;
         display: none;
         border: none;
+        max-height: 80vh;
     }
 
     .nav-menuAplicaciones {
@@ -625,7 +624,7 @@ body {
         position: absolute;
         right: 0;
         top: 60px;
-        width: 50%;
+        min-width: 50%;
         text-align: center;
         min-height: 89vh;
         max-height: 89vh;
@@ -633,6 +632,7 @@ body {
         z-index: 3;
         display: none;
         border: none;
+        max-height: 80vh;
     }
 }
 
@@ -671,6 +671,7 @@ body {
         overflow-y: auto;
         left: 100%;
         z-index: 4;
+        padding-right: 25px;
     }
 
     .nav-menuAplicaciones {
@@ -684,9 +685,11 @@ body {
         min-width: 50%;
         text-align: center;
         min-height: 91.7vh;
+        max-height: 91.7vh;
         overflow-y: auto;
         left: 100%;
         z-index: 4;
+        padding-right: 25px;
     }
 
     .nav-toggle {

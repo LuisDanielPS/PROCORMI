@@ -32,7 +32,7 @@
                                         <div>
                                             <label class="margin-15px-bottom text-black">Descripción<span style="color: red;"> *</span></label>
                                             <div style="margin-top: 15px;">
-                                                <input v-model="taskDescription" required style="border-radius: 5px;" type="textarea"  maxLength="100" placeholder="Descripción">
+                                                <textarea v-model="taskDescription" required style="border-radius: 5px;" type="textarea"  maxLength="100" placeholder="Descripción"></textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -67,7 +67,7 @@
                                         <div>
                                             <label class="margin-15px-bottom text-black">Descripción<span style="color: red;"> *</span></label>
                                             <div>
-                                                <input v-model="taskDescriptionUnderEdit" required @input="handleChanges" style="border-radius: 5px;" maxLength="100" type="textarea" placeholder="Descripcion...">
+                                                <textarea v-model="taskDescriptionUnderEdit" required @input="handleChanges" style="border-radius: 5px;" maxLength="100" type="textarea" placeholder="Descripcion..."></textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -136,11 +136,17 @@
 
                 <div class="modal fade" id="verTarea" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="verTarea" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-scrollable modal-xl">
-                        <div class="modal-content">
-                            <div class="modal-header">
+                        <div class="modal-content contenidoModal">
+                            <div class="modal-header encabezadoModal">
                                 <div class="col-12">
                                     <div class="row" style="text-align: right;">
-                                        <div class="col-md-12 col-xs-12">
+                                        <div class="col-md-1 col-xs-1">
+                                            <p> </p>
+                                        </div>
+                                        <div class="col-md-10 col-xs-10">
+                                            <h3 style="color: white; text-align: center;">Información de la Tarea</h3>
+                                        </div>
+                                        <div class="col-md-1 col-xs-1">
                                             <button style="border: none; background-color: transparent; min-height: 15px; min-width: 25px; font-size: 30px;" type="button" data-bs-dismiss="modal">&times;</button>
                                         </div>
                                     </div>
@@ -151,16 +157,20 @@
                             <br />
                             <div class="modal-body">
                                 <div class="col-md-12 col-xs-12" style="min-height: 350px; max-height: 400px">
-                                    <div>
-                                        <div class="col-12">
-                                            <h1 style="text-align:center"><strong>{{ currentTask ? currentTask.Task_Name : '' }}</strong></h1>
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <h1 style="text-align: left"><strong>{{ currentTask ? currentTask.Task_Name : '' }}</strong></h1>
+                                        </div>
+                                        <div class="col-6" style="text-align: right;">
+                                            <p style="text-align: right;"><b>{{ currentTask ? currentTask.Id_Status : '' }}</b></p>
                                         </div>
                                     </div>
+                                    <hr>
                                     <br />
                                     <div class="col-md-12 col-xs-12" style="min-height: 350px; max-height: 400px">
                                         <div class="row">
                                             <div class="col-12">
-                                                <h4 class="modal-title" style="text-align: center"><strong>Descripción</strong></h4>
+                                                <h4 class="modal-title" style="text-align: left"><strong>Descripción</strong></h4>
                                             </div>
                                         </div>
                                         <br />
@@ -168,19 +178,13 @@
                                         <div class="row">
                                             <div class="col-12">
                                                 <div class="col-md-12 col-xs-12">
-                                                    <div style="text-align: center;">
+                                                    <div style="text-align: left;">
                                                         {{ currentTask ? currentTask.Description_Task : '' }}
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                         <br>
-
-                                        <div class=" modal-footer   row justify-content-center" style="position: relative;">
-                                            <!-- <div class="row justify-content-center" style="position: relative;">
-                                                <button class="btn btn-success" v-if="currentTask ? currentTask.Id_Status != 'Finalizada' : false" style="width: 150px; min-height: 15px;" type="button" data-bs-dismiss="modal" @click="finishTask"><span class="fas fa-check"></span></button>
-                                            </div> -->
-                                        </div>
 
                                         <br />
                                     </div>
@@ -197,11 +201,17 @@
                 
                 <div class="modal fade" id="verSubTarea" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="verSubTarea" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-scrollable modal-xl">
-                        <div class="modal-content bg-gradient-gray">
-                            <div class="modal-header">
+                        <div class="modal-content contenidoModal">
+                            <div class="modal-header encabezadoModal">
                                 <div class="col-12">
                                     <div class="row" style="text-align: right;">
-                                        <div class="col-md-12 col-xs-12">
+                                        <div class="col-md-1 col-xs-1">
+                                            <p> </p>
+                                        </div>
+                                        <div class="col-md-10 col-xs-10">
+                                            <h3 style="color: white; text-align: center;">Información de la Subtarea</h3>
+                                        </div>
+                                        <div class="col-md-1 col-xs-1">
                                             <button style="border: none; background-color: transparent; min-height: 15px; min-width: 25px; font-size: 30px;" type="button" data-bs-dismiss="modal">&times;</button>
                                         </div>
                                     </div>
@@ -217,18 +227,21 @@
                                             <h1 style="text-align:center"><strong>{{ currentSubTask ? currentSubTask.Title : '' }}</strong></h1>
                                         </div>
                                     </div>
-                                    <br/>
+                                    <br />
                                     <div class="row">
-                                            <div class="col-12" style="text-align: right;">
-                                                <p style="text-align: right;">Tiempo requerido: <b>{{ currentSubTask ? currentSubTask.Required_Time : 0.0 }}
-                                                    </b> horas</p>
-                                                    <p style="text-align: right;">Estado actual:<b>{{ currentSubTask ? currentSubTask.Id_Status : 0.0 }}</b></p>
-                                            </div>
+                                        <div class="col-6" style="text-align: left;">
+                                            <p style="text-align: left;">Tiempo requerido: <b>{{ currentSubTask ? currentSubTask.Required_Time : 0.0 }}
+                                                </b> horas</p>
                                         </div>
+                                        <div class="col-6" style="text-align: right;">
+                                            <p style="text-align: right;">Estado actual: <b>{{ currentSubTask ? currentSubTask.Id_Status : 0.0 }}</b></p>
+                                        </div>
+                                    </div>
+                                    <hr>
                                     <div class="col-md-12 col-xs-12" style="min-height: 350px; max-height: 400px">
                                         <div class="row">
                                             <div class="col-12">
-                                                <h4 class="modal-title" style="text-align: center"><strong>Descripción</strong></h4>
+                                                <h4 class="modal-title" style="text-align: left"><strong>Descripción</strong></h4>
                                             </div>
                                         </div>
                                         <br />
@@ -241,11 +254,6 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <br>
-                                        <div class=" modal-footer  row justify-content-center" style="position: relative;">
-                                            <!-- <button v-if="currentSubTask ? currentSubTask.Id_Status != 'Finalizada' : false" style="width: 150px;color: white; background-color: green; min-height: 15px; min-width: 25px;" type="button" data-bs-dismiss="modal" @click="finishSubTask">Finalizar subtarea</button>
-  -->
                                         </div>
                                         <br />
                                     </div>
@@ -279,7 +287,7 @@
                                         <div>
                                             <label class="margin-15px-bottom text-black">Descripción<span style="color: red;"> *</span></label>
                                             <div>
-                                                <input v-model="descriptionSubTarea" required style="border-radius: 5px;" type="textarea" maxLength="100" placeholder="Descripción...">
+                                                <textarea v-model="descriptionSubTarea" required style="border-radius: 5px;" type="textarea" maxLength="100" placeholder="Descripción..."></textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -346,7 +354,7 @@
                                         <div>
                                             <label class="margin-15px-bottom text-black">Descripción<span style="color: red;"> *</span></label>
                                             <div>
-                                                <input v-model="descriptionSubTarea" @input="handleChanges" required style="border-radius: 5px;" type="textarea"  maxLength="100" placeholder="Descripción...">
+                                                <textarea v-model="descriptionSubTarea" @input="handleChanges" required style="border-radius: 5px;" type="textarea"  maxLength="100" placeholder="Descripción..."></textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -415,9 +423,9 @@
 
                 <!--Modal eliminar Subtarea-->
 
-                   <!-- Modal finalizar tarea -->
+                <!-- Modal finalizar tarea -->
 
-                   <div class="modal fade" id="finalizarTarea" tabindex="-1" aria-labelledby="finalizarTarea" aria-hidden="true">
+                <div class="modal fade" id="finalizarTarea" tabindex="-1" aria-labelledby="finalizarTarea" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -436,9 +444,9 @@
                         </div>
                     </div>
                 </div>
-                  <!-- Modal finalizar tarea -->
+                <!-- Modal finalizar tarea -->
 
-                  <!-- Modal finalizar subtarea -->
+                <!-- Modal finalizar subtarea -->
 
                 <div class="modal fade" id="finalizarSubTarea" tabindex="-1" aria-labelledby="finalizarSubTarea" aria-hidden="true">
                     <div class="modal-dialog">
@@ -460,7 +468,7 @@
                     </div>
                 </div>
 
-                  <!-- Modal finalizar subtarea -->
+                <!-- Modal finalizar subtarea -->
 
                 <!------------------------------------------------Modales------------------------------------------------>
 
@@ -539,11 +547,10 @@
                                             </div>
                                             <select class="form-select diseñoSelectLateral" v-model="Filtros.estado">
                                                 <option value="">Todos</option>
-                                                <option value="1" >Activa</option>
-                                                <option value="2" >Inactiva</option>
-                                                <option value="3" >Pendiente</option>
-                                                <option value="4" >En Proceso</option>
-                                                <option value="5" >Finalizada</option>
+                                                <option value="Activo" >Activo</option>
+                                                <option value="Pendiente" >Pendiente</option>
+                                                <option value="En Proceso" >En Proceso</option>
+                                                <option value="Finalizada" >Finalizada</option>
                                             </select>
                                         </div>
 
@@ -554,7 +561,7 @@
                                                 <label class="text-black p-3 Td">Palabra</label>
                                             </div>
                                             <div>
-                                                <input autocomplete="off" maxlength="70" class="diseñoSelectLateral" type="search" id="pClaveInput" placeholder="Buscar" v-model="Filtros.palabra">
+                                                <input @keyup="aplyFilter(Filtros.estado, Filtros.palabra)" autocomplete="off" maxlength="70" class="diseñoSelectLateral" type="search" id="pClaveInput" placeholder="Buscar" v-model="Filtros.palabra">
                                             </div>
                                         </div>
 
@@ -583,11 +590,11 @@
                                                 <h6 style="cursor: default; color: white">.</h6>
                                                 <hr>
                                             </div>
-                                            <div>
+                                            <div style="text-align: left;">
                                                 <h6 style="cursor: default;"><b>Nombre</b></h6>
                                                 <hr>
                                             </div>
-                                            <div>
+                                            <div style="text-align: left;">
                                                 <h6 style="cursor: default;"><b>Estado</b></h6>
                                                 <hr>
                                             </div>
@@ -606,10 +613,10 @@
                                                 <div class="tablaPersonalizadaRow" @click="() => startSubTaskCreation(tarea)" style="margin-bottom: 10px;"><a style="text-decoration: none;margin-bottom: 10px;" class="fas fa-plus" data-bs-toggle="modal" data-bs-target="#crearSubtarea"></a></div>
                                             </div>
                                             <div>
-                                                <div class="tablaPersonalizadaRow" @click="() =>mostrarSubtareas(tarea.Id_Task)" style="margin-bottom: 10px;">{{ tarea.Task_Name }}</div>
+                                                <div class="tablaPersonalizadaRow" @click="() =>mostrarSubtareas(tarea.Id_Task)" style="margin-bottom: 10px; float: left;">{{ tarea.Task_Name }}</div>
                                             </div>
                                             <div>
-                                                <div class="tablaPersonalizadaRow" @click="() =>mostrarSubtareas(tarea.Id_Task)" style="margin-bottom: 10px;">{{ tarea.Id_Status }}</div>
+                                                <div class="tablaPersonalizadaRow" @click="() =>mostrarSubtareas(tarea.Id_Task)" style="margin-bottom: 10px; float: left;">{{ tarea.Id_Status }}</div>
                                             </div>
                                             <div>
                                                 <div class="tablaPersonalizadaRow" style="min-width: 150px; margin-bottom: 10px;">
@@ -647,20 +654,22 @@
                                                 :class="{ 'show': subtareas && tarea.Id_Task == currentSelectedTaskId}"
                                             >
                                                 <div>
+                                                    <div class="tablaPersonalizadaRow">
+                                                        <p class="fas" :class="`fa-${getPriorityIcon(subTask.Id_Priority)}-circle`" :style="`color: ${getPriorityColor(subTask.Id_Priority)};`"></p>
+                                                    </div>
+                                                </div>
+                                                <div>
                                                     <div class="tablaPersonalizadaRow"></div>
                                                 </div>
                                                 <div>
-                                                    <div class="tablaPersonalizadaRow" style="min-width: 75px;"></div>
-                                                </div>
-                                                <div>
-                                                    <div class="tablaPersonalizadaRowSubTareas">{{ subTask.Title }}</div>
+                                                    <div class="tablaPersonalizadaRowSubTareas" style="float: left;">{{ subTask.Title }}</div>
                                                 </div>
                                                 <div>
                                                     <!--<div class="tablaPersonalizadaRow">
                                                         <p class="fas" :class="`fa-${getPriorityIcon(subTask.Id_Priority)}-circle`" :style="`color: ${getPriorityColor(subTask.Id_Priority)};`"></p>
                                                     </div>-->
-                                                    <div class="tablaPersonalizadaRow">
-                                                        <div class="tablaPersonalizadaRowSubTareas">{{ subTask.Id_Status }}</div>
+                                                    <div class="tablaPersonalizadaRow" style="min-width: 120px;">
+                                                        <div class="tablaPersonalizadaRowSubTareas" style="min-width: 100px; float: left;">{{ subTask.Id_Status }}</div>
                                                     </div>
                                                 </div>
                                                 <div>
@@ -900,14 +909,14 @@ export default {
 
         getPriorityIcon(priority) {
             if (priority == 'Alta') return 'exclamation'
-            if (priority == 'Media') return 'info'
-            if (priority == 'Baja') return 'check'
+            if (priority == 'Media') return 'exclamation'
+            if (priority == 'Baja') return 'exclamation'
             return 'warning'
         },
 
         getPriorityColor(priority) {
             if (priority == 'Alta') return 'red'
-            if (priority == 'Media') return 'blue'
+            if (priority == 'Media') return 'yellow'
             if (priority == 'Baja') return 'green'
             return 'gray'
         },
@@ -1597,14 +1606,12 @@ export default {
             container: this.$refs.cuadroLoader,
             opacity: 1
         })
-                
+        this.quill = new Quill(this.$refs.Quill, {
+            theme: 'snow'
+        })  
         setTimeout(() => {
             loader.hide()
         }, 500)
-
-        this.quill = new Quill(this.$refs.Quill, {
-            theme: 'snow'
-        })
     },
 
     created: async function () {
@@ -1614,6 +1621,8 @@ export default {
         await this.getTareasDesdeAPI()
         await this.cutPages();
         await this.$root.validarLoginFooter.call();
+        await this.startTaskCreation();
+        await this.startSubTaskCreation();
 
         let urlParams = new URLSearchParams(window.location.search);
         this.currentSprintId = urlParams.get('id') || localStorage.getItem("currentSprintId");
@@ -1964,7 +1973,7 @@ ul, ol {
 .tablaPersonalizadaRowSubTareas{
     font-size: medium;
     cursor: pointer;
-    margin-left: 50px;
+    margin-left: 0px;
 }
 
 .listadoSubtareas{

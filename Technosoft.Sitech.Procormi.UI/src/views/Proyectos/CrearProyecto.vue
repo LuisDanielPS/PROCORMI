@@ -411,7 +411,7 @@ export default {
 
                 if (!this.esEditar) {
                     try {
-                        const quillText = this.quill.getText().trim();
+                        const quillText = this.quill.root.innerHTML;
                         this.project.Description_Project = quillText;
 
                         const response = await AdminApi.PostProject(this.project);
@@ -482,7 +482,7 @@ export default {
                                     this.$router.push({ name: 'Inicio' })
 
                                 } catch (error) {
-                                    console.error('Error al agregar usuario al proyecto:', error);
+                                    console.error('Error al agregar archivo al proyecto:', error);
                                 }
 
 
@@ -502,7 +502,7 @@ export default {
 
                 } else {
                     try {
-                        const quillText = this.quill.getText().trim();
+                        const quillText = this.quill.root.innerHTML;
                         this.project.Description_Project = quillText;
 
                         const response = await AdminApi.PutProject(this.project);

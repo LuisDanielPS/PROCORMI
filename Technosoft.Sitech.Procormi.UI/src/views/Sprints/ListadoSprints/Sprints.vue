@@ -351,7 +351,7 @@
                                         <div class="col-6">
                                             <input autocomplete="off" maxlength="70" class="diseñoSelectLateral"
                                                 type="search" id="pClaveInput" placeholder="Buscar"
-                                                v-model="Filtros.palabra">
+                                                v-model="Filtros.palabra" @keyup="aplyFilter(Filtros.fechaI, Filtros.fechaF, Filtros.estado, Filtros.usuario, Filtros.palabra)">
                                         </div>
                                         <div class="col-6">
                                             <button type="button" class="btn btn-success" style="float: left"
@@ -382,7 +382,7 @@
                                                 <tr v-for="sprint in paginateData" :key="sprint.Id_Sprint">
                                                     <td @click="verTareas(sprint.Id_Sprint)" class="claseTD">
                                                         {{ sprint.Id_Sprint }}</td>
-                                                    <td @click="verTareas(sprint.Id_Sprint)" class="claseTD">
+                                                    <td @click="verTareas(sprint.Id_Sprint)" class="claseTD2">
                                                         {{ sprint.Sprint_Name }}</td>
                                                     <td @click="verTareas(sprint.Id_Sprint)" class="claseTD">
                                                         {{ sprint.User_Login }}</td>
