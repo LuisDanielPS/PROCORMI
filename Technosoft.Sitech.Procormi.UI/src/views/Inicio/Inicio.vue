@@ -65,7 +65,8 @@
                                             <div class="col-12">
                                                 <div class="col-md-12 col-xs-12">
                                                     <div style="text-align: center;">
-                                                        <div style="text-align: center;" v-html="this.ViewProject.Description_Project"></div>
+                                                        <div style="text-align: center;"
+                                                            v-html="this.ViewProject.Description_Project"></div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -288,7 +289,8 @@
                                             <div>
                                                 <input autocomplete="off" maxlength="70" class="diseñoSelectLateral"
                                                     type="search" id="pClaveInput" placeholder="Buscar"
-                                                    v-model="Filtros.palabra" @keyup="aplyFilter(Filtros.fechaI, Filtros.estado, Filtros.palabra)">
+                                                    v-model="Filtros.palabra"
+                                                    @keyup="aplyFilter(Filtros.fechaI, Filtros.estado, Filtros.palabra)">
                                             </div>
                                         </div>
 
@@ -332,35 +334,33 @@
                                                         proyecto.Id_State == 1 ? "Activo" : (proyecto.Id_State == 5 ?
                                                             "Finalizado" : "Inactivo") }}</td>
                                                     <td class="text-white">
-                                                        <button @click="saveViewProjectModal(proyecto)" type="button"
+                                                        <button b-tooltip.hover title="Ver Proyecto"
+                                                            @click="saveViewProjectModal(proyecto)" type="button"
                                                             class="btn btn-primary" data-bs-toggle="modal"
                                                             data-bs-target="#staticBackdrop" role="button">
-                                                            <span class="fas fa-eye" b-tooltip.hover
-                                                                title="Ver Proyecto"></span>
+                                                            <span class="fas fa-eye"></span>
                                                         </button>
 
 
-                                                        <button v-show="showElement" style="margin-left: 5px;"
+                                                        <button b-tooltip.hover title="Completar Proyecto"
+                                                            v-show="showElement" style="margin-left: 5px;"
                                                             @click="saveIdProjectDelete(proyecto.Id_project)" type="button"
                                                             class="btn btn-success" data-bs-toggle="modal"
-                                                            data-bs-target="#completarProyecto"
                                                             :disabled="proyecto.Id_State == 5">
-                                                            <span class="fas fa-check" b-tooltip.hover
-                                                                title="Completar Proyecto"></span>
+                                                            <span class="fas fa-check"></span>
                                                         </button>
 
-                                                        <button v-show="showElement" style="margin-left: 5px;" type="button"
-                                                            class="btn btn-warning"
+                                                        <button b-tooltip.hover title="Editar Proyecto" v-show="showElement"
+                                                            style="margin-left: 5px;" type="button" class="btn btn-warning"
                                                             @click="EditarProyecto(proyecto.Id_project)">
-                                                            <span  class="fas fa-pen" style="color: white"  b-tooltip.hover
-                                                                title="Editar Proyecto"></span>
+                                                            <span class="fas fa-pen" style="color: white"></span>
                                                         </button>
-                                                        <button v-show="showElement"
+                                                        <button b-tooltip.hover title="Eliminar Proyecto"
+                                                            v-show="showElement"
                                                             @click="saveIdProjectDelete(proyecto.Id_project)" type="button"
                                                             class="btn btn-danger" style="margin-left: 5px;"
                                                             data-bs-toggle="modal" data-bs-target="#exampleModal">
-                                                            <span class="fas fa-trash" b-tooltip.hover
-                                                                title="Eliminar Proyecto"></span>
+                                                            <span class="fas fa-trash"></span>
                                                         </button>
                                                     </td>
                                                 </tr>
@@ -535,7 +535,7 @@ export default {
                                     })
                                 }
                             }
-                        )
+                            )
 
                         this.showElement = !this.showElement;
                     } else {
@@ -553,7 +553,7 @@ export default {
                                     })
                                 }
                             }
-                        )
+                            )
                     }
 
 

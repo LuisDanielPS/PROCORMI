@@ -20,7 +20,7 @@
                             <div class="modal-body">
                                 <div>
                                     <label>Nombre<span style="color: red;"> *</span></label>
-                                    <br />
+                                    <br/>
                                     <div style="margin-top: 15px;">
                                         <input v-model.trim="sprint.Sprint_Name" ref="inputSprintName" maxlength="45"
                                             required style="border-radius: 5px;" type="text" placeholder="Nombre">
@@ -54,7 +54,7 @@
                                             style="min-height: 48px;">
                                             <option value="" disabled select>Seleccione una opción</option>
                                             <option v-for="item in listUsers" :key="item.usu_Login" :value="item.usu_Login">
-                                                {{ item.usu_Nombre }}
+                                                {{ item.usu_Login }}
                                             </option>
                                         </select>
                                     </div>
@@ -151,7 +151,7 @@
                                             required style="border-radius: 5px;" type="date">
                                     </div>
                                 </div>
-                                <br />
+                                <br/>
                                 <div>
                                     <label>Usuario asignado<span style="color: red;"> *</span></label>
                                     <br />
@@ -160,7 +160,7 @@
                                             required name="usuarios" id="usuarios"
                                             class="form-select text-black inputsGeneral" style="min-height: 48px;">
                                             <option v-for="item in listUsers" :key="item.usu_Login" :value="item.usu_Login">
-                                                {{ item.usu_Nombre }}</option>
+                                                {{ item.usu_Login }}</option>
                                         </select>
                                     </div>
                                 </div>
@@ -301,7 +301,7 @@
                                     </div>
 
                                     <div class="row">
-                                        <div class="col-3">
+                                        <div class="col-2">
                                             <div>
                                                 <a class="text-black fas fa-calendar-alt"></a>
                                                 <label class="text-black p-3 Td">Fecha inicio</label>
@@ -341,19 +341,20 @@
                                                 <option value="">Todos</option>
                                                 <option v-bind:value="Usuario.usu_Login" v-for="Usuario in listUsers"
                                                     v-bind:key="Usuario.usu_Login">
-                                                    {{ Usuario.usu_Nombre }}
+                                                    {{ Usuario.usu_Login }}
                                                 </option>
                                             </select>
                                         </div>
                                     </div>
 
                                     <div class="row" style="margin-top: 20px">
-                                        <div class="col-6">
+                                        <div class="col-5">
                                             <input autocomplete="off" maxlength="70" class="diseñoSelectLateral"
-                                                type="search" id="pClaveInput" placeholder="Buscar"
-                                                v-model="Filtros.palabra" @keyup="aplyFilter(Filtros.fechaI, Filtros.fechaF, Filtros.estado, Filtros.usuario, Filtros.palabra)">
+                                                type="search" id="pClaveInput" placeholder="Búsqueda por nombre de Sprint"
+                                                v-model="Filtros.palabra"
+                                                @keyup="aplyFilter(Filtros.fechaI, Filtros.fechaF, Filtros.estado, Filtros.usuario, Filtros.palabra)">
                                         </div>
-                                        <div class="col-6">
+                                        <div class="col-5">
                                             <button type="button" class="btn btn-success" style="float: left"
                                                 @click="aplyFilter(Filtros.fechaI, Filtros.fechaF, Filtros.estado, Filtros.usuario, Filtros.palabra)"><span
                                                     class="fas fa-search"></span></button>
@@ -390,37 +391,39 @@
                                                         {{ $filters.FormatearFecha(sprint.Start_Date) }}</td>
                                                     <td @click="verTareas(sprint.Id_Sprint)" class="claseTD">
                                                         {{ $filters.FormatearFecha(sprint.End_Date) }}</td>
-                                                    <td @click="verTareas(sprint.Id_Sprint)"  class="claseTD">
+                                                    <td @click="verTareas(sprint.Id_Sprint)" class="claseTD">
                                                         {{ sprint.Id_Status == 1 ? "Activo" : (sprint.Id_Status == 5 ?
                                                             "Finalizado" : "Inactivo") }}</td>
                                                     <td class="text-white" v-if="recuperarUsuTipo() == 'Administrador'"
                                                         style="min-width: 130px;">
 
-                                                        <button v-if="recuperarUsuTipo() == 'Administrador'"
+                                                        <button b-tooltip.hover title="Completar Sprint"
+                                                            v-if="recuperarUsuTipo() == 'Administrador'"
                                                             style="margin-left: 5px;"
                                                             @click="saveIdSprintDelete(sprint.Id_Sprint)" type="button"
-                                                            class="btn btn-success" data-bs-toggle="modal"
-                                                            data-bs-target="#completarSprint"
+                                                            class="btn"
+                                                            :class="{ 'btn-success': sprint.Id_Status != 5, 'btn-secondary': sprint.Id_Status == 5 }"
+                                                            data-bs-toggle="modal" data-bs-target="#completarSprint"
                                                             :disabled="sprint.Id_Status == 5">
-                                                            <span class="fas fa-check" b-tooltip.hover
-                                                                title="Completar Sprint"></span>
+                                                            <span class="fas fa-check"></span>
                                                         </button>
 
-                                                        <button v-if="recuperarUsuTipo() == 'Administrador'"
+                                                        <button b-tooltip.hover title="Editar Sprint"
+                                                            v-if="recuperarUsuTipo() == 'Administrador'"
                                                             @click="() => startSprintEditing(sprint)"
-                                                            style="margin-left: 5px;" type="button" class="btn btn-warning"
+                                                            style="margin-left: 5px;" type="button" class="btn"
+                                                            :class="{ 'btn-warning': sprint.Id_Status != 5, 'btn-secondary': sprint.Id_Status == 5 }"
                                                             data-bs-toggle="modal" data-bs-target="#editarSprint"
                                                             :disabled="sprint.Id_Status == 5">
-                                                            <span class="fas fa-pen" style="color:white" b-tooltip.hover
-                                                                title="Editar Sprint"></span>
+                                                            <span class="fas fa-pen" style="color: white;"></span>
                                                         </button>
 
-                                                        <button v-if="recuperarUsuTipo() == 'Administrador'"
+                                                        <button b-tooltip.hover title="Eliminar Sprint"
+                                                            v-if="recuperarUsuTipo() == 'Administrador'"
                                                             @click="saveIdSprintDelete(sprint.Id_Sprint)" type="button"
                                                             class="btn btn-danger" style="margin-left: 5px;"
                                                             data-bs-toggle="modal" data-bs-target="#exampleModal">
-                                                            <span class="fas fa-trash" b-tooltip.hover
-                                                                title="Eliminar Sprint"></span>
+                                                            <span class="fas fa-trash"></span>
                                                         </button>
                                                     </td>
                                                 </tr>
@@ -847,7 +850,7 @@ export default {
                         this.ActionEN.Action_Description = "Creó el sprint " + this.sprint.Sprint_Name
                         this.ActionEN.Action_User = this.recuperarUsuLog();
                         await AdminApi.PostNewAction(this.ActionEN)
-                        
+
                         const swal = this.$swal({
                             title: response.data.msg,
                             icon: 'success',
@@ -992,7 +995,7 @@ export default {
 
                 const result = await AdminApi.PutSprint(modifiedSprint);
                 if (result.data.ok) {
-                    this.ActionEN.Action_Description = "Modificó el sprint " + this.modifiedSprint.Sprint_Name
+                    this.ActionEN.Action_Description = "Modificó el sprint " + modifiedSprint.Sprint_Name
                     this.ActionEN.Action_User = this.recuperarUsuLog();
                     await AdminApi.PostNewAction(this.ActionEN)
 
@@ -1012,6 +1015,7 @@ export default {
                     this.$swal("Hubo un error al editar el sprint");
                 }
             } catch (error) {
+
                 this.$swal("Hubo un error al editar el sprint");
             }
         },
@@ -1053,7 +1057,7 @@ export default {
                     const response = await AdminApi.PutCompleteSprintStatus(this.idSprintDeleteVerify);
                     const message = response.data.ok;
                     if (message) {
-                        this.ActionEN.Action_Description = "Ccompletó el sprint #" + this.idSprintDeleteVerify
+                        this.ActionEN.Action_Description = "Completó el sprint #" + this.idSprintDeleteVerify
                         this.ActionEN.Action_User = this.recuperarUsuLog();
                         await AdminApi.PostNewAction(this.ActionEN)
                     }

@@ -10,11 +10,12 @@
 
                 <!--Modal crear Tarea-->
 
-                <div v-if="modalShowTask" class="modal fade" id="staticBackdrop" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+                <div v-if="modalShowTask" class="modal fade" id="staticBackdrop" tabindex="-1"
+                    aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h1 class="modal-title fs-5"  id="exampleModalLabel">Crear Tarea</h1>
+                                <h1 class="modal-title fs-5" id="exampleModalLabel">Crear Tarea</h1>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
@@ -22,24 +23,28 @@
                                     <label>Nombre<span style="color: red;"> *</span></label>
                                     <br />
                                     <div style="margin-top: 15px;">
-                                        <input v-model="taskName" required style="border-radius: 5px;" type="text" maxLength="45" placeholder="Nombre">
-                                    
+                                        <input v-model="taskName" required style="border-radius: 5px;" type="text"
+                                            maxLength="45" placeholder="Nombre">
+
                                     </div>
                                     <br>
                                 </div>
                                 <div class="row">
                                     <div class="col-12">
                                         <div>
-                                            <label class="margin-15px-bottom text-black">Descripción<span style="color: red;"> *</span></label>
+                                            <label class="margin-15px-bottom text-black">Descripción<span
+                                                    style="color: red;"> *</span></label>
                                             <div style="margin-top: 15px;">
-                                                <textarea v-model="taskDescription" required style="border-radius: 5px;" type="textarea"  maxLength="100" placeholder="Descripción"></textarea>
+                                                <textarea v-model="taskDescription" required style="border-radius: 5px;"
+                                                    type="textarea" maxLength="100" placeholder="Descripción"></textarea>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button @click="resetTaskCreation" type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                                <button @click="resetTaskCreation" type="button" class="btn btn-danger"
+                                    data-bs-dismiss="modal">Cancelar</button>
                                 <button @click="createTask" type="button" class="btn btn-success">Guardar</button>
                             </div>
                         </div>
@@ -47,7 +52,8 @@
                 </div>
 
                 <!--Modal editar Tarea-->
-                <div v-if="modalShowTask" class="modal fade" id="editarTarea" tabindex="-1" aria-labelledby="editarTarea" aria-hidden="true">
+                <div v-if="modalShowTask" class="modal fade" id="editarTarea" tabindex="-1" aria-labelledby="editarTarea"
+                    aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -59,15 +65,19 @@
                                     <label>Nombre<span style="color: red;"> *</span></label>
                                     <br />
                                     <div style="margin-top: 15px;">
-                                        <input v-model="taskNameUnderEdit" required @input="handleChanges" style="border-radius: 5px;" maxLength="45" type="text" placeholder="Nombre">
+                                        <input v-model="taskNameUnderEdit" required @input="handleChanges"
+                                            style="border-radius: 5px;" maxLength="45" type="text" placeholder="Nombre">
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-12">
                                         <div>
-                                            <label class="margin-15px-bottom text-black">Descripción<span style="color: red;"> *</span></label>
+                                            <label class="margin-15px-bottom text-black">Descripción<span
+                                                    style="color: red;"> *</span></label>
                                             <div>
-                                                <textarea v-model="taskDescriptionUnderEdit" required @input="handleChanges" style="border-radius: 5px;" maxLength="100" type="textarea" placeholder="Descripcion..."></textarea>
+                                                <textarea v-model="taskDescriptionUnderEdit" required @input="handleChanges"
+                                                    style="border-radius: 5px;" maxLength="100" type="textarea"
+                                                    placeholder="Descripcion..."></textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -78,8 +88,11 @@
                                     <br />
                                     <!--:selected="currentTask?.Task_State === 'Finalizada'" -->
                                     <div class="left-content" style="margin-top: 15px;">
-                                        <select v-model="taskStateUnderEdit" required name="estado" id="estado" class="form-select text-black inputsGeneral" style="min-height: 48px;" @input="handleChanges">
-                                            <option v-for="status in statusOptions" :key="status" :value="status">{{ status }}</option>
+                                        <select v-model="taskStateUnderEdit" required name="estado" id="estado"
+                                            class="form-select text-black inputsGeneral" style="min-height: 48px;"
+                                            @input="handleChanges">
+                                            <option v-for="status in statusOptions" :key="status" :value="status">{{ status
+                                            }}</option>
                                         </select>
                                     </div>
                                 </div>
@@ -96,7 +109,8 @@
 
                 <!--Modal eliminar Tarea-->
 
-                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                    aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -113,16 +127,19 @@
                                     <label>Digite su contraseña</label>
                                     <br />
                                     <div class="row" style="margin-top: 15px;">
-                                        <input v-model="verifyPassword" class="col-10" style="margin-left: 10px; border-radius: 5px;" type="password"
-                                            required placeholder="Contraseña">
-                                        <button @click="getPasswordVerifyDeleteRow()" type="button" class="btn btn-success col-1" style="margin-left: 5px;"><span
+                                        <input v-model="verifyPassword" class="col-10"
+                                            style="margin-left: 10px; border-radius: 5px;" type="password" required
+                                            placeholder="Contraseña">
+                                        <button @click="getPasswordVerifyDeleteRow()" type="button"
+                                            class="btn btn-success col-1" style="margin-left: 5px;"><span
                                                 class="fas fa-check"></span></button>
                                     </div>
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal" >Cancelar</button>
-                                <button @click="deleteRowList()"  :disabled="!confimPassworsDelete" class="btn btn-success">Aceptar</button>
+                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                                <button @click="deleteRowList()" :disabled="!confimPassworsDelete"
+                                    class="btn btn-success">Aceptar</button>
                             </div>
                         </div>
                     </div>
@@ -130,11 +147,12 @@
                 <!--Modal eliminar Tarea-->
 
 
-                
+
 
                 <!--Modal Ver Tarea-->
 
-                <div class="modal fade" id="verTarea" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="verTarea" aria-hidden="true">
+                <div class="modal fade" id="verTarea" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+                    aria-labelledby="verTarea" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-scrollable modal-xl">
                         <div class="modal-content contenidoModal">
                             <div class="modal-header encabezadoModal">
@@ -147,7 +165,9 @@
                                             <h3 style="color: white; text-align: center;">Información de la Tarea</h3>
                                         </div>
                                         <div class="col-md-1 col-xs-1">
-                                            <button style="border: none; background-color: transparent; min-height: 15px; min-width: 25px; font-size: 30px;" type="button" data-bs-dismiss="modal">&times;</button>
+                                            <button
+                                                style="border: none; background-color: transparent; min-height: 15px; min-width: 25px; font-size: 30px;"
+                                                type="button" data-bs-dismiss="modal">&times;</button>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -159,10 +179,12 @@
                                 <div class="col-md-12 col-xs-12" style="min-height: 350px; max-height: 400px">
                                     <div class="row">
                                         <div class="col-6">
-                                            <h1 style="text-align: left"><strong>{{ currentTask ? currentTask.Task_Name : '' }}</strong></h1>
+                                            <h1 style="text-align: left"><strong>{{ currentTask ? currentTask.Task_Name : ''
+                                            }}</strong></h1>
                                         </div>
                                         <div class="col-6" style="text-align: right;">
-                                            <p style="text-align: right;"><b>{{ currentTask ? currentTask.Id_Status : '' }}</b></p>
+                                            <p style="text-align: right;"><b>{{ currentTask ? currentTask.Id_Status : ''
+                                            }}</b></p>
                                         </div>
                                     </div>
                                     <hr>
@@ -170,7 +192,9 @@
                                     <div class="col-md-12 col-xs-12" style="min-height: 350px; max-height: 400px">
                                         <div class="row">
                                             <div class="col-12">
-                                                <h4 class="modal-title" style="text-align: left"><strong>Descripción</strong></h4>
+                                                <h4 class="modal-title" style="text-align: left">
+                                                    <strong>Descripción</strong>
+                                                </h4>
                                             </div>
                                         </div>
                                         <br />
@@ -198,8 +222,9 @@
                 <!--Modal Ver Tarea-->
 
                 <!-- Modal ver sub tarea-->
-                
-                <div class="modal fade" id="verSubTarea" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="verSubTarea" aria-hidden="true">
+
+                <div class="modal fade" id="verSubTarea" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+                    aria-labelledby="verSubTarea" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-scrollable modal-xl">
                         <div class="modal-content contenidoModal">
                             <div class="modal-header encabezadoModal">
@@ -212,7 +237,9 @@
                                             <h3 style="color: white; text-align: center;">Información de la Subtarea</h3>
                                         </div>
                                         <div class="col-md-1 col-xs-1">
-                                            <button style="border: none; background-color: transparent; min-height: 15px; min-width: 25px; font-size: 30px;" type="button" data-bs-dismiss="modal">&times;</button>
+                                            <button
+                                                style="border: none; background-color: transparent; min-height: 15px; min-width: 25px; font-size: 30px;"
+                                                type="button" data-bs-dismiss="modal">&times;</button>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -224,24 +251,29 @@
                                 <div class="col-md-12 col-xs-12" style="min-height: 350px; max-height: 400px">
                                     <div>
                                         <div class="col-12">
-                                            <h1 style="text-align:center"><strong>{{ currentSubTask ? currentSubTask.Title : '' }}</strong></h1>
+                                            <h1 style="text-align:center"><strong>{{ currentSubTask ? currentSubTask.Title :
+                                                '' }}</strong></h1>
                                         </div>
                                     </div>
                                     <br />
                                     <div class="row">
                                         <div class="col-6" style="text-align: left;">
-                                            <p style="text-align: left;">Tiempo requerido: <b>{{ currentSubTask ? currentSubTask.Required_Time : 0.0 }}
+                                            <p style="text-align: left;">Tiempo requerido: <b>{{ currentSubTask ?
+                                                currentSubTask.Required_Time : 0.0 }}
                                                 </b> horas</p>
                                         </div>
                                         <div class="col-6" style="text-align: right;">
-                                            <p style="text-align: right;">Estado actual: <b>{{ currentSubTask ? currentSubTask.Id_Status : 0.0 }}</b></p>
+                                            <p style="text-align: right;">Estado actual: <b>{{ currentSubTask ?
+                                                currentSubTask.Id_Status : 0.0 }}</b></p>
                                         </div>
                                     </div>
                                     <hr>
                                     <div class="col-md-12 col-xs-12" style="min-height: 350px; max-height: 400px">
                                         <div class="row">
                                             <div class="col-12">
-                                                <h4 class="modal-title" style="text-align: left"><strong>Descripción</strong></h4>
+                                                <h4 class="modal-title" style="text-align: left">
+                                                    <strong>Descripción</strong>
+                                                </h4>
                                             </div>
                                         </div>
                                         <br />
@@ -257,17 +289,18 @@
                                         </div>
                                         <br />
                                     </div>
-                                    
+
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                
+
                 <!-- final ver subtarea -->
 
                 <!--Modal crear Subtarea-->
-                <div v-if="modalShowSubTask" data-backdrop="static" data-keyboard="false" class="modal fade" id="crearSubtarea" tabindex="-1" aria-labelledby="crearSubtarea" aria-hidden="true">
+                <div v-if="modalShowSubTask" data-backdrop="static" data-keyboard="false" class="modal fade"
+                    id="crearSubtarea" tabindex="-1" aria-labelledby="crearSubtarea" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -279,15 +312,18 @@
                                     <label>Título<span style="color: red;"> *</span></label>
                                     <br />
                                     <div style="margin-top: 15px;">
-                                        <input v-model="tituloSubTarea" required style="border-radius: 5px;" type="text" maxLength="45" placeholder="Nombre">
+                                        <input v-model="tituloSubTarea" required style="border-radius: 5px;" type="text"
+                                            maxLength="45" placeholder="Nombre">
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-12">
                                         <div>
-                                            <label class="margin-15px-bottom text-black">Descripción<span style="color: red;"> *</span></label>
+                                            <label class="margin-15px-bottom text-black">Descripción<span
+                                                    style="color: red;"> *</span></label>
                                             <div>
-                                                <textarea v-model="descriptionSubTarea" required style="border-radius: 5px;" type="textarea" maxLength="100" placeholder="Descripción..."></textarea>
+                                                <textarea v-model="descriptionSubTarea" required style="border-radius: 5px;"
+                                                    type="textarea" maxLength="100" placeholder="Descripción..."></textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -297,8 +333,10 @@
                                     <label>Estado<span style="color: red;"> *</span></label>
                                     <br />
                                     <div class="left-content" style="margin-top: 15px;">
-                                        <select v-model="statusSubTarea" required name="estado" id="estado" class="form-select text-black inputsGeneral" style="min-height: 48px;">
-                                            <option v-for="status in statusOptions" :key="status" :value="status">{{ status }}</option>
+                                        <select v-model="statusSubTarea" required name="estado" id="estado"
+                                            class="form-select text-black inputsGeneral" style="min-height: 48px;">
+                                            <option v-for="status in statusOptions" :key="status" :value="status">{{ status
+                                            }}</option>
                                         </select>
                                     </div>
                                 </div>
@@ -307,7 +345,8 @@
                                     <label>Tiempo requerido (horas)<span style="color: red;"> *</span></label>
                                     <br />
                                     <div style="margin-top: 15px;">
-                                        <input v-model="requiredTimeSubTarea" required style="border-radius: 5px;" type="number" placeholder="1">
+                                        <input v-model="requiredTimeSubTarea" required style="border-radius: 5px;"
+                                            type="number" placeholder="1">
                                     </div>
                                 </div>
                                 <br />
@@ -315,14 +354,17 @@
                                     <label>Prioridad<span style="color: red;"> *</span></label>
                                     <br />
                                     <div class="left-content" style="margin-top: 15px;">
-                                        <select v-model="prioritySubTarea" required name="estado" id="estado" class="form-select text-black inputsGeneral" style="min-height: 48px;">
-                                            <option v-for="priority in priorityOptions" :key="priority" :value="priority">{{priority}}</option>
+                                        <select v-model="prioritySubTarea" required name="estado" id="estado"
+                                            class="form-select text-black inputsGeneral" style="min-height: 48px;">
+                                            <option v-for="priority in priorityOptions" :key="priority" :value="priority">
+                                                {{ priority }}</option>
                                         </select>
                                     </div>
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-danger" @click="resetSubTaskCreation" data-bs-dismiss="modal">Cancelar</button>
+                                <button type="button" class="btn btn-danger" @click="resetSubTaskCreation"
+                                    data-bs-dismiss="modal">Cancelar</button>
                                 <button type="button" class="btn btn-success" @click="createSubTask">Aceptar</button>
                             </div>
                         </div>
@@ -334,7 +376,8 @@
 
                 <!--Modal editar Subtarea-->
 
-                <div v-if="modalShowSubTask" class="modal fade" id="editarSubtarea" tabindex="-1" aria-labelledby="editarSubtarea" aria-hidden="true">
+                <div v-if="modalShowSubTask" class="modal fade" id="editarSubtarea" tabindex="-1"
+                    aria-labelledby="editarSubtarea" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -346,15 +389,19 @@
                                     <label>Título<span style="color: red;"> *</span></label>
                                     <br />
                                     <div style="margin-top: 15px;">
-                                        <input v-model="tituloSubTarea" required @input="handleChanges" style="border-radius: 5px;" type="text" maxLength="45" placeholder="Nombre">
+                                        <input v-model="tituloSubTarea" required @input="handleChanges"
+                                            style="border-radius: 5px;" type="text" maxLength="45" placeholder="Nombre">
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-12">
                                         <div>
-                                            <label class="margin-15px-bottom text-black">Descripción<span style="color: red;"> *</span></label>
+                                            <label class="margin-15px-bottom text-black">Descripción<span
+                                                    style="color: red;"> *</span></label>
                                             <div>
-                                                <textarea v-model="descriptionSubTarea" @input="handleChanges" required style="border-radius: 5px;" type="textarea"  maxLength="100" placeholder="Descripción..."></textarea>
+                                                <textarea v-model="descriptionSubTarea" @input="handleChanges" required
+                                                    style="border-radius: 5px;" type="textarea" maxLength="100"
+                                                    placeholder="Descripción..."></textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -364,8 +411,11 @@
                                     <label>Estado<span style="color: red;"> *</span></label>
                                     <br />
                                     <div class="left-content" style="margin-top: 15px;">
-                                        <select v-model="statusSubTarea" required @input="handleChanges" name="estado" id="estado" class="form-select text-black inputsGeneral" style="min-height: 48px;">
-                                            <option v-for="status in statusOptions" :key="status" :value="status">{{ status }}</option>
+                                        <select v-model="statusSubTarea" required @input="handleChanges" name="estado"
+                                            id="estado" class="form-select text-black inputsGeneral"
+                                            style="min-height: 48px;">
+                                            <option v-for="status in statusOptions" :key="status" :value="status">{{ status
+                                            }}</option>
                                         </select>
                                     </div>
                                 </div>
@@ -374,7 +424,8 @@
                                     <label>Tiempo requerido (horas)<span style="color: red;"> *</span></label>
                                     <br />
                                     <div style="margin-top: 15px;">
-                                        <input v-model="requiredTimeSubTarea" required @input="handleChanges" style="border-radius: 5px;" type="number" min="1" placeholder="1">
+                                        <input v-model="requiredTimeSubTarea" required @input="handleChanges"
+                                            style="border-radius: 5px;" type="number" min="1" placeholder="1">
                                     </div>
                                 </div>
                                 <br />
@@ -382,8 +433,11 @@
                                     <label>Prioridad<span style="color: red;"> *</span></label>
                                     <br />
                                     <div class="left-content" style="margin-top: 15px;">
-                                        <select v-model="prioritySubTarea" required @input="handleChanges" name="estado" id="estado" class="form-select text-black inputsGeneral" style="min-height: 48px;">
-                                            <option v-for="priority in priorityOptions" :key="priority" :value="priority">{{priority}}</option>
+                                        <select v-model="prioritySubTarea" required @input="handleChanges" name="estado"
+                                            id="estado" class="form-select text-black inputsGeneral"
+                                            style="min-height: 48px;">
+                                            <option v-for="priority in priorityOptions" :key="priority" :value="priority">
+                                                {{ priority }}</option>
                                         </select>
                                     </div>
                                 </div>
@@ -397,11 +451,12 @@
                 </div>
 
                 <!--Modal editar Subtarea-->
-                
+
 
                 <!--Modal eliminar Subtarea-->
 
-                <div class="modal fade" id="eliminarSubtarea" tabindex="-1" aria-labelledby="eliminarSubtarea" aria-hidden="true">
+                <div class="modal fade" id="eliminarSubtarea" tabindex="-1" aria-labelledby="eliminarSubtarea"
+                    aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -415,7 +470,8 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
-                                <button type="button" class="btn btn-success" data-bs-dismiss="modal" @click="deleteCurrentSubTask">Aceptar</button>
+                                <button type="button" class="btn btn-success" data-bs-dismiss="modal"
+                                    @click="deleteCurrentSubTask">Aceptar</button>
                             </div>
                         </div>
                     </div>
@@ -425,7 +481,8 @@
 
                 <!-- Modal finalizar tarea -->
 
-                <div class="modal fade" id="finalizarTarea" tabindex="-1" aria-labelledby="finalizarTarea" aria-hidden="true">
+                <div class="modal fade" id="finalizarTarea" tabindex="-1" aria-labelledby="finalizarTarea"
+                    aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -439,7 +496,8 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
-                                <button type="button" class="btn btn-success" data-bs-dismiss="modal" @click="() => finishTask()">Aceptar</button>
+                                <button type="button" class="btn btn-success" data-bs-dismiss="modal"
+                                    @click="() => finishTask()">Aceptar</button>
                             </div>
                         </div>
                     </div>
@@ -448,7 +506,8 @@
 
                 <!-- Modal finalizar subtarea -->
 
-                <div class="modal fade" id="finalizarSubTarea" tabindex="-1" aria-labelledby="finalizarSubTarea" aria-hidden="true">
+                <div class="modal fade" id="finalizarSubTarea" tabindex="-1" aria-labelledby="finalizarSubTarea"
+                    aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -462,7 +521,8 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
-                                <button type="button" class="btn btn-success" data-bs-dismiss="modal" @click="() => finishSubTask()">Aceptar</button>
+                                <button type="button" class="btn btn-success" data-bs-dismiss="modal"
+                                    @click="() => finishSubTask()">Aceptar</button>
                             </div>
                         </div>
                     </div>
@@ -494,23 +554,31 @@
 
                         <div class="col-lg-4 col-md-4 col-sm-12 row justify-content-center" style="margin-top: 40px;">
                             <div class="col-8 textoBlanco" style="text-align: center;">
-                                <router-link role="button" :to="{ name: 'Inicio' }" class="textoBlanco textoEncuestas" style="text-decoration: none;" exact-active-class="active-link">Proyectos&nbsp;&nbsp;<i class="text-white fas fa-project-diagram" style="cursor: pointer; font-size: 14px;"></i></router-link>
-                            </div>
-                        </div>
-                        
-                        <div class="col-lg-4 col-md-4 col-sm-12 row justify-content-center" style="margin-top: 40px;">
-                            <div class="col-8 textoBlanco" style="text-align: center;">
-                                <router-link role="button" :to="{ name: 'Encuestas' }" class="textoBlanco textoEncuestas" style="text-decoration: none;" exact-active-class="active-link">Encuestas&nbsp;&nbsp;<i class="text-white fas fa-chart-line" style="cursor: pointer;"></i></router-link>
+                                <router-link role="button" :to="{ name: 'Inicio' }" class="textoBlanco textoEncuestas"
+                                    style="text-decoration: none;" exact-active-class="active-link">Proyectos&nbsp;&nbsp;<i
+                                        class="text-white fas fa-project-diagram"
+                                        style="cursor: pointer; font-size: 14px;"></i></router-link>
                             </div>
                         </div>
 
                         <div class="col-lg-4 col-md-4 col-sm-12 row justify-content-center" style="margin-top: 40px;">
                             <div class="col-8 textoBlanco" style="text-align: center;">
-                                <router-link role="button" :to="{ name: 'Reportes' }" class="textoBlanco textoEncuestas" style="text-decoration: none;" exact-active-class="active-link">Reportes&nbsp;&nbsp;<i class="text-white far fa-file-alt" style="cursor: pointer;"></i></router-link>
+                                <router-link role="button" :to="{ name: 'Encuestas' }" class="textoBlanco textoEncuestas"
+                                    style="text-decoration: none;" exact-active-class="active-link">Encuestas&nbsp;&nbsp;<i
+                                        class="text-white fas fa-chart-line" style="cursor: pointer;"></i></router-link>
                             </div>
                         </div>
 
-                        <div style="text-align: center; font-size: large; padding-top: 40px; cursor: pointer; margin-left: 20px;" v-if="filtroDesplegar" v-on:click="desplegarFiltros()">
+                        <div class="col-lg-4 col-md-4 col-sm-12 row justify-content-center" style="margin-top: 40px;">
+                            <div class="col-8 textoBlanco" style="text-align: center;">
+                                <router-link role="button" :to="{ name: 'Reportes' }" class="textoBlanco textoEncuestas"
+                                    style="text-decoration: none;" exact-active-class="active-link">Reportes&nbsp;&nbsp;<i
+                                        class="text-white far fa-file-alt" style="cursor: pointer;"></i></router-link>
+                            </div>
+                        </div>
+
+                        <div style="text-align: center; font-size: large; padding-top: 40px; cursor: pointer; margin-left: 20px;"
+                            v-if="filtroDesplegar" v-on:click="desplegarFiltros()">
                             <a class="text-white fas fa-angle-up" style="text-decoration: none;"></a>
                         </div>
 
@@ -527,41 +595,49 @@
                                 <div class="card" style="border: none;" ref="cuadroLoader">
                                     <div class="encabezado">
                                         <ul style="text-align: left;">
-                                            <router-link class="li agregarBlt" role="button" :to="{ name: 'Sprints' }"><span class="fas fa-arrow-left"></span></router-link>
+                                            <router-link class="li agregarBlt" role="button" :to="{ name: 'Sprints' }"><span
+                                                    class="fas fa-arrow-left"></span></router-link>
                                         </ul>
                                         <div style="text-align: center; padding-top: 10px; cursor: default;">
                                             <h4>Listado de Tareas</h4>
                                         </div>
                                         <ul style="text-align: right;">
-                                            <a class="li agregarBlt agregarResponsive" @click="startTaskCreation" role="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop"><span class="fas fa-plus"></span> Crear Tarea</a>
-                                            <a class="li agregarBlt agregarResponsivePlus" @click="startTaskCreation" role="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop"><span class="fas fa-plus"></span></a>
+                                            <a class="li agregarBlt agregarResponsive" @click="startTaskCreation"
+                                                role="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop"><span
+                                                    class="fas fa-plus"></span> Crear Tarea</a>
+                                            <a class="li agregarBlt agregarResponsivePlus" @click="startTaskCreation"
+                                                role="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop"><span
+                                                    class="fas fa-plus"></span></a>
                                         </ul>
                                     </div>
 
                                     <div class="row">
-                                        
+
                                         <div class="col-4">
                                             <div>
-                                                <a class="text-black fas fa-check-square" style="text-decoration: none;"></a>
+                                                <a class="text-black fas fa-check-square"
+                                                    style="text-decoration: none;"></a>
                                                 <label class="text-black p-3 Td">Estado</label>
                                             </div>
                                             <select class="form-select diseñoSelectLateral" v-model="Filtros.estado">
                                                 <option value="">Todos</option>
-                                                <option value="Activo" >Activo</option>
-                                                <option value="Pendiente" >Pendiente</option>
-                                                <option value="En Proceso" >En Proceso</option>
-                                                <option value="Finalizada" >Finalizada</option>
+                                                <option value="Activo">Activo</option>
+                                                <option value="Pendiente">Pendiente</option>
+                                                <option value="En Proceso">En Proceso</option>
+                                                <option value="Finalizada">Finalizada</option>
                                             </select>
                                         </div>
 
                                         <div class="col-6">
                                             <div>
-                                                <a class="text-black fas fa-pen-square"
-                                                    style="text-decoration: none;"></a>
+                                                <a class="text-black fas fa-pen-square" style="text-decoration: none;"></a>
                                                 <label class="text-black p-3 Td">Palabra</label>
                                             </div>
                                             <div>
-                                                <input @keyup="aplyFilter(Filtros.estado, Filtros.palabra)" autocomplete="off" maxlength="70" class="diseñoSelectLateral" type="search" id="pClaveInput" placeholder="Buscar" v-model="Filtros.palabra">
+                                                <input @keyup="aplyFilter(Filtros.estado, Filtros.palabra)"
+                                                    autocomplete="off" maxlength="70" class="diseñoSelectLateral"
+                                                    type="search" id="pClaveInput" placeholder="Buscar"
+                                                    v-model="Filtros.palabra">
                                             </div>
                                         </div>
 
@@ -570,7 +646,9 @@
                                                 <label class="text-white p-3 Td">.</label>
                                             </div>
                                             <div>
-                                                <button type="button" class="btn btn-success" style="float: right;" @click="aplyFilter(Filtros.estado, Filtros.palabra)"><span class="fas fa-search"></span></button>
+                                                <button type="button" class="btn btn-success" style="float: right;"
+                                                    @click="aplyFilter(Filtros.estado, Filtros.palabra)"><span
+                                                        class="fas fa-search"></span></button>
                                             </div>
                                         </div>
 
@@ -605,121 +683,144 @@
                                         </div>
                                         <div>
 
-                                        <div class="tablaPersonalizada" v-for="tarea in paginateData" :key="tarea.Id_Task">
-                                            <div>
-                                                <div class="tablaPersonalizadaRow" @click="() =>mostrarSubtareas(tarea.Id_Task)" style="margin-bottom: 10px;">{{ tarea.Id_Task }}</div>
-                                            </div>
-                                            <div>
-                                                <div class="tablaPersonalizadaRow" @click="() => startSubTaskCreation(tarea)" style="margin-bottom: 10px;"><a style="text-decoration: none;margin-bottom: 10px;" class="fas fa-plus" data-bs-toggle="modal" data-bs-target="#crearSubtarea"></a></div>
-                                            </div>
-                                            <div>
-                                                <div class="tablaPersonalizadaRow" @click="() =>mostrarSubtareas(tarea.Id_Task)" style="margin-bottom: 10px; float: left;">{{ tarea.Task_Name }}</div>
-                                            </div>
-                                            <div>
-                                                <div class="tablaPersonalizadaRow" @click="() =>mostrarSubtareas(tarea.Id_Task)" style="margin-bottom: 10px; float: left;">{{ tarea.Id_Status }}</div>
-                                            </div>
-                                            <div>
-                                                <div class="tablaPersonalizadaRow" style="min-width: 150px; margin-bottom: 10px;">
-                                                    <button  @click="() => selectCurrentTask(tarea)" class="btn btn-primary" role="button" data-bs-toggle="modal" data-bs-target="#verTarea">
-                                                        <span class="fas fa-eye" b-tooltip.hover title="Ver Tarea"></span>
-                                                    </button>
-                                                    <button  @click="() => selectCurrentTask(tarea)" class="btn btn-success"  role="button" :disabled = "tarea.Id_Status == 'Finalizada'" style="margin-left: 5px;" data-bs-toggle="modal" data-bs-target="#finalizarTarea">
-                                                        <span class="fas fa-check" b-tooltip.hover title="Finalizar"></span>
-                                                    </button>
-                                                    <button v-if="recuperarUsuTipo() == 'Administrador'" @click="() => startTaskEditing(tarea)" :disabled = "tarea.Id_Status == 'Finalizada'" style="margin-left: 5px;" type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editarTarea">
-                                                        <span class="fas fa-pen" b-tooltip.hover title="Editar Tarea"></span>
-                                                    </button>
-                                                    <button v-if="recuperarUsuTipo() == 'Administrador'" @click="() => deleteTask(tarea)" type="button" class="btn btn-danger" style="margin-left: 5px;" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                                                        <span class="fas fa-trash" b-tooltip.hover title="Eliminar Tarea"></span>
-                                                    </button>
-                                                </div>
-                                            </div>
-
-                                            <div 
-                                                v-if="!subtareasPorTask[currentSelectedTaskId] || subtareasPorTask[currentSelectedTaskId].length == 0" 
-                                                class="subtask-element sinResultadosAct listadoSubtareas"
-                                                :style="`${subtareas && tarea.Id_Task == currentSelectedTaskId ? '' : 'display: none;'}`"
-                                            >
-                                                <div class="tablaPersonalizadaRowSubTareas">
-                                                    <p>No hay subtareas para mostrar</p>
-                                                </div>
-                                                
-                                            </div>
-
-                                            <div 
-                                                v-for="subTask in subtareasPorTask[currentSelectedTaskId]" 
-                                                :key="subTask.Id_Sub_Task" 
-                                                class="subtask-element tablaPersonalizadaSubtareas listadoSubtareas" 
-                                                :style="`${subtareas && tarea.Id_Task == currentSelectedTaskId ? '' : 'display: none;'}`"
-                                                :class="{ 'show': subtareas && tarea.Id_Task == currentSelectedTaskId}"
-                                            >
+                                            <div class="tablaPersonalizada" v-for="tarea in paginateData"
+                                                :key="tarea.Id_Task">
                                                 <div>
-                                                    <div class="tablaPersonalizadaRow">
-                                                        <p class="fas" :class="`fa-${getPriorityIcon(subTask.Id_Priority)}-circle`" :style="`color: ${getPriorityColor(subTask.Id_Priority)};`"></p>
+                                                    <div class="tablaPersonalizadaRow"
+                                                        @click="() => mostrarSubtareas(tarea.Id_Task)"
+                                                        style="margin-bottom: 10px;">{{ tarea.Id_Task }}</div>
+                                                </div>
+                                                <div>
+                                                    <div class="tablaPersonalizadaRow"
+                                                        @click="() => startSubTaskCreation(tarea)"
+                                                        style="margin-bottom: 10px;"><a
+                                                            style="text-decoration: none;margin-bottom: 10px;"
+                                                            class="fas fa-plus" data-bs-toggle="modal"
+                                                            data-bs-target="#crearSubtarea"></a></div>
+                                                </div>
+                                                <div>
+                                                    <div class="tablaPersonalizadaRow"
+                                                        @click="() => mostrarSubtareas(tarea.Id_Task)"
+                                                        style="margin-bottom: 10px; float: left;">{{ tarea.Task_Name }}
                                                     </div>
                                                 </div>
                                                 <div>
-                                                    <div class="tablaPersonalizadaRow"></div>
+                                                    <div class="tablaPersonalizadaRow"
+                                                        @click="() => mostrarSubtareas(tarea.Id_Task)"
+                                                        style="margin-bottom: 10px; float: left;">{{ tarea.Id_Status }}
+                                                    </div>
                                                 </div>
                                                 <div>
-                                                    <div class="tablaPersonalizadaRowSubTareas" style="float: left;">{{ subTask.Title }}</div>
+                                                    <div class="tablaPersonalizadaRow"
+                                                        style="min-width: 150px; margin-bottom: 10px;">
+                                                        <button b-tooltip.hover title="Ver Tarea"
+                                                            @click="() => selectCurrentTask(tarea)" class="btn btn-primary"
+                                                            role="button" data-bs-toggle="modal" data-bs-target="#verTarea">
+                                                            <span class="fas fa-eye"></span>
+                                                        </button>
+                                                        <button b-tooltip.hover title="Finalizar"
+                                                            @click="() => selectCurrentTask(tarea)" class="btn btn-success"
+                                                            role="button" :disabled="tarea.Id_Status == 'Finalizada'"
+                                                            style="margin-left: 5px;" data-bs-toggle="modal"
+                                                            data-bs-target="#finalizarTarea">
+                                                            <span class="fas fa-check"></span>
+                                                        </button>
+                                                        <button b-tooltip.hover title="Editar Tarea"
+                                                            v-if="recuperarUsuTipo() == 'Administrador'"
+                                                            @click="() => startTaskEditing(tarea)"
+                                                            :disabled="tarea.Id_Status == 'Finalizada'"
+                                                            style="margin-left: 5px;" type="button" class="btn btn-warning"
+                                                            data-bs-toggle="modal" data-bs-target="#editarTarea">
+                                                            <span class="fas fa-pen" style="color: white;"></span>
+                                                        </button>
+                                                        <button b-tooltip.hover title="Eliminar Tarea"
+                                                            v-if="recuperarUsuTipo() == 'Administrador'"
+                                                            @click="() => deleteTask(tarea)" type="button"
+                                                            class="btn btn-danger" style="margin-left: 5px;"
+                                                            data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                                            <span class="fas fa-trash"></span>
+                                                        </button>
+                                                    </div>
                                                 </div>
-                                                <div>
-                                                    <!--<div class="tablaPersonalizadaRow">
+
+                                                <div v-if="!subtareasPorTask[currentSelectedTaskId] || subtareasPorTask[currentSelectedTaskId].length == 0"
+                                                    class="subtask-element sinResultadosAct listadoSubtareas"
+                                                    :style="`${subtareas && tarea.Id_Task == currentSelectedTaskId ? '' : 'display: none;'}`">
+                                                    <div class="tablaPersonalizadaRowSubTareas">
+                                                        <p>No hay subtareas para mostrar</p>
+                                                    </div>
+
+                                                </div>
+
+                                                <div v-for="subTask in subtareasPorTask[currentSelectedTaskId]"
+                                                    :key="subTask.Id_Sub_Task"
+                                                    class="subtask-element tablaPersonalizadaSubtareas listadoSubtareas"
+                                                    :style="`${subtareas && tarea.Id_Task == currentSelectedTaskId ? '' : 'display: none;'}`"
+                                                    :class="{ 'show': subtareas && tarea.Id_Task == currentSelectedTaskId }">
+                                                    <div>
+                                                        <div class="tablaPersonalizadaRow">
+                                                            <p class="fas"
+                                                                :class="`fa-${getPriorityIcon(subTask.Id_Priority)}-circle`"
+                                                                :style="`color: ${getPriorityColor(subTask.Id_Priority)};`">
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        <div class="tablaPersonalizadaRow"></div>
+                                                    </div>
+                                                    <div>
+                                                        <div class="tablaPersonalizadaRowSubTareas" style="float: left;">{{
+                                                            subTask.Title }}</div>
+                                                    </div>
+                                                    <div>
+                                                        <!--<div class="tablaPersonalizadaRow">
                                                         <p class="fas" :class="`fa-${getPriorityIcon(subTask.Id_Priority)}-circle`" :style="`color: ${getPriorityColor(subTask.Id_Priority)};`"></p>
                                                     </div>-->
-                                                    <div class="tablaPersonalizadaRow" style="min-width: 120px;">
-                                                        <div class="tablaPersonalizadaRowSubTareas" style="min-width: 100px; float: left;">{{ subTask.Id_Status }}</div>
+                                                        <div class="tablaPersonalizadaRow" style="min-width: 120px;">
+                                                            <div class="tablaPersonalizadaRowSubTareas"
+                                                                style="min-width: 100px; float: left;">{{ subTask.Id_Status
+                                                                }}</div>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div>
-                                                    <div class="tablaPersonalizadaRow" style="min-width: 200px;">
-                                                        <a style="text-decoration: none; margin-right: 20px;" 
-                                                            class="fas fa-eye" b-tooltip.hover 
-                                                            title="Ver subtarea" 
-                                                            data-bs-toggle="modal" 
-                                                            data-bs-target="#verSubTarea" 
-                                                            @click="() => selectCurrentSubTask(subTask)"
-                                                        ></a>
-                                                        <a style="text-decoration: none; margin-right: 20px; " 
-                                                            :style="subTask.Id_Status == 'Finalizada' ? 'cursor: not-allowed' : ''" 
-                                                            class="fas fa-check" 
-                                                            data-bs-toggle="modal" 
-                                                            :data-bs-target=" subTask.Id_Status == 'Finalizada' ? '' : '#finalizarSubTarea'" 
-                                                            @click="() => subTask.Id_Status == 'Finalizada' ? null :selectCurrentSubTask(subTask)"
-                                                        ></a>
-                                                        <a style="text-decoration: none; margin-right: 20px;" 
-                                                            :style="subTask.Id_Status == 'Finalizada' ? 'cursor: not-allowed' : ''" 
-                                                            class="fas fa-pen" 
-                                                            data-bs-toggle="modal" 
-                                                            :data-bs-target=" subTask.Id_Status == 'Finalizada' ? '' : '#editarSubtarea'" 
-                                                            @click="subTask.Id_Status == 'Finalizada' ? null : startSubTaskEditing(subTask)"
-                                                        ></a>
-                                                        <a style="text-decoration: none;" 
-                                                            class="fas fa-trash"
-                                                            data-bs-toggle="modal" 
-                                                            data-bs-target="#eliminarSubtarea" 
-                                                            @click="() => selectCurrentSubTask(subTask)"
-                                                         ></a>
+                                                    <div>
+                                                        <div class="tablaPersonalizadaRow" style="min-width: 200px;">
+                                                            <a style="text-decoration: none; margin-right: 20px;"
+                                                                class="fas fa-eye" b-tooltip.hover title="Ver subtarea"
+                                                                data-bs-toggle="modal" data-bs-target="#verSubTarea"
+                                                                @click="() => selectCurrentSubTask(subTask)"></a>
+                                                            <a style="text-decoration: none; margin-right: 20px; "
+                                                                :style="subTask.Id_Status == 'Finalizada' ? 'cursor: not-allowed' : ''"
+                                                                class="fas fa-check" b-tooltip.hover title="Finalizar" data-bs-toggle="modal"
+                                                                :data-bs-target="subTask.Id_Status == 'Finalizada' ? '' : '#finalizarSubTarea'"
+                                                                @click="() => subTask.Id_Status == 'Finalizada' ? null : selectCurrentSubTask(subTask)"></a>
+                                                            <a style="text-decoration: none; margin-right: 20px;"
+                                                                :style="subTask.Id_Status == 'Finalizada' ? 'cursor: not-allowed' : ''"
+                                                                class="fas fa-pen" b-tooltip.hover title="Editar subtarea" data-bs-toggle="modal"
+                                                                :data-bs-target="subTask.Id_Status == 'Finalizada' ? '' : '#editarSubtarea'"
+                                                                @click="subTask.Id_Status == 'Finalizada' ? null : startSubTaskEditing(subTask)"></a>
+                                                            <a style="text-decoration: none;" class="fas fa-trash" b-tooltip.hover title="Eliminar subtarea"
+                                                                data-bs-toggle="modal" data-bs-target="#eliminarSubtarea"
+                                                                @click="() => selectCurrentSubTask(subTask)"></a>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                               
-                                            </div>
-                                                    
-                                        </div>
 
-                                            <br/>
-                                            
+                                                </div>
+
+                                            </div>
+
+                                            <br />
+
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                
+
                             <nav v-if="paginate" aria-label="Page navigation example" style="margin-top: 10px;">
                                 <ul class="pagination cursorPaginados">
                                     <li class="page-item"><a class="page-link" v-on:click="goBack()">Anterior</a></li>
                                     <li v-for="pagina in pageNumeration" v-bind:key="pagina" class="page-item">
-                                        <a class="page-link" v-on:click="changePage(pagina)" v-bind:class="{ active: (pagina == actualPage) }">{{pagina}}</a>
+                                        <a class="page-link" v-on:click="changePage(pagina)"
+                                            v-bind:class="{ active: (pagina == actualPage) }">{{ pagina }}</a>
                                     </li>
                                     <li class="page-item"><a class="page-link" v-on:click="goNext()">Siguiente</a></li>
                                 </ul>
@@ -773,49 +874,49 @@ export default {
             paginateData: [],
 
             subtareas: false,
-            tareas : [],
-            currentSubTask : null,
+            tareas: [],
+            currentSubTask: null,
             currentTask: null,
-            currentSelectedTaskId : null,
+            currentSelectedTaskId: null,
 
             // opciones para estados y prioridades
-            statusOptions : [],
-            priorityOptions : [],
+            statusOptions: [],
+            priorityOptions: [],
 
             taskName: '',
             taskDescription: '',
-            verifyPassword:"",
+            verifyPassword: "",
 
             // campos de edicion
-            taskNameUnderEdit : '',
-            taskDescriptionUnderEdit : '',
-            taskStateUnderEdit : '',
-            taskIdUnderEdit : null,
+            taskNameUnderEdit: '',
+            taskDescriptionUnderEdit: '',
+            taskStateUnderEdit: '',
+            taskIdUnderEdit: null,
 
             // campos edicion subtarea
-            prioritySubTarea : '',
-            tituloSubTarea : '',
-            descriptionSubTarea : '',
-            statusSubTarea : '',
-            requiredTimeSubTarea : 0,
+            prioritySubTarea: '',
+            tituloSubTarea: '',
+            descriptionSubTarea: '',
+            statusSubTarea: '',
+            requiredTimeSubTarea: 0,
 
             // validacion de tarea
-            validationMessage : '',
-            confimPassworsDelete : '',
+            validationMessage: '',
+            confimPassworsDelete: '',
 
-            currentSprintId : 0,
+            currentSprintId: 0,
 
-            subtareasPorTask : { },
+            subtareasPorTask: {},
 
 
-            modalShowTask : false,
-            modalShowSubTask : false
+            modalShowTask: false,
+            modalShowSubTask: false
         }
     },
 
     methods: {
 
-        EditarTarea: function(TareaID) {
+        EditarTarea: function (TareaID) {
             this.$router.push({
                 name: "EditarTarea",
                 params: {
@@ -826,10 +927,10 @@ export default {
 
         async editCurrentTask() {
             let modifiedTask = {
-                Task_Name : this.taskNameUnderEdit.trim(),
-                Description_Task : this.taskDescriptionUnderEdit.trim(),
+                Task_Name: this.taskNameUnderEdit.trim(),
+                Description_Task: this.taskDescriptionUnderEdit.trim(),
                 // los que no cambian
-                Id_Task : this.taskIdUnderEdit,
+                Id_Task: this.taskIdUnderEdit,
                 Id_Sprint: localStorage.getItem('currentSprintId'),
                 Id_Status: this.taskStateUnderEdit,
             }
@@ -850,16 +951,16 @@ export default {
                 this.taskDescriptionUnderEdit = ''
                 this.taskStateUnderEdit = ''
                 this.modalShowTask = false
-                this.$swal({ icon: 'success', showConfirmButton:false, text: 'Se modificó correctamente la tarea' });
+                this.$swal({ icon: 'success', showConfirmButton: false, text: 'Se modificó correctamente la tarea' });
                 this.tareas = [];
-                this.getTareasDesdeAPI(); 
+                this.getTareasDesdeAPI();
 
-                 setTimeout(() => {
+                setTimeout(() => {
                     location.reload();
                 }, 1000);
 
             } else {
-                console.error({message : "Hubo un error al editar tarea", result});
+                console.error({ message: "Hubo un error al editar tarea", result });
             }
         },
 
@@ -867,19 +968,19 @@ export default {
         async editCurrentSubTask() {
             const subTaskId = this.currentSubTask.Id_Sub_Task;
             const subTask = {
-                Id_Sub_Task : subTaskId,
-                Title : this.tituloSubTarea.trim(),
-                Description : this.descriptionSubTarea.trim(),
-                Required_Time : this.requiredTimeSubTarea,
-                Id_Task : this.currentSelectedTaskId,
-                Id_Priority : this.prioritySubTarea,
-                Id_Status : this.statusSubTarea
+                Id_Sub_Task: subTaskId,
+                Title: this.tituloSubTarea.trim(),
+                Description: this.descriptionSubTarea.trim(),
+                Required_Time: this.requiredTimeSubTarea,
+                Id_Task: this.currentSelectedTaskId,
+                Id_Priority: this.prioritySubTarea,
+                Id_Status: this.statusSubTarea
             }
 
             if (this.validateSubTask(subTask, true) !== 'VALID') {
                 return;
             }
-            
+
             const result = await AdminApi.PutSubTask(subTask);
             if (result.data.ok) {
 
@@ -894,7 +995,7 @@ export default {
                 this.statusSubTarea = '';
                 this.requiredTimeSubTarea = 0;
                 this.modalShowSubTask = false
-                this.$swal({ icon: 'success', showConfirmButton:false, text: 'Se modificó correctamente la subtarea' });
+                this.$swal({ icon: 'success', showConfirmButton: false, text: 'Se modificó correctamente la subtarea' });
 
                 this.getSubTareasDesdeAPI(this.currentSelectedTaskId);
 
@@ -903,7 +1004,7 @@ export default {
                 }, 1000);
 
             } else {
-                console.error({message : "Hubo un error al editar subtarea", result});
+                console.error({ message: "Hubo un error al editar subtarea", result });
             }
         },
 
@@ -922,37 +1023,36 @@ export default {
         },
 
         deleteRowList: async function () {
-          
-          try {
 
-            const id = this.currentTask.Id_Task;
+            try {
 
-              if(this.confimPassworsDelete){
-              const response = await AdminApi.PutTaskDisableStatus(id);
-              const mensage=response.data.ok;
-              if (mensage) {
-                this.ActionEN.Action_Description = "Eliminó la tarea #" + id
-                this.ActionEN.Action_User = this.recuperarUsuLog();
-                await AdminApi.PostNewAction(this.ActionEN)
-              }
-              location.reload()
-                  
-              }
-              else
-              {
-                  this.$swal({ icon: 'warning', text: 'La contraseña que insertaste no es correcta' });
-              }
+                const id = this.currentTask.Id_Task;
 
-          } catch (error) {
-              console.error({message :'Error al cargar las tareas desde la API:', error});
-          }
+                if (this.confimPassworsDelete) {
+                    const response = await AdminApi.PutTaskDisableStatus(id);
+                    const mensage = response.data.ok;
+                    if (mensage) {
+                        this.ActionEN.Action_Description = "Eliminó la tarea #" + id
+                        this.ActionEN.Action_User = this.recuperarUsuLog();
+                        await AdminApi.PostNewAction(this.ActionEN)
+                    }
+                    location.reload()
 
-      },
+                }
+                else {
+                    this.$swal({ icon: 'warning', text: 'La contraseña que insertaste no es correcta' });
+                }
+
+            } catch (error) {
+                console.error({ message: 'Error al cargar las tareas desde la API:', error });
+            }
+
+        },
 
         validateTask(task, isEdit) {
 
             if (task.Task_Name.trim() == "") {
-                
+
                 return this.$swal.fire({
                     position: 'center',
                     icon: 'error',
@@ -962,7 +1062,7 @@ export default {
             }
 
             if (task.Description_Task.trim() == "") {
-                
+
                 return this.$swal.fire({
                     position: 'center',
                     icon: 'error',
@@ -971,7 +1071,7 @@ export default {
                 })
             }
 
-            const validStates = [ "Pendiente", "En Proceso", "Finalizada" ]
+            const validStates = ["Pendiente", "En Proceso", "Finalizada"]
             if (isEdit && !validStates.includes(task.Id_Status.trim())) {
                 return this.$swal.fire({
                     position: 'center',
@@ -979,7 +1079,7 @@ export default {
                     title: '¡Error!',
                     text: 'Se tiene que completar el campo del estado de la tarea',
                 })
-            }   
+            }
 
             if (isEdit && !this.hasChanges) {
                 return this.$swal.fire({
@@ -995,7 +1095,7 @@ export default {
         validateSubTask(subTask, isEdit) {
 
             if (subTask.Title.trim() == "") {
-                
+
                 return this.$swal.fire({
                     position: 'center',
                     icon: 'error',
@@ -1005,7 +1105,7 @@ export default {
             }
 
             if (subTask.Description.trim() == "") {
-                
+
                 return this.$swal.fire({
                     position: 'center',
                     icon: 'error',
@@ -1014,9 +1114,9 @@ export default {
                 })
             }
 
-            const validStates = [ "Pendiente", "En Proceso", "Finalizada" ]
+            const validStates = ["Pendiente", "En Proceso", "Finalizada"]
             if (isEdit && !validStates.includes(subTask.Id_Status.trim())) {
-                
+
                 return this.$swal.fire({
                     position: 'center',
                     icon: 'error',
@@ -1026,7 +1126,7 @@ export default {
             }
 
             if (subTask.Required_Time === "" || subTask.Required_Time <= 0) {
-                
+
                 return this.$swal.fire({
                     position: 'center',
                     icon: 'error',
@@ -1035,10 +1135,10 @@ export default {
                 })
             }
 
-            const validPriorities = [ "Alta", "Media", "Baja" ]
+            const validPriorities = ["Alta", "Media", "Baja"]
             if (isEdit && !validPriorities.includes(subTask.Id_Priority.trim())) {
-                
-               return this.$swal.fire({
+
+                return this.$swal.fire({
                     position: 'center',
                     icon: 'error',
                     title: '¡Error!',
@@ -1071,8 +1171,8 @@ export default {
                 this.ActionEN.Action_User = this.recuperarUsuLog();
                 await AdminApi.PostNewAction(this.ActionEN)
             } else {
-                this.$swal({icon: 'error', text: 'No se pudo finalizar la subtarea' });
-                console.error({message : "Error al finalizar subtarea", response })
+                this.$swal({ icon: 'error', text: 'No se pudo finalizar la subtarea' });
+                console.error({ message: "Error al finalizar subtarea", response })
             }
         },
 
@@ -1090,8 +1190,8 @@ export default {
                 await AdminApi.PostNewAction(this.ActionEN)
 
             } else {
-                this.$swal({icon: 'error', text: 'No se pudo finalizar la tarea' });
-                console.error({message : "Error al finalizar tarea", response })
+                this.$swal({ icon: 'error', text: 'No se pudo finalizar la tarea' });
+                console.error({ message: "Error al finalizar tarea", response })
             }
         },
 
@@ -1099,7 +1199,7 @@ export default {
             this.currentTask = task
         },
 
-        mostrarSubtareas: function(taskId) {
+        mostrarSubtareas: function (taskId) {
             this.getSubTareasDesdeAPI(taskId)
             this.currentSelectedTaskId = taskId;
             this.subtareas = !this.subtareas;
@@ -1113,7 +1213,7 @@ export default {
             this.filtroDesplegar = false;
         },
 
-        seleccionarAplicacion: async function() {
+        seleccionarAplicacion: async function () {
             await this.$root.designarAplicacionHeaderPrincipal.call();
         },
 
@@ -1152,7 +1252,7 @@ export default {
             this.taskIdUnderEdit = task.Id_Task;
             this.taskDescriptionUnderEdit = task.Description_Task;
             this.taskStateUnderEdit = task.Id_Status,
-            this.taskNameUnderEdit = task.Task_Name
+                this.taskNameUnderEdit = task.Task_Name
         },
 
         startTaskCreation() {
@@ -1167,7 +1267,7 @@ export default {
             this.prioritySubTarea = subTask.Id_Priority;
             this.tituloSubTarea = subTask.Title;
             this.descriptionSubTarea = subTask.Description,
-            this.statusSubTarea = subTask.Id_Status
+                this.statusSubTarea = subTask.Id_Status
             this.requiredTimeSubTarea = subTask.Required_Time
         },
 
@@ -1205,7 +1305,7 @@ export default {
                 await AdminApi.PostNewAction(this.ActionEN)
 
             } else {
-                this.$swal({icon: 'error', text: 'No se pudo eliminar la subtarea' });
+                this.$swal({ icon: 'error', text: 'No se pudo eliminar la subtarea' });
             }
         },
 
@@ -1217,20 +1317,20 @@ export default {
             let login = this.recuperarUsuLog()
             try {
                 const response = await AdminApi.GetPasswordVerifyDeleteRow(login, this.verifyPassword);
-                const mensage=response.data.ok;
-                if(mensage==true){
+                const mensage = response.data.ok;
+                if (mensage == true) {
 
-                this.confimPassworsDelete=true
-                this.$swal({ icon: 'success', text: 'Se verifico correctamente la contraseña' });
-                    
+                    this.confimPassworsDelete = true
+                    this.$swal({ icon: 'success', text: 'Se verifico correctamente la contraseña' });
+
                 }
-                else{
+                else {
                     this.$swal({ position: 'center', icon: 'warning', text: 'Contraseña Incorrecta' });
 
                 }
 
             } catch (error) {
-                console.error({message : 'Error al cargar los proyectos desde la API:', error});
+                console.error({ message: 'Error al cargar los proyectos desde la API:', error });
             }
 
         },
@@ -1238,9 +1338,9 @@ export default {
         async createTask() {
             const currentSprintId = localStorage.getItem("currentSprintId");
             const task = {
-                Task_Name : this.taskName,
-                Description_Task : this.taskDescription,
-                Id_Sprint : currentSprintId,
+                Task_Name: this.taskName,
+                Description_Task: this.taskDescription,
+                Id_Sprint: currentSprintId,
             }
 
             if (this.validateTask(task, false) !== 'VALID') {
@@ -1267,12 +1367,12 @@ export default {
 
         createSubTask() {
             const subTask = {
-                Title : this.tituloSubTarea.trim(),
-                Description : this.descriptionSubTarea.trim(),
-                Required_Time : this.requiredTimeSubTarea,
-                Id_Task : this.currentSelectedTaskId,
-                Id_Priority : this.prioritySubTarea,
-                Id_Status : this.statusSubTarea
+                Title: this.tituloSubTarea.trim(),
+                Description: this.descriptionSubTarea.trim(),
+                Required_Time: this.requiredTimeSubTarea,
+                Id_Task: this.currentSelectedTaskId,
+                Id_Priority: this.prioritySubTarea,
+                Id_Status: this.statusSubTarea
             }
 
             /*if (this.validateSubTask(subTask, true) !== 'VALID') {
@@ -1286,7 +1386,7 @@ export default {
 
         resetSubTaskCreation() {
             this.tituloSubTarea = '',
-            this.descriptionSubTarea = ''
+                this.descriptionSubTarea = ''
             this.requiredTimeSubTarea = 0
             this.prioritySubTarea = ''
             this.statusSubTarea = ''
@@ -1301,29 +1401,29 @@ export default {
                     const Tasklist = response.data.obj;
                     this.tareas = Tasklist;
                     this.paginateData = [];
-                    if(this.tareas.length < this.pageElements){
-                        for (let index = 0; index < this.tareas.length; index++){
+                    if (this.tareas.length < this.pageElements) {
+                        for (let index = 0; index < this.tareas.length; index++) {
                             this.paginateData.push(this.tareas[index]);
                         }
                     } else {
-                        for (let index = 0; index < this.pageElements; index++){
+                        for (let index = 0; index < this.pageElements; index++) {
                             this.paginateData.push(this.tareas[index]);
                         }
                     }
                 } else {
                     this.paginateData = [];
-                    if(this.tareas.length < this.pageElements){
-                        for (let index = 0; index < this.tareas.length; index++){
+                    if (this.tareas.length < this.pageElements) {
+                        for (let index = 0; index < this.tareas.length; index++) {
                             this.paginateData.push(this.tareas[index]);
                         }
                     } else {
-                        for (let index = 0; index < this.pageElements; index++){
+                        for (let index = 0; index < this.pageElements; index++) {
                             this.paginateData.push(this.tareas[index]);
                         }
                     }
                 }
             } catch (error) {
-                console.error({message: 'Error al cargar las tareas desde la API:', error});
+                console.error({ message: 'Error al cargar las tareas desde la API:', error });
             }
         },
 
@@ -1334,7 +1434,7 @@ export default {
             this.tareas = TaskList;
             const filteredTasks = [];
             let success = false;
-            
+
             for (const project of this.tareas) {
                 const matchesState = (!state || project.Id_Status.toString() === state);
                 const matchesWord = (!word || project.Task_Name.toLowerCase().includes(word.toLowerCase()) || project.Description_Task.toLowerCase().includes(word.toLowerCase()));
@@ -1366,21 +1466,21 @@ export default {
         },
 
         changePage: async function (pageNum) {
-            if(pageNum != "..."){
+            if (pageNum != "...") {
                 this.paginateData = []
-                if (pageNum == undefined){
+                if (pageNum == undefined) {
                     pageNum = 1
                 }
                 this.actualPage = pageNum
                 let ini = (pageNum * this.pageElements) - this.pageElements;
                 let end = (pageNum * this.pageElements);
                 let total = this.tareas.length;
-                if(end < total){
-                    for (let index = ini; index < end; index++){
+                if (end < total) {
+                    for (let index = ini; index < end; index++) {
                         this.paginateData.push(this.tareas[index]);
                     }
-                } else{
-                    for (let index = ini; index < total; index++){
+                } else {
+                    for (let index = ini; index < total; index++) {
                         this.paginateData.push(this.tareas[index]);
                     }
                 }
@@ -1388,20 +1488,20 @@ export default {
             }
         },
 
-        goBack: async function() {
-            if (this.actualPage > 1){
+        goBack: async function () {
+            if (this.actualPage > 1) {
                 this.paginateData = []
                 let paginaAnt = this.actualPage - 1
                 this.actualPage = paginaAnt
                 let ini = (paginaAnt * this.pageElements) - this.pageElements;
                 let end = (paginaAnt * this.pageElements);
                 let total = this.tareas.length;
-                if(end < total){
-                    for (let index = ini; index < end; index++){
+                if (end < total) {
+                    for (let index = ini; index < end; index++) {
                         this.paginateData.push(this.tareas[index]);
                     }
-                } else{
-                    for (let index = ini; index < total; index++){
+                } else {
+                    for (let index = ini; index < total; index++) {
                         this.paginateData.push(this.tareas[index]);
                     }
                 }
@@ -1409,7 +1509,7 @@ export default {
             }
         },
 
-        goNext: async function() {
+        goNext: async function () {
             if (this.actualPage == this.pageNumeration.length || this.actualPage > this.pageNumeration.length) {
                 return
             } else {
@@ -1419,12 +1519,12 @@ export default {
                 let ini = (paginaAnt * this.pageElements) - this.pageElements;
                 let end = (paginaAnt * this.pageElements);
                 let total = this.tareas.length;
-                if(end < total){
-                    for (let index = ini; index < end; index++){
+                if (end < total) {
+                    for (let index = ini; index < end; index++) {
                         this.paginateData.push(this.tareas[index]);
                     }
-                } else{
-                    for (let index = ini; index < total; index++){
+                } else {
+                    for (let index = ini; index < total; index++) {
                         this.paginateData.push(this.tareas[index]);
                     }
                 }
@@ -1503,7 +1603,7 @@ export default {
 
         validatePaginate: function () {
             let quantity = this.tareas.length
-            if(quantity < 11){
+            if (quantity < 11) {
                 this.paginate = false
             } else {
                 this.paginate = true
@@ -1516,7 +1616,7 @@ export default {
                 const subTasks = response.data.obj;
                 this.subtareasPorTask[taskId] = subTasks;
             } catch (error) {
-                console.error({message: 'Error al cargar las subtareas desde la API:', error, response});
+                console.error({ message: 'Error al cargar las subtareas desde la API:', error, response });
             }
         },
 
@@ -1528,12 +1628,12 @@ export default {
                     this.taskDescription = ''
                     // caso exitoso para creacion de tarea
                     this.modalShowTask = false
-                    
+
                     const swal = this.$swal({
-                            title: 'Se creo correctamente la tarea',
-                            icon:'success',
-                            showConfirmButton:false,
-                        });
+                        title: 'Se creo correctamente la tarea',
+                        icon: 'success',
+                        showConfirmButton: false,
+                    });
                     this.getTareasDesdeAPI(); // llamamos a get tareas
 
                     setTimeout(() => {
@@ -1541,10 +1641,10 @@ export default {
                         location.reload();
                     }, 1000);
                 } else {
-                    console.error({ message : 'Error al crear la tarea' , response});
+                    console.error({ message: 'Error al crear la tarea', response });
                 }
             } catch (error) {
-                console.error({ message :'Error al crear tarea', error});
+                console.error({ message: 'Error al crear tarea', error });
             }
         },
 
@@ -1560,14 +1660,14 @@ export default {
                     this.modalShowSubTask = false
 
                     const swal = this.$swal({
-                            title: 'Se creo correctamente la subtarea',
-                            icon:'success',
-                            showConfirmButton:false,
-                        });
+                        title: 'Se creo correctamente la subtarea',
+                        icon: 'success',
+                        showConfirmButton: false,
+                    });
 
-                        this.ActionEN.Action_Description = "Creó la subtarea " + subTarea.Title
-                        this.ActionEN.Action_User = this.recuperarUsuLog();
-                        await AdminApi.PostNewAction(this.ActionEN)
+                    this.ActionEN.Action_Description = "Creó la subtarea " + subTarea.Title
+                    this.ActionEN.Action_User = this.recuperarUsuLog();
+                    await AdminApi.PostNewAction(this.ActionEN)
 
                     this.getSubTareasDesdeAPI(taskId); // llamamos a get subtareas
 
@@ -1576,13 +1676,13 @@ export default {
                         location.reload();
                     }, 1000);
                 } else {
-                    console.error({ message : 'Error al crear la subtarea' , response});
+                    console.error({ message: 'Error al crear la subtarea', response });
                 }
             } catch (error) {
-                console.error({ message :'Error al crear subtarea', error});
+                console.error({ message: 'Error al crear subtarea', error });
             }
         },
-        
+
         async getAllOptions() {
             const responseStatus = await AdminApi.GetAllStatus();
             if (responseStatus.data.ok) {
@@ -1600,7 +1700,7 @@ export default {
         },
     },
 
-    mounted: async function() {
+    mounted: async function () {
         this.$root.cerrarMenuFiltros = this.cerrarFiltros;
         let loader = this.$loading.show({
             container: this.$refs.cuadroLoader,
@@ -1608,14 +1708,14 @@ export default {
         })
         this.quill = new Quill(this.$refs.Quill, {
             theme: 'snow'
-        })  
+        })
         setTimeout(() => {
             loader.hide()
         }, 500)
     },
 
     created: async function () {
-       
+
         await this.verificarLog();
         await this.getAllOptions();
         await this.getTareasDesdeAPI()
@@ -1633,8 +1733,6 @@ export default {
 </script>
 
 <style scoped>
-
-
 .cell-subtask {
     margin-bottom: 15px;
     background-color: #418ebb;
@@ -1661,11 +1759,12 @@ export default {
     font-family: Arial, Helvetica, sans-serif;
 }
 
-ul, ol {
+ul,
+ol {
     list-style: none;
 }
 
-.nav > li {
+.nav>li {
     float: left;
 }
 
@@ -1677,10 +1776,10 @@ ul, ol {
     display: block;
 }
 
-    .nav li a:hover {
-        color: #808080;
-        background-color: #262b35;
-    }
+.nav li a:hover {
+    color: #808080;
+    background-color: #262b35;
+}
 
 .nav li ul {
     display: none;
@@ -1688,7 +1787,7 @@ ul, ol {
     min-width: 140px;
 }
 
-.nav li:hover > ul {
+.nav li:hover>ul {
     display: block;
 }
 
@@ -1707,26 +1806,26 @@ ul, ol {
     border-radius: 0.5em;
 }
 
-    .filtro button {
-        background-color: #000;
-        border-radius: 0.5em;
-        border: none;
-    }
+.filtro button {
+    background-color: #000;
+    border-radius: 0.5em;
+    border: none;
+}
 
-    .filtro button:hover {
-        background-color: #000;
-        border-radius: 0.5em;
-        border: none;
-        font-size: 15px;
-    }
+.filtro button:hover {
+    background-color: #000;
+    border-radius: 0.5em;
+    border: none;
+    font-size: 15px;
+}
 
 /*Select*/
 
-.diseñoSelectLateral{
+.diseñoSelectLateral {
     height: 30px;
 }
 
-.diseñoSelect{
+.diseñoSelect {
     height: 35px;
 }
 
@@ -1746,7 +1845,7 @@ ul, ol {
 }
 
 @media screen and (max-width: 900px) {
-    .posicion1{
+    .posicion1 {
         display: none;
     }
 }
@@ -1757,22 +1856,22 @@ ul, ol {
         min-height: 500px;
     }
 
-    .menuLateralCelular{
+    .menuLateralCelular {
         display: none;
     }
 }
 
-.filtrosCelular{
+.filtrosCelular {
     padding-top: 20px;
     padding-left: 50px;
     padding-right: 50px;
     padding-bottom: 20px;
-    background: rgba(10,58,102,1);
+    background: rgba(10, 58, 102, 1);
 }
 
 @media screen and (min-width: 901px) {
 
-    .filtrosCelular{
+    .filtrosCelular {
         display: none;
     }
 }
@@ -1789,21 +1888,21 @@ ul, ol {
     margin-top: 25px;
 }
 
-    .encabezado ul {
-            padding-top: 14px;
-        }
+.encabezado ul {
+    padding-top: 14px;
+}
 
-    .li {
-        font-family: sans-serif;
-        color: black;
-        text-decoration: none;
-    }
+.li {
+    font-family: sans-serif;
+    color: black;
+    text-decoration: none;
+}
 
-    .encabezado div {
-        text-align: center;
-    }
+.encabezado div {
+    text-align: center;
+}
 
-.sinResultadosAct{
+.sinResultadosAct {
     width: 100%;
     text-align: center;
     margin-top: 30px;
@@ -1816,12 +1915,12 @@ ul, ol {
     margin-top: 25px;
 }
 
-.botones{
+.botones {
     min-height: 40px;
     min-width: 150px;
 }
 
-.agregarBlt{
+.agregarBlt {
     font-family: sans-serif;
     font-size: 18px;
     text-decoration: none;
@@ -1832,34 +1931,34 @@ ul, ol {
 }
 
 @media screen and (max-width: 975px) {
-    .agregarResponsive{
+    .agregarResponsive {
         display: none;
     }
 }
 
 @media screen and (min-width: 975px) {
-    .agregarResponsivePlus{
+    .agregarResponsivePlus {
         display: none;
     }
 }
 
 @media screen and (min-width: 901px) {
-    .linkResponsive{
+    .linkResponsive {
         display: none;
     }
 }
 
 @media screen and (max-width: 610px) {
-    .linkResponsiveCelular{
+    .linkResponsiveCelular {
         display: none;
     }
 }
 
-.filtrosCelularBoton{
+.filtrosCelularBoton {
     text-align: center;
     font-size: large;
     cursor: pointer;
-    background-color: rgba(10,58,102,1);
+    background-color: rgba(10, 58, 102, 1);
     height: 30px;
     border-bottom-right-radius: 10px;
     border-bottom-left-radius: 10px;
@@ -1867,42 +1966,43 @@ ul, ol {
 }
 
 @media screen and (min-width: 901px) {
-    .filtrosCelularBotones{
+    .filtrosCelularBotones {
         display: none;
     }
 
-    .filtrosCelularBoton{
+    .filtrosCelularBoton {
         display: none;
     }
 }
 
-.vistaPrincipal{
+.vistaPrincipal {
     min-height: 85vh;
 }
 
 @media screen and (max-width: 900px) {
-    .vistaPrincipal{
+    .vistaPrincipal {
         min-height: 98vh;
     }
 }
 
 @media screen and (max-width: 400px) {
-    .vistaPrincipal{
+    .vistaPrincipal {
         min-height: 100vh;
     }
 }
 
-.botonEncuestas{
+.botonEncuestas {
     margin-left: -15px;
     min-width: 12.4rem;
-    background-color: #114677;;
+    background-color: #114677;
+    ;
     min-height: 35px;
     border-radius: 5px;
     padding-top: 20px;
     list-style: none;
 }
 
-.textoEncuestas{
+.textoEncuestas {
     margin-left: 25px;
     margin-top: -15px;
     font-size: 17px;
@@ -1920,16 +2020,16 @@ ul, ol {
     margin-left: 5px;
 }
 
-.inputsGeneral{
+.inputsGeneral {
     border-radius: 15px;
 }
 
-.listaSubtareas{
+.listaSubtareas {
     border: 1px solid #c5c5c5;
     border-radius: 15px;
 }
 
-.listaSubtareas:hover{
+.listaSubtareas:hover {
     background-color: #c5c5c5;
     cursor: pointer;
 }
@@ -1940,18 +2040,18 @@ ul, ol {
     margin-bottom: 15px;
 }
 
-.tablaPersonalizadaSubtareas{
+.tablaPersonalizadaSubtareas {
     display: grid;
     grid-template-columns: 10% 2% 48% 15% 25%;
 }
 
-@media screen and (max-width: 900px){
-    .tablaPersonalizada{
+@media screen and (max-width: 900px) {
+    .tablaPersonalizada {
         display: grid;
         grid-template-columns: 10% 3% 42% 20% 25%;
     }
 
-    .tablaPersonalizadaSubtareas{
+    .tablaPersonalizadaSubtareas {
         display: grid;
         grid-template-columns: 10% 3% 42% 20% 25%;
     }
@@ -1961,27 +2061,26 @@ ul, ol {
     text-align: center;
 }
 
-.tablaPersonalizadaSubtareas{
+.tablaPersonalizadaSubtareas {
     text-align: center;
 }
 
-.tablaPersonalizadaRow{
+.tablaPersonalizadaRow {
     font-size: large;
     cursor: pointer;
 }
 
-.tablaPersonalizadaRowSubTareas{
+.tablaPersonalizadaRowSubTareas {
     font-size: medium;
     cursor: pointer;
     margin-left: 0px;
 }
 
-.listadoSubtareas{
+.listadoSubtareas {
     background-color: #e7f3ff;
 }
 
-.listadoSubtareas:hover{
+.listadoSubtareas:hover {
     background-color: #c7e0f7;
 }
-
 </style>

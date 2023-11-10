@@ -22,7 +22,7 @@
                                 <span class="icon-eye" id="ojo" style="font-size: 20px" v-on:click="mostrarContrasena"><i class="fas fa-eye-slash" id="ojoTechado"></i></span>
                                 <input maxlength="20" class="small-input bg-white margin-20px-bottom required" style="border-radius: 10px;" type="password" placeholder="Digiste su contraseña" v-model="Clave" @keydown.enter="RealizarLogin">
                             </div>
-                            <br />
+                            <br/>
                             <div style="text-align: center">
                                 <div class="row justify-content-center" style="text-align: center">
                                     <a class="btn btn-success" style="border-radius: 10px; max-width: 110px;" role="button" v-on:click="RealizarLogin">Ingresar</a>
