@@ -421,45 +421,77 @@ Public Class ProjectDAO
 
 
     'El metodo permite buscar el Ultimo ID que inserto el usuario de cualquier tabla con autoincremental'
-    Public Function GetLastInsertIdDAO() As Reply(Of Integer)
+
+    Public Function GetLastInsertIdDAO(ByVal NombreTabla As String) As Reply(Of Integer)
 
         Dim reply As New Reply(Of Integer)
 
+        If NombreTabla = "Project" Then
+            Try
 
-        Try
+                sentence = "SELECT Max(Id_Project) from project "
 
-            sentence = "SELECT LAST_INSERT_ID()"
+                Using dr As MySqlDataReader = ConexionDAO.Instancia.ExecuteConsult(sentence)
 
-            Using dr As MySqlDataReader = ConexionDAO.Instancia.ExecuteConsult(sentence)
-
-                While dr.Read
-                    Dim Last_Id_Insert As Integer
-                    Last_Id_Insert = dr(0)
+                    While dr.Read
+                        Dim Last_Id_Insert As Integer
+                        Last_Id_Insert = dr(0)
 
 
-                    reply.obj = Last_Id_Insert
-                End While
+                        reply.obj = Last_Id_Insert
+                    End While
 
-                If reply.obj <> 0 Then
-                    reply.ok = True
-                    reply.msg = "Se encontro el ultimo id insertado"
-                ElseIf reply.obj = 0 Then
-                    reply.ok = False
-                    reply.msg = "No se encontro el ultimo id insertado"
-                End If
-            End Using
-        Catch ex As Exception
-            EscritorVisorEventos.Instancia().EscribirEvento(nameClass, MethodBase.GetCurrentMethod().Name, ex)
-            reply.ok = False
-            reply.msg = "No fue posible ejecutar la consulta: " & ex.Message
-            Return reply
-        End Try
+                    If reply.obj <> 0 Then
+                        reply.ok = True
+                        reply.msg = "Se encontro el ultimo id insertado"
+                    ElseIf reply.obj = 0 Then
+                        reply.ok = False
+                        reply.msg = "No se encontro el ultimo id insertado"
+                    End If
+                End Using
+            Catch ex As Exception
+                EscritorVisorEventos.Instancia().EscribirEvento(nameClass, MethodBase.GetCurrentMethod().Name, ex)
+                reply.ok = False
+                reply.msg = "No fue posible ejecutar la consulta: " & ex.Message
+                Return reply
+            End Try
+        End If
+
+        If NombreTabla = "File" Then
+            Try
+
+                sentence = "SELECT Max(File_ID) from files"
+
+                Using dr As MySqlDataReader = ConexionDAO.Instancia.ExecuteConsult(sentence)
+
+                    While dr.Read
+                        Dim Last_Id_Insert As Integer
+                        Last_Id_Insert = dr(0)
+
+
+                        reply.obj = Last_Id_Insert
+                    End While
+
+                    If reply.obj <> 0 Then
+                        reply.ok = True
+                        reply.msg = "Se encontro el ultimo id insertado"
+                    ElseIf reply.obj = 0 Then
+                        reply.ok = False
+                        reply.msg = "No se encontro el ultimo id insertado"
+                    End If
+                End Using
+            Catch ex As Exception
+                EscritorVisorEventos.Instancia().EscribirEvento(nameClass, MethodBase.GetCurrentMethod().Name, ex)
+                reply.ok = False
+                reply.msg = "No fue posible ejecutar la consulta: " & ex.Message
+                Return reply
+            End Try
+        End If
 
         Return reply
 
 
     End Function
-
 
 
 

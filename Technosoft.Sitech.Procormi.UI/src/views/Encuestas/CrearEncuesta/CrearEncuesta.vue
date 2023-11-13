@@ -22,23 +22,31 @@
 
                         <div class="col-lg-4 col-md-4 col-sm-12 row justify-content-center" style="margin-top: 40px;">
                             <div class="col-8 textoBlanco" style="text-align: center; min-width: 150px;">
-                                <router-link role="button" :to="{ name: 'Inicio' }" class="textoBlanco textoEncuestas" style="text-decoration: none;" exact-active-class="active-link">Proyectos&nbsp;&nbsp;<i class="text-white fas fa-project-diagram" style="cursor: pointer; font-size: 14px;"></i></router-link>
+                                <router-link role="button" :to="{ name: 'Inicio' }" class="textoBlanco textoEncuestas"
+                                    style="text-decoration: none;" exact-active-class="active-link">Proyectos&nbsp;&nbsp;<i
+                                        class="text-white fas fa-project-diagram"
+                                        style="cursor: pointer; font-size: 14px;"></i></router-link>
                             </div>
                         </div>
-                        
+
                         <div class="col-lg-4 col-md-4 col-sm-12 row justify-content-center" style="margin-top: 40px;">
                             <div class="col-8 textoBlanco" style="text-align: center; min-width: 150px;">
-                                <router-link role="button" :to="{ name: 'Encuestas' }" class="textoBlanco textoEncuestas" style="text-decoration: none;" exact-active-class="active-link">Encuestas&nbsp;&nbsp;<i class="text-white fas fa-chart-line" style="cursor: pointer;"></i></router-link>
+                                <router-link role="button" :to="{ name: 'Encuestas' }" class="textoBlanco textoEncuestas"
+                                    style="text-decoration: none;" exact-active-class="active-link">Encuestas&nbsp;&nbsp;<i
+                                        class="text-white fas fa-chart-line" style="cursor: pointer;"></i></router-link>
                             </div>
                         </div>
 
                         <div class="col-lg-4 col-md-4 col-sm-12 row justify-content-center" style="margin-top: 40px;">
                             <div class="col-8 textoBlanco" style="text-align: center;">
-                                <router-link role="button" :to="{ name: 'Reportes' }" class="textoBlanco textoEncuestas" style="text-decoration: none;" exact-active-class="active-link">Reportes&nbsp;&nbsp;<i class="text-white far fa-file-alt" style="cursor: pointer;"></i></router-link>
+                                <router-link role="button" :to="{ name: 'Reportes' }" class="textoBlanco textoEncuestas"
+                                    style="text-decoration: none;" exact-active-class="active-link">Reportes&nbsp;&nbsp;<i
+                                        class="text-white far fa-file-alt" style="cursor: pointer;"></i></router-link>
                             </div>
                         </div>
 
-                        <div style="text-align: center; font-size: large; padding-top: 40px; cursor: pointer; margin-left: 20px;" v-if="filtroDesplegar" v-on:click="desplegarFiltros()">
+                        <div style="text-align: center; font-size: large; padding-top: 40px; cursor: pointer; margin-left: 20px;"
+                            v-if="filtroDesplegar" v-on:click="desplegarFiltros()">
                             <a class="text-white fas fa-angle-up" style="text-decoration: none;"></a>
                         </div>
 
@@ -47,25 +55,35 @@
                     <!--Filtros responsive /-->
 
                     <div class="col-12" style="margin-top: 30px;">
-                        <h4 style="text-align: center; font-size: 25px; color: #0a3a66;" v-if="!esEditar">Crear encuesta</h4>
-                        <h4 style="text-align: center; font-size: 25px; color: #0a3a66;" v-if="esEditar">Editar encuesta</h4>
+                        <h4 style="text-align: center; font-size: 25px; color: #0a3a66;" v-if="!esEditar">Crear encuesta
+                        </h4>
+                        <h4 style="text-align: center; font-size: 25px; color: #0a3a66;" v-if="esEditar">Editar encuesta
+                        </h4>
                         <br />
                         <div>
                             <div>
                                 <div class="estiloForm">
                                     <div style="padding: 50px;">
                                         <div>
-                                            <label class="margin-15px-bottom text-black" style="font-size: large;">Título</label>
-                                            <input v-model="encuesta.Name" maxlength="50" class="small-input inputsGeneral" placeholder="Escriba el título de la encuesta" type="text">
+                                            <label class="margin-15px-bottom text-black"
+                                                style="font-size: large;">Título</label>
+                                            <input v-model="encuesta.Name" maxlength="50" class="small-input inputsGeneral"
+                                                placeholder="Escriba el título de la encuesta" type="text">
                                         </div>
+                                        <p ref="errorPollName" style="visibility: hidden;color: red;"></p>
                                         <br />
                                         <div class="row">
                                             <div class="col-12">
                                                 <div>
-                                                    <label class="margin-15px-bottom text-black" style="font-size: large;">Descripción</label>
+                                                    <label class="margin-15px-bottom text-black"
+                                                        style="font-size: large;">Descripción</label>
                                                     <div>
-                                                        <div ref="Quill" style="min-height: 200px; border-bottom-left-radius: 15px; border-bottom-right-radius: 15px;"></div>
+                                                        <div ref="Quill"
+                                                            style="min-height: 200px; border-bottom-left-radius: 15px; border-bottom-right-radius: 15px;">
+                                                        </div>
                                                     </div>
+                                                    <p ref="errorPollDescription" style="visibility: hidden;color: red;">
+                                                    </p>
                                                 </div>
                                             </div>
                                         </div>
@@ -74,24 +92,31 @@
                                         <br />
 
                                         <!--Preguntas-->
-                                        
+
                                         <hr />
                                         <br />
                                         <br />
                                         <div>
-                                            <h4 style="text-align: center; font-size: 25px; color: #0a3a66;">Agregar preguntas</h4>
+                                            <h4 style="text-align: center; font-size: 25px; color: #0a3a66;">Agregar
+                                                preguntas</h4>
                                             <br />
                                             <br />
                                             <div class="row">
                                                 <div class="col-8">
-                                                    <label class="margin-15px-bottom text-black" style="font-size: large;">Pregunta</label>
-                                                    <textarea class="small-input inputsGeneral" style="height: 35px !important;" placeholder="Escriba la pregunta" v-model="preguntaActual.TextQuestion"></textarea>
+                                                    <label class="margin-15px-bottom text-black"
+                                                        style="font-size: large;">Pregunta</label>
+                                                    <textarea class="small-input inputsGeneral"
+                                                        style="height: 35px !important;" placeholder="Escriba la pregunta"
+                                                        v-model="preguntaActual.TextQuestion"></textarea>
                                                 </div>
                                                 <br />
                                                 <br />
                                                 <div class="col-4">
-                                                    <label class="margin-15px-bottom text-black" style="font-size: large;">Tipo</label>
-                                                    <select class="form-select inputsGeneral" v-model="preguntaActual.Id_Question_Type" @change="seleccionarTipo(preguntaActual.Id_Question_Type)">
+                                                    <label class="margin-15px-bottom text-black"
+                                                        style="font-size: large;">Tipo</label>
+                                                    <select class="form-select inputsGeneral"
+                                                        v-model="preguntaActual.Id_Question_Type"
+                                                        @change="seleccionarTipo(preguntaActual.Id_Question_Type)">
                                                         <option value="1">Texto</option>
                                                         <option value="2">Respuesta única</option>
                                                         <option value="3">Selección múltiple</option>
@@ -99,14 +124,24 @@
                                                 </div>
                                             </div>
                                             <br />
-                                            <div v-if="preguntaActual.Id_Question_Type === 2 || preguntaActual.Id_Question_Type === 3">
-                                                <label class="margin-15px-bottom text-black" style="font-size: large; cursor: default;">Opciones</label>&nbsp;&nbsp;<a @click="agregarOpcion" class="fas fa-plus" style="cursor: pointer; text-decoration: none; font-size: 15px;"></a>
-                                                <div class="row" v-for="(opcion, index) in preguntaActual.Question_Options" :key="index">
+                                            <div
+                                                v-if="preguntaActual.Id_Question_Type === 2 || preguntaActual.Id_Question_Type === 3">
+                                                <label class="margin-15px-bottom text-black"
+                                                    style="font-size: large; cursor: default;">Opciones</label>&nbsp;&nbsp;<a
+                                                    @click="agregarOpcion" class="fas fa-plus"
+                                                    style="cursor: pointer; text-decoration: none; font-size: 15px;"></a>
+                                                <div class="row" v-for="(opcion, index) in preguntaActual.Question_Options"
+                                                    :key="index">
                                                     <div class="col-11">
-                                                        <input maxlength="200" type="text" class="small-input inputsGeneral" placeholder="Escriba una opción" style="margin-bottom: 30px;" v-model="opcion.Option_Text">
+                                                        <input maxlength="200" type="text" class="small-input inputsGeneral"
+                                                            placeholder="Escriba una opción" style="margin-bottom: 30px;"
+                                                            v-model="opcion.Option_Text">
                                                     </div>
                                                     <div class="col-1">
-                                                        <button class="btn btn-danger" style="float: right; min-height: 48px; min-width: 45px;" @click="deleteOptionInput(index)"><span class="fas fa-trash"></span></button>
+                                                        <button class="btn btn-danger"
+                                                            style="float: right; min-height: 48px; min-width: 45px;"
+                                                            @click="deleteOptionInput(index)"><span
+                                                                class="fas fa-trash"></span></button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -116,8 +151,13 @@
                                                 <div class="col-6">
 
                                                 </div>
+                                                <p ref="errorQuestion" style="visibility: hidden;color: red;"></p>
+
                                                 <div class="col-6">
-                                                    <button class="btn btn-primary botones" style="float: right;" @click="agregarPregunta" b-tooltip.hover title="Agregar pregunta a la lista"><span class="fas fa-plus"></span> Pregunta</button>
+                                                    <button class="btn btn-primary botones" style="float: right;"
+                                                        @click="agregarPregunta" b-tooltip.hover
+                                                        title="Agregar pregunta a la lista"><span
+                                                            class="fas fa-plus"></span> Pregunta</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -125,27 +165,45 @@
                                         <br />
                                         <br />
                                         <div v-if="encuesta.Questions.length > 0">
-                                            <h4 style="text-align: center; font-size: 25px; color: #0a3a66;">Listado de preguntas</h4>
+                                            <h4 style="text-align: center; font-size: 25px; color: #0a3a66;">Listado de
+                                                preguntas</h4>
                                             <div>
                                                 <div>
-                                                    <div class="cardPersonalizado" v-for="(pregunta, index) in encuesta.Questions" :key="index">
+                                                    <div class="cardPersonalizado"
+                                                        v-for="(pregunta, index) in encuesta.Questions" :key="index">
                                                         <div class="cardInside">
-                                                            <h5 style="text-align: center; font-size: 25px; background-color: #0a3a66; color: #fff; border-radius: 15px;">{{ pregunta.TextQuestion }}</h5>
+                                                            <h5
+                                                                style="text-align: center; font-size: 25px; background-color: #0a3a66; color: #fff; border-radius: 15px;">
+                                                                {{ pregunta.TextQuestion }}</h5>
                                                             <hr />
-                                                            <input v-if="pregunta.Id_Question_Type === 1" style="border-radius: 15px; margin-bottom: 10px; background-color: rgb(241, 241, 241);" disabled placeholder="Respuesta" />
-                                                            <div v-if="pregunta.Id_Question_Type === 2 || pregunta.Id_Question_Type === 3">
-                                                                <h5 class="margin-5px-bottom" style="font-size: 20px; color: #0a3a66;">Opciones</h5>
+                                                            <input v-if="pregunta.Id_Question_Type === 1"
+                                                                style="border-radius: 15px; margin-bottom: 10px; background-color: rgb(241, 241, 241);"
+                                                                disabled placeholder="Respuesta" />
+                                                            <div
+                                                                v-if="pregunta.Id_Question_Type === 2 || pregunta.Id_Question_Type === 3">
+                                                                <h5 class="margin-5px-bottom"
+                                                                    style="font-size: 20px; color: #0a3a66;">Opciones</h5>
                                                                 <br />
-                                                                <p style="font-size: medium;" v-for="(opcion, opcionIndex) in pregunta.Question_Options" :key="opcionIndex"><span class="far">&#xf0c8;</span>&nbsp;&nbsp;{{ opcion.Option_Text }}</p>
+                                                                <p style="font-size: medium;"
+                                                                    v-for="(opcion, opcionIndex) in pregunta.Question_Options"
+                                                                    :key="opcionIndex"><span
+                                                                        class="far">&#xf0c8;</span>&nbsp;&nbsp;{{
+                                                                            opcion.Option_Text }}</p>
                                                             </div>
                                                             <br />
                                                             <div class="row">
                                                                 <div class="col-6">
-                                                                    <label style="font-size: medium; float: left;"><span style="color: rgb(199, 0, 0);"><b>Tipo</b></span> {{ pregunta.Id_Question_Type }}</label>
+                                                                    <label style="font-size: medium; float: left;"><span
+                                                                            style="color: rgb(199, 0, 0);"><b>Tipo</b></span>
+                                                                        {{ pregunta.Id_Question_Type }}</label>
                                                                 </div>
                                                                 <div class="col-6">
-                                                                    <a class="fas fa-trash" style="font-size: medium; text-decoration: none; cursor: pointer; float: right; margin-right: 10px;" @click="EliminarPregunta(index)"></a>
-                                                                    <a class="fas fa-pen" style="font-size: medium; text-decoration: none; cursor: pointer; float: right; margin-right: 10px;" @click="EditarPregunta(index)"></a>
+                                                                    <a class="fas fa-trash"
+                                                                        style="font-size: medium; text-decoration: none; cursor: pointer; float: right; margin-right: 10px;"
+                                                                        @click="EliminarPregunta(index)"></a>
+                                                                    <a class="fas fa-pen"
+                                                                        style="font-size: medium; text-decoration: none; cursor: pointer; float: right; margin-right: 10px;"
+                                                                        @click="EditarPregunta(index)"></a>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -160,10 +218,14 @@
                                         <br />
                                         <div class="row justify-content-end">
                                             <div>
-                                                <button class="btn btn-success" style="min-width: 100px; position: absolute; right: 210px;" @click="sendPoll">Guardar</button>
+                                                <button class="btn btn-success"
+                                                    style="min-width: 100px; position: absolute; right: 210px;"
+                                                    @click="sendPoll">Guardar</button>
                                             </div>
                                             <div class="col-2">
-                                                <router-link role="button" :to="{ name: 'Encuestas' }" class="btn btn-danger" style="min-width: 100px; position: absolute; right: 100px;">Cancelar</router-link>
+                                                <router-link role="button" :to="{ name: 'Encuestas' }"
+                                                    class="btn btn-danger"
+                                                    style="min-width: 100px; position: absolute; right: 100px;">Cancelar</router-link>
                                             </div>
                                         </div>
 
@@ -238,71 +300,78 @@ export default {
         },
 
         sendPoll: async function () {
+            const errorPollName = this.$refs.errorPollName;
+            const errorPollDescription = this.$refs.errorPollDescription;
+            const errorQuestion = this.$refs.errorQuestion;
+            errorPollName.textContent = "";
+            errorPollName.style.visibility = "hidden";
+            errorPollDescription.textContent = "";
+            errorPollDescription.style.visibility = "hidden";
+            errorQuestion.textContent = "";
+            errorQuestion.style.visibility = "hidden";
+
             let loader = this.$loading.show({
                 container: this.$refs.cuadroLoader,
                 opacity: 1
             })
             var description = this.quill.root.innerHTML
-            if(description == "<p><br></p>"){
+            if (description == "<p><br></p>") {
                 description = "";
             }
             this.encuesta.Description = description
 
             if (this.encuesta.Name.trim() == "") {
                 loader.hide()
-                return this.$swal.fire({
-                        position: 'top-end',
-                        text: 'Por favor, digite el título de la encuesta',
-                        showConfirmButton: false,
-                        timer: 3000
-                    })
+
+                errorPollName.textContent = "Por favor, digite el título de la encuesta";
+                errorPollName.style.visibility = "visible";
+                return
+
+
             } else if (this.encuesta.Description.trim() == "") {
                 loader.hide()
-                return this.$swal.fire({
-                        position: 'top-end',
-                        text: 'Por favor, digite la descripción de la encuesta',
-                        showConfirmButton: false,
-                        timer: 3000
-                    })
+                errorPollDescription.textContent = "Por favor, digite la descripción de la encuesta";
+                errorPollDescription.style.visibility = "visible";
+                return
+
             } else if (this.encuesta.Questions.length == 0) {
                 loader.hide()
-                return this.$swal.fire({
-                        position: 'top-end',
-                        text: 'Por favor, digite al menos una pregunta',
-                        showConfirmButton: false,
-                        timer: 3000
-                    })
+
+                errorQuestion.textContent = "Por favor, digite al menos una pregunta";
+                errorQuestion.style.visibility = "visible";
+                return
             }
+
             if (this.idEncuesta == 0) {
                 await AdminApi.PostNewPoll(this.encuesta)
-                .then(async response => {
-                    if (response.data.obj == true) {
-                        this.$swal.fire({
-                            icon: 'success',
-                            position: 'center',
-                            text: response.data.msg,
-                            showConfirmButton: true
-                        })
-                        this.ActionEN.Action_Description = "Creó la encuesta " + this.encuesta.Name
-                        this.ActionEN.Action_User = this.recuperarUsuLog();
-                        await AdminApi.PostNewAction(this.ActionEN)
-                        this.limpiarContenido()
-                    }
-                })
+                    .then(async response => {
+                        if (response.data.obj == true) {
+                            this.$swal.fire({
+                                icon: 'success',
+                                position: 'center',
+                                text: response.data.msg,
+                                showConfirmButton: true
+                            })
+                            this.ActionEN.Action_Description = "Creó la encuesta " + this.encuesta.Name
+                            this.ActionEN.Action_User = this.recuperarUsuLog();
+                            await AdminApi.PostNewAction(this.ActionEN)
+                            this.limpiarContenido()
+                        }
+                    })
 
             } else {
                 await AdminApi.UpdatePull(this.encuesta)
-                .then(response => {
-                    if (response.data.obj == true) {
-                        this.$swal.fire({
-                            icon: 'success',
-                            position: 'center',
-                            text: response.data.msg,
-                            showConfirmButton: true
-                        })
-                        this.getPoll()
-                    }
-                })
+                    .then(response => {
+                        if (response.data.obj == true) {
+                            this.$swal.fire({
+                                icon: 'success',
+                                position: 'center',
+                                text: response.data.msg,
+                                showConfirmButton: true
+                            })
+                            this.getPoll()
+                        }
+                    })
 
                 this.ActionEN.Action_Description = "Modificó la encuesta " + this.encuesta.Name
                 this.ActionEN.Action_User = this.recuperarUsuLog();
@@ -313,7 +382,7 @@ export default {
         },
 
         validarEditar: function () {
-            if(this.idEncuesta != 0){
+            if (this.idEncuesta != 0) {
                 this.esEditar = true;
             } else {
                 this.esEditar = false;
@@ -323,27 +392,28 @@ export default {
         //Preguntas
 
         seleccionarTipo(Id_Question_Type) {
-            if(Id_Question_Type == 2){
+            if (Id_Question_Type == 2) {
                 this.preguntaActual.Id_Question_Type = 2
-            } else if(Id_Question_Type == 3){
+            } else if (Id_Question_Type == 3) {
                 this.preguntaActual.Id_Question_Type = 3
             } else {
                 this.preguntaActual.Id_Question_Type = 1
             }
         },
-        
+
         async agregarPregunta() {
+
+            const errorQuestion = this.$refs.errorQuestion;
+            errorQuestion.style.visibility = "hidden";
+            errorQuestion.textContent = "";
+
             if (this.preguntaActual.TextQuestion) {
-                if((this.preguntaActual.Id_Question_Type != 1 && this.preguntaActual.Question_Options.length > 0) || this.preguntaActual.Id_Question_Type == 1){
-                    if(this.preguntaActual.Id_Question_Type != 1){
-                        if(this.preguntaActual.Question_Options[0].Option_Text == ""){
-                        await this.$swal.fire({
-                                //icon: 'warning',
-                                position: 'top',
-                                text: 'Debe agregar al menos una opción',
-                                showConfirmButton: false,
-                                timer: 3000
-                            })
+                if ((this.preguntaActual.Id_Question_Type != 1 && this.preguntaActual.Question_Options.length > 0) || this.preguntaActual.Id_Question_Type == 1) {
+                    if (this.preguntaActual.Id_Question_Type != 1) {
+                        if (this.preguntaActual.Question_Options[0].Option_Text == "") {
+                            errorQuestion.textContent = "Debe agregar al menos una opción";
+                            errorQuestion.style.visibility = "visible";
+
                             return
                         }
                     }
@@ -351,24 +421,20 @@ export default {
                     await this.encuesta.Questions.push(nuevaPregunta);
                     //this.preguntaActual.Id_Question_Type = 'Texto',
                     this.preguntaActual.TextQuestion = '',
-                    this.preguntaActual.Question_Options = []
+                        this.preguntaActual.Question_Options = []
                 } else {
-                    await this.$swal.fire({
-                        //icon: 'warning',
-                        position: 'top',
-                        text: 'Debe agregar al menos una opción',
-                        showConfirmButton: false,
-                        timer: 3000
-                    })
+                    
+                    errorQuestion.textContent = "Debe agregar al menos una opción";
+                    errorQuestion.style.visibility = "visible";
+
+                    return
                 }
             } else {
-                    await this.$swal.fire({
-                        //icon: 'warning',
-                        position: 'top',
-                        text: 'Por favor, digite una pregunta',
-                        showConfirmButton: false,
-                        timer: 3000
-                    })
+       
+                errorQuestion.textContent = "Por favor, digite una pregunta";
+                errorQuestion.style.visibility = "visible";
+
+                            return
             }
         },
 
@@ -483,8 +549,7 @@ export default {
 </script>
 
 <style scoped>
-
-.inputsGeneral{
+.inputsGeneral {
     border-radius: 15px;
     min-height: 50px;
 }
@@ -498,10 +563,10 @@ export default {
     align-content: center;
 }
 
-    .BotonesJ div {
-        margin-left: 10px;
-        min-width: 80px;
-    }
+.BotonesJ div {
+    margin-left: 10px;
+    min-width: 80px;
+}
 
 .Adj {
     display: grid;
@@ -538,9 +603,9 @@ export default {
     padding-left: 0px !important;
 }
 
-    .selectsJ div {
-        padding-left: 0px !important;
-    }
+.selectsJ div {
+    padding-left: 0px !important;
+}
 
 @media screen and (max-width: 991px) {
     .selectsJ {
@@ -556,26 +621,26 @@ export default {
     }
 }
 
-.fondoEncuestas{
-    background: rgba(238,244,255,1);
+.fondoEncuestas {
+    background: rgba(238, 244, 255, 1);
     min-height: calc(100vh - 50px);
     /*background: linear-gradient(90deg, rgba(208,223,255,1) 0%, rgba(238,244,255,1) 50%, rgba(208,223,255,1) 100%);*/
 }
 
-.estiloForm{
+.estiloForm {
     background: white;
     border-radius: 25px;
     margin-right: 50PX;
     margin-left: 50px;
 }
 
-.botones{
+.botones {
     min-height: 40px;
     color: white;
     min-width: 110px;
 }
 
-.cardPersonalizado{
+.cardPersonalizado {
     border: solid 1px rgb(184, 184, 184);
     border-radius: 20px;
     box-shadow: 5px 5px 10px rgb(176, 196, 233);
@@ -583,37 +648,37 @@ export default {
     margin-top: 35px;
 }
 
-.cardPersonalizado:hover{
+.cardPersonalizado:hover {
     box-shadow: 5px 5px 15px rgb(152, 176, 219);
     transform: translate(-1px);
 }
 
-.cardInside{
+.cardInside {
     padding: 15px;
 }
 
 /*-----------------------------------------*/
 
-.filtrosCelular{
+.filtrosCelular {
     padding-top: 20px;
     padding-left: 50px;
     padding-right: 50px;
     padding-bottom: 20px;
-    background: rgba(10,58,102,1);
+    background: rgba(10, 58, 102, 1);
 }
 
 @media screen and (min-width: 901px) {
 
-    .filtrosCelular{
+    .filtrosCelular {
         display: none;
     }
 }
 
-.filtrosCelularBoton{
+.filtrosCelularBoton {
     text-align: center;
     font-size: large;
     cursor: pointer;
-    background-color: rgba(10,58,102,1);
+    background-color: rgba(10, 58, 102, 1);
     height: 30px;
     border-bottom-right-radius: 10px;
     border-bottom-left-radius: 10px;
@@ -621,13 +686,11 @@ export default {
 }
 
 @media screen and (min-width: 901px) {
-    .filtrosCelularBotones{
+    .filtrosCelularBotones {
         display: none;
     }
 
-    .filtrosCelularBoton{
+    .filtrosCelularBoton {
         display: none;
     }
-}
-
-</style>
+}</style>

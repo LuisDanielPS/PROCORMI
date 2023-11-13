@@ -103,9 +103,9 @@ export default {
 
     },
 
-    GetLastInsertId()
+    GetLastInsertId(NombreTabla)
     {
-        return apicliente.get('Project/GetLastInsertId' , {
+        return apicliente.get('Project/GetLastInsertId?NombreTabla='+ NombreTabla, {
             withCredentials: false,
             headers: { 'Content-Type': 'application/json; charset=UTF-8' }
         })

@@ -223,14 +223,14 @@ Public Class ProjectBLL
 
     End Function
 
-    Public Function GetLastInsertIdBLL() As Reply(Of Integer)
+    Public Function GetLastInsertIdBLL(ByVal NombreTabla As String) As Reply(Of Integer)
 
 
         Dim reply As Reply(Of Integer) = Nothing
 
         Try
 
-            reply = ProjectDAO.Instance.GetLastInsertIdDAO()
+            reply = ProjectDAO.Instance.GetLastInsertIdDAO(NombreTabla)
 
         Catch ex As Exception
             EscritorVisorEventos.Instancia().EscribirEvento(nameClass, MethodBase.GetCurrentMethod().Name, ex)

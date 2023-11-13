@@ -101,7 +101,7 @@
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h1 class="modal-title fs-5" id="completarSprint">Completar Proyecto</h1>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                <button @click="cerrarModalCompletar()" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
                                 <div>
@@ -116,14 +116,16 @@
                                         <input v-model="verifyPassword" class="col-10"
                                             style="margin-left: 10px; border-radius: 5px;" type="password" required
                                             placeholder="Contraseña" maxlength="20">
-                                        <button @click="getPasswordVerifyDeleteRow()" type="button"
+                                        <button @click="getPasswordVerifyCompleteRow()" type="button"
                                             class="btn btn-success col-1" style="margin-left: 5px;"><span
                                                 class="fas fa-check"></span></button>
+                                        <p ref="error2" style="visibility: hidden;color: red;"></p>
                                     </div>
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                                <button type="button" class="btn btn-danger" @click="cerrarModalCompletar()"
+                                    data-bs-dismiss="modal">Cancelar</button>
                                 <button class="btn btn-success" @click="CompleteStatusProject()"
                                     :disabled="!isButtonEnabled">Aceptar</button>
 
@@ -144,7 +146,7 @@
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h1 class="modal-title fs-5" id="exampleModalLabel">Eliminar Proyecto</h1>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                <button @click="cerrarModalCompletar()" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
                                 <div>
@@ -163,11 +165,14 @@
                                         <button @click="getPasswordVerifyDeleteRow()" type="button"
                                             class="btn btn-success col-1" style="margin-left: 5px;"><span
                                                 class="fas fa-check"></span></button>
+                                        <p ref="error" style="visibility: hidden;color: red;"></p>
+
                                     </div>
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                                <button type="button" class="btn btn-danger" @click="cerrarModalCompletar()"
+                                    data-bs-dismiss="modal">Cancelar</button>
                                 <button :disabled="!isButtonEnabled" @click="deleteRowList()"
                                     class="btn btn-success">Aceptar</button>
                             </div>
@@ -343,7 +348,8 @@
 
 
                                                         <button b-tooltip.hover title="Completar Proyecto"
-                                                            v-show="showElement" style="margin-left: 5px;"
+                                                            data-bs-target="#completarProyecto" v-show="showElement"
+                                                            style="margin-left: 5px;"
                                                             @click="saveIdProjectDelete(proyecto.Id_project)" type="button"
                                                             class="btn btn-success" data-bs-toggle="modal"
                                                             :disabled="proyecto.Id_State == 5">
@@ -779,24 +785,88 @@ export default {
 
         getPasswordVerifyDeleteRow: async function () {
             let login = this.recuperarUsuLog()
-            try {
-                const response = await AdminApi.GetPasswordVerifyDeleteRow(login, this.verifyPassword);
-                const mensage = response.data.ok;
+            if (this.verifyPassword.trim() === "") {
+                const error = this.$refs.error;
+                error.textContent = "Debes de rellenar el campo";
+                error.style.visibility = "visible";
+            }
+            else {
+                try {
+                    const response = await AdminApi.GetPasswordVerifyDeleteRow(login, this.verifyPassword);
+                    const mensage = response.data.ok;
 
-                if (mensage == true) {
+                    if (mensage == true) {
 
-                    this.confimPassworsDelete = true
-                    this.$swal({ icon: 'success', text: 'Se verifico correctamente la contraseña' });
-                    this.isButtonEnabled = true;
+                        this.confimPassworsDelete = true
+                        this.$swal({ icon: 'success', text: 'Se verifico correctamente la contraseña' });
+                        this.isButtonEnabled = true;
+                        const error = this.$refs.error;
+                        error.style.visibility = "hidden";
+                    }
+                    else if (mensage == false) {
+                        const error = this.$refs.error;
+                        error.textContent = "La contraseña es incorrecta";
+                        error.style.visibility = "visible";
 
+                    }
+
+
+                } catch (error) {
+                    console.error('Error al cargar los proyectos desde la API:', error);
                 }
-
-
-            } catch (error) {
-                console.error('Error al cargar los proyectos desde la API:', error);
             }
 
         }
+        ,
+
+        getPasswordVerifyCompleteRow: async function () {
+            let login = this.recuperarUsuLog()
+            if (this.verifyPassword.trim() === "") {
+                const error = this.$refs.error2;
+                error.textContent = "Debes de rellenar el campo";
+                error.style.visibility = "visible";
+            }
+            else {
+                try {
+                    const response = await AdminApi.GetPasswordVerifyDeleteRow(login, this.verifyPassword);
+                    const mensage = response.data.ok;
+
+                    if (mensage == true) {
+
+                        this.confimPassworsDelete = true
+                        this.$swal({ icon: 'success', text: 'Se verifico correctamente la contraseña' });
+                        this.isButtonEnabled = true;
+                        const error = this.$refs.error2;
+                        error.style.visibility = "hidden";
+                    }
+                    else if (mensage == false) {
+                        const error = this.$refs.error2;
+                        error.textContent = "La contraseña es incorrecta";
+                        error.style.visibility = "visible";
+
+                    }
+
+
+                } catch (error) {
+                    console.error('Error al cargar los proyectos desde la API:', error);
+                }
+            }
+
+        },
+        cerrarModalCompletar: async function () {
+
+            this.verifyPassword="";
+            const error = this.$refs.error;
+            error.textContent = "";
+            error.style.visibility = "hidden";
+
+            const error2 = this.$refs.error2;
+            error2.textContent = "";
+            error2.style.visibility = "hidden";
+
+
+        }
+
         ,
         deleteRowList: async function () {
 
@@ -813,9 +883,7 @@ export default {
                     location.reload()
 
                 }
-                else {
-                    this.$swal({ icon: 'warning', text: 'La contraseña que insertaste no es correcta' });
-                }
+            
 
             } catch (error) {
                 console.error('Error al cargar los proyectos desde la API:', error);

@@ -15,7 +15,7 @@
                             <div class="modal-header">
                                 <h1 class="modal-title fs-5" id="exampleModalLabel">Generar reporte de proyecto por usuario
                                 </h1>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                <button @click="closeModals()" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
                                 <div class="content-icon">
@@ -36,10 +36,11 @@
                                             </option>
                                         </select>
                                     </div>
+                                    <p ref="error" style="visibility: hidden;color: red;"></p>
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                                <button @click="closeModals()" type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
                                 <button class="btn btn-success" @click="downloadExcelReportProject()">Generar</button>
                             </div>
                         </div>
@@ -53,7 +54,7 @@
                             <div class="modal-header">
                                 <h1 class="modal-title fs-5" id="exampleModalLabel">Generar reporte de sprint por usuario
                                 </h1>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                <button @click="closeModals()" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
                                 <div class="content-icon">
@@ -74,10 +75,11 @@
                                             </option>
                                         </select>
                                     </div>
+                                    <p ref="error2" style="visibility: hidden;color: red;"></p>
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                                <button @click="closeModals()" type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
                                 <button class="btn btn-success" @click="downloadExcelReportSprint()">Generar</button>
                             </div>
                         </div>
@@ -91,7 +93,7 @@
                             <div class="modal-header">
                                 <h1 class="modal-title fs-5" id="exampleModalLabel">Generar reporte de tareas por usuario
                                 </h1>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                <button @click="closeModals()" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
                                 <div class="content-icon">
@@ -112,10 +114,11 @@
                                             </option>
                                         </select>
                                     </div>
+                                    <p ref="error3" style="visibility: hidden;color: red;"></p>
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                                <button @click="closeModals()" type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
                                 <button class="btn btn-success" @click="downloadExcelReportTask()">Generar</button>
                             </div>
                         </div>
@@ -129,7 +132,7 @@
                                 <h1 class="modal-title fs-5" id="exampleModalLabel">Generar reporte de sub tareas por
                                     usuario
                                 </h1>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                <button @click="closeModals()" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
                                 <div class="content-icon">
@@ -150,10 +153,11 @@
                                             </option>
                                         </select>
                                     </div>
+                                    <p ref="error4" style="visibility: hidden;color: red;"></p>
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                                <button @click="closeModals()" type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
                                 <button @click="downloadExcelReportSubTask()" class="btn btn-success">Generar</button>
                             </div>
                         </div>
@@ -168,7 +172,7 @@
                                 <h1 class="modal-title fs-5" id="exampleModalLabel">Generar reporte de encuesta
 
                                 </h1>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                <button @click="closeModals()" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
                                 <div class="content-icon">
@@ -189,10 +193,11 @@
                                             </option>
                                         </select>
                                     </div>
+                                    <p ref="error5" style="visibility: hidden;color: red;"></p>
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                                <button @click="closeModals()" type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
                                 <button @click="downloadExcelReportPoll()" class="btn btn-success">Generar</button>
                             </div>
                         </div>
@@ -482,7 +487,8 @@ export default {
         downloadExcelReportProject: async function () {
 
             const selectedUserObject = JSON.parse(this.elementSelectUsuLogin);
-
+            const error = this.$refs.error;
+            error.style.visibility = "hidden";
             if (selectedUserObject !== null) {
 
                 try {
@@ -618,12 +624,18 @@ export default {
                     });
                 } else {
 
-                    this.$swal({ icon: 'warning', text: 'No existe ningun proyecto asociado con el usuario' });
+
+                    error.textContent = "No existe ningun proyecto asociado con el usuario";
+                    error.style.visibility = "visible";
                 }
 
 
             } else {
-                this.$swal({ icon: 'warning', text: 'Tiene que seleccionar un usuario' });
+
+
+                error.textContent = "Tiene que seleccionar un usuario";
+                error.style.visibility = "visible";
+
             }
 
 
@@ -631,7 +643,8 @@ export default {
         downloadExcelReportSprint: async function () {
 
             const selectedUserObject = JSON.parse(this.elementSelectUsuLogin);
-
+            const error = this.$refs.error2;
+            error.style.visibility = "hidden";
             if (selectedUserObject !== null) {
 
 
@@ -769,20 +782,26 @@ export default {
                         });
                     });
                 } else {
-                    this.$swal({ icon: 'warning', text: 'No existe ningun sprint asociado con el usuario' });
+                    const error = this.$refs.error2;
+                    error.textContent = "No existe ningun sprint asociado con el usuario";
+                    error.style.visibility = "visible";
                 }
 
             }
 
             else {
-                this.$swal({ icon: 'warning', text: 'Tiene que seleccionar un usuario' });
+                const error = this.$refs.error2;
+                error.textContent = "Tiene que seleccionar un usuario";
+                error.style.visibility = "visible";
+
             }
 
         },
         downloadExcelReportTask: async function () {
 
             const selectedUserObject = JSON.parse(this.elementSelectUsuLogin);
-
+            const error = this.$refs.error3;
+            error.style.visibility = "hidden";
             if (selectedUserObject !== null) {
 
                 try {
@@ -919,19 +938,27 @@ export default {
                         });
                     });
                 } else {
-                    this.$swal({ icon: 'warning', text: 'No existe ningun tareas asociadas con el usuario' });
+                   
+                    error.textContent = "No existe ningun tareas asociadas con el usuario";
+                    error.style.visibility = "visible";
+
                 }
 
             }
 
             else {
-                this.$swal({ icon: 'warning', text: 'Tiene que seleccionar un usuario' });
+                
+                error.textContent = "Tiene que seleccionar un usuario";
+                error.style.visibility = "visible";
+                
             }
 
         },
         downloadExcelReportSubTask: async function () {
 
             const selectedUserObject = JSON.parse(this.elementSelectUsuLogin);
+            const error = this.$refs.error4;
+            error.style.visibility = "hidden";
 
             if (selectedUserObject !== null) {
 
@@ -1073,20 +1100,25 @@ export default {
                         });
                     });
                 } else {
-                    this.$swal({ icon: 'warning', text: 'No existe ningun sub tareas asociadas con el usuario' });
+                
+                    error.textContent = "No existe ningun sub tareas asociadas con el usuario";
+                    error.style.visibility = "visible";
                 }
 
             }
 
             else {
-                this.$swal({ icon: 'warning', text: 'Tiene que seleccionar un usuario' });
+           
+                error.textContent = "Tiene que seleccionar un usuario";
+                error.style.visibility = "visible";
             }
 
         },
         downloadExcelReportPoll: async function () {
 
             const selectedPollObject = JSON.parse(this.elementSelectPoll);
-
+            const error = this.$refs.error5;
+            error.style.visibility = "hidden";
             if (selectedPollObject !== null) {
 
                 try {
@@ -1277,16 +1309,37 @@ export default {
                         });
                     });
                 } else {
-                    this.$swal({ icon: 'warning', text: 'No existe ninguna respuesta ' });
+                
+                        
+                error.textContent = "No existe ninguna respuesta";
+                error.style.visibility = "visible";
                 }
 
             }
 
             else {
-                this.$swal({ icon: 'warning', text: 'Tiene que seleccionar una encuesta' });
+                
+                error.textContent = "Tiene que seleccionar una encuesta";
+                error.style.visibility = "visible";
+                
             }
 
         },
+
+        closeModals: async function () {
+            const error = this.$refs.error;
+            const error2 = this.$refs.error2;
+            const error3 = this.$refs.error3;
+            const error4 = this.$refs.error4;
+            const error5 = this.$refs.error5;
+            
+            error.style.visibility = "hidden";
+            error2.style.visibility = "hidden";
+            error3.style.visibility = "hidden";
+            error4.style.visibility = "hidden";
+            error5.style.visibility = "hidden";
+
+        }
     },
 
     mounted: async function () {

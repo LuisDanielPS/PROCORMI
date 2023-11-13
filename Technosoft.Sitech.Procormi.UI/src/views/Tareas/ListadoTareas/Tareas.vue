@@ -16,7 +16,7 @@
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h1 class="modal-title fs-5" id="exampleModalLabel">Crear Tarea</h1>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" @click="resetTaskCreation()" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
                                 <div>
@@ -27,6 +27,7 @@
                                             maxLength="45" placeholder="Nombre">
 
                                     </div>
+                                    <p ref="errorCreateTaskName" style="visibility: hidden;color: red;"></p>
                                     <br>
                                 </div>
                                 <div class="row">
@@ -38,6 +39,7 @@
                                                 <textarea v-model="taskDescription" required style="border-radius: 5px;"
                                                     type="textarea" maxLength="100" placeholder="Descripción"></textarea>
                                             </div>
+                                            <p ref="errorCreateTaskDescription" style="visibility: hidden;color: red;"></p>
                                         </div>
                                     </div>
                                 </div>
@@ -58,7 +60,7 @@
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h1 class="modal-title fs-5" id="exampleModalLabel">Editar Tarea</h1>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                <button type="button" @click="resetTaskCreation()" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
                                 <div>
@@ -68,6 +70,7 @@
                                         <input v-model="taskNameUnderEdit" required @input="handleChanges"
                                             style="border-radius: 5px;" maxLength="45" type="text" placeholder="Nombre">
                                     </div>
+                                    <p ref="errorUpdateTaskName" style="visibility: hidden;color: red;"></p>
                                 </div>
                                 <div class="row">
                                     <div class="col-12">
@@ -79,6 +82,7 @@
                                                     style="border-radius: 5px;" maxLength="100" type="textarea"
                                                     placeholder="Descripcion..."></textarea>
                                             </div>
+                                            <p ref="errorUpdateTaskDescription" style="visibility: hidden;color: red;"></p>
                                         </div>
                                     </div>
                                 </div>
@@ -95,10 +99,11 @@
                                             }}</option>
                                         </select>
                                     </div>
+                                    <p ref="errorUpdateTaskStatus" style="visibility: hidden;color: red;"></p>
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                                <button @click="resetTaskCreation()" type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
                                 <button @click="editCurrentTask" type="button" class="btn btn-success">Aceptar</button>
                             </div>
                         </div>
@@ -115,7 +120,7 @@
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h1 class="modal-title fs-5" id="exampleModalLabel">Eliminar Tarea</h1>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                <button @click="resetTaskCreation" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
                                 <div>
@@ -133,11 +138,13 @@
                                         <button @click="getPasswordVerifyDeleteRow()" type="button"
                                             class="btn btn-success col-1" style="margin-left: 5px;"><span
                                                 class="fas fa-check"></span></button>
+                                        <p ref="error" style="visibility: hidden;color: red;"></p>
                                     </div>
                                 </div>
+
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                                <button @click="resetTaskCreation" type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
                                 <button @click="deleteRowList()" :disabled="!confimPassworsDelete"
                                     class="btn btn-success">Aceptar</button>
                             </div>
@@ -305,7 +312,8 @@
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h1 class="modal-title fs-5" id="exampleModalLabel">Crear Subtarea</h1>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                <button type="button" @click="resetSubTaskCreation()" class="btn-close"
+                                    data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
                                 <div>
@@ -315,6 +323,7 @@
                                         <input v-model="tituloSubTarea" required style="border-radius: 5px;" type="text"
                                             maxLength="45" placeholder="Nombre">
                                     </div>
+                                    <p ref="errorCreateSubTaskName" style="visibility: hidden;color: red;"></p>
                                 </div>
                                 <div class="row">
                                     <div class="col-12">
@@ -325,6 +334,8 @@
                                                 <textarea v-model="descriptionSubTarea" required style="border-radius: 5px;"
                                                     type="textarea" maxLength="100" placeholder="Descripción..."></textarea>
                                             </div>
+                                            <p ref="errorCreateSubTaskDescription" style="visibility: hidden;color: red;">
+                                            </p>
                                         </div>
                                     </div>
                                 </div>
@@ -338,7 +349,9 @@
                                             <option v-for="status in statusOptions" :key="status" :value="status">{{ status
                                             }}</option>
                                         </select>
+
                                     </div>
+                                    <p ref="errorCreateSubTaskStatus" style="visibility: hidden;color: red;"></p>
                                 </div>
                                 <br />
                                 <div>
@@ -348,6 +361,7 @@
                                         <input v-model="requiredTimeSubTarea" required style="border-radius: 5px;"
                                             type="number" placeholder="1">
                                     </div>
+                                    <p ref="errorCreateSubTaskRequiredTime" style="visibility: hidden;color: red;"></p>
                                 </div>
                                 <br />
                                 <div>
@@ -360,6 +374,7 @@
                                                 {{ priority }}</option>
                                         </select>
                                     </div>
+                                    <p ref="errorCreateSubTaskPriority" style="visibility: hidden;color: red;"></p>
                                 </div>
                             </div>
                             <div class="modal-footer">
@@ -382,7 +397,8 @@
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h1 class="modal-title fs-5" id="exampleModalLabel">Editar Subtarea</h1>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                <button type="button" @click="resetSubTaskCreation()" class="btn-close"
+                                    data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
                                 <div>
@@ -392,6 +408,7 @@
                                         <input v-model="tituloSubTarea" required @input="handleChanges"
                                             style="border-radius: 5px;" type="text" maxLength="45" placeholder="Nombre">
                                     </div>
+                                    <p ref="errorUpdateSubTaskName" style="visibility: hidden;color: red;"></p>
                                 </div>
                                 <div class="row">
                                     <div class="col-12">
@@ -403,6 +420,8 @@
                                                     style="border-radius: 5px;" type="textarea" maxLength="100"
                                                     placeholder="Descripción..."></textarea>
                                             </div>
+                                            <p ref="errorUpdateSubTaskDescription" style="visibility: hidden;color: red;">
+                                            </p>
                                         </div>
                                     </div>
                                 </div>
@@ -418,6 +437,7 @@
                                             }}</option>
                                         </select>
                                     </div>
+                                    <p ref="errorUpdateSubTaskStatus" style="visibility: hidden;color: red;"></p>
                                 </div>
                                 <br />
                                 <div>
@@ -427,6 +447,7 @@
                                         <input v-model="requiredTimeSubTarea" required @input="handleChanges"
                                             style="border-radius: 5px;" type="number" min="1" placeholder="1">
                                     </div>
+                                    <p ref="errorUpdateSubTaskRequiredTime" style="visibility: hidden;color: red;"></p>
                                 </div>
                                 <br />
                                 <div>
@@ -440,10 +461,12 @@
                                                 {{ priority }}</option>
                                         </select>
                                     </div>
+                                    <p ref="errorUpdateSubTaskPriority" style="visibility: hidden;color: red;"></p>
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                                <button type="button" class="btn btn-danger" @click="resetSubTaskCreation()"
+                                    data-bs-dismiss="modal">Cancelar</button>
                                 <button type="button" class="btn btn-success" @click="editCurrentSubTask">Aceptar</button>
                             </div>
                         </div>
@@ -790,15 +813,18 @@
                                                                 @click="() => selectCurrentSubTask(subTask)"></a>
                                                             <a style="text-decoration: none; margin-right: 20px; "
                                                                 :style="subTask.Id_Status == 'Finalizada' ? 'cursor: not-allowed' : ''"
-                                                                class="fas fa-check" b-tooltip.hover title="Finalizar" data-bs-toggle="modal"
+                                                                class="fas fa-check" b-tooltip.hover title="Finalizar"
+                                                                data-bs-toggle="modal"
                                                                 :data-bs-target="subTask.Id_Status == 'Finalizada' ? '' : '#finalizarSubTarea'"
                                                                 @click="() => subTask.Id_Status == 'Finalizada' ? null : selectCurrentSubTask(subTask)"></a>
                                                             <a style="text-decoration: none; margin-right: 20px;"
                                                                 :style="subTask.Id_Status == 'Finalizada' ? 'cursor: not-allowed' : ''"
-                                                                class="fas fa-pen" b-tooltip.hover title="Editar subtarea" data-bs-toggle="modal"
+                                                                class="fas fa-pen" b-tooltip.hover title="Editar subtarea"
+                                                                data-bs-toggle="modal"
                                                                 :data-bs-target="subTask.Id_Status == 'Finalizada' ? '' : '#editarSubtarea'"
                                                                 @click="subTask.Id_Status == 'Finalizada' ? null : startSubTaskEditing(subTask)"></a>
-                                                            <a style="text-decoration: none;" class="fas fa-trash" b-tooltip.hover title="Eliminar subtarea"
+                                                            <a style="text-decoration: none;" class="fas fa-trash"
+                                                                b-tooltip.hover title="Eliminar subtarea"
                                                                 data-bs-toggle="modal" data-bs-target="#eliminarSubtarea"
                                                                 @click="() => selectCurrentSubTask(subTask)"></a>
                                                         </div>
@@ -1051,42 +1077,70 @@ export default {
 
         validateTask(task, isEdit) {
 
+            const errorCreateTaskName = this.$refs.errorCreateTaskName;
+            const errorCreateTaskDescription = this.$refs.errorCreateTaskDescription;
+            const errorUpdateTaskStatus = this.$refs.errorUpdateTaskStatus;
+            const errorUpdateTaskName = this.$refs.errorUpdateTaskName;
+            const errorUpdateTaskDescription = this.$refs.errorUpdateTaskDescription;
+            
+            const error = this.$refs.error;
+            
+            error.style.visibility = "hidden";
+            errorCreateTaskName.style.visibility = "hidden";
+            errorCreateTaskDescription.style.visibility = "hidden";
+            errorUpdateTaskStatus.style.visibility = "hidden";
+            errorUpdateTaskDescription.style.visibility = "hidden";
+            errorUpdateTaskName.style.visibility = "hidden";
+
+            errorCreateTaskName.style.display = "none";
+            errorCreateTaskDescription.style.display = "none";
+            errorUpdateTaskName.style.display = "none";
+            errorUpdateTaskDescription.style.display = "none";
+            errorUpdateTaskStatus.style.display = "none";
+
             if (task.Task_Name.trim() == "") {
 
-                return this.$swal.fire({
-                    position: 'center',
-                    icon: 'error',
-                    title: '¡Error!',
-                    text: 'Se tiene que completar el campo del nombre de la tarea',
-                })
+                errorCreateTaskName.textContent = "Se tiene que completar el campo del nombre de la tarea";
+                errorCreateTaskName.style.visibility = "visible";
+                errorCreateTaskName.style.display = "block";
+
+                errorUpdateTaskName.textContent = "Se tiene que completar el campo del nombre de la tarea";
+                errorUpdateTaskName.style.visibility = "visible";
+                errorUpdateTaskName.style.display = "block";
+
+                return errorUpdateTaskName;
             }
 
             if (task.Description_Task.trim() == "") {
 
-                return this.$swal.fire({
-                    position: 'center',
-                    icon: 'error',
-                    title: '¡Error!',
-                    text: 'Se tiene que completar el campo de la descripción de la tarea',
-                })
+                errorCreateTaskDescription.textContent = "Se tiene que completar el campo de descripcion de la tarea";
+                errorCreateTaskDescription.style.visibility = "visible";
+                errorCreateTaskDescription.style.display = "block";
+
+                errorUpdateTaskDescription.textContent = "Se tiene que completar el campo de descripcion de la tarea";
+                errorUpdateTaskDescription.style.visibility = "visible";
+                errorUpdateTaskDescription.style.display = "block";
+
+
+                return errorCreateTaskDescription;
             }
 
             const validStates = ["Pendiente", "En Proceso", "Finalizada"]
             if (isEdit && !validStates.includes(task.Id_Status.trim())) {
-                return this.$swal.fire({
-                    position: 'center',
-                    icon: 'error',
-                    title: '¡Error!',
-                    text: 'Se tiene que completar el campo del estado de la tarea',
-                })
+
+                errorUpdateTaskStatus.textContent = "Se tiene que completar el campo del estado de la tarea";
+                errorUpdateTaskStatus.style.visibility = "visible";
+                errorUpdateTaskStatus.style.display = "block";
+                return errorUpdateTaskStatus;
+
             }
 
             if (isEdit && !this.hasChanges) {
-                return this.$swal.fire({
-                    position: 'center',
-                    icon: 'warning',
-                    title: '¡No se realizó ningún cambio!',
-                });
+                errorUpdateTaskStatus.textContent = "¡No se realizó ningún cambio!";
+                errorUpdateTaskStatus.style.visibility = "visible";
+                errorUpdateTaskStatus.style.display = "block";
+                return errorUpdateTaskStatus;
+
             }
 
             return 'VALID';
@@ -1094,64 +1148,133 @@ export default {
 
         validateSubTask(subTask, isEdit) {
 
+
+            const errorCreateSubTaskName = this.$refs.errorCreateSubTaskName;
+            const errorCreateSubTaskDescription = this.$refs.errorCreateTaskDescription;
+            const errorCreateSubTaskStatus = this.$refs.errorCreateSubTaskStatus;
+            const errorCreateSubTaskRequiredTime = this.$refs.errorCreateSubTaskRequiredTime;
+            const errorCreateSubTaskPriority = this.$refs.errorCreateSubTaskPriority;
+
+            const errorUpdateSubTaskName = this.$refs.errorUpdateSubTaskName;
+            const errorUpdateSubTaskDescription = this.$refs.errorUpdateSubTaskDescription;
+            const errorUpdateSubTaskStatus = this.$refs.errorUpdateSubTaskStatus;
+            const errorUpdateSubTaskRequiredTime = this.$refs.errorUpdateSubTaskRequiredTime;
+            const errorUpdateSubTaskPriority = this.$refs.errorUpdateSubTaskPriority;
+
+            const error = this.$refs.error;
+            
+            error.style.visibility = "hidden";
+            errorCreateSubTaskName.style.visibility = "hidden";
+            errorCreateSubTaskDescription.style.visibility = "hidden";
+            errorCreateSubTaskStatus.style.visibility = "hidden";
+            errorCreateSubTaskRequiredTime.style.visibility = "hidden";
+            errorCreateSubTaskPriority.style.visibility = "hidden";
+
+            errorUpdateSubTaskName.style.visibility = "hidden";
+            errorUpdateSubTaskDescription.style.visibility = "hidden";
+            errorUpdateSubTaskStatus.style.visibility = "hidden";
+            errorUpdateSubTaskRequiredTime.style.visibility = "hidden";
+            errorUpdateSubTaskPriority.style.visibility = "hidden";
+
+            errorCreateSubTaskName.style.display = "none";
+            errorCreateSubTaskDescription.style.display = "none";
+            errorCreateSubTaskStatus.style.display = "none";
+            errorCreateSubTaskRequiredTime.style.display = "none";
+            errorCreateSubTaskPriority.style.display = "none";
+
+            errorUpdateSubTaskName.style.display = "none";
+            errorUpdateSubTaskDescription.style.display = "none";
+            errorUpdateSubTaskStatus.style.display = "none";
+            errorUpdateSubTaskRequiredTime.style.display = "none";
+            errorUpdateSubTaskPriority.style.display = "none";
+
+
             if (subTask.Title.trim() == "") {
 
-                return this.$swal.fire({
-                    position: 'center',
-                    icon: 'error',
-                    title: '¡Error!',
-                    text: 'Se tiene que completar el campo del titulo de la subtarea',
-                })
+
+                errorCreateSubTaskName.textContent = "Se tiene que completar el campo del titulo de la subtarea";
+                errorCreateSubTaskName.style.visibility = "visible";
+                errorCreateSubTaskName.style.display = "block";
+
+                errorUpdateSubTaskName.textContent = "Se tiene que completar el campo del titulo de la subtarea";
+                errorUpdateSubTaskName.style.visibility = "visible";
+                errorUpdateSubTaskName.style.display = "block";
+
+                return errorCreateSubTaskName;
             }
 
             if (subTask.Description.trim() == "") {
 
-                return this.$swal.fire({
-                    position: 'center',
-                    icon: 'error',
-                    title: '¡Error!',
-                    text: 'Se tiene que completar el campo de la descripción de la subtarea',
-                })
+                errorCreateSubTaskDescription.textContent = "Se tiene que completar el campo de la descripción de la subtarea";
+                errorCreateSubTaskDescription.style.visibility = "visible";
+                errorCreateSubTaskDescription.style.display = "block";
+
+                errorUpdateSubTaskDescription.textContent = "Se tiene que completar el campo de la descripción de la subtarea";
+                errorUpdateSubTaskDescription.style.visibility = "visible";
+                errorUpdateSubTaskDescription.style.display = "block";
+
+                return errorCreateSubTaskDescription;
+
+
             }
 
             const validStates = ["Pendiente", "En Proceso", "Finalizada"]
             if (isEdit && !validStates.includes(subTask.Id_Status.trim())) {
 
-                return this.$swal.fire({
-                    position: 'center',
-                    icon: 'error',
-                    title: '¡Error!',
-                    text: 'Se tiene que completar el campo del estado de la subtarea',
-                })
+                errorCreateSubTaskStatus.textContent = "Se tiene que completar el campo del estado de la subtarea";
+                errorCreateSubTaskStatus.style.visibility = "visible";
+                errorCreateSubTaskStatus.style.display = "block";
+
+                errorUpdateSubTaskStatus.textContent = "Se tiene que completar el campo del estado de la subtarea";
+                errorUpdateSubTaskStatus.style.visibility = "visible";
+                errorUpdateSubTaskStatus.style.display = "block";
+
+                return errorCreateSubTaskStatus;
+
             }
 
             if (subTask.Required_Time === "" || subTask.Required_Time <= 0) {
 
-                return this.$swal.fire({
-                    position: 'center',
-                    icon: 'error',
-                    title: '¡Error!',
-                    text: 'El tiempo de la subtarea es requerido y debe ser mayor a 0',
-                })
+                errorCreateSubTaskRequiredTime.textContent = "El tiempo de la subtarea es requerido y debe ser mayor a 0";
+                errorCreateSubTaskRequiredTime.style.visibility = "visible";
+                errorCreateSubTaskRequiredTime.style.display = "block";
+
+                errorUpdateSubTaskRequiredTime.textContent = "El tiempo de la subtarea es requerido y debe ser mayor a 0";
+                errorUpdateSubTaskRequiredTime.style.visibility = "visible";
+                errorUpdateSubTaskRequiredTime.style.display = "block";
+
+                return errorCreateSubTaskRequiredTime;
+
             }
 
             const validPriorities = ["Alta", "Media", "Baja"]
             if (isEdit && !validPriorities.includes(subTask.Id_Priority.trim())) {
 
-                return this.$swal.fire({
-                    position: 'center',
-                    icon: 'error',
-                    title: '¡Error!',
-                    text: 'Se tiene que completar el campo de la prioridad de la subtarea',
-                })
+
+                errorCreateSubTaskPriority.textContent = "Se tiene que completar el campo de la prioridad de la subtarea";
+                errorCreateSubTaskPriority.style.visibility = "visible";
+                errorCreateSubTaskPriority.style.display = "block";
+
+                errorUpdateSubTaskPriority.textContent = "Se tiene que completar el campo de la prioridad de la subtarea";
+                errorUpdateSubTaskPriority.style.visibility = "visible";
+                errorUpdateSubTaskPriority.style.display = "block";
+
+                return errorCreateSubTaskPriority;
+
             }
 
             if (isEdit && !this.hasChanges) {
-                return this.$swal.fire({
-                    position: 'center',
-                    icon: 'warning',
-                    title: '¡No se realizó ningún cambio!',
-                });
+
+                errorCreateSubTaskPriority.textContent = "¡No se realizó ningún cambio!";
+                errorCreateSubTaskPriority.style.visibility = "visible";
+                errorCreateSubTaskPriority.style.display = "block";
+
+                errorUpdateSubTaskPriority.textContent = "¡No se realizó ningún cambio!";
+                errorUpdateSubTaskPriority.style.visibility = "visible";
+                errorUpdateSubTaskPriority.style.display = "block";
+
+                return errorCreateSubTaskPriority;
+
             }
 
             return 'VALID';
@@ -1315,19 +1438,37 @@ export default {
 
         getPasswordVerifyDeleteRow: async function () {
             let login = this.recuperarUsuLog()
+            const error = this.$refs.error;
+            error.textContent = "";
+            error.style.display = "none";
+            if (this.verifyPassword.trim() === "") {
+                const error = this.$refs.error;
+                error.textContent = "Debes de rellenar el campo";
+                error.style.visibility = "visible";
+                error.style.display = "block";
+            }
+
             try {
                 const response = await AdminApi.GetPasswordVerifyDeleteRow(login, this.verifyPassword);
                 const mensage = response.data.ok;
-                if (mensage == true) {
 
-                    this.confimPassworsDelete = true
-                    this.$swal({ icon: 'success', text: 'Se verifico correctamente la contraseña' });
+                     if (mensage == true) {
 
-                }
-                else {
-                    this.$swal({ position: 'center', icon: 'warning', text: 'Contraseña Incorrecta' });
+                        this.confimPassworsDelete = true
+                        this.$swal({ icon: 'success', text: 'Se verifico correctamente la contraseña' });
+                        this.isButtonEnabled = true;
+                        const error = this.$refs.error;
+                        error.style.visibility = "hidden";
+                        error.style.display = "none";
+                    }
+                    else if (mensage == false) {
+                        const error = this.$refs.error;
+                        error.textContent = "La contraseña es incorrecta";
+                        error.style.visibility = "visible";
+                        error.style.display = "block";
 
-                }
+                    }
+
 
             } catch (error) {
                 console.error({ message: 'Error al cargar los proyectos desde la API:', error });
@@ -1361,8 +1502,29 @@ export default {
         },
 
         resetTaskCreation() {
-            this.taskName = ''
-            this.taskDescription = ''
+            this.taskName = '';
+            this.taskDescription = '';
+
+            const errorCreateTaskName = this.$refs.errorCreateTaskName;
+            const errorCreateTaskDescription = this.$refs.errorCreateTaskDescription;
+            const errorUpdateTaskStatus = this.$refs.errorUpdateTaskStatus;
+            const errorUpdateTaskName = this.$refs.errorUpdateTaskName;
+            const errorUpdateTaskDescription = this.$refs.errorUpdateTaskDescription;
+            const error = this.$refs.error;
+            errorCreateTaskName.style.visibility = "hidden";
+            errorCreateTaskDescription.style.visibility = "hidden";
+            errorUpdateTaskStatus.style.visibility = "hidden";
+            errorUpdateTaskDescription.style.visibility = "hidden";
+            errorUpdateTaskName.style.visibility = "hidden";
+            error.style.visibility = "hidden";
+
+            errorCreateTaskName.style.display = "none";
+            errorCreateTaskDescription.style.display = "none";
+            errorUpdateTaskName.style.display = "none";
+            errorUpdateTaskDescription.style.display = "none";
+            errorUpdateTaskStatus.style.display = "none";
+            error.style.display = "none";
+            
         },
 
         createSubTask() {
@@ -1375,21 +1537,62 @@ export default {
                 Id_Status: this.statusSubTarea
             }
 
-            /*if (this.validateSubTask(subTask, true) !== 'VALID') {
-                return;
-            }*/
-
+            /*  if (this.validateSubTask(subTask, true) !== 'VALID') {
+                  return;
+              }
+              */
             this.postSubTaskToAPI(subTask);
             this.resetSubTaskCreation();
             this.getSubTareasDesdeAPI(this.currentSelectedTaskId);
         },
 
         resetSubTaskCreation() {
-            this.tituloSubTarea = '',
-                this.descriptionSubTarea = ''
-            this.requiredTimeSubTarea = 0
-            this.prioritySubTarea = ''
-            this.statusSubTarea = ''
+            this.tituloSubTarea = '';
+            this.descriptionSubTarea = '';
+            this.requiredTimeSubTarea = 0;
+            this.prioritySubTarea = '';
+            this.statusSubTarea = '';
+
+            const error = this.$refs.error;
+            const errorCreateSubTaskName = this.$refs.errorCreateSubTaskName;
+            const errorCreateSubTaskDescription = this.$refs.errorCreateTaskDescription;
+            const errorCreateSubTaskStatus = this.$refs.errorCreateSubTaskStatus;
+            const errorCreateSubTaskRequiredTime = this.$refs.errorCreateSubTaskRequiredTime;
+            const errorCreateSubTaskPriority = this.$refs.errorCreateSubTaskPriority;
+
+            const errorUpdateSubTaskName = this.$refs.errorUpdateSubTaskName;
+            const errorUpdateSubTaskDescription = this.$refs.errorUpdateSubTaskDescription;
+            const errorUpdateSubTaskStatus = this.$refs.errorUpdateSubTaskStatus;
+            const errorUpdateSubTaskRequiredTime = this.$refs.errorUpdateSubTaskRequiredTime;
+            const errorUpdateSubTaskPriority = this.$refs.errorUpdateSubTaskPriority;
+
+            errorCreateSubTaskName.style.visibility = "hidden";
+            errorCreateSubTaskDescription.style.visibility = "hidden";
+            errorCreateSubTaskStatus.style.visibility = "hidden";
+            errorCreateSubTaskRequiredTime.style.visibility = "hidden";
+            errorCreateSubTaskPriority.style.visibility = "hidden";
+            error.style.visibility = "hidden";
+
+            errorUpdateSubTaskName.style.visibility = "hidden";
+            errorUpdateSubTaskDescription.style.visibility = "hidden";
+            errorUpdateSubTaskStatus.style.visibility = "hidden";
+            errorUpdateSubTaskRequiredTime.style.visibility = "hidden";
+            errorUpdateSubTaskPriority.style.visibility = "hidden";
+
+            errorCreateSubTaskName.style.display = "none";
+            errorCreateSubTaskDescription.style.display = "none";
+            errorCreateSubTaskStatus.style.display = "none";
+            errorCreateSubTaskRequiredTime.style.display = "none";
+            errorCreateSubTaskPriority.style.display = "none";
+
+            errorUpdateSubTaskName.style.display = "none";
+            errorUpdateSubTaskDescription.style.display = "none";
+            errorUpdateSubTaskStatus.style.display = "none";
+            errorUpdateSubTaskRequiredTime.style.display = "none";
+            errorUpdateSubTaskPriority.style.display = "none";
+            error.style.display = "none";
+
+
         },
 
         async getTareasDesdeAPI() {

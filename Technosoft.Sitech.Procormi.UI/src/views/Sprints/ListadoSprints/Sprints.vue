@@ -20,11 +20,12 @@
                             <div class="modal-body">
                                 <div>
                                     <label>Nombre<span style="color: red;"> *</span></label>
-                                    <br/>
+                                    <br />
                                     <div style="margin-top: 15px;">
                                         <input v-model.trim="sprint.Sprint_Name" ref="inputSprintName" maxlength="45"
                                             required style="border-radius: 5px;" type="text" placeholder="Nombre">
                                     </div>
+                                    <p ref="errorCreateSprintName" style="visibility: hidden;color: red;"></p>
                                 </div>
                                 <br />
                                 <div>
@@ -34,6 +35,7 @@
                                         <input v-model="sprint.Start_Date" ref="inputStartDate" required
                                             style="border-radius: 5px;" type="date">
                                     </div>
+                                    <p ref="errorCreateStartDate" style="visibility: hidden;color: red;"></p>
                                 </div>
                                 <br />
                                 <div>
@@ -43,6 +45,7 @@
                                         <input v-model="sprint.End_Date" ref="inputEndDate" required
                                             style="border-radius: 5px;" type="date">
                                     </div>
+                                    <p ref="errorCreateEndDate" style="visibility: hidden;color: red;"></p>
                                 </div>
                                 <br />
                                 <div>
@@ -58,6 +61,7 @@
                                             </option>
                                         </select>
                                     </div>
+                                    <p ref="errorCreateUserLogin" style="visibility: hidden;color: red;"></p>
                                 </div>
                             </div>
                             <div class="modal-footer">
@@ -80,7 +84,7 @@
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h1 class="modal-title fs-5" id="completarSprint">Completar Sprint</h1>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                <button  @click="limpiarContenido()"  type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
                                 <div>
@@ -98,6 +102,7 @@
                                         <button @click="getPasswordVerifyDeleteRow()" type="button"
                                             class="btn btn-success col-1" style="margin-left: 5px;"><span
                                                 class="fas fa-check"></span></button>
+                                        <p ref="error2" style="visibility: hidden;color: red;"></p>
                                     </div>
                                 </div>
                             </div>
@@ -121,7 +126,7 @@
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h1 class="modal-title fs-5" id="exampleModalLabel">Editar Sprint</h1>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                <button  @click="limpiarContenido()" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
                                 <div>
@@ -132,6 +137,7 @@
                                             maxlength="45" required style="border-radius: 5px;" type="text"
                                             placeholder="Nombre">
                                     </div>
+                                    <p ref="errorUpdateSprintName" style="visibility: hidden;color: red;"></p>
                                 </div>
                                 <br />
                                 <div>
@@ -141,6 +147,7 @@
                                         <input v-model="SprintStartDateEdit" @input="handleChanges" ref="EditarStartDate"
                                             required style="border-radius: 5px;" type="date">
                                     </div>
+                                    <p ref="errorUpdateStartDate" style="visibility: hidden;color: red;"></p>
                                 </div>
                                 <br />
                                 <div>
@@ -150,8 +157,9 @@
                                         <input v-model="SprintEndDateEdit" @input="handleChanges" ref="EditarEndDate"
                                             required style="border-radius: 5px;" type="date">
                                     </div>
+                                    <p ref="errorUpdateEndtDate" style="visibility: hidden;color: red;"></p>
                                 </div>
-                                <br/>
+                                <br />
                                 <div>
                                     <label>Usuario asignado<span style="color: red;"> *</span></label>
                                     <br />
@@ -163,6 +171,7 @@
                                                 {{ item.usu_Login }}</option>
                                         </select>
                                     </div>
+                                    <p ref="errorUpdateUserLogin" style="visibility: hidden;color: red;"></p>
                                 </div>
                             </div>
                             <div class="modal-footer">
@@ -185,7 +194,7 @@
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h1 class="modal-title fs-5" id="exampleModalLabel">Eliminar Sprint</h1>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                <button  @click="limpiarContenido()" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
                                 <div>
@@ -203,6 +212,7 @@
                                         <button @click="getPasswordVerifyDeleteRow()" type="button"
                                             class="btn btn-success col-1" style="margin-left: 5px;"><span
                                                 class="fas fa-check"></span></button>
+                                        <p ref="error" style="visibility: hidden;color: red;"></p>
                                     </div>
                                 </div>
                             </div>
@@ -782,39 +792,49 @@ export default {
         async createSprint() {
             const currentProjectId = localStorage.getItem("currentProjectId");
             this.sprint.Id_Project = currentProjectId
+            const errorCreateSprintName = this.$refs.errorCreateSprintName;
+            const errorCreateStartDate = this.$refs.errorCreateStartDate;
+            const errorCreateEndDate = this.$refs.errorCreateEndDate;
+            const errorCreateUserLogin = this.$refs.errorCreateUserLogin;
+
+            errorCreateSprintName.style.visibility = "hidden";
+            errorCreateStartDate.style.visibility = "hidden";
+            errorCreateEndDate.style.visibility = "hidden";
+            errorCreateUserLogin.style.visibility = "hidden";
+
+            errorCreateSprintName.style.display  = "none";
+            errorCreateStartDate.style.display = "none";
+            errorCreateEndDate.style.display = "none";
+            errorCreateUserLogin.style.display = "none";
 
             if (this.sprint.Sprint_Name.trim() == "") {
                 this.$refs.inputSprintName.focus();
 
-                return this.$swal.fire({
-                    position: 'center',
-                    icon: 'error',
-                    title: '¡Error!',
-                    text: 'No se ingresó el nombre del sprint',
-                })
+
+                errorCreateSprintName.textContent = "No se ingresó el nombre del sprint";
+                errorCreateSprintName.style.visibility = "visible";
+                errorCreateSprintName.style.display  = "block";
+                return errorCreateSprintName;
 
             }
 
             if (this.sprint.Start_Date == "") {
                 this.$refs.inputStartDate.focus();
 
-                return this.$swal.fire({
-                    position: 'center',
-                    icon: 'error',
-                    title: '¡Error!',
-                    text: 'Se tiene que elegir una fecha de inicio',
-                })
+                errorCreateStartDate.textContent = "Se tiene que elegir una fecha de inicio";
+                errorCreateStartDate.style.visibility = "visible";
+                errorCreateStartDate.style.display = "block";
+                return errorCreateStartDate;
+
             }
 
             if (this.sprint.End_Date == "") {
                 this.$refs.inputEndDate.focus();
 
-                return this.$swal.fire({
-                    position: 'center',
-                    icon: 'error',
-                    title: '¡Error!',
-                    text: 'Se tiene que elegir una fecha de finalización',
-                })
+                errorCreateEndDate.textContent = "Se tiene que elegir una fecha de finalización";
+                errorCreateEndDate.style.visibility = "visible";
+                errorCreateEndDate.style.display = "block";
+                return errorCreateEndDate;
             }
 
             const startDate = new Date(this.sprint.Start_Date);
@@ -823,23 +843,21 @@ export default {
             if (endDate < startDate) {
                 this.$refs.inputDate.focus();
 
-                return this.$swal.fire({
-                    position: 'center',
-                    icon: 'error',
-                    title: '¡Error!',
-                    text: 'La fecha de finalización no puede ser previa a la de inicio',
-                })
+
+                errorCreateEndDate.textContent = "La fecha de finalización no puede ser previa a la de inicio";
+                errorCreateEndDate.style.visibility = "visible";
+                errorCreateEndDate.style.display = "block";
+                return errorCreateEndDate;
             }
 
             if (this.sprint.User_Login == "" || this.sprint.User_Login == null) {
                 this.$refs.inputUserLogin.focus();
 
-                return this.$swal.fire({
-                    position: 'center',
-                    icon: 'error',
-                    title: '¡Error!',
-                    text: 'Se tiene que elegir un usuario',
-                })
+
+                errorCreateUserLogin.textContent = "Se tiene que elegir un usuario";
+                errorCreateUserLogin.style.visibility = "visible";
+                errorCreateUserLogin.style.display = "block";
+                return errorCreateUserLogin;
             }
 
             await AdminApi.PostSprint(this.sprint)
@@ -878,6 +896,43 @@ export default {
         },
 
         limpiarContenido: function () {
+
+            const errorCreateSprintName = this.$refs.errorCreateSprintName;
+            const errorCreateStartDate = this.$refs.errorCreateStartDate;
+            const errorCreateEndDate = this.$refs.errorCreateEndDate;
+            const errorCreateUserLogin = this.$refs.errorCreateUserLogin;
+     
+            const error = this.$refs.error;
+            const error2 = this.$refs.error2;
+            
+            error.style.visibility = "hidden";
+            error2.style.visibility = "hidden";
+            errorCreateSprintName.style.visibility = "hidden";
+            errorCreateStartDate.style.visibility = "hidden";
+            errorCreateEndDate.style.visibility = "hidden";
+            errorCreateUserLogin.style.visibility = "hidden";
+
+            errorCreateSprintName.style.display  = "none";
+            errorCreateStartDate.style.display = "none";
+            errorCreateEndDate.style.display = "none";
+            errorCreateUserLogin.style.display = "none";
+
+            const errorUpdateSprintName = this.$refs.errorUpdateSprintName;
+            const errorUpdateStartDate = this.$refs.errorUpdateStartDate;
+            const errorUpdateEndtDate = this.$refs.errorUpdateEndtDate;
+            const errorUpdateUserLogin = this.$refs.errorUpdateUserLogin;
+
+            errorUpdateSprintName.style.visibility = "hidden";
+            errorUpdateStartDate.style.visibility = "hidden";
+            errorUpdateEndtDate.style.visibility = "hidden";
+            errorUpdateUserLogin.style.visibility = "hidden";
+            
+            
+            errorUpdateSprintName.style.display = "none";
+            errorUpdateStartDate.style.display = "none";
+            errorUpdateEndtDate.style.display = "none";
+            errorUpdateUserLogin.style.display = "none";
+
             this.sprint = {
                 Id_Project: "",
                 Sprint_Name: "",
@@ -925,37 +980,50 @@ export default {
 
             }
 
+            const errorUpdateSprintName = this.$refs.errorUpdateSprintName;
+            const errorUpdateStartDate = this.$refs.errorUpdateStartDate;
+            const errorUpdateEndtDate = this.$refs.errorUpdateEndtDate;
+            const errorUpdateUserLogin = this.$refs.errorUpdateUserLogin;
+
+            errorUpdateSprintName.style.visibility = "hidden";
+            errorUpdateStartDate.style.visibility = "hidden";
+            errorUpdateEndtDate.style.visibility = "hidden";
+            errorUpdateUserLogin.style.visibility = "hidden";
+
+            errorUpdateSprintName.style.display = "none";
+            errorUpdateStartDate.style.display = "none";
+            errorUpdateEndtDate.style.display = "none";
+            errorUpdateUserLogin.style.display = "none";
+            
+
             if (this.SprintNameEdit.trim() == "") {
                 this.$refs.EditarSprintName.focus();
 
-                return this.$swal.fire({
-                    position: 'center',
-                    icon: 'error',
-                    title: '¡Error!',
-                    text: 'No se ingresó el nombre del Sprint',
-                })
+                errorUpdateSprintName.textContent = "No se ingresó el nombre del Sprint";
+                errorUpdateSprintName.style.visibility = "visible";
+                errorUpdateSprintName.style.display = "block";
+                return errorUpdateSprintName;
             }
 
             if (this.SprintStartDateEdit == "") {
                 this.$refs.EditarStartDate.focus();
 
-                return this.$swal.fire({
-                    position: 'center',
-                    icon: 'error',
-                    title: '¡Error!',
-                    text: 'Se tiene que elegir una fecha de inicio',
-                })
+                errorUpdateStartDate.textContent = "Se tiene que elegir una fecha de inicio";
+                errorUpdateStartDate.style.visibility = "visible";
+                errorUpdateStartDate.style.display = "block";
+                return errorUpdateStartDate;
+
             }
 
             if (this.SprintEndDateEdit == "") {
                 this.$refs.EditarEndDate.focus();
 
-                return this.$swal.fire({
-                    position: 'center',
-                    icon: 'error',
-                    title: '¡Error!',
-                    text: 'Se tiene que elegir una fecha de finalización',
-                })
+                errorUpdateEndtDate.textContent = "Se tiene que elegir una fecha de finalización";
+                errorUpdateEndtDate.style.visibility = "visible";
+                errorUpdateEndtDate.style.display = "block";
+                return errorUpdateEndtDate;
+
+
             }
 
             const editstartDate = new Date(this.SprintStartDateEdit);
@@ -964,31 +1032,29 @@ export default {
             if (editendDate < editstartDate) {
                 this.$refs.editDate.focus();
 
-                return this.$swal.fire({
-                    position: 'center',
-                    icon: 'error',
-                    title: '¡Error!',
-                    text: 'La fecha de finalización no puede ser previa a la de inicio',
-                })
+                errorUpdateEndtDate.textContent = "La fecha de finalización no puede ser previa a la de inicio";
+                errorUpdateEndtDate.style.visibility = "visible";
+                errorUpdateEndtDate.style.display = "block";
+                return errorUpdateEndtDate;
+
             }
 
             if (this.SprintUsuLoginEdit == "" || this.SprintUsuLoginEdit == null) {
                 this.$refs.EditarUserLogin.focus();
 
-                return this.$swal.fire({
-                    position: 'center',
-                    icon: 'error',
-                    title: '¡Error!',
-                    text: 'Se tiene que elegir un usuario',
-                })
+                errorUpdateUserLogin.textContent = "Se tiene que elegir un usuario";
+                errorUpdateUserLogin.style.visibility = "visible";
+                errorUpdateUserLogin.style.display = "block";
+                return errorUpdateUserLogin;
+
             }
 
             if (!this.hasChanges) {
-                return this.$swal.fire({
-                    position: 'center',
-                    icon: 'warning',
-                    title: '¡No se realizó ningún cambio!',
-                });
+
+                errorUpdateUserLogin.textContent = "¡No se realizó ningún cambio!";
+                errorUpdateUserLogin.style.visibility = "visible";
+                errorUpdateUserLogin.style.display = "block";
+                return errorUpdateUserLogin;
             }
 
             try {
@@ -1026,20 +1092,38 @@ export default {
 
         getPasswordVerifyDeleteRow: async function () {
             let login = this.recuperarUsuLog()
+
+            if (this.verifyPassword.trim() === "") {
+                const error = this.$refs.error;
+                const error2 = this.$refs.error2;
+                error.textContent = "Debes de rellenar el campo";
+                error.style.visibility = "visible";
+                error2.textContent = "Debes de rellenar el campo";
+                error2.style.visibility = "visible";
+            }
             try {
 
                 const response = await AdminApi.GetPasswordVerifyDeleteRow(login, this.verifyPassword);
                 const message = response.data.ok;
+
                 if (message == true) {
 
                     this.confimPassworsDelete = true
                     this.$swal({ icon: 'success', text: 'Se verifico correctamente la contraseña' });
                     this.isButtonEnabled = true;
-
+                    const error = this.$refs.error;
+                    const error2 = this.$refs.error2;
+                    error.style.visibility = "hidden";
+                    error2.style.visibility = "hidden";
                 }
-                else {
-                    this.$swal({ icon: 'warning', text: 'Contraseña Incorrecta' });
-                    this.verifyPassword = "";
+                else if (message == false) {
+                    const error = this.$refs.error;
+                    const error2 = this.$refs.error2;
+                    error.textContent = "La contraseña es incorrecta";
+                    error.style.visibility = "visible";
+                    error2.textContent = "La contraseña es incorrecta";
+                    error2.style.visibility = "visible";
+
                 }
 
             } catch (error) {

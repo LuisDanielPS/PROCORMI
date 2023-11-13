@@ -35,12 +35,11 @@ Namespace Controllers
 
         End Function
 
-
         <HttpGet>
-        Public Function GetLastInsertId() As Reply(Of Integer)
+        Public Function GetLastInsertId(ByVal NombreTabla As String) As Reply(Of Integer)
 
             Dim reply As Reply(Of Integer) = New Reply(Of Integer)
-            reply = ProjectBLL.Instance.GetLastInsertIdBLL()
+            reply = ProjectBLL.Instance.GetLastInsertIdBLL(NombreTabla)
             Return reply
 
         End Function

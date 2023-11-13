@@ -17,12 +17,14 @@
                             <h5 class="alt-font font-weight-500 text-gradient-yellow-orange-black" align="center">Inicio de Sesión</h5>
 
                             <input maxlength="20" class="small-input bg-white margin-20px-bottom required" style="border-radius: 10px; margin-top: 25px;" type="text" placeholder="Digite su usuario" v-model="Usuario">
-
+                            <p ref="errorUser" style="visibility: hidden;color: red;"></p>
                             <div class="wrap-input" style="margin-top: 25px;">
                                 <span class="icon-eye" id="ojo" style="font-size: 20px" v-on:click="mostrarContrasena"><i class="fas fa-eye-slash" id="ojoTechado"></i></span>
                                 <input maxlength="20" class="small-input bg-white margin-20px-bottom required" style="border-radius: 10px;" type="password" placeholder="Digiste su contraseña" v-model="Clave" @keydown.enter="RealizarLogin">
+                                <p ref="errorPassword" style="visibility: hidden;color: red;"></p>
                             </div>
                             <br/>
+                            <p ref="errorLogin" style="visibility: hidden;color: red;"></p>
                             <div style="text-align: center">
                                 <div class="row justify-content-center" style="text-align: center">
                                     <a class="btn btn-success" style="border-radius: 10px; max-width: 110px;" role="button" v-on:click="RealizarLogin">Ingresar</a>
@@ -118,6 +120,7 @@ export default {
                             showConfirmButton: false,
                             timer: 3000
                         })
+                        
             } else if ((this.ClaveReg == "" || this.ClaveReg == undefined || this.ClaveReg == null)
                 || (this.ClaveRegConfirmar == "" || this.ClaveRegConfirmar == undefined || this.ClaveRegConfirmar == null)){
                 return this.$swal.fire({
@@ -126,6 +129,8 @@ export default {
                             showConfirmButton: false,
                             timer: 3000
                         })
+                        
+                        
             } else if (this.ClaveReg.length < 6 || this.ClaveRegConfirmar.length < 6) {
                 return this.$swal.fire({
                             position: 'top-end',
@@ -231,20 +236,31 @@ export default {
 
         async RealizarLogin() {
             //var botonReconocimiento = document.getElementById("reconocimientoVoz")
+            const error = this.$refs.errorUser;
+            const error2 = this.$refs.errorPassword;
+            const error3 = this.$refs.errorLogin;
+
+            error.style.visibility = "hidden";
+            error2.style.visibility = "hidden";
+            error3.style.visibility = "hidden";
+
+            error.style.display = "none";
+            error2.style.display = "none";
+            error3.style.display = "none";
+            
             if (this.Usuario == "") {
-                await this.$swal.fire({
-                        position: 'top-end',
-                        text: 'Por favor, digite el usuario',
-                        showConfirmButton: false,
-                        timer: 3000
-                    })
+    
+           
+             error.textContent = "Por favor, digite el usuario";
+             error.style.visibility = "visible";
+             error.style.display = "block";
+
             } else if (this.Clave == "") {
-                await this.$swal.fire({
-                        position: 'top-end',
-                        text: 'Por favor, digite la clave',
-                        showConfirmButton: false,
-                        timer: 3000
-                    })
+             error2.style.display = "block";
+             error2.textContent = "Por favor, digite la clave";
+             error2.style.visibility = "visible";
+            
+                    
             } else {
                 let claveEncriptada = this.encriptarContraseña(this.Clave)
                 const response = await AdminApi.GetLogin(this.Usuario, claveEncriptada);
@@ -268,13 +284,11 @@ export default {
                     }, (((1000 * 60) * 60)*5));
 
                 } else {
-                    await this.$swal.fire({
-                        //icon: 'error',
-                        position: 'top-end',
-                        text: 'Usuario o clave incorrectos, por favor verifique',
-                        showConfirmButton: false,
-                        timer: 3000
-                    })
+                    error3.style.display = "block";
+                    error3.textContent = "Usuario o clave incorrectos, por favor verifique";
+                    error3.style.visibility = "visible";
+            
+
                 }
             }
         },

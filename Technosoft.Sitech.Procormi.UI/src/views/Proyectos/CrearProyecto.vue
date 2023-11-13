@@ -69,7 +69,8 @@
                                             <input v-model.trim="project.Project_Name" maxlength="100"
                                                 class="small-input inputsGeneral" ref="inputProjectName" type="text"
                                                 required>
-                                            <span class="error-message">*Debes completar este campo.</span>
+                                            
+                                            <p ref="errorProjectName" style="visibility: hidden;color: red;"></p>
                                         </div>
                                         <br />
                                         <div class="row">
@@ -81,8 +82,8 @@
                                                         <div ref="Quill"
                                                             style="border: 1px solid gray; min-height: 200px; border-bottom-left-radius: 15px; border-bottom-right-radius: 15px;">
                                                         </div>
-                                                        <span id="error-message" style="color: red; display: none;"> *Debes
-                                                            completar este campo.</span>
+                                                        <br>
+                                                        <p ref="errorDescrition" style="visibility: hidden;color: red;padding:5 px;"> </p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -107,7 +108,11 @@
                                                         style="min-height: 48px; min-width: 48px; float: right;"><span
                                                             class="fas fa-plus"></span></button>
                                                 </div>
+
+                                              
+
                                             </div>
+                                            <p ref="errorUserList" style="visibility: hidden;color: red;"></p>
                                         </div>
                                         <div class="row" style="margin-top: 4%">
                                             <div class="col-12">
@@ -235,6 +240,7 @@ export default {
 
     data() {
         return {
+            errorDescription : this.$refs.errorDescrition,
             saveDateCreationFile: "",
             FileList: [],
             listNewFileEdit: [],
@@ -345,67 +351,62 @@ export default {
 
             const quilltext = this.quill.getText();
             const maxLength = 1000;
+            const errorProjectName = this.$refs.errorProjectName;
+            const errorDescription = this.$refs.errorDescrition;
+            const errorUserList = this.$refs.errorUserList;
+
+            errorProjectName.style.visibility = "hidden";
+            errorDescription.style.visibility = "hidden";
+            errorUserList.style.visibility = "hidden";
+
+            errorProjectName.style.display = "none";
+            errorDescription.style.display = "none";
+            errorUserList.style.display = "none";
 
             if (this.project.Project_Name.trim() == "") {
                 
-                this.$refs.inputProjectName.focus();
-                var content = this.quill.getText().trim(); 
-                var errorMessage = document.getElementById('error-message');
-
-                if (content === '') {
-                    errorMessage.style.display = 'block'; 
-                } else {
-                    errorMessage.style.display = 'none'; 
-                }
-
-                return this.$swal.fire({
-                    position: 'top-end',
-                    text: 'Se tiene que completar el campo del nombre del proyecto',
-                    showConfirmButton: false,
-                    timer: 3000
-                })
+                errorProjectName.textContent = "Se tiene que completar el campo del nombre del proyecto";
+                errorProjectName.style.visibility = "visible";
+                errorProjectName.style.display = "Block";
+                return
             }
 
 
             if (quilltext.trim() == "") {
 
                 this.quill.focus();
-                return this.$swal.fire({
-                    position: 'top-end',
-                    text: 'Se tiene que completar el  campo de la descripcion',
-                    showConfirmButton: false,
-                    timer: 6000
-                })
+                errorDescription.textContent = "Se tiene que completar el  campo de la descripcion";
+                errorDescription.style.visibility = "visible";
+                errorDescription.style.display = "Block";
+                return
             }
+
             if (quilltext.length > maxLength) {
 
                 const maxLengthAux = maxLength - 50;
                 const truncatedText = quilltext.slice(0, maxLengthAux);
                 this.quill.setText(truncatedText);
                 this.quill.focus();
-                return this.$swal.fire({
-                    position: 'top-end',
-                    text: 'No se puede un valor superior ha 1000 caracteres en la descripcion',
-                    showConfirmButton: false,
-                    timer: 6000
-                })
+
+                errorDescription.textContent = "No se puede un valor superior ha 1000 caracteres en la descripcion";
+                errorDescription.style.visibility = "visible";
+                errorDescription.style.display = "Block";
+                return
             }
 
             if (this.UserlistAdd.length == 0) {
 
-                return this.$swal.fire({
-                    position: 'top-end',
-                    text: 'Se tiene que agregar al menos un usuario',
-                    showConfirmButton: false,
-                    timer: 6000
-                })
-
+          
+                errorUserList.textContent = "  Se tiene que agregar al menos un usuario";
+                errorUserList.style.visibility = "visible";
+                errorUserList.style.display = "Block";
+                return
             }
 
             if (
-                this.project.Project_Name.trim() != "" &&
-                quilltext.trim() != "" &&
-                this.UserlistAdd.length > 0
+                this.project.Project_Name.trim() !== "" &&
+                quilltext.trim() !== "" &&
+                this.UserlistAdd.length > 0 && quilltext.length < maxLength
 
             ) {
 
@@ -415,14 +416,15 @@ export default {
                         this.project.Description_Project = quillText;
 
                         const response = await AdminApi.PostProject(this.project);
-                        const mensaje = response.data.ok
+                        const mensaje = response.data.ok;
+                       
                         if (mensaje) {
                             this.ActionEN.Action_Description = "Creó el proyecto " + this.project.Project_Name
                             this.ActionEN.Action_User = this.recuperarUsuLog();
                             await AdminApi.PostNewAction(this.ActionEN)
                         }
 
-                        const idProject = await AdminApi.GetLastInsertId();
+                        const idProject = await AdminApi.GetLastInsertId('Project');
                         const idInsert = idProject.data.obj;
                         this.idProjectInsert = idInsert;
 
@@ -463,7 +465,7 @@ export default {
                                 try {
 
                                     const response = await AdminApi.PostFile(addFile);
-                                    const idFileLastInsert = await AdminApi.GetLastInsertId();
+                                    const idFileLastInsert = await AdminApi.GetLastInsertId('File');
                                     const idFileLastInsertObj = idFileLastInsert.data.obj;
                                     const mensaje = response.data.ok;
                                     console.log(mensaje);
@@ -587,7 +589,7 @@ export default {
                                     const mensaje = response.data.ok;
                                     console.log(mensaje)
 
-                                    const idFileLastInsert = await AdminApi.GetLastInsertId();
+                                    const idFileLastInsert = await AdminApi.GetLastInsertId('File');
                                     const idFileLastInsertObj = idFileLastInsert.data.obj;
 
                                     const FileProject = {
@@ -618,15 +620,16 @@ export default {
                 }
 
             }
-            else {
-                this.$swal({ icon: 'warning', text: 'No fue posible modificar el registro' });
-            }
+      
         }
 
         ,
 
         addListUser: async function () {
 
+       
+            const errorUserList = this.$refs.errorUserList;
+            errorUserList.style.display="none"
             if (this.selectedUser) {
 
                 const selectedUserObject = JSON.parse(this.selectedUser);
@@ -639,6 +642,7 @@ export default {
                         usu_Login: selectedUserObject.usu_Login,
                         usu_Nombre: selectedUserObject.usu_Nombre
                     });
+                    console.log(selectedUserObject)
                 }
                 else {
                     this.$swal({ icon: 'warning', text: 'No se puede agregar dos veces el mismo usuario' });
