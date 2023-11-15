@@ -179,10 +179,10 @@ export default {
         fetchNotifications: async function () {
             const username = this.recuperarUsuLog();
             const response = await AdminApi.GetNotificationsByUser(username);
-            if (response.data.ok) {
+            if (response.data.ok ) {
                 this.notifications = response.data.obj;
             } else {
-                console.error('Error fetching notifications');
+                this.notifications = [];
             }
         },
 

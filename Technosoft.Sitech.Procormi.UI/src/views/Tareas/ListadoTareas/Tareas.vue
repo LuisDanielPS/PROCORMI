@@ -716,7 +716,7 @@
                                                 <div>
                                                     <div class="tablaPersonalizadaRow"
                                                         @click="() => startSubTaskCreation(tarea)"
-                                                        style="margin-bottom: 10px;"><a
+                                                        style="margin-bottom: 10px;"><a v-if="tarea.Id_Status != 'Finalizada'"
                                                             style="text-decoration: none;margin-bottom: 10px;"
                                                             class="fas fa-plus" data-bs-toggle="modal"
                                                             data-bs-target="#crearSubtarea"></a></div>
@@ -742,8 +742,11 @@
                                                             <span class="fas fa-eye"></span>
                                                         </button>
                                                         <button b-tooltip.hover title="Finalizar"
-                                                            @click="() => selectCurrentTask(tarea)" class="btn btn-success"
-                                                            role="button" :disabled="tarea.Id_Status == 'Finalizada'"
+                                                            @click="() => selectCurrentTask(tarea)" 
+                                                            role="button" 
+                                                            :disabled="tarea.Id_Status == 'Finalizada'"
+                                                            class="btn"
+                                                            :class="{ 'btn-success': tarea.Id_Status != 'Finalizada', 'btn-secondary': tarea.Id_Status == 'Finalizada'}"
                                                             style="margin-left: 5px;" data-bs-toggle="modal"
                                                             data-bs-target="#finalizarTarea">
                                                             <span class="fas fa-check"></span>
@@ -752,7 +755,9 @@
                                                             v-if="recuperarUsuTipo() == 'Administrador'"
                                                             @click="() => startTaskEditing(tarea)"
                                                             :disabled="tarea.Id_Status == 'Finalizada'"
-                                                            style="margin-left: 5px;" type="button" class="btn btn-warning"
+                                                            class="btn"
+                                                            :class="{ 'btn-success': tarea.Id_Status != 'Finalizada', 'btn-secondary': tarea.Id_Status == 'Finalizada'}"
+                                                            style="margin-left: 5px;" type="button" 
                                                             data-bs-toggle="modal" data-bs-target="#editarTarea">
                                                             <span class="fas fa-pen" style="color: white;"></span>
                                                         </button>
@@ -863,11 +868,11 @@
 </template>
 
 <script>
-import Cookies from 'js-cookie';
-import HeaderPrincipal from '@/components/HeaderPrincipal.vue'
-import Quill from 'quill'
-import MenuLateral from '@/components/MenuLateral.vue'
 import AdminApi from '@/Api/Api';
+import HeaderPrincipal from '@/components/HeaderPrincipal.vue';
+import MenuLateral from '@/components/MenuLateral.vue';
+import Cookies from 'js-cookie';
+import Quill from 'quill';
 
 export default {
 
@@ -1094,9 +1099,12 @@ export default {
 
             errorCreateTaskName.style.display = "none";
             errorCreateTaskDescription.style.display = "none";
+            console.log("🚀 ~ file: Tareas.vue:1102 ~ validateTask ~ errorCreateTaskDescription:", errorCreateTaskDescription)
             errorUpdateTaskName.style.display = "none";
             errorUpdateTaskDescription.style.display = "none";
             errorUpdateTaskStatus.style.display = "none";
+
+            
 
             if (task.Task_Name.trim() == "") {
 
@@ -1150,7 +1158,7 @@ export default {
 
 
             const errorCreateSubTaskName = this.$refs.errorCreateSubTaskName;
-            const errorCreateSubTaskDescription = this.$refs.errorCreateTaskDescription;
+            const errorCreateSubTaskDescription = this.$refs.errorCreateSubTaskDescription;
             const errorCreateSubTaskStatus = this.$refs.errorCreateSubTaskStatus;
             const errorCreateSubTaskRequiredTime = this.$refs.errorCreateSubTaskRequiredTime;
             const errorCreateSubTaskPriority = this.$refs.errorCreateSubTaskPriority;
@@ -1313,7 +1321,7 @@ export default {
                 await AdminApi.PostNewAction(this.ActionEN)
 
             } else {
-                this.$swal({ icon: 'error', text: 'No se pudo finalizar la tarea' });
+                this.$swal({ icon: 'error', text: response.data.msg });
                 console.error({ message: "Error al finalizar tarea", response })
             }
         },
@@ -1488,8 +1496,6 @@ export default {
                 return;
             }
 
-
-
             this.actualPage = 1
             await this.postTaskToAPI(task);
             this.ActionEN.Action_Description = "Creó la tarea " + task.Task_Name
@@ -1537,10 +1543,10 @@ export default {
                 Id_Status: this.statusSubTarea
             }
 
-            /*  if (this.validateSubTask(subTask, true) !== 'VALID') {
+            if (this.validateSubTask(subTask, false) !== 'VALID') {
                   return;
-              }
-              */
+             }
+              
             this.postSubTaskToAPI(subTask);
             this.resetSubTaskCreation();
             this.getSubTareasDesdeAPI(this.currentSelectedTaskId);

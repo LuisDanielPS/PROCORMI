@@ -580,7 +580,7 @@ Public Class ProjectDAO
                 reply.ok = True
                 reply.msg = "Se ha eliminado el proyecto"
 
-
+                NotificationDAO.Instance.NotifyProjectCompleted(pIdProject)
 
             End If
 
@@ -678,8 +678,16 @@ Public Class ProjectDAO
 
 
             ElseIf pIdProject <> 0 Then
-                sentence = "DELETE FROM seg_usu_project WHERE Id_Project = @Condition"
 
+                ' notificar desasignado de proyecto
+                sentence = "SELECT User_Login from seg_usu_project where Id_Project = @filtro1"
+                Dim drUsers = ConexionDAO.Instancia.ExecuteConsultOneParameterInteger(sentence, pIdProject)
+                While (drUsers.Read)
+                    Dim currentUser As String = drUsers(0)
+                    NotificationDAO.Instance.NotifyUnassignedProject(currentUser, pIdProject)
+                End While
+
+                sentence = "DELETE FROM seg_usu_project WHERE Id_Project = @Condition"
                 ConexionDAO.Instancia.ExecuteConsultCondition(sentence, pIdProject)
                 reply.ok = True
                 reply.msg = "Se ha eliminado la lista de usuarios relacionados con el proyecto"

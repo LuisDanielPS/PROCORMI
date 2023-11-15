@@ -13,15 +13,10 @@ Public Class NotificationBLL
     End Function
 
     Public Function GetAllNotificationByUser(username As String) As Reply(Of List(Of NotificationEN))
-
-
-
         Dim reply As Reply(Of List(Of NotificationEN)) = Nothing
 
         Try
-
             reply = NotificationDAO.Instance.GetNotificationsByUser(username)
-
         Catch ex As Exception
             EscritorVisorEventos.Instancia().EscribirEvento(nameClass, MethodBase.GetCurrentMethod().Name, ex)
             reply.ok = False
@@ -31,5 +26,18 @@ Public Class NotificationBLL
         Return reply
 
     End Function
+
+    Public Function ReadNotification(ByVal pIdNotification As Integer) As Reply(Of NotificationEN)
+        Dim reply As Reply(Of NotificationEN) = Nothing
+        Try
+            reply = NotificationDAO.Instance.ReadNotification(pIdNotification)
+        Catch ex As Exception
+            EscritorVisorEventos.Instancia().EscribirEvento(nameClass, MethodBase.GetCurrentMethod().Name, ex)
+            reply.ok = False
+            reply.msg = "Error al tratar de buscar notificaciones"
+        End Try
+        Return reply
+    End Function
+
 
 End Class
