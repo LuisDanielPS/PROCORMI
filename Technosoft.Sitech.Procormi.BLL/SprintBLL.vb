@@ -31,6 +31,27 @@ Public Class SprintBLL
 
     End Function
 
+    Public Function GetSprintsAllOperatorBLL(ByVal pUsuLogin As String) As Reply(Of List(Of SprintEN))
+
+        Dim reply As Reply(Of List(Of SprintEN)) = Nothing
+
+        Try
+            If pUsuLogin IsNot Nothing Then
+
+                reply = SprintDAO.Instance.GetSprintsAllOperatorDAO(pUsuLogin)
+
+            End If
+
+        Catch ex As Exception
+            EscritorVisorEventos.Instancia().EscribirEvento(nameClass, MethodBase.GetCurrentMethod().Name, ex)
+            reply.ok = False
+            reply.msg = "Error al tratar de buscar el sprint"
+        End Try
+
+        Return reply
+
+    End Function
+
     Public Function GetSprintsAllReportUserBLL(ByVal pUsuLogin As String) As Reply(Of List(Of SprintStatusReportVM))
 
         Dim reply As Reply(Of List(Of SprintStatusReportVM)) = Nothing

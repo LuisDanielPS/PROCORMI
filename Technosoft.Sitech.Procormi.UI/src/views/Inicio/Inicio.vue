@@ -328,14 +328,14 @@
                                                 </tr>
                                             </thead>
                                             <tbody style="font-size: large;">
-                                                <tr v-for="proyecto in paginateData" :key="proyecto.Id_project">
-                                                    <td @click="verSprints(proyecto.Id_project)" class="claseTD">{{
+                                                <tr v-for="proyecto in paginateData" :key="proyecto.Id_project"  class="claseTD">
+                                                    <td @click="verSprints(proyecto.Id_project)">{{
                                                         proyecto.Id_project }}</td>
-                                                    <td @click="verSprints(proyecto.Id_project)" class="claseTD2">{{
+                                                    <td @click="verSprints(proyecto.Id_project)">{{
                                                         proyecto.Project_Name }}</td>
-                                                    <td @click="verSprints(proyecto.Id_project)" class="claseTD">{{
+                                                    <td @click="verSprints(proyecto.Id_project)">{{
                                                         $filters.FormatearFecha(proyecto.Creation_Date) }}</td>
-                                                    <td @click="verSprints(proyecto.Id_project)" class="claseTD">{{
+                                                    <td @click="verSprints(proyecto.Id_project)">{{
                                                         proyecto.Id_State == 1 ? "Activo" : (proyecto.Id_State == 5 ?
                                                             "Finalizado" : "Inactivo") }}</td>
                                                     <td class="text-white">

@@ -105,14 +105,9 @@ button, button:focus, button:hover { outline: none; }
     cursor: pointer;
 }
 
-.claseTD2{
-    cursor: pointer;
-}
-
-.claseTD2:hover{
-    background-color: #c4d2df !important;
-    border-radius: 10px;
-}
+tr:hover td {
+    background-color: #c4d2df;
+    }
 
 .estiloTabla{
     background: white;

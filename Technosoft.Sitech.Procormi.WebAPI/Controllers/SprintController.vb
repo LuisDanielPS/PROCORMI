@@ -35,6 +35,15 @@ Namespace Controllers
 
         End Function
 
+        <HttpGet>
+        Public Function GetSprintsAllOperator(ByVal UsuLogin As String) As Reply(Of List(Of SprintEN))
+
+            Dim reply As Reply(Of List(Of SprintEN))
+            reply = SprintBLL.Instance.GetSprintsAllOperatorBLL(UsuLogin)
+            Return reply
+
+        End Function
+
         <HttpPost>
         Public Function PostSprint(pSprint As SprintEN) As Reply(Of SprintEN)
 

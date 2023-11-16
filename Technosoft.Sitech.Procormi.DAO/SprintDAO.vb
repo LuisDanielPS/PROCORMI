@@ -62,6 +62,58 @@ Public Class SprintDAO
         Return reply
     End Function
 
+    Public Function GetSprintsAllOperatorDAO(ByVal pUsuLogin As String) As Reply(Of List(Of SprintEN))
+
+        Dim reply As New Reply(Of List(Of SprintEN))
+        Dim sprints As New List(Of SprintEN)()
+
+        Try
+
+            sentence = "SELECT s.Id_Sprint, s.Sprint_Name, s.Start_Date, s.End_Date, s.Id_Project, s.Id_Status, s.User_Login
+                        FROM sprint AS s
+                        JOIN seg_usu AS u ON s.User_Login = u.usu_Login
+                        WHERE u.usu_Login = @filtro1 AND u.usu_Tipo = 'Operador' AND s.Id_Status <> 2;"
+
+            Using dr As MySqlDataReader = ConexionDAO.Instancia.ExecuteConsultOneParameterString(sentence, pUsuLogin)
+
+                While dr.Read
+                    Dim sprint As New SprintEN
+                    sprint.Id_Sprint = dr(0)
+                    sprint.Sprint_Name = dr(1)
+                    sprint.Start_Date = dr(2)
+                    sprint.End_Date = dr(3)
+                    sprint.Id_Project = dr(4)
+                    sprint.Id_Status = dr(5)
+                    sprint.User_Login = dr(6)
+
+                    sprints.Add(sprint)
+
+                End While
+
+                If sprints.Count > 0 Then
+                    reply.obj = sprints
+                    reply.ok = True
+                    reply.msg = "Sprints encontrados"
+                Else
+                    reply.obj = Nothing
+                    reply.ok = False
+                    reply.msg = "Sprints no encontrados"
+                End If
+
+            End Using
+
+        Catch ex As Exception
+            EscritorVisorEventos.Instancia().EscribirEvento(nameClass, MethodBase.GetCurrentMethod().Name, ex)
+            reply.ok = False
+            reply.msg = "No fue posible ejecutar la consulta: " & ex.Message
+            Return reply
+
+        End Try
+
+        Return reply
+
+    End Function
+
     Public Function GetSprintsAllReportUserDAO(ByVal pUsuLogin As String) As Reply(Of List(Of SprintStatusReportVM))
 
         Dim reply As New Reply(Of List(Of SprintStatusReportVM))

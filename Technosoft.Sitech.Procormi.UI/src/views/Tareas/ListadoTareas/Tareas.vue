@@ -709,12 +709,12 @@
                                             <div class="tablaPersonalizada" v-for="tarea in paginateData"
                                                 :key="tarea.Id_Task">
                                                 <div>
-                                                    <div class="tablaPersonalizadaRow"
+                                                    <div class="tablaPersonalizadaRowPointer"
                                                         @click="() => mostrarSubtareas(tarea.Id_Task)"
                                                         style="margin-bottom: 10px;">{{ tarea.Id_Task }}</div>
                                                 </div>
                                                 <div>
-                                                    <div class="tablaPersonalizadaRow"
+                                                    <div class="tablaPersonalizadaRowPointer"
                                                         @click="() => startSubTaskCreation(tarea)"
                                                         style="margin-bottom: 10px;"><a v-if="tarea.Id_Status != 'Finalizada'"
                                                             style="text-decoration: none;margin-bottom: 10px;"
@@ -722,13 +722,13 @@
                                                             data-bs-target="#crearSubtarea"></a></div>
                                                 </div>
                                                 <div>
-                                                    <div class="tablaPersonalizadaRow"
+                                                    <div class="tablaPersonalizadaRowPointer"
                                                         @click="() => mostrarSubtareas(tarea.Id_Task)"
                                                         style="margin-bottom: 10px; float: left;">{{ tarea.Task_Name }}
                                                     </div>
                                                 </div>
                                                 <div>
-                                                    <div class="tablaPersonalizadaRow"
+                                                    <div class="tablaPersonalizadaRowPointer"
                                                         @click="() => mostrarSubtareas(tarea.Id_Task)"
                                                         style="margin-bottom: 10px; float: left;">{{ tarea.Id_Status }}
                                                     </div>
@@ -805,13 +805,13 @@
                                                         <p class="fas" :class="`fa-${getPriorityIcon(subTask.Id_Priority)}-circle`" :style="`color: ${getPriorityColor(subTask.Id_Priority)};`"></p>
                                                     </div>-->
                                                         <div class="tablaPersonalizadaRow" style="min-width: 120px;">
-                                                            <div class="tablaPersonalizadaRowSubTareas"
+                                                            <div
                                                                 style="min-width: 100px; float: left;">{{ subTask.Id_Status
                                                                 }}</div>
                                                         </div>
                                                     </div>
                                                     <div>
-                                                        <div class="tablaPersonalizadaRow" style="min-width: 200px;">
+                                                        <div class="tablaPersonalizadaRowPointer" style="min-width: 200px;">
                                                             <a style="text-decoration: none; margin-right: 20px;"
                                                                 class="fas fa-eye" b-tooltip.hover title="Ver subtarea"
                                                                 data-bs-toggle="modal" data-bs-target="#verSubTarea"
@@ -2245,7 +2245,7 @@ ol {
 
 .tablaPersonalizada {
     display: grid;
-    grid-template-columns: 10% 5% 48% 15% 25%;
+    grid-template-columns: 10% 5% 45% 13% 25%;
     margin-bottom: 15px;
 }
 
@@ -2276,13 +2276,16 @@ ol {
 
 .tablaPersonalizadaRow {
     font-size: large;
-    cursor: pointer;
+}
+
+.tablaPersonalizadaRowPointer {
+    font-size: large;
+    cursor:pointer
 }
 
 .tablaPersonalizadaRowSubTareas {
     font-size: medium;
-    cursor: pointer;
-    margin-left: 0px;
+    margin-left:60px;
 }
 
 .listadoSubtareas {

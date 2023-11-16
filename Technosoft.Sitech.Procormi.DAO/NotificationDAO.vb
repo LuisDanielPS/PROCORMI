@@ -92,13 +92,13 @@ Public Class NotificationDAO
         Dim reply As New Reply(Of NotificationEN)
         Try
             Dim notification = New NotificationEN()
-            notification.Action = "ASIGNADO"
-            notification.Title = "Asignacion de proyecto"
+            notification.Action = "Agregado"
+            notification.Title = "Nuevo Proyecto"
 
             sentence = "SELECT Project_Name from project where Id_Project = " & pIdProject
             Using dr As MySqlDataReader = ConexionDAO.Instancia.ExecuteConsult(sentence)
                 If dr.Read Then
-                    notification.Message = "Haz sido asignado al proyecto " + dr(0)
+                    notification.Message = "Ha sido agregado al proyecto: " + dr(0)
                 End If
             End Using
 
@@ -120,13 +120,13 @@ Public Class NotificationDAO
         Dim reply As New Reply(Of NotificationEN)
         Try
             Dim notification = New NotificationEN()
-            notification.Action = "ASIGNADO"
-            notification.Title = "Asignacion de sprint"
+            notification.Action = "Agregado"
+            notification.Title = "Nuevo Sprint"
 
             sentence = "SELECT Sprint_Name from sprint where Id_Sprint = " & pIdSprint
             Using dr As MySqlDataReader = ConexionDAO.Instancia.ExecuteConsult(sentence)
                 If dr.Read Then
-                    notification.Message = "Haz sido asignado al sprint " + dr(0)
+                    notification.Message = "Se le ha asignado el sprint: " + dr(0)
                 End If
             End Using
 
@@ -147,13 +147,13 @@ Public Class NotificationDAO
         Dim reply As New Reply(Of NotificationEN)
         Try
             Dim notification = New NotificationEN()
-            notification.Action = "DESASIGNADO"
-            notification.Title = "Desasignacion de proyecto"
+            notification.Action = "Eliminado"
+            notification.Title = "Eliminado del proyecto"
 
             sentence = "SELECT Project_Name from project where Id_Project = " & pIdProject
             Using dr As MySqlDataReader = ConexionDAO.Instancia.ExecuteConsult(sentence)
                 If dr.Read Then
-                    notification.Message = "Ya no eres parte del proyecto " + dr(0)
+                    notification.Message = "Ya no formas parte de: " + dr(0)
                 End If
             End Using
 
@@ -177,13 +177,13 @@ Public Class NotificationDAO
         Try
             Dim pUser As String = ""
             Dim notification = New NotificationEN()
-            notification.Action = "COMPLETADO"
+            notification.Action = "Finalizado"
             notification.Title = "Sprint completado"
 
             sentence = "SELECT Sprint_Name, User_Login from sprint where Id_Sprint = " & pIdSprint
             Using dr As MySqlDataReader = ConexionDAO.Instancia.ExecuteConsult(sentence)
                 If dr.Read Then
-                    notification.Message = "El sprint " + dr(0) + " ha sido completado"
+                    notification.Message = "El sprint " + dr(0) + " ha finalizado"
                     pUser = dr(1)
                 End If
             End Using
@@ -208,13 +208,13 @@ Public Class NotificationDAO
             Dim notifications = New List(Of NotificationEN)
             Dim pUser As String = ""
             Dim notification = New NotificationEN()
-            notification.Action = "COMPLETADO"
+            notification.Action = "Finalizado"
             notification.Title = "Proyecto completado"
 
             sentence = "SELECT  Project_Name, su.User_Login from project p  join seg_usu_project su on su.Id_Project = p.Id_Project where  p.Id_Project = " & pIdProject
             Using dr As MySqlDataReader = ConexionDAO.Instancia.ExecuteConsult(sentence)
                 While dr.Read
-                    notification.Message = "El proyecto " + dr(0) + " ha sido completado"
+                    notification.Message = "El proyecto " + dr(0) + " ha finalizado"
                     pUser = dr(1)
 
                     notification.Usu_Login = pUser
@@ -234,9 +234,6 @@ Public Class NotificationDAO
             Return reply
         End Try
     End Function
-
-
-
 
     Public Function ReadNotification(ByVal pIdNotification As Integer) As Reply(Of NotificationEN)
 

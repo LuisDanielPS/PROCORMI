@@ -48,6 +48,16 @@ export default {
 
     }
     ,
+
+    GetSprintsAllOperator(usulogin)
+    {
+        return apicliente.get('Sprint/GetSprintsAllOperator?UsuLogin=' +usulogin, {
+            withCredentials: false,
+            headers: { 'Content-Type': 'application/json; charset=UTF-8' }
+        })
+
+    },
+    
     GetAllTasks(idSprint)
     {
         return apicliente.get('Task/GetALLTasks?idSprint='+ idSprint, {

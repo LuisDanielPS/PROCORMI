@@ -84,7 +84,8 @@
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h1 class="modal-title fs-5" id="completarSprint">Completar Sprint</h1>
-                                <button  @click="limpiarContenido()"  type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                <button @click="limpiarContenido()" type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
                                 <div>
@@ -126,7 +127,8 @@
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h1 class="modal-title fs-5" id="exampleModalLabel">Editar Sprint</h1>
-                                <button  @click="limpiarContenido()" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                <button @click="limpiarContenido()" type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
                                 <div>
@@ -194,7 +196,8 @@
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h1 class="modal-title fs-5" id="exampleModalLabel">Eliminar Sprint</h1>
-                                <button  @click="limpiarContenido()" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                <button @click="limpiarContenido()" type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
                                 <div>
@@ -390,18 +393,18 @@
                                                 </tr>
                                             </thead>
                                             <tbody style="font-size: large;">
-                                                <tr v-for="sprint in paginateData" :key="sprint.Id_Sprint">
-                                                    <td @click="verTareas(sprint.Id_Sprint)" class="claseTD">
+                                                <tr v-for="sprint in paginateData" :key="sprint.Id_Sprint" class="claseTD">
+                                                    <td @click="verTareas(sprint.Id_Sprint)">
                                                         {{ sprint.Id_Sprint }}</td>
-                                                    <td @click="verTareas(sprint.Id_Sprint)" class="claseTD2">
+                                                    <td @click="verTareas(sprint.Id_Sprint)">
                                                         {{ sprint.Sprint_Name }}</td>
-                                                    <td @click="verTareas(sprint.Id_Sprint)" class="claseTD">
+                                                    <td @click="verTareas(sprint.Id_Sprint)">
                                                         {{ sprint.User_Login }}</td>
-                                                    <td @click="verTareas(sprint.Id_Sprint)" class="claseTD">
+                                                    <td @click="verTareas(sprint.Id_Sprint)">
                                                         {{ $filters.FormatearFecha(sprint.Start_Date) }}</td>
-                                                    <td @click="verTareas(sprint.Id_Sprint)" class="claseTD">
+                                                    <td @click="verTareas(sprint.Id_Sprint)">
                                                         {{ $filters.FormatearFecha(sprint.End_Date) }}</td>
-                                                    <td @click="verTareas(sprint.Id_Sprint)" class="claseTD">
+                                                    <td @click="verTareas(sprint.Id_Sprint)">
                                                         {{ sprint.Id_Status == 1 ? "Activo" : (sprint.Id_Status == 5 ?
                                                             "Finalizado" : "Inactivo") }}</td>
                                                     <td class="text-white" v-if="recuperarUsuTipo() == 'Administrador'"
@@ -543,13 +546,21 @@ export default {
         async getSprintsDesdeAPI() {
             const idProyect = localStorage.getItem("currentProjectId")
             this.actualPage = 1
+            let login = this.recuperarUsuLog()
+            let usutipo = this.recuperarUsuTipo()
 
             try {
                 if (this.sprints.length == 0) {
 
-                    const response = await AdminApi.GetAllSprint(idProyect);
-                    const Sprintlist = response.data.obj;
-                    this.sprints = Sprintlist;
+                    if (this.sprints.length === 0) {
+                        if (usutipo === "Operador") {
+                            const responseOperator = await AdminApi.GetSprintsAllOperator(login);
+                            this.sprints = responseOperator.data.obj;
+                        } else {
+                            const responseAll = await AdminApi.GetAllSprint(idProyect);
+                            this.sprints = responseAll.data.obj;
+                        }
+                    }
 
                     this.paginateData = [];
                     if (this.sprints.length < this.pageElements) {
@@ -802,7 +813,7 @@ export default {
             errorCreateEndDate.style.visibility = "hidden";
             errorCreateUserLogin.style.visibility = "hidden";
 
-            errorCreateSprintName.style.display  = "none";
+            errorCreateSprintName.style.display = "none";
             errorCreateStartDate.style.display = "none";
             errorCreateEndDate.style.display = "none";
             errorCreateUserLogin.style.display = "none";
@@ -813,7 +824,7 @@ export default {
 
                 errorCreateSprintName.textContent = "No se ingresó el nombre del sprint";
                 errorCreateSprintName.style.visibility = "visible";
-                errorCreateSprintName.style.display  = "block";
+                errorCreateSprintName.style.display = "block";
                 return errorCreateSprintName;
 
             }
@@ -901,10 +912,10 @@ export default {
             const errorCreateStartDate = this.$refs.errorCreateStartDate;
             const errorCreateEndDate = this.$refs.errorCreateEndDate;
             const errorCreateUserLogin = this.$refs.errorCreateUserLogin;
-     
+
             const error = this.$refs.error;
             const error2 = this.$refs.error2;
-            
+
             error.style.visibility = "hidden";
             error2.style.visibility = "hidden";
             errorCreateSprintName.style.visibility = "hidden";
@@ -912,7 +923,7 @@ export default {
             errorCreateEndDate.style.visibility = "hidden";
             errorCreateUserLogin.style.visibility = "hidden";
 
-            errorCreateSprintName.style.display  = "none";
+            errorCreateSprintName.style.display = "none";
             errorCreateStartDate.style.display = "none";
             errorCreateEndDate.style.display = "none";
             errorCreateUserLogin.style.display = "none";
@@ -926,8 +937,8 @@ export default {
             errorUpdateStartDate.style.visibility = "hidden";
             errorUpdateEndtDate.style.visibility = "hidden";
             errorUpdateUserLogin.style.visibility = "hidden";
-            
-            
+
+
             errorUpdateSprintName.style.display = "none";
             errorUpdateStartDate.style.display = "none";
             errorUpdateEndtDate.style.display = "none";
@@ -994,7 +1005,7 @@ export default {
             errorUpdateStartDate.style.display = "none";
             errorUpdateEndtDate.style.display = "none";
             errorUpdateUserLogin.style.display = "none";
-            
+
 
             if (this.SprintNameEdit.trim() == "") {
                 this.$refs.EditarSprintName.focus();
@@ -1551,5 +1562,4 @@ ol {
     margin-bottom: 12px;
     margin-right: 1px;
     margin-left: 5px;
-}
-</style>
+}</style>

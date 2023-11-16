@@ -17,7 +17,7 @@
                                 <button v-if="recuperarUsuTipo() == 'Operador'" style="float: right; position: relative;"
                                     class="nav-toggle" @click.prevent="DesplegarMenuAplicaciones()">
                                     <i class="fas fa-bell"></i>
-                                    <span class="notification-badge">{{ notifications.length }}</span>
+                                    <span v-if="notifications.length > 0" class="notification-badge">{{ notifications.length }}</span>
                                 </button>
                             </div>
 
@@ -74,9 +74,9 @@
                     </div>
                     <div>
                         <div style="max-width: 100%;">
-                            <hr class="textoBlanco">
-                            <div  class="textoBlanco" v-for="notif in notifications" :key="notif.Id_Notification" style="cursor: pointer;">
+                            <div class="textoBlanco" v-for="notif in notifications" :key="notif.Id_Notification" style="cursor: pointer;">
                                 <div class="notification-top" style="text-align: left;">
+                                    <hr class="textoBlanco">
                                     <a style="text-decoration:none; color:white; font-weight: bold;"
                                         class="notification-title" data-toggle="collapse"
                                         :data-target="`#descriptionCollapse-${notif.Id_Notification}`" role="button"
@@ -88,13 +88,12 @@
                                 <div :id="`descriptionCollapse-${notif.Id_Notification}`">
                                     <div style="text-align: justify;">
                                         <p>
-                                            {{ notif.Message }}
+                                            {{notif.Message}}
                                         </p>
                                     </div>
                                 </div>
                                 <div style="text-align: left;">
                                     <small>Fecha: {{ new Date(notif.Creation_Date).toLocaleString() }}</small>
-                                    <hr class="textoBlanco">
                                 </div>
                             </div>
                         </div>
@@ -456,6 +455,9 @@ export default {
 .textoBlanco {
     color: #ffffff;
     font-size: medium;
+    margin-right: 8px;
+    margin-left: -8px;
+    word-wrap: break-word;
 }
 
 .textoBlanco:hover {
@@ -541,23 +543,25 @@ body {
     border-bottom-right-radius: 10px;
 }
 
+/* Menu de notificaciones */
 .nav-menuAplicaciones {
     flex-direction: column;
     align-items: center;
     list-style: none;
     background-color: #0a3a66;
-    position: absolute;
+    position:absolute;
     right: 40px;
     top: 60px;
-    min-width: 200px;
+    min-width: 350px;
+    max-width: 350px;
     text-align: center;
     min-height: 50vh;
+    max-height: 80vh;
     overflow-y: auto;
     z-index: 3;
     display: none;
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
-    max-height: 80vh;
 }
 
 @media screen and (max-width: 900px) {
