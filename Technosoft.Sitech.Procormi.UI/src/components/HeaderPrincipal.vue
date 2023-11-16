@@ -69,20 +69,22 @@
                 }">
                     <div class="nav-link textoBlanco" v-if="AgregarPublicacion" style="padding-top: 15px;">
                         <p style="cursor: default;">
-                            <a class="text-gradient-yellow-orange-black" style="font-size: 16px;"><b>Notificaciones</b></a>
+                            <a class="text-gradient-yellow-orange-black"  style="font-size: 16px;"><b>Notificaciones</b></a>
                         </p>
                     </div>
                     <div>
                         <div style="max-width: 100%;">
-                            <div class="textoBlanco" v-for="notif in notifications" :key="notif.Id_Notification" style="cursor: pointer;">
+                            <div class="textoBlanco" v-for="notif in notifications" :key="notif.Id_Notification">
                                 <div class="notification-top" style="text-align: left;">
                                     <hr class="textoBlanco">
                                     <a style="text-decoration:none; color:white; font-weight: bold;"
                                         class="notification-title" data-toggle="collapse"
-                                        :data-target="`#descriptionCollapse-${notif.Id_Notification}`" role="button"
+                                        :data-target="`#descriptionCollapse-${notif.Id_Notification}`"
                                         aria-expanded="false"
                                         :aria-controls="`descriptionCollapse-${notif.Id_Notification}`">
                                         {{ notif.Title}}
+                                        <i style="float: right;" class="fa fa-trash-alt" @click=ReadNotification(notif) role="button"
+                                        b-tooltip.hover title="Eliminar"></i>
                                     </a>
                                 </div>
                                 <div :id="`descriptionCollapse-${notif.Id_Notification}`">
@@ -169,11 +171,24 @@ export default {
 
     computed: {
         displayedNotifications() {
-            return this.notifications
+            return this.notifications.filter(notif => notif.Read === '0');
         }
     },
 
     methods: {
+
+        async ReadNotification(notif){
+            console.log("La Notificacion "+notif.Id_Notification + " se marco como leida")
+
+            const response = await AdminApi.ReadNotification(notif.Id_Notification);
+            if (response.data.ok ) {
+                this.notifications = response.data.obj;
+                this.fetchNotifications()
+            } else {
+                this.notifications = [];
+            }
+
+        },
 
         fetchNotifications: async function () {
             const username = this.recuperarUsuLog();
@@ -531,11 +546,11 @@ body {
     list-style: none;
     background-color: #0a3a66;
     position: absolute;
-    right: 0;
+    right: 0px;
     top: 60px;
-    width: 25%;
+    width: 20%;
     text-align: center;
-    min-height: 50vh;
+    min-height: 30vh;
     overflow-y: auto;
     z-index: 3;
     display: none;

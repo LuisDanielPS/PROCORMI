@@ -590,10 +590,22 @@ export default {
         },
 
         aplyFilter: async function (beginDate, endDate, state, user, word) {
+
+            let login = this.recuperarUsuLog()
+            let usutipo = this.recuperarUsuTipo()
+
+            if (usutipo === "Operador") {
+                const response = await AdminApi.GetProjectsAllOperator(login);
+                const Projectlist = response.data.obj;
+                this.proyectos = Projectlist;
+            } else{
+
             const idProyect = localStorage.getItem("currentProjectId")
             const response = await AdminApi.GetAllSprint(idProyect);
             const SprintList = response.data.obj;
             this.sprints = SprintList;
+
+            }
             const filteredSprints = [];
             let success = false;
 

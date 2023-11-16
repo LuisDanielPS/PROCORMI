@@ -14,6 +14,13 @@ export default {
         })
     },
 
+    ReadNotification(IdNotification) {
+        return apicliente.put('Notification/PutReadNotification?pIdNotification=' +IdNotification, {
+            withCredentials: false,
+            headers: { 'Content-Type': 'application/json; charset=UTF-8' }
+        })
+    },
+
     GetNotificationsByUser(Usuario) {
         return apicliente.get(`Notification/GetAllNotificationByUser?username=${Usuario}`, {
             withCredentials: false,
