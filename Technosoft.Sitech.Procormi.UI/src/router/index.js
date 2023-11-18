@@ -7,6 +7,7 @@ import Reportes from "@/views/Reportes/route.js";
 import Encuestas from "@/views/Encuestas/ListadoEncuestas/route.js";
 import CrearEncuesta from "@/views/Encuestas/CrearEncuesta/route.js";
 import FormularioCliente from "@/views/Encuestas/ResponderEncuesta/route.js";
+import MensajeEncuesta from "@/views/Encuestas/MensajeEncuesta/route.js";
 import EditarSprint from "@/views/Sprints/EditarSprint/route.js";
 import Sprints from "@/views/Sprints/ListadoSprints/route.js";
 import Tareas from "@/views/Tareas/ListadoTareas/route.js";
@@ -19,12 +20,14 @@ routes = routes.concat(
     Inicio,
     Encuestas,
     CrearEncuesta,
+    MensajeEncuesta,
     CrearProyecto,
     Sprints,
     EditarSprint,
     Tareas,
     Reportes,
-    FormularioCliente
+    FormularioCliente,
+    
 
 )
 

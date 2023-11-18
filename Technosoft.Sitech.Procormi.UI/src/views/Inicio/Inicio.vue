@@ -348,16 +348,19 @@
 
 
                                                         <button b-tooltip.hover title="Completar Proyecto"
-                                                            data-bs-target="#completarProyecto" v-show="showElement"
+                                                            data-bs-target="#completarProyecto" data-bs-toggle="modal" v-show="showElement"
                                                             style="margin-left: 5px;"
                                                             @click="saveIdProjectDelete(proyecto.Id_project)" type="button"
-                                                            class="btn btn-success" data-bs-toggle="modal"
+                                                            class="btn"
+                                                            :class="{ 'btn-success': proyecto.Id_State != 5, 'btn-secondary': proyecto.Id_State == 5 }"
                                                             :disabled="proyecto.Id_State == 5">
                                                             <span class="fas fa-check"></span>
                                                         </button>
 
                                                         <button b-tooltip.hover title="Editar Proyecto" v-show="showElement"
-                                                            style="margin-left: 5px;" type="button" class="btn btn-warning"
+                                                            style="margin-left: 5px;" type="button" class="btn"
+                                                            :class="{ 'btn-warning': proyecto.Id_State != 5, 'btn-secondary': proyecto.Id_State == 5 }"
+                                                            :disabled="proyecto.Id_State == 5" 
                                                             @click="EditarProyecto(proyecto.Id_project)">
                                                             <span class="fas fa-pen" style="color: white"></span>
                                                         </button>

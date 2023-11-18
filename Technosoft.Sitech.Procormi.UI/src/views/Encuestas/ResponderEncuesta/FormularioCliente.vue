@@ -35,8 +35,9 @@
                                                             style="border-radius: 15px; margin-bottom: 10px;"
                                                             placeholder="Respuesta"
                                                             @change="updateAnswerText(question, $event.target.value)"
-                                                            maxlength="100" required />
-                                                        <span class="error-message">*Debes completar este campo.</span>
+                                                            maxlength="100" />
+                                                        <span :ref="'ErrorTextInput' + question.Id_Question"
+                                                            style="visibility: hidden; color: red;"> ss</span>
                                                         <br />
                                                         <br />
 
@@ -49,22 +50,23 @@
                                                                 <div class="form-check"
                                                                     v-for="(option, index) in question.Question_Options"
                                                                     :key="index">
-                                                                   
-                                                                  
+
+
                                                                     <input :name="question.Id_Question" type="radio"
                                                                         class="estiloRadios" :id="'opcion' + option"
                                                                         :value="JSON.stringify(option)"
-                                                                        @change="updateAnswerOptions(option, question)" required />
-                                                                   
-                                                                   
+                                                                        @change="updateAnswerOptions(option, question)" />
+
+
                                                                     <label class="form-check-label">
                                                                         {{ option.Option_Text }}
                                                                     </label>
-                                                                    
-                                                                   
-                                                                
+
+
+
                                                                 </div>
-                                                                <span style="color: red;">*Debes seleccionar al menos una opcion</span>
+                                                                <span :ref="'ErrorRadioBox' + question.Id_Question"
+                                                                    style="visibility: hidden; color: red;">aa </span>
                                                             </div>
                                                             <div v-if="question.Id_Question_Type == 3">
                                                                 <div class="form-check"
@@ -72,13 +74,16 @@
                                                                     :key="index">
                                                                     <input :name="question.Id_Question" type="checkbox"
                                                                         @change="updateAnswerOptionsCheckBox(option, question)"
-                                                                        class="estiloRadios" id="opcion1" >
+                                                                        class="estiloRadios" id="opcion1">
                                                                     <label class="form-check-label">
                                                                         {{ option.Option_Text }}
                                                                     </label>
+
                                                                   
+
                                                                 </div>
-                                                               
+                                                                <span :ref="'ErrorCheckBox' + question.Id_Question"
+                                                                        style="visibility: hidden; color: red;"> </span>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -118,7 +123,7 @@ import 'quill/dist/quill.snow.css'
 import Cookies from 'js-cookie';
 import AdminApi from '@/Api/Api';
 import CryptoJS from 'crypto-js';
-
+import router from '@/router/index'
 export default {
 
     components: {
@@ -147,7 +152,9 @@ export default {
                 }
             },
             link: "",
-            fullLink: ""
+            fullLink: "",
+            valid: false
+
         }
     },
 
@@ -190,25 +197,61 @@ export default {
         },
 
         SendAnswer: async function () {
-            await AdminApi.PostSendAnswer(this.poll)
-                .then(response => {
-                    if (response.data.obj == true) {
-                        this.$swal.fire({
-                            icon: 'success',
-                            position: 'center',
-                            text: response.data.msg,
-                            showConfirmButton: true
-                        })
-                        //this.limpiarContenido()
+
+            this.valid = true;
+
+            for (const item of this.poll.Questions) {
+                const refName = `Error${item.Id_Question_Type === 1 ? 'TextInput' : (item.Id_Question_Type === 2 ? 'RadioBox' : 'CheckBox')}${item.Id_Question}`;
+                const error = this.$refs[refName];
+
+                error[0].textContent = "";
+                error[0].style.visibility = "hidden";
+            }
+
+            for (const item of this.poll.Questions) {
+                const refName = `Error${item.Id_Question_Type === 1 ? 'TextInput' : (item.Id_Question_Type === 2 ? 'RadioBox' : 'CheckBox')}${item.Id_Question}`;
+                const error = this.$refs[refName];
+
+
+                if ((item.Id_Question_Type === 1 && item.AnswerText === null || item.Id_Question_Type === 1 && item.AnswerText.Text === "") ||
+                    (item.Id_Question_Type === 2 && item.AnswerOptions === null) ||
+                    (item.Id_Question_Type === 3 && item.AnswerOptions === null || item.Id_Question_Type === 3 && item.AnswerOptions.length === 0 )) {
+                    const errorMsg = (item.Id_Question_Type === 1) ? "La respuesta no puede estar vacía" :
+                        ((item.Id_Question_Type === 2) ? "Selecciona una opción" : "Selecciona al menos una opción");
+
+                    if (error && error.length > 0) {
+                        error[0].textContent = errorMsg;
+                        error[0].style.visibility = "visible";
+                        this.valid = false;
+                        break;
                     }
-                })
+                    break;
+                }
 
+            }
 
+            if (this.valid) {  // Realizar el post solo si es válido
+                await AdminApi.PostSendAnswer(this.poll)
+                    .then(response => {
+                        if (response.data.obj == true) {
+                            this.$swal.fire({
+                                icon: 'success',
+                                position: 'center',
+                                text: response.data.msg,
+                                showConfirmButton: true
+                            });
+
+                            router.push({ name: 'MensajeEncuesta' })
+                            //this.limpiarContenido()
+                        }
+                    });
+            }
         }
         ,
 
 
         updateAnswerOptions(opcion, question) {
+
 
 
             question.AnswerOptions = [];
@@ -219,11 +262,7 @@ export default {
             };
 
             question.AnswerOptions.push(newAnswerOption);
-            console.log('Nuevo objeto AnswerOption agregado:', newAnswerOption);
-
-
-            console.log('Opción seleccionada:', opcion);
-            console.log('Encuesta (this.poll) actualizada:', this.poll);
+    
 
         }
         ,
@@ -245,14 +284,13 @@ export default {
                 };
 
                 question.AnswerOptions.push(newAnswerOption);
-                console.log('Nuevo objeto AnswerOption agregado:', newAnswerOption);
+      
             } else {
-                const removedOption = question.AnswerOptions.splice(existingOptionIndex, 1);
-                console.log('Objeto AnswerOption eliminado:', removedOption);
+                question.AnswerOptions.splice(existingOptionIndex, 1);
+               
             }
 
-            console.log('Opción seleccionada:', opcion);
-            console.log('Encuesta (this.poll) actualizada:', this.poll);
+           
         }
         ,
         updateAnswerText(question, value) {
@@ -446,7 +484,7 @@ export default {
     /* Inicialmente oculto */
 }
 
-input:invalid+.error-message {
+input:valid+.error-message {
     display: block;
     /* Mostrar el mensaje de error cuando el input sea inválido */
 }
