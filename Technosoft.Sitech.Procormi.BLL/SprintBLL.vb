@@ -31,14 +31,14 @@ Public Class SprintBLL
 
     End Function
 
-    Public Function GetSprintsAllOperatorBLL(ByVal pUsuLogin As String) As Reply(Of List(Of SprintEN))
+    Public Function GetSprintsAllOperatorBLL(ByVal pUsuLogin As String, ByVal pId_Project As Integer) As Reply(Of List(Of SprintEN))
 
         Dim reply As Reply(Of List(Of SprintEN)) = Nothing
 
         Try
             If pUsuLogin IsNot Nothing Then
 
-                reply = SprintDAO.Instance.GetSprintsAllOperatorDAO(pUsuLogin)
+                reply = SprintDAO.Instance.GetSprintsAllOperatorDAO(pUsuLogin, pId_Project)
 
             End If
 

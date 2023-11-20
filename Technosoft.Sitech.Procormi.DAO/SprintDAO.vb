@@ -62,7 +62,7 @@ Public Class SprintDAO
         Return reply
     End Function
 
-    Public Function GetSprintsAllOperatorDAO(ByVal pUsuLogin As String) As Reply(Of List(Of SprintEN))
+    Public Function GetSprintsAllOperatorDAO(ByVal pUsuLogin As String, ByVal pId_Project As Integer) As Reply(Of List(Of SprintEN))
 
         Dim reply As New Reply(Of List(Of SprintEN))
         Dim sprints As New List(Of SprintEN)()
@@ -72,9 +72,9 @@ Public Class SprintDAO
             sentence = "SELECT s.Id_Sprint, s.Sprint_Name, s.Start_Date, s.End_Date, s.Id_Project, s.Id_Status, s.User_Login
                         FROM sprint AS s
                         JOIN seg_usu AS u ON s.User_Login = u.usu_Login
-                        WHERE u.usu_Login = @filtro1 AND u.usu_Tipo = 'Operador' AND s.Id_Status <> 2;"
+                        WHERE u.usu_Login = @filtro1 AND s.Id_Project = @filtro2 AND u.usu_Tipo = 'Operador' AND s.Id_Status <> 2;"
 
-            Using dr As MySqlDataReader = ConexionDAO.Instancia.ExecuteConsultOneParameterString(sentence, pUsuLogin)
+            Using dr As MySqlDataReader = ConexionDAO.Instancia.ExecuteConsultTwoParameterString(sentence, pUsuLogin, pId_Project)
 
                 While dr.Read
                     Dim sprint As New SprintEN

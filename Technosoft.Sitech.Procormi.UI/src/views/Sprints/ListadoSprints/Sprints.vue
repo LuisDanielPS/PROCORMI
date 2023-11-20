@@ -554,7 +554,7 @@ export default {
 
                     if (this.sprints.length === 0) {
                         if (usutipo === "Operador") {
-                            const responseOperator = await AdminApi.GetSprintsAllOperator(login);
+                            const responseOperator = await AdminApi.GetSprintsAllOperator(login,idProyect);
                             this.sprints = responseOperator.data.obj;
                         } else {
                             const responseAll = await AdminApi.GetAllSprint(idProyect);
