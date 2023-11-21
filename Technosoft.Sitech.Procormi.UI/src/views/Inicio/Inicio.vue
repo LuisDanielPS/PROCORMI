@@ -65,7 +65,7 @@
                                             <div class="col-12">
                                                 <div class="col-md-12 col-xs-12">
                                                     <div style="text-align: center;">
-                                                        <div style="text-align: center;"
+                                                        <div style="text-align: left;"
                                                             v-html="this.ViewProject.Description_Project"></div>
                                                     </div>
                                                 </div>
@@ -328,7 +328,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody style="font-size: large;">
-                                                <tr v-for="proyecto in paginateData" :key="proyecto.Id_project"  class="claseTD">
+                                                <tr v-for="proyecto in paginateData" :key="proyecto.Id_project"  class="SelectHover">
                                                     <td @click="verSprints(proyecto.Id_project)">{{
                                                         proyecto.Id_project }}</td>
                                                     <td @click="verSprints(proyecto.Id_project)">{{
@@ -362,7 +362,7 @@
                                                             :class="{ 'btn-warning': proyecto.Id_State != 5, 'btn-secondary': proyecto.Id_State == 5 }"
                                                             :disabled="proyecto.Id_State == 5" 
                                                             @click="EditarProyecto(proyecto.Id_project)">
-                                                            <span class="fas fa-pen" style="color: white"></span>
+                                                            <span class="fas fa-pen text-white"></span>
                                                         </button>
                                                         <button b-tooltip.hover title="Eliminar Proyecto"
                                                             v-show="showElement"

@@ -217,15 +217,15 @@
                                         <br />
                                         <br />
                                         <div class="row justify-content-end">
-                                            <div>
-                                                <button class="btn btn-success"
-                                                    style="min-width: 100px; position: absolute; right: 210px;"
-                                                    @click="sendPoll">Guardar</button>
-                                            </div>
                                             <div class="col-2">
                                                 <router-link role="button" :to="{ name: 'Encuestas' }"
                                                     class="btn btn-danger"
-                                                    style="min-width: 100px; position: absolute; right: 100px;">Cancelar</router-link>
+                                                    style="min-width: 100px; position: absolute; right: 210px;">Cancelar</router-link>
+                                            </div>
+                                            <div>
+                                                <button class="btn btn-success"
+                                                    style="min-width: 100px; position: absolute; right: 100px;"
+                                                    @click="sendPoll">Guardar</button>
                                             </div>
                                         </div>
 

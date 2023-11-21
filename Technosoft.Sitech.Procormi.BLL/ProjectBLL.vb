@@ -390,15 +390,12 @@ Public Class ProjectBLL
 
     Public Function DeleteSegUsuBLL(ByVal pIdProject As Integer) As Reply(Of SegUsuProjectEN)
 
-
         Dim reply As Reply(Of SegUsuProjectEN) = Nothing
 
         Try
             If pIdProject <> 0 Then
 
-
                 reply = ProjectDAO.Instance.DeleteSegUsuDAO(pIdProject)
-
 
             End If
 

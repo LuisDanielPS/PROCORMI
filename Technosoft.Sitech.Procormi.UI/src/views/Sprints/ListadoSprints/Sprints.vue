@@ -314,7 +314,7 @@
                                     </div>
 
                                     <div class="row">
-                                        <div class="col-2">
+                                        <div class="col-3">
                                             <div>
                                                 <a class="text-black fas fa-calendar-alt"></a>
                                                 <label class="text-black p-3 Td">Fecha inicio</label>
@@ -326,13 +326,13 @@
                                         <div class="col-3">
                                             <div>
                                                 <a class="text-black fas fa-calendar-alt"></a>
-                                                <label class="text-black p-3 Td">Fecha Fin</label>
+                                                <label class="text-black p-3 Td">Fecha de Finalización</label>
                                             </div>
                                             <input type="date" id="fechaFin" class="diseñoSelectLateral"
                                                 style="cursor: pointer; border-radius: 5px;" v-model="Filtros.fechaF">
                                         </div>
 
-                                        <div class="col-3">
+                                        <div class="col-2">
                                             <div>
                                                 <a class="text-black fas fa-check-square"
                                                     style="text-decoration: none;"></a>
@@ -345,7 +345,8 @@
                                             </select>
                                         </div>
 
-                                        <div v-if="recuperarUsuTipo() == 'Administrador'" class="col-3">
+                                        <div v-if="recuperarUsuTipo() == 'Administrador'" class="col-2 order-1"
+                                            b-tooltip.hover title="Usuario">
                                             <div>
                                                 <a class="text-black fas fa-user"></a>
                                                 <label class="text-black p-3 Td">Usuario</label>
@@ -358,16 +359,18 @@
                                                 </option>
                                             </select>
                                         </div>
-                                    </div>
 
-                                    <div class="row" style="margin-top: 20px">
-                                        <div class="col-5">
+                                        <div class="col-3 order-2 align-self-end">
+                                            <div>
+                                                <a class="text-black fas fa-pen-square"></a>
+                                                <label class="text-black p-3 Td">Búsqueda</label>
+                                            </div>
                                             <input autocomplete="off" maxlength="70" class="diseñoSelectLateral"
                                                 type="search" id="pClaveInput" placeholder="Búsqueda por nombre de Sprint"
                                                 v-model="Filtros.palabra"
                                                 @keyup="aplyFilter(Filtros.fechaI, Filtros.fechaF, Filtros.estado, Filtros.usuario, Filtros.palabra)">
                                         </div>
-                                        <div class="col-5">
+                                        <div class="col-1 order-3 align-self-end" b-tooltip.hover title="Buscar">
                                             <button type="button" class="btn btn-success" style="float: left"
                                                 @click="aplyFilter(Filtros.fechaI, Filtros.fechaF, Filtros.estado, Filtros.usuario, Filtros.palabra)"><span
                                                     class="fas fa-search"></span></button>
@@ -382,18 +385,61 @@
                                         <table class="table table-stryped" style="text-align: center;">
                                             <thead>
                                                 <tr>
-                                                    <th class="col-1" style="min-width: 75px;"># Sprint</th>
-                                                    <th class="col-2" style="min-width: 150px;">Nombre del Sprint</th>
-                                                    <th class="col-2" style="min-width: 150px;">Usuario asignado</th>
-                                                    <th class="col-1" style="min-width: 125px;">Fecha inicio</th>
-                                                    <th class="col-1" style="min-width: 125px;">Fecha finalización</th>
-                                                    <th class="col-1" style="min-width: 125px;">Estado</th>
+                                                    <th class="col-1" style="min-width: 75px; cursor: pointer;"
+                                                        @click="sortTable('Id_Sprint')">
+                                                        # Sprint
+                                                        <i class="fas"
+                                                            :class="{ 'fa-sort-up': sortBy === 'Id_Sprint' && sortOrder === 1, 'fa-sort-down': sortBy === 'Id_Sprint' && sortOrder === -1 }"
+                                                            style="cursor: pointer;"></i>
+                                                    </th>
+
+                                                    <th class="col-2" style="min-width: 150px; cursor: pointer;"
+                                                        @click="sortTable('Sprint_Name')">
+                                                        Nombre del Sprint
+                                                        <i class="fas"
+                                                            :class="{ 'fa-sort-up': sortBy === 'Sprint_Name' && sortOrder === 1, 'fa-sort-down': sortBy === 'Sprint_Name' && sortOrder === -1 }"
+                                                            style="cursor: pointer;"></i>
+                                                    </th>
+
+                                                    <th class="col-2" style="min-width: 150px; cursor: pointer;"
+                                                        @click="sortTable('User_Login')">
+                                                        Usuario asignado
+                                                        <i class="fas"
+                                                            :class="{ 'fa-sort-up': sortBy === 'User_Login' && sortOrder === 1, 'fa-sort-down': sortBy === 'User_Login' && sortOrder === -1 }"
+                                                            style="cursor: pointer;"></i>
+                                                    </th>
+
+                                                    <th class="col-1" style="min-width: 125px; cursor: pointer;"
+                                                        @click="sortTable('Start_Date')">
+                                                        Fecha inicio
+                                                        <i class="fas"
+                                                            :class="{ 'fa-sort-up': sortBy === 'Start_Date' && sortOrder === 1, 'fa-sort-down': sortBy === 'Start_Date' && sortOrder === -1 }"
+                                                            style="cursor: pointer;"></i>
+                                                    </th>
+
+                                                    <th class="col-1" style="min-width: 125px; cursor: pointer;"
+                                                        @click="sortTable('End_Date')">
+                                                        Fecha finalización
+                                                        <i class="fas"
+                                                            :class="{ 'fa-sort-up': sortBy === 'End_Date' && sortOrder === 1, 'fa-sort-down': sortBy === 'End_Date' && sortOrder === -1 }"
+                                                            style="cursor: pointer;"></i>
+                                                    </th>
+
+                                                    <th class="col-1" style="min-width: 125px; cursor: pointer;"
+                                                        @click="sortTable('Id_Status')">
+                                                        Estado
+                                                        <i class="fas"
+                                                            :class="{ 'fa-sort-up': sortBy === 'Id_Status' && sortOrder === 1, 'fa-sort-down': sortBy === 'Id_Status' && sortOrder === -1 }"
+                                                            style="cursor: pointer;"></i>
+                                                    </th>
+
                                                     <th v-if="recuperarUsuTipo() == 'Administrador'" class="col-2"
                                                         style="min-width: 125px;">Opciones</th>
+
                                                 </tr>
                                             </thead>
                                             <tbody style="font-size: large;">
-                                                <tr v-for="sprint in paginateData" :key="sprint.Id_Sprint" class="claseTD">
+                                                <tr v-for="sprint in paginateData" :key="sprint.Id_Sprint" class="SelectHover">
                                                     <td @click="verTareas(sprint.Id_Sprint)">
                                                         {{ sprint.Id_Sprint }}</td>
                                                     <td @click="verTareas(sprint.Id_Sprint)">
@@ -428,7 +474,7 @@
                                                             :class="{ 'btn-warning': sprint.Id_Status != 5, 'btn-secondary': sprint.Id_Status == 5 }"
                                                             data-bs-toggle="modal" data-bs-target="#editarSprint"
                                                             :disabled="sprint.Id_Status == 5">
-                                                            <span class="fas fa-pen" style="color: white;"></span>
+                                                            <span class="fas fa-pen text-white"></span>
                                                         </button>
 
                                                         <button b-tooltip.hover title="Eliminar Sprint"
@@ -497,6 +543,8 @@ export default {
             currentSprint: null,
             hasChanges: false,
             modalShow: true,
+            sortBy: 'Id_Sprint', // Nueva columna de ordenación
+            sortOrder: 1, // 1 para ascendente, -1 para descendente
 
             Filtros: {
                 fechaI: "",
@@ -554,7 +602,7 @@ export default {
 
                     if (this.sprints.length === 0) {
                         if (usutipo === "Operador") {
-                            const responseOperator = await AdminApi.GetSprintsAllOperator(login,idProyect);
+                            const responseOperator = await AdminApi.GetSprintsAllOperator(login, idProyect);
                             this.sprints = responseOperator.data.obj;
                         } else {
                             const responseAll = await AdminApi.GetAllSprint(idProyect);
@@ -598,12 +646,12 @@ export default {
                 const response = await AdminApi.GetProjectsAllOperator(login);
                 const Projectlist = response.data.obj;
                 this.proyectos = Projectlist;
-            } else{
+            } else {
 
-            const idProyect = localStorage.getItem("currentProjectId")
-            const response = await AdminApi.GetAllSprint(idProyect);
-            const SprintList = response.data.obj;
-            this.sprints = SprintList;
+                const idProyect = localStorage.getItem("currentProjectId")
+                const response = await AdminApi.GetAllSprint(idProyect);
+                const SprintList = response.data.obj;
+                this.sprints = SprintList;
 
             }
             const filteredSprints = [];
@@ -964,6 +1012,33 @@ export default {
                 User_Login: "",
             }
             this.verifyPassword = '';
+        },
+
+        sortTable(column) {
+            if (column === this.sortBy) {
+                // Cambia el orden si se hace clic en la misma columna
+                this.sortOrder = -this.sortOrder;
+            } else {
+                // Cambia la columna de ordenación si se hace clic en una nueva columna
+                this.sortBy = column;
+                this.sortOrder = 1;
+            }
+
+            // Lógica para ordenar la tabla
+            this.paginateData.sort((a, b) => {
+                if (column === 'Id_Sprint') {
+                    // Ordenar números directamente
+                    const valA = Number(a[column]);
+                    const valB = Number(b[column]);
+                    return (valA - valB) * this.sortOrder;
+                } else {
+                    // Ordenar alfabéticamente
+                    const valA = a[column].toLowerCase();
+                    const valB = b[column].toLowerCase();
+                    return (valA < valB ? -1 : (valA > valB ? 1 : 0)) * this.sortOrder;
+                }
+            });
+
         },
 
         formatDateToYYYYMMDD(date) {

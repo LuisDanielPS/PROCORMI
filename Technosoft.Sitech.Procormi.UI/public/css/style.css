@@ -101,13 +101,10 @@ button, button:focus, button:hover { outline: none; }
     z-index: 0;
 }
 
-.claseTD{
+.SelectHover:hover td {
+    background-color: #c4d2df;
     cursor: pointer;
 }
-
-tr:hover td {
-    background-color: #c4d2df;
-    }
 
 .estiloTabla{
     background: white;

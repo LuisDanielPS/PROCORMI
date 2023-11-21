@@ -185,12 +185,12 @@
                             <div class="modal-body">
                                 <div class="col-md-12 col-xs-12" style="min-height: 350px; max-height: 400px">
                                     <div class="row">
-                                        <div class="col-6">
-                                            <h1 style="text-align: left"><strong>{{ currentTask ? currentTask.Task_Name : ''
+                                        <div class="col-12">
+                                            <h1 style="text-align: center"><strong>{{ currentTask ? currentTask.Task_Name : ''
                                             }}</strong></h1>
                                         </div>
-                                        <div class="col-6" style="text-align: right;">
-                                            <p style="text-align: right;"><b>{{ currentTask ? currentTask.Id_Status : ''
+                                        <div class="col-12" style="text-align: right;">
+                                            <p style="text-align: right;">Estado: <b>{{ currentTask ? currentTask.Id_Status : ''
                                             }}</b></p>
                                         </div>
                                     </div>
@@ -199,7 +199,7 @@
                                     <div class="col-md-12 col-xs-12" style="min-height: 350px; max-height: 400px">
                                         <div class="row">
                                             <div class="col-12">
-                                                <h4 class="modal-title" style="text-align: left">
+                                                <h4 class="modal-title" style="text-align: center">
                                                     <strong>Descripción</strong>
                                                 </h4>
                                             </div>
@@ -209,7 +209,7 @@
                                         <div class="row">
                                             <div class="col-12">
                                                 <div class="col-md-12 col-xs-12">
-                                                    <div style="text-align: left;">
+                                                    <div style="text-align: justify;">
                                                         {{ currentTask ? currentTask.Description_Task : '' }}
                                                     </div>
                                                 </div>
@@ -664,12 +664,9 @@
                                             </div>
                                         </div>
 
-                                        <div class="col-2">
+                                        <div class="col-1 align-self-end">
                                             <div>
-                                                <label class="text-white p-3 Td">.</label>
-                                            </div>
-                                            <div>
-                                                <button type="button" class="btn btn-success" style="float: right;"
+                                                <button type="button" class="btn btn-success" style="float: left;"
                                                     @click="aplyFilter(Filtros.estado, Filtros.palabra)"><span
                                                         class="fas fa-search"></span></button>
                                             </div>
@@ -756,10 +753,10 @@
                                                             @click="() => startTaskEditing(tarea)"
                                                             :disabled="tarea.Id_Status == 'Finalizada'"
                                                             class="btn"
-                                                            :class="{ 'btn-success': tarea.Id_Status != 'Finalizada', 'btn-secondary': tarea.Id_Status == 'Finalizada'}"
+                                                            :class="{ 'btn-warning': tarea.Id_Status != 'Finalizada', 'btn-secondary': tarea.Id_Status == 'Finalizada'}"
                                                             style="margin-left: 5px;" type="button" 
                                                             data-bs-toggle="modal" data-bs-target="#editarTarea">
-                                                            <span class="fas fa-pen" style="color: white;"></span>
+                                                            <span class="fas fa-pen text-white"></span>
                                                         </button>
                                                         <button b-tooltip.hover title="Eliminar Tarea"
                                                             v-if="recuperarUsuTipo() == 'Administrador'"

@@ -88,12 +88,13 @@
 
                         <!--Lista de encuestas /-->
 
-                        <div class="row" style="padding:15px; min-height: 95vh; padding-right: 45px;">
-                            <div class="col-12 estiloTabla" style="padding:15px;">
+                        <div class="row" style="padding:15px; min-height: 95vh; padding-right: 45px; position:relative;">
+                            <div class="col-12 estiloTabla tableHeight" style="padding:10px;">
                                 <div class="card" style="border: none;" ref="cuadroLoader">
                                     <div class="encabezado">
                                         <div style="text-align: left;">
-                                            <FiltroSuperior class="justify-content-center buscador" />
+                                            <div>
+                                            </div>
                                         </div>
                                         <div style="text-align: center; padding-top: 10px; cursor: default;">
                                             <h4>Listado de Encuestas</h4>
@@ -147,9 +148,9 @@
                                         <table class="table table-stryped" style="text-align: center;">
                                             <thead>
                                                 <tr>
-                                                    <th class="col-1" style="min-width: 75px;">Nombre</th>
+                                                    <th class="col-3" style="min-width: 75px;">Nombre</th>
                                                     <th class="col-4" style="min-width: 150px;">Descripción</th>
-                                                    <th class="col-3" style="min-width: 125px;">Fecha de creación</th>
+                                                    <th class="col-2" style="min-width: 125px;">Fecha de creación</th>
                                                     <th class="col-2" style="min-width: 125px;">Opciones</th>
                                                 </tr>
                                             </thead>
@@ -162,8 +163,8 @@
                                                         <button class="btn btn-primary" role="button" b-tooltip.hover title="Ver Encuesta" @click="VerEncuesta(poll.Id_Poll)">
                                                             <span class="fas fa-eye"></span>
                                                         </button>
-                                                        <button style="margin-left: 5px;" type="button" b-tooltip.hover title="Editar Encuesta" class="btn btn-success" @click="EditarEncuesta(poll.Id_Poll)">
-                                                            <span class="fas fa-pen"></span>
+                                                        <button style="margin-left: 5px;" type="button" b-tooltip.hover title="Editar Encuesta" class="btn btn-warning" @click="EditarEncuesta(poll.Id_Poll)">
+                                                            <span class="fas fa-pen text-white"></span>
                                                         </button>
                                                         <button type="button" b-tooltip.hover title="Eliminar Encuesta" class="btn btn-danger" style="margin-left: 5px;" @click="DeletePoll(poll.Id_Poll)">
                                                             <span class="fas fa-trash"></span>
@@ -202,14 +203,13 @@
 import Cookies from 'js-cookie';
 import HeaderPrincipal from '@/components/HeaderPrincipal.vue'
 import MenuLateral from '@/components/MenuLateral.vue'
-import FiltroSuperior from '@/components/FiltroSuperior.vue'
 import AdminApi from '@/Api/Api';
 import CryptoJS from 'crypto-js';
 
 export default {
 
     components: {
-        HeaderPrincipal, MenuLateral, FiltroSuperior
+        HeaderPrincipal, MenuLateral
     },
 
     data() {
