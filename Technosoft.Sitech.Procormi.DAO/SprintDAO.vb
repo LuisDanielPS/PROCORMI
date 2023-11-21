@@ -319,23 +319,42 @@ Public Class SprintDAO
     Public Function PutSprintDAO(ByVal pSprintEn As SprintEN) As Reply(Of SprintEN)
 
         Dim reply As New Reply(Of SprintEN)
+        Dim updated, current As SprintEN
 
         Try
+            current = GetSprintDAO(pSprintEn.Id_Sprint).obj
+
             If pSprintEn Is Nothing Then
                 reply.ok = False
                 reply.msg = "El objeto del sprint esta Vacio"
 
-
             ElseIf pSprintEn IsNot Nothing Then
+
+                ' checar que el usuario del sprint ha sido modificado, para avisar al nuevo usuario y al viejo de temas de asignacion/desasignacion
+                sentence = "SELECT User_Login from sprint where Id_Sprint = @filtro1"
+                Using dr As MySqlDataReader = ConexionDAO.Instancia.ExecuteConsultOneParameterInteger(sentence, pSprintEn.Id_Sprint)
+                    If dr.Read() Then
+                        Dim currentUser As String = dr(0)
+                        If currentUser.Equals(pSprintEn.User_Login) Then
+                            ' no hay cambios de usuario
+                        Else
+                            NotificationDAO.Instance.NotifyAssignedSprint(pSprintEn.User_Login, pSprintEn.Id_Sprint)
+                            NotificationDAO.Instance.NotifyUnassignedSprint(currentUser, pSprintEn.Id_Sprint)
+                        End If
+                    End If
+                End Using
+
+                ' procedemos con el update
                 sentence = "UPDATE sprint SET Sprint_Name = @parameter1, Start_Date = @parameter2, End_Date = @parameter3, User_Login = @parameter4  WHERE Id_Sprint = @Condition"
 
                 ConexionDAO.Instancia.ExecuteUpdateSprint(sentence, pSprintEn)
                 reply.ok = True
                 reply.msg = "El Sprint se ha modificado correctamente"
 
+                updated = GetSprintDAO(pSprintEn.Id_Sprint).obj
+
+                NotificationDAO.Instance.NotifySprintDatesChanged(updated, current)
             End If
-
-
 
         Catch ex As Exception
             EscritorVisorEventos.Instancia().EscribirEvento(nameClass, MethodBase.GetCurrentMethod().Name, ex)

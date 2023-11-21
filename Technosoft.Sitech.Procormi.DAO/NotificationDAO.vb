@@ -143,6 +143,35 @@ Public Class NotificationDAO
         End Try
     End Function
 
+
+    Public Function NotifyUnassignedSprint(ByVal pUser As String, ByVal pIdSprint As Integer) As Reply(Of NotificationEN)
+        Dim reply As New Reply(Of NotificationEN)
+        Try
+            Dim notification = New NotificationEN()
+            notification.Action = "DESASIGNADO"
+            notification.Title = "Desasignacion de sprint"
+
+            sentence = "SELECT Sprint_Name from sprint where Id_Sprint = " & pIdSprint
+            Using dr As MySqlDataReader = ConexionDAO.Instancia.ExecuteConsult(sentence)
+                If dr.Read Then
+                    notification.Message = "El sprint " + dr(0) + " te ha sido desasignado"
+                End If
+            End Using
+
+            notification.Usu_Login = pUser
+            notification.Type = "sprint"
+            notification.Type_Ref_Id = pIdSprint
+
+            Return PostNotification(notification)
+        Catch ex As Exception
+            EscritorVisorEventos.Instancia().EscribirEvento(nameClass, MethodBase.GetCurrentMethod().Name, ex)
+            reply.ok = False
+            reply.msg = "NotifyUnassignedSprint: No fue posible ejecutar la consulta: " & ex.Message
+            Return reply
+        End Try
+    End Function
+
+
     Public Function NotifyUnassignedProject(ByVal pUser As String, ByVal pIdProject As Integer) As Reply(Of NotificationEN)
         Dim reply As New Reply(Of NotificationEN)
         Try
@@ -234,6 +263,48 @@ Public Class NotificationDAO
             Return reply
         End Try
     End Function
+
+
+    Public Function NotifySprintDatesChanged(ByVal pUpdatedSprint As SprintEN, ByVal pCurrentSprint As SprintEN) As Reply(Of NotificationEN)
+        Dim reply As New Reply(Of NotificationEN)
+        Try
+            Dim pUser As String = ""
+            Dim notification = New NotificationEN()
+            notification.Action = "MODIFICATION"
+            notification.Title = "Cambios en sprint"
+
+            If (pUpdatedSprint.Equals(pCurrentSprint)) Then
+                Return reply
+            End If
+
+            sentence = "SELECT Sprint_Name, User_Login from sprint where Id_Sprint = " & pCurrentSprint.Id_Sprint
+            Using dr As MySqlDataReader = ConexionDAO.Instancia.ExecuteConsult(sentence)
+                If dr.Read Then
+                    If (Not pUpdatedSprint.Start_Date.Equals(pCurrentSprint.Start_Date) And Not pUpdatedSprint.End_Date.Equals(pCurrentSprint.End_Date)) Then
+                        notification.Message = "La fecha de inicio y fin han cambiado del sprint " + dr(0)
+                    ElseIf Not pUpdatedSprint.End_Date.Equals(pCurrentSprint.End_Date) Then
+                        notification.Message = "La fecha de fin ha cambiado del sprint " + dr(0)
+                    ElseIf Not pUpdatedSprint.Start_Date.Equals(pCurrentSprint.Start_Date) Then
+                        notification.Message = "La fecha de inicio ha cambiado del sprint " + dr(0)
+                    End If
+                    pUser = dr(1)
+                End If
+            End Using
+
+            notification.Usu_Login = pUser
+            notification.Type = "sprint"
+            notification.Type_Ref_Id = pCurrentSprint.Id_Sprint
+
+            Return PostNotification(notification)
+        Catch ex As Exception
+            EscritorVisorEventos.Instancia().EscribirEvento(nameClass, MethodBase.GetCurrentMethod().Name, ex)
+            reply.ok = False
+            reply.msg = "NotifySprintCompleted: No fue posible ejecutar la consulta: " & ex.Message
+            Return reply
+        End Try
+    End Function
+
+
 
     Public Function ReadNotification(ByVal pIdNotification As Integer) As Reply(Of NotificationEN)
 
