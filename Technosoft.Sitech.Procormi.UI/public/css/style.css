@@ -106,6 +106,12 @@ button, button:focus, button:hover { outline: none; }
     cursor: pointer;
 }
 
+.SelectHoverTasks:hover {
+    /*background-color: #c4d2df;*/
+    color: blue !important;
+    cursor: pointer;
+}
+
 .estiloTabla{
     background: white;
     border-radius: 25px;

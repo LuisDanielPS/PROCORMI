@@ -317,7 +317,7 @@
                                         <div class="col-3">
                                             <div>
                                                 <a class="text-black fas fa-calendar-alt"></a>
-                                                <label class="text-black p-3 Td">Fecha inicio</label>
+                                                <label class="text-black p-3 Td">Inicio</label>
                                             </div>
                                             <input type="date" id="fechaInicio" class="diseñoSelectLateral"
                                                 style="cursor: pointer; border-radius: 5px;" v-model="Filtros.fechaI">
@@ -326,13 +326,13 @@
                                         <div class="col-3">
                                             <div>
                                                 <a class="text-black fas fa-calendar-alt"></a>
-                                                <label class="text-black p-3 Td">Fecha de Finalización</label>
+                                                <label class="text-black p-3 Td">Finalización</label>
                                             </div>
                                             <input type="date" id="fechaFin" class="diseñoSelectLateral"
                                                 style="cursor: pointer; border-radius: 5px;" v-model="Filtros.fechaF">
                                         </div>
 
-                                        <div class="col-2">
+                                        <div class="col-3">
                                             <div>
                                                 <a class="text-black fas fa-check-square"
                                                     style="text-decoration: none;"></a>
@@ -345,7 +345,7 @@
                                             </select>
                                         </div>
 
-                                        <div v-if="recuperarUsuTipo() == 'Administrador'" class="col-2 order-1"
+                                        <div v-if="recuperarUsuTipo() == 'Administrador'" class="col-3 order-1"
                                             b-tooltip.hover title="Usuario">
                                             <div>
                                                 <a class="text-black fas fa-user"></a>

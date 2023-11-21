@@ -153,7 +153,7 @@
                                                 </div>
                                                 <p ref="errorQuestion" style="visibility: hidden;color: red;"></p>
 
-                                                <div class="col-6">
+                                                <div class="col-12">
                                                     <button class="btn btn-primary botones" style="float: right;"
                                                         @click="agregarPregunta" b-tooltip.hover
                                                         title="Agregar pregunta a la lista"><span

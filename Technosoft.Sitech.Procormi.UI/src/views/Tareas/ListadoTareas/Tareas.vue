@@ -703,7 +703,7 @@
                                         </div>
                                         <div>
 
-                                            <div class="tablaPersonalizada" v-for="tarea in paginateData"
+                                            <div class="tablaPersonalizada SelectHoverTasks" v-for="tarea in paginateData"
                                                 :key="tarea.Id_Task">
                                                 <div>
                                                     <div class="tablaPersonalizadaRowPointer"

@@ -101,7 +101,14 @@ button, button:focus, button:hover { outline: none; }
     z-index: 0;
 }
 
-.claseTD{
+.SelectHover:hover td {
+    background-color: #c4d2df;
+    cursor: pointer;
+}
+
+.SelectHoverTasks:hover {
+    /*background-color: #c4d2df;*/
+    color: blue !important;
     cursor: pointer;
 }
 
@@ -403,108 +410,19 @@ button, button:focus, button:hover { outline: none; }
         }
     }
 
-    /*@media screen and (max-width: 200000px) {
-
-        body {
-            overflow-x: hidden !important;
-        }
-
-        div.cuerpo {
-            padding-left: 200px;
-        }
-
-        .header {
-            height: 80px;
-        }
-
-        .logoC {
-            font-size: 18px;
-            margin: 0 10px;
-            line-height: 80px;
-        }
-
-        .nav-menu {
-            flex-direction: column;
-            align-items: center;
-            list-style: none;
-            background-color: #262b35;
-            position: absolute;
-            right: 0;
-            top: 80px;
-            width: 30%;
-            text-align: center;
-            height: calc(740px);
-            overflow-y: auto;
-            z-index: 3;
-            display: none;
-        }
-
-        .nav-menu-item {
-            font-size: 18px;
-            margin: 0 10px;
-            line-height: 50px;
-            width: max-content;
-        }
-
-        .nav-toggle {
-            display: block;
-        }
-
-            .nav-toggle:hover {
-                display: block;
-                background: linear-gradient(to right, #F7FF0A 0%, #CF8E2E 100%);
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;
-            }
-
-        .nav-menu_visible {
-            display: block;
-        }
-
-        @media screen and (max-width: 780px) {
-
-            .nav-menu {
-                flex-direction: column;
-                align-items: center;
-                list-style: none;
-                background-color: #262b35;
-                position: absolute;
-                right: 0;
-                top: 80px;
-                min-width: 50%;
-                text-align: center;
-                height: calc(97vh-10px);
-                overflow-y: auto;
-                left: 100%;
-                z-index: 4;
-            }
-
-            .nav-menu-item {
-                font-size: 18px;
-                margin: 0 10px;
-                line-height: 50px;
-                width: max-content;
-            }
-
-            .nav-toggle {
-                display: block;
-            }
-
-                .nav-toggle:hover {
-                    display: block;
-                    background: linear-gradient(to right, #F7FF0A 0%, #CF8E2E 100%);
-                    -webkit-background-clip: text;
-                    -webkit-text-fill-color: transparent;
-                }
-
-            .nav-menu_visible {
-                left: 50%;
-                transition: left 0.3s;
-            }
-        }
-    }*/
-
     /*Para el Header Secundario*/
+
+    /*Modales*/
+
+    .encabezadoModal {
+        background-color: #0a3a66;
+    }
+
+    .contenidoModal {
+        border-radius: 25px !important;
+    }
+
+    /*Modales*/
 
     .Fondo {
         background-color: #262b35;

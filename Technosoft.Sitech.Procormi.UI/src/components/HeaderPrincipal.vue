@@ -55,7 +55,7 @@
                         <br />
                     </li>-->
                     <div style="display: flex; align-items: center; justify-content: center;">
-                        <div class="nav-link textoBlanco">
+                        <div class="nav-link textoBlanco" style="margin-bottom: 25px;">
                             <a role="button" v-on:click="cerrarSesion" class="textoBlanco"
                                 style="font-size: 17px; text-decoration: none;">Cerrar Sesión&nbsp;&nbsp;<i
                                     class="fas fa-sign-out-alt"></i></a>

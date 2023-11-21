@@ -210,13 +210,13 @@ Public Class ProjectBLL
 
                 reply = ProjectDAO.Instance.PostAddFileProjectDAO(pAddFileProject)
                 reply.ok = True
-                reply.msg = "Se agrego un archivo ala lista del proyecto "
+                reply.msg = "Se agregó un archivo a la lista del proyecto "
             End If
 
         Catch ex As Exception
             EscritorVisorEventos.Instancia().EscribirEvento(nameClass, MethodBase.GetCurrentMethod().Name, ex)
             reply.ok = False
-            reply.msg = "Error al  agregar un archivo a la lista del proyecto "
+            reply.msg = "Error al agregar un archivo a la lista del proyecto "
         End Try
 
         Return reply

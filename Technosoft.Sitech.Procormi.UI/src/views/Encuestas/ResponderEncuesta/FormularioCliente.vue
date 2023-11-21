@@ -19,7 +19,7 @@
                                         <p style="text-align: center; font-size: 15px; color: #000000;">{{
                                             QuitarHTML(poll.Description) }}</p>
                                         <br>
-                                        <p style="text-align: center; font-size: 15px; color: #000000;"><b>Link:</b> <a>{{
+                                        <p v-if="recuperarUsuLog() != '' && recuperarUsuLog() != null && recuperarUsuLog() != undefined" style="text-align: center; font-size: 15px; color: #000000;"><b>Link:</b> <a>{{
                                             fullLink }}</a></p>
                                         <div>
                                             <div>

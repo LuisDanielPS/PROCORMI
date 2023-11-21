@@ -21,12 +21,12 @@
                                 <div class="row textoBlanco" style="padding-top: 5px; padding-bottom: 5px;">
                                     <div class="col-12" style="color: white;"><hr /></div>
                                 </div>
-                                <div class="row justify-content-center" style="margin-left: 5px;">
+                                <div class="row justify-content-center" style="margin-left: 5px;" v-if="recuperarUsuTipo() == 'Administrador'">
                                     <li class="col-8 textoBlanco botonEncuestas">
                                         <router-link role="button" :to="{ name: 'Encuestas' }" class="textoBlanco textoEncuestas" exact-active-class="active-link">Encuestas&nbsp;&nbsp;<i class="text-white fas fa-chart-line" style="cursor: pointer;"></i></router-link>
                                     </li>
                                 </div>
-                                <div class="row textoBlanco" style="padding-top: 5px; padding-bottom: 5px;">
+                                <div class="row textoBlanco" style="padding-top: 5px; padding-bottom: 5px;" v-if="recuperarUsuTipo() == 'Administrador'">
                                     <div class="col-12" style="color: white;"><hr /></div>
                                 </div>
                                 <div class="row justify-content-center" style="margin-left: 5px;">

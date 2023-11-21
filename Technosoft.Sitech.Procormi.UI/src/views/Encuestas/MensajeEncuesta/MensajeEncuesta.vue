@@ -17,7 +17,7 @@
                             <div class="column">
                                 
                                 <label>
-                                    "¡Gracias por completar nuestra encuesta!
+                                    ¡Gracias por completar nuestra encuesta!
                             </label>
                             </div>
 
