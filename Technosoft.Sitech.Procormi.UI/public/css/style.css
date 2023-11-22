@@ -106,10 +106,17 @@ button, button:focus, button:hover { outline: none; }
     cursor: pointer;
 }
 
+.SelectHoverTasks {
+    padding-top: 10px;
+    margin-left: 4px;
+    margin-right: 4px;
+    min-width: 100vh !important;
+}
+
 .SelectHoverTasks:hover {
-    /*background-color: #c4d2df;*/
-    color: blue !important;
     cursor: pointer;
+    border-radius: 30px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
 }
 
 .estiloTabla{

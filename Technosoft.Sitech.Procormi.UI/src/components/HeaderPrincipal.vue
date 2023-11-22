@@ -74,7 +74,7 @@
                     </div>
                     <div>
                         <div style="max-width: 100%;">
-                            <div class="textoBlanco" v-for="notif in notifications" :key="notif.Id_Notification">
+                            <div class="textoBlanco" style="cursor: default;" v-for="notif in notifications" :key="notif.Id_Notification">
                                 <div class="notification-top" style="text-align: left;">
                                     <hr class="textoBlanco">
                                     <a style="text-decoration:none; color:white; font-weight: bold;"

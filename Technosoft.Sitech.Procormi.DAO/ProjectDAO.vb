@@ -73,7 +73,7 @@ Public Class ProjectDAO
         FROM project AS p
         JOIN seg_usu_project AS sp ON p.Id_Project = sp.Id_Project
         JOIN seg_usu AS u ON sp.User_Login = u.usu_Login
-        WHERE u.usu_Login = @filtro1 AND u.usu_Tipo = 'Operador' AND p.Id_Status<>2"
+        WHERE u.usu_Login = @filtro1 AND u.usu_Tipo = 'Operador' AND p.Id_Status<>2 order by p.Id_Project desc"
 
             Using dr As MySqlDataReader = ConexionDAO.Instancia.ExecuteConsultOneParameterString(sentence, pUsuLogin)
 

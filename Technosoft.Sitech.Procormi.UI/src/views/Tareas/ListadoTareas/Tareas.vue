@@ -346,6 +346,7 @@
                                     <div class="left-content" style="margin-top: 15px;">
                                         <select v-model="statusSubTarea" required name="estado" id="estado"
                                             class="form-select text-black inputsGeneral" style="min-height: 48px;">
+                                            <option value="">Seleccione una opción</option>
                                             <option v-for="status in statusOptions" :key="status" :value="status">{{ status
                                             }}</option>
                                         </select>
@@ -370,6 +371,7 @@
                                     <div class="left-content" style="margin-top: 15px;">
                                         <select v-model="prioritySubTarea" required name="estado" id="estado"
                                             class="form-select text-black inputsGeneral" style="min-height: 48px;">
+                                            <option value="">Seleccione una opción</option>
                                             <option v-for="priority in priorityOptions" :key="priority" :value="priority">
                                                 {{ priority }}</option>
                                         </select>
@@ -714,7 +716,7 @@
                                                     <div class="tablaPersonalizadaRowPointer"
                                                         @click="() => startSubTaskCreation(tarea)"
                                                         style="margin-bottom: 10px;"><a v-if="tarea.Id_Status != 'Finalizada'"
-                                                            style="text-decoration: none;margin-bottom: 10px;"
+                                                            style="text-decoration: none; margin-bottom: 10px;"
                                                             class="fas fa-plus" data-bs-toggle="modal"
                                                             data-bs-target="#crearSubtarea"></a></div>
                                                 </div>
@@ -791,24 +793,22 @@
                                                         </div>
                                                     </div>
                                                     <div>
-                                                        <div class="tablaPersonalizadaRow"></div>
+                                                        <div class="tablaPersonalizadaRow" style="text-align: center;"></div>
                                                     </div>
                                                     <div>
-                                                        <div class="tablaPersonalizadaRowSubTareas" style="float: left;">{{
-                                                            subTask.Title }}</div>
-                                                    </div>
-                                                    <div>
-                                                        <!--<div class="tablaPersonalizadaRow">
-                                                        <p class="fas" :class="`fa-${getPriorityIcon(subTask.Id_Priority)}-circle`" :style="`color: ${getPriorityColor(subTask.Id_Priority)};`"></p>
-                                                    </div>-->
-                                                        <div class="tablaPersonalizadaRow" style="min-width: 120px;">
-                                                            <div
-                                                                style="min-width: 100px; float: left;">{{ subTask.Id_Status
-                                                                }}</div>
+                                                        <div class="tablaPersonalizadaRow" style="float: left;">
+                                                            {{ subTask.Title }}
                                                         </div>
                                                     </div>
                                                     <div>
-                                                        <div class="tablaPersonalizadaRowPointer" style="min-width: 200px;">
+                                                        <div class="tablaPersonalizadaRow" style="min-width: 80px;">
+                                                            <div style="min-width: 80px; float: left;">
+                                                                {{ subTask.Id_Status }}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        <div class="tablaPersonalizadaRow" style="min-width: 150px;">
                                                             <a style="text-decoration: none; margin-right: 20px;"
                                                                 class="fas fa-eye" b-tooltip.hover title="Ver subtarea"
                                                                 data-bs-toggle="modal" data-bs-target="#verSubTarea"
@@ -1130,8 +1130,7 @@ export default {
                 return errorCreateTaskDescription;
             }
 
-            const validStates = ["Pendiente", "En Proceso", "Finalizada"]
-            if (isEdit && !validStates.includes(task.Id_Status.trim())) {
+            if (isEdit && (task.Id_Status.trim() == '' || task.Id_Status.trim() == null || task.Id_Status.trim() == undefined)) {
 
                 errorUpdateTaskStatus.textContent = "Se tiene que completar el campo del estado de la tarea";
                 errorUpdateTaskStatus.style.visibility = "visible";
@@ -1223,9 +1222,7 @@ export default {
 
             }
 
-            const validStates = ["Pendiente", "En Proceso", "Finalizada"]
-            if (isEdit && !validStates.includes(subTask.Id_Status.trim())) {
-
+            if (subTask.Id_Status == '' || subTask.Id_Status == null || subTask.Id_Status == undefined) {
                 errorCreateSubTaskStatus.textContent = "Se tiene que completar el campo del estado de la subtarea";
                 errorCreateSubTaskStatus.style.visibility = "visible";
                 errorCreateSubTaskStatus.style.display = "block";
@@ -1252,8 +1249,7 @@ export default {
 
             }
 
-            const validPriorities = ["Alta", "Media", "Baja"]
-            if (isEdit && !validPriorities.includes(subTask.Id_Priority.trim())) {
+            if (subTask.Id_Priority == '' || subTask.Id_Priority == null || subTask.Id_Priority == undefined) {
 
 
                 errorCreateSubTaskPriority.textContent = "Se tiene que completar el campo de la prioridad de la subtarea";
@@ -1836,7 +1832,7 @@ export default {
                     this.modalShowTask = false
 
                     const swal = this.$swal({
-                        title: 'Se creo correctamente la tarea',
+                        text: 'Se creo correctamente la tarea',
                         icon: 'success',
                         showConfirmButton: false,
                     });
@@ -1866,7 +1862,7 @@ export default {
                     this.modalShowSubTask = false
 
                     const swal = this.$swal({
-                        title: 'Se creo correctamente la subtarea',
+                        text: 'Se creo correctamente la subtarea',
                         icon: 'success',
                         showConfirmButton: false,
                     });
@@ -2248,7 +2244,7 @@ ol {
 
 .tablaPersonalizadaSubtareas {
     display: grid;
-    grid-template-columns: 10% 2% 48% 15% 25%;
+    grid-template-columns: 10% 5% 45% 13% 25%;
 }
 
 @media screen and (max-width: 900px) {

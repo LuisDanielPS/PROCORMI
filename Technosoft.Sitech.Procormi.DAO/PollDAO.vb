@@ -203,7 +203,7 @@ Public Class PollDAO
         Dim list As MySqlDataReader
 
         Try
-            sentence = "SELECT * FROM poll"
+            sentence = "SELECT * FROM poll order by Id_Poll desc"
 
             list = ConexionDAO.Instancia.EjecutarConsultaListados(sentence)
 

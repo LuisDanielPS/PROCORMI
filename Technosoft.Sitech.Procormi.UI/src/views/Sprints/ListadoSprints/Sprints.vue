@@ -238,7 +238,7 @@
 
                 <!--Menú Lateral /-->
 
-                <div class="w-100 listadoGeneral">
+                <div class="w-100 listadoGeneral contenidoTabla">
 
                     <!--Filtros responsive /-->
 
@@ -314,7 +314,7 @@
                                     </div>
 
                                     <div class="row">
-                                        <div class="col-3">
+                                        <div class="col-lg-3 col-md-12 col-sm-12">
                                             <div>
                                                 <a class="text-black fas fa-calendar-alt"></a>
                                                 <label class="text-black p-3 Td">Inicio</label>
@@ -323,7 +323,7 @@
                                                 style="cursor: pointer; border-radius: 5px;" v-model="Filtros.fechaI">
                                         </div>
 
-                                        <div class="col-3">
+                                        <div class="col-lg-3 col-md-12 col-sm-12">
                                             <div>
                                                 <a class="text-black fas fa-calendar-alt"></a>
                                                 <label class="text-black p-3 Td">Finalización</label>
@@ -332,7 +332,7 @@
                                                 style="cursor: pointer; border-radius: 5px;" v-model="Filtros.fechaF">
                                         </div>
 
-                                        <div class="col-3">
+                                        <div class="col-lg-2 col-md-12 col-sm-12">
                                             <div>
                                                 <a class="text-black fas fa-check-square"
                                                     style="text-decoration: none;"></a>
@@ -345,7 +345,7 @@
                                             </select>
                                         </div>
 
-                                        <div v-if="recuperarUsuTipo() == 'Administrador'" class="col-3 order-1"
+                                        <div v-if="recuperarUsuTipo() == 'Administrador'" class="col-lg-2 col-md-12 col-sm-12 order-1"
                                             b-tooltip.hover title="Usuario">
                                             <div>
                                                 <a class="text-black fas fa-user"></a>
@@ -360,7 +360,7 @@
                                             </select>
                                         </div>
 
-                                        <div class="col-3 order-2 align-self-end">
+                                        <div class="col-lg-2 col-md-12 col-sm-12 order-2 align-self-end">
                                             <div>
                                                 <a class="text-black fas fa-pen-square"></a>
                                                 <label class="text-black p-3 Td">Búsqueda</label>
@@ -370,11 +370,13 @@
                                                 v-model="Filtros.palabra"
                                                 @keyup="aplyFilter(Filtros.fechaI, Filtros.fechaF, Filtros.estado, Filtros.usuario, Filtros.palabra)">
                                         </div>
-                                        <div class="col-1 order-3 align-self-end" b-tooltip.hover title="Buscar">
+
+                                        <div class="col-lg-12 col-md-12 col-sm-12 order-3 align-self-end" style="margin-top: 20px; margin-bottom: 20px;" b-tooltip.hover title="Buscar">
                                             <button type="button" class="btn btn-success" style="float: left"
                                                 @click="aplyFilter(Filtros.fechaI, Filtros.fechaF, Filtros.estado, Filtros.usuario, Filtros.palabra)"><span
                                                     class="fas fa-search"></span></button>
                                         </div>
+
                                     </div>
 
                                     <div v-if="paginateData.length == 0" class="sinResultadosAct">
@@ -434,7 +436,7 @@
                                                     </th>
 
                                                     <th v-if="recuperarUsuTipo() == 'Administrador'" class="col-2"
-                                                        style="min-width: 125px;">Opciones</th>
+                                                        style="min-width: 150px;">Opciones</th>
 
                                                 </tr>
                                             </thead>
@@ -643,9 +645,10 @@ export default {
             let usutipo = this.recuperarUsuTipo()
 
             if (usutipo === "Operador") {
-                const response = await AdminApi.GetProjectsAllOperator(login);
-                const Projectlist = response.data.obj;
-                this.proyectos = Projectlist;
+                const idProyect = localStorage.getItem("currentProjectId")
+                const response = await AdminApi.GetSprintsAllOperator(login, idProyect);
+                const SprintList = response.data.obj;
+                this.sprints = SprintList;
             } else {
 
                 const idProyect = localStorage.getItem("currentProjectId")
@@ -941,7 +944,7 @@ export default {
                         await AdminApi.PostNewAction(this.ActionEN)
 
                         const swal = this.$swal({
-                            title: response.data.msg,
+                            text: response.data.msg,
                             icon: 'success',
                             showConfirmButton: false,
                         });

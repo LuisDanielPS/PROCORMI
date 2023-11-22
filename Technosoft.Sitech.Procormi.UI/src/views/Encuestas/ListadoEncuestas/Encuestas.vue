@@ -121,7 +121,7 @@
                                                 <label class="text-black p-3 Td">Palabra</label>
                                             </div>
                                             <div>
-                                                <input autocomplete="off" maxlength="70" class="diseñoSelectLateral"
+                                                <input @keyup="aplyFilter(Filtros.fecha, Filtros.palabra)" autocomplete="off" maxlength="70" class="diseñoSelectLateral"
                                                     type="search" id="pClaveInput" placeholder="Buscar"
                                                     v-model="Filtros.palabra">
                                             </div>

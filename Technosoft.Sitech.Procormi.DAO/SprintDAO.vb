@@ -72,7 +72,7 @@ Public Class SprintDAO
             sentence = "SELECT s.Id_Sprint, s.Sprint_Name, s.Start_Date, s.End_Date, s.Id_Project, s.Id_Status, s.User_Login
                         FROM sprint AS s
                         JOIN seg_usu AS u ON s.User_Login = u.usu_Login
-                        WHERE u.usu_Login = @filtro1 AND s.Id_Project = @filtro2 AND u.usu_Tipo = 'Operador' AND s.Id_Status <> 2;"
+                        WHERE u.usu_Login = @filtro1 AND s.Id_Project = @filtro2 AND u.usu_Tipo = 'Operador' AND s.Id_Status <> 2 order by s.Id_Sprint desc;"
 
             Using dr As MySqlDataReader = ConexionDAO.Instancia.ExecuteConsultTwoParameterString(sentence, pUsuLogin, pId_Project)
 
