@@ -506,7 +506,7 @@ export default {
                         bold: true,
                         italic: true,
                         underline: false,
-                        color: { argb: 'FFFFFF' },
+                        color: { argb: '0E0E0E' },
                     };
 
                     const fontDataUserStyle = {
@@ -527,7 +527,17 @@ export default {
                         color: { argb: '000000' },
                     };
                     const HeaderStyle = {
-                        fill: { type: 'pattern', pattern: 'solid', fgColor: { argb: 'F7F704' } },
+                        fill: { type: 'pattern', pattern: 'solid', fgColor: { argb: 'D9D9D9' } },
+                        border: {
+                            top: { style: 'thin', color: { argb: '000000' } },
+                            left: { style: 'thin', color: { argb: '000000' } },
+                            bottom: { style: 'thin', color: { argb: '000000' } },
+                            right: { style: 'thin', color: { argb: '000000' } },
+                        },
+                    };
+
+                    const HeaderStyle2 = {
+                        fill: { type: 'pattern', pattern: 'solid', fgColor: { argb: '92CDDC' } },
                         border: {
                             top: { style: 'thin', color: { argb: '000000' } },
                             left: { style: 'thin', color: { argb: '000000' } },
@@ -562,9 +572,13 @@ export default {
                     worksheet.getColumn(1).width = 60;
                     worksheet.getColumn(1).alignment = { horizontal: 'center', vertical: 'middle' };
                     worksheet.getColumn(2).width = 30;
+                    worksheet.getColumn(2).alignment = { horizontal: 'center', vertical: 'middle' };
                     worksheet.getColumn(3).width = 40;
+                    worksheet.getColumn(3).alignment = { horizontal: 'center', vertical: 'middle' };
                     worksheet.getColumn(4).width = 30;
+                    worksheet.getColumn(4).alignment = { horizontal: 'center', vertical: 'middle' };
                     worksheet.getColumn(5).width = 20;
+                    worksheet.getColumn(5).alignment = { horizontal: 'center', vertical: 'middle' };
                     worksheet.addRow(["Reporte de proyecto", "de usuario", "Procormi"]);
                     const cell = worksheet.getCell('A1');
                     cell.width = 100;
@@ -581,8 +595,8 @@ export default {
                         cell.font = fontDataUserStyle;
                     });
                     worksheet.getRow(3).eachCell((cell) => {
-                        cell.fill = HeaderStyle.fill;
-                        cell.border = HeaderStyle.border;
+                        cell.fill = HeaderStyle2.fill;
+                        cell.border = HeaderStyle2.border;
                         cell.font = fontRowStyle;
                     });
                     for (const item of this.dataListProjectUser) {
@@ -658,14 +672,13 @@ export default {
                 }
 
                 if (this.dataListSprintUser && this.dataListSprintUser.length > 0) {
-
                     const fontStyle = {
                         name: 'Arial',
                         size: 30,
                         bold: true,
                         italic: true,
                         underline: false,
-                        color: { argb: 'FFFFFF' },
+                        color: { argb: '0E0E0E' },
                     };
 
                     const fontDataUserStyle = {
@@ -686,7 +699,17 @@ export default {
                         color: { argb: '000000' },
                     };
                     const HeaderStyle = {
-                        fill: { type: 'pattern', pattern: 'solid', fgColor: { argb: 'F7F704' } },
+                        fill: { type: 'pattern', pattern: 'solid', fgColor: { argb: 'D9D9D9' } },
+                        border: {
+                            top: { style: 'thin', color: { argb: '000000' } },
+                            left: { style: 'thin', color: { argb: '000000' } },
+                            bottom: { style: 'thin', color: { argb: '000000' } },
+                            right: { style: 'thin', color: { argb: '000000' } },
+                        },
+                    };
+
+                    const HeaderStyle2 = {
+                        fill: { type: 'pattern', pattern: 'solid', fgColor: { argb: '92CDDC' } },
                         border: {
                             top: { style: 'thin', color: { argb: '000000' } },
                             left: { style: 'thin', color: { argb: '000000' } },
@@ -721,9 +744,15 @@ export default {
                     worksheet.getColumn(1).width = 60;
                     worksheet.getColumn(1).alignment = { horizontal: 'center', vertical: 'middle' };
                     worksheet.getColumn(2).width = 30;
+                    worksheet.getColumn(2).alignment = { horizontal: 'center', vertical: 'middle' };
                     worksheet.getColumn(3).width = 40;
+                    worksheet.getColumn(3).alignment = { horizontal: 'center', vertical: 'middle' };
                     worksheet.getColumn(4).width = 30;
+                    worksheet.getColumn(4).alignment = { horizontal: 'center', vertical: 'middle' };
                     worksheet.getColumn(5).width = 30;
+                    worksheet.getColumn(5).alignment = { horizontal: 'center', vertical: 'middle' };
+                    worksheet.getColumn(6).width = 30;
+                    worksheet.getColumn(6).alignment = { horizontal: 'center', vertical: 'middle' };
                     worksheet.addRow(["Reporte de sprint", "de usuario", "Procormi"]);
                     const cell = worksheet.getCell('A1');
                     cell.width = 100;
@@ -740,8 +769,8 @@ export default {
                         cell.font = fontDataUserStyle;
                     });
                     worksheet.getRow(3).eachCell((cell) => {
-                        cell.fill = HeaderStyle.fill;
-                        cell.border = HeaderStyle.border;
+                        cell.fill = HeaderStyle2.fill;
+                        cell.border = HeaderStyle2.border;
                         cell.font = fontRowStyle;
                     });
                     for (const item of this.dataListSprintUser) {
@@ -820,7 +849,7 @@ export default {
                         bold: true,
                         italic: true,
                         underline: false,
-                        color: { argb: 'FFFFFF' },
+                        color: { argb: '0E0E0E' },
                     };
 
                     const fontDataUserStyle = {
@@ -841,7 +870,17 @@ export default {
                         color: { argb: '000000' },
                     };
                     const HeaderStyle = {
-                        fill: { type: 'pattern', pattern: 'solid', fgColor: { argb: 'F7F704' } },
+                        fill: { type: 'pattern', pattern: 'solid', fgColor: { argb: 'D9D9D9' } },
+                        border: {
+                            top: { style: 'thin', color: { argb: '000000' } },
+                            left: { style: 'thin', color: { argb: '000000' } },
+                            bottom: { style: 'thin', color: { argb: '000000' } },
+                            right: { style: 'thin', color: { argb: '000000' } },
+                        },
+                    };
+
+                    const HeaderStyle2 = {
+                        fill: { type: 'pattern', pattern: 'solid', fgColor: { argb: '92CDDC' } },
                         border: {
                             top: { style: 'thin', color: { argb: '000000' } },
                             left: { style: 'thin', color: { argb: '000000' } },
@@ -876,10 +915,16 @@ export default {
                     worksheet.getColumn(1).width = 60;
                     worksheet.getColumn(1).alignment = { horizontal: 'center', vertical: 'middle' };
                     worksheet.getColumn(2).width = 30;
+                    worksheet.getColumn(2).alignment = { horizontal: 'center', vertical: 'middle' };
                     worksheet.getColumn(3).width = 40;
+                    worksheet.getColumn(3).alignment = { horizontal: 'center', vertical: 'middle' };
                     worksheet.getColumn(4).width = 30;
+                    worksheet.getColumn(4).alignment = { horizontal: 'center', vertical: 'middle' };
                     worksheet.getColumn(5).width = 30;
+                    worksheet.getColumn(5).alignment = { horizontal: 'center', vertical: 'middle' };
                     worksheet.getColumn(6).width = 30;
+                    worksheet.getColumn(6).alignment = { horizontal: 'center', vertical: 'middle' };
+
                     worksheet.addRow(["Reporte de tareas", "de usuario", "Procormi"]);
                     const cell = worksheet.getCell('A1');
                     cell.width = 100;
@@ -896,8 +941,8 @@ export default {
                         cell.font = fontDataUserStyle;
                     });
                     worksheet.getRow(3).eachCell((cell) => {
-                        cell.fill = HeaderStyle.fill;
-                        cell.border = HeaderStyle.border;
+                        cell.fill = HeaderStyle2.fill;
+                        cell.border = HeaderStyle2.border;
                         cell.font = fontRowStyle;
                     });
                     for (const item of this.dataListTaskUser) {
@@ -972,13 +1017,14 @@ export default {
 
                 if (this.dataListSubTaskUser && this.dataListSubTaskUser.length > 0) {
 
+                    
                     const fontStyle = {
                         name: 'Arial',
                         size: 30,
                         bold: true,
                         italic: true,
                         underline: false,
-                        color: { argb: 'FFFFFF' },
+                        color: { argb: '0E0E0E' },
                     };
 
                     const fontDataUserStyle = {
@@ -999,7 +1045,17 @@ export default {
                         color: { argb: '000000' },
                     };
                     const HeaderStyle = {
-                        fill: { type: 'pattern', pattern: 'solid', fgColor: { argb: 'F7F704' } },
+                        fill: { type: 'pattern', pattern: 'solid', fgColor: { argb: 'D9D9D9' } },
+                        border: {
+                            top: { style: 'thin', color: { argb: '000000' } },
+                            left: { style: 'thin', color: { argb: '000000' } },
+                            bottom: { style: 'thin', color: { argb: '000000' } },
+                            right: { style: 'thin', color: { argb: '000000' } },
+                        },
+                    };
+
+                    const HeaderStyle2 = {
+                        fill: { type: 'pattern', pattern: 'solid', fgColor: { argb: '92CDDC' } },
                         border: {
                             top: { style: 'thin', color: { argb: '000000' } },
                             left: { style: 'thin', color: { argb: '000000' } },
@@ -1034,14 +1090,23 @@ export default {
                     worksheet.getColumn(1).width = 60;
                     worksheet.getColumn(1).alignment = { horizontal: 'center', vertical: 'middle' };
                     worksheet.getColumn(2).width = 30;
+                    worksheet.getColumn(2).alignment = { horizontal: 'center', vertical: 'middle' };
                     worksheet.getColumn(3).width = 40;
+                    worksheet.getColumn(3).alignment = { horizontal: 'center', vertical: 'middle' };
                     worksheet.getColumn(4).width = 30;
+                    worksheet.getColumn(4).alignment = { horizontal: 'center', vertical: 'middle' };
                     worksheet.getColumn(5).width = 30;
+                    worksheet.getColumn(5).alignment = { horizontal: 'center', vertical: 'middle' };
                     worksheet.getColumn(6).width = 30;
+                    worksheet.getColumn(6).alignment = { horizontal: 'center', vertical: 'middle' };
                     worksheet.getColumn(7).width = 30;
+                    worksheet.getColumn(7).alignment = { horizontal: 'center', vertical: 'middle' };
                     worksheet.getColumn(8).width = 30;
+                    worksheet.getColumn(8).alignment = { horizontal: 'center', vertical: 'middle' };
                     worksheet.getColumn(9).width = 30;
+                    worksheet.getColumn(9).alignment = { horizontal: 'center', vertical: 'middle' };
                     worksheet.getColumn(10).width = 30;
+                    worksheet.getColumn(10).alignment = { horizontal: 'center', vertical: 'middle' };
                     worksheet.addRow(["Reporte de sub tareas", "de usuario", "Procormi"]);
                     const cell = worksheet.getCell('A1');
                     cell.width = 100;
@@ -1058,8 +1123,8 @@ export default {
                         cell.font = fontDataUserStyle;
                     });
                     worksheet.getRow(3).eachCell((cell) => {
-                        cell.fill = HeaderStyle.fill;
-                        cell.border = HeaderStyle.border;
+                        cell.fill = HeaderStyle2.fill;
+                        cell.border = HeaderStyle2.border;
                         cell.font = fontRowStyle;
                     });
                     for (const item of this.dataListSubTaskUser) {
@@ -1131,13 +1196,15 @@ export default {
 
                 if (this.dataListPoll && this.dataListPoll.length > 0) {
 
+         
+                    
                     const fontStyle = {
                         name: 'Arial',
                         size: 30,
                         bold: true,
                         italic: true,
                         underline: false,
-                        color: { argb: 'FFFFFF' },
+                        color: { argb: '0E0E0E' },
                     };
 
                     const fontDataUserStyle = {
@@ -1158,7 +1225,17 @@ export default {
                         color: { argb: '000000' },
                     };
                     const HeaderStyle = {
-                        fill: { type: 'pattern', pattern: 'solid', fgColor: { argb: 'F7F704' } },
+                        fill: { type: 'pattern', pattern: 'solid', fgColor: { argb: 'D9D9D9' } },
+                        border: {
+                            top: { style: 'thin', color: { argb: '000000' } },
+                            left: { style: 'thin', color: { argb: '000000' } },
+                            bottom: { style: 'thin', color: { argb: '000000' } },
+                            right: { style: 'thin', color: { argb: '000000' } },
+                        },
+                    };
+
+                    const HeaderStyle2 = {
+                        fill: { type: 'pattern', pattern: 'solid', fgColor: { argb: '92CDDC' } },
                         border: {
                             top: { style: 'thin', color: { argb: '000000' } },
                             left: { style: 'thin', color: { argb: '000000' } },
@@ -1187,20 +1264,30 @@ export default {
                     };
 
 
+
                     const workbook = new ExcelJS.Workbook();
                     const worksheet = workbook.addWorksheet("Informe tipo pregunta texto");
 
                     worksheet.getColumn(1).width = 60;
                     worksheet.getColumn(1).alignment = { horizontal: 'center', vertical: 'middle' };
                     worksheet.getColumn(2).width = 90;
+                    worksheet.getColumn(2).alignment = { horizontal: 'center', vertical: 'middle' };
                     worksheet.getColumn(3).width = 30;
+                    worksheet.getColumn(3).alignment = { horizontal: 'center', vertical: 'middle' };
                     worksheet.getColumn(4).width = 30;
+                    worksheet.getColumn(4).alignment = { horizontal: 'center', vertical: 'middle' };
                     worksheet.getColumn(5).width = 30;
+                    worksheet.getColumn(5).alignment = { horizontal: 'center', vertical: 'middle' };
                     worksheet.getColumn(6).width = 30;
+                    worksheet.getColumn(6).alignment = { horizontal: 'center', vertical: 'middle' };
                     worksheet.getColumn(7).width = 30;
+                    worksheet.getColumn(7).alignment = { horizontal: 'center', vertical: 'middle' };
                     worksheet.getColumn(8).width = 30;
+                    worksheet.getColumn(8).alignment = { horizontal: 'center', vertical: 'middle' };
                     worksheet.getColumn(9).width = 30;
+                    worksheet.getColumn(9).alignment = { horizontal: 'center', vertical: 'middle' };
                     worksheet.getColumn(10).width = 30;
+                    worksheet.getColumn(10).alignment = { horizontal: 'center', vertical: 'middle' };
                     worksheet.addRow(["Reporte de Encuesta", "Procormi"]);
                     const cell = worksheet.getCell('A1');
                     cell.width = 100;
@@ -1217,8 +1304,8 @@ export default {
                         cell.font = fontDataUserStyle;
                     });
                     worksheet.getRow(3).eachCell((cell) => {
-                        cell.fill = HeaderStyle.fill;
-                        cell.border = HeaderStyle.border;
+                        cell.fill = HeaderStyle2.fill;
+                        cell.border = HeaderStyle2.border;
                         cell.font = fontRowStyle;
                     });
                     for (const item of this.dataListPoll) {
@@ -1243,14 +1330,23 @@ export default {
                     worksheet2.getColumn(1).width = 60;
                     worksheet2.getColumn(1).alignment = { horizontal: 'center', vertical: 'middle' };
                     worksheet2.getColumn(2).width = 90;
+                    worksheet2.getColumn(2).alignment = { horizontal: 'center', vertical: 'middle' };
                     worksheet2.getColumn(3).width = 30;
+                    worksheet2.getColumn(3).alignment = { horizontal: 'center', vertical: 'middle' };
                     worksheet2.getColumn(4).width = 50;
+                    worksheet2.getColumn(4).alignment = { horizontal: 'center', vertical: 'middle' };
                     worksheet2.getColumn(5).width = 30;
+                    worksheet2.getColumn(5).alignment = { horizontal: 'center', vertical: 'middle' };
                     worksheet2.getColumn(6).width = 30;
+                    worksheet2.getColumn(6).alignment = { horizontal: 'center', vertical: 'middle' };
                     worksheet2.getColumn(7).width = 30;
+                    worksheet2.getColumn(7).alignment = { horizontal: 'center', vertical: 'middle' };
                     worksheet2.getColumn(8).width = 30;
+                    worksheet2.getColumn(8).alignment = { horizontal: 'center', vertical: 'middle' };
                     worksheet2.getColumn(9).width = 30;
+                    worksheet2.getColumn(9).alignment = { horizontal: 'center', vertical: 'middle' };
                     worksheet2.getColumn(10).width = 30;
+                    worksheet2.getColumn(10).alignment = { horizontal: 'center', vertical: 'middle' };
 
                     worksheet2.getRow(1).eachCell((cell) => {
                         cell.fill = HeaderStyle.fill;
@@ -1263,8 +1359,8 @@ export default {
                         cell.font = fontDataUserStyle;
                     });
                     worksheet2.getRow(3).eachCell((cell) => {
-                        cell.fill = HeaderStyle.fill;
-                        cell.border = HeaderStyle.border;
+                        cell.fill = HeaderStyle2.fill;
+                        cell.border = HeaderStyle2.border;
                         cell.font = fontRowStyle;
                     });
 
