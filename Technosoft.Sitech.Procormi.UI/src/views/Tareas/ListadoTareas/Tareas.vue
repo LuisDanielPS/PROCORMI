@@ -1314,7 +1314,7 @@ export default {
                 await AdminApi.PostNewAction(this.ActionEN)
 
             } else {
-                this.$swal({ icon: 'error', text: response.data.msg });
+                this.$swal({ icon: 'error', text: 'No se puede finalizar la tarea sin finalizar sus subtareas' });
                 console.error({ message: "Error al finalizar tarea", response })
             }
         },

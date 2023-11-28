@@ -39,5 +39,15 @@ Public Class NotificationBLL
         Return reply
     End Function
 
-
+    Public Function PostNotification(notification As NotificationEN) As Reply(Of NotificationEN)
+        Dim reply As Reply(Of NotificationEN) = Nothing
+        Try
+            reply = NotificationDAO.Instance.PostNotification(notification)
+        Catch ex As Exception
+            EscritorVisorEventos.Instancia().EscribirEvento(nameClass, MethodBase.GetCurrentMethod().Name, ex)
+            reply.ok = False
+            reply.msg = "Error al tratar de agregar notificaciones"
+        End Try
+        Return reply
+    End Function
 End Class

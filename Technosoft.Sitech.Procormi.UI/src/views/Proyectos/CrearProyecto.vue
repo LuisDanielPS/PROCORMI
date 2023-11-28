@@ -442,6 +442,9 @@ export default {
                             }
                         }
 
+                        // notificar usuarios la asignacion del proyecto
+                        this.notifyUsersOnProjectCreation();
+
 
                         const currentdate = new Date();
                         const options = { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' };
@@ -522,6 +525,11 @@ export default {
                                 console.log(mensaje2)
                             }
                         }
+
+
+                        // notificar a usuarios basado en agregado/removido del proyecto actual
+                        this.notifyUsersOnUserProjectModification()
+
                         const response3 = await AdminApi.DeleteUserListProject(this.$route.params.id);
                         const mensaje3 = response3.data.ok;
                         console.log(mensaje3)
@@ -650,6 +658,69 @@ export default {
 
 
                 this.selectedUser = null
+            }
+        },
+
+         async notifyUsersOnProjectCreation() {
+
+            const addedUsersNotificationOnAssignment = this.UserlistAdd.map(u => u.usu_Login);
+
+            for (const username of addedUsersNotificationOnAssignment) {
+                const addedNotification = {
+                    Title: 'Nuevo Proyecto',
+                    Message : `Ha sido agregado al proyecto: ${this.project.Project_Name}`,
+                    Action: 'Agregado',
+                    Type: 'project',
+                    Type_Ref_Id: this.project.Id_project,
+                    Usu_Login: username
+                }
+
+                await AdminApi.PostNotification(addedNotification);
+            }
+        },
+
+        async notifyUsersOnUserProjectModification() {
+            const currentUsersPerProjectResponse = await AdminApi.GetUserListProject(this.idProyecto);
+            const currentUsernames = currentUsersPerProjectResponse.data.obj.map(user => user.Usu_Login);
+            const currentDisplayedUsers = this.UserlistAdd.map(u => u.usu_Login);
+
+            // obtener todos los usuarios que se agregaron como completamente nuevos
+            // avisar asignacion de proyecto
+            const addedUsersNotificationOnAssignment = 
+                this.UserlistAdd
+                .filter(user => !currentUsernames.includes(user.usu_Login))
+                .map(user => user.usu_Login)
+
+            // obtener todos los usuarios que se descartaron/borraron del proyecto
+            // avisar desasignacion de proyecto
+            const removedUsersNotificationOnDisassignment = 
+                currentUsernames
+                .filter(user => !currentDisplayedUsers.includes(user))
+
+            for (const username of addedUsersNotificationOnAssignment) {
+                const addedNotification = {
+                    Title: 'Nuevo Proyecto',
+                    Message : `Ha sido agregado al proyecto: ${this.project.Project_Name}`,
+                    Action: 'Agregado',
+                    Type: 'project',
+                    Type_Ref_Id: this.project.Id_project,
+                    Usu_Login: username
+                }
+
+                await AdminApi.PostNotification(addedNotification);
+            }
+
+            for (const username of removedUsersNotificationOnDisassignment) {
+                const removedNotification = {
+                    Title: 'Eliminado del proyecto',
+                    Message : `Ya no formas parte de: ${this.project.Project_Name}`,
+                    Action: 'Eliminado',
+                    Type: 'project',
+                    Type_Ref_Id: this.project.Id_project,
+                    Usu_Login: username
+                }
+
+                await AdminApi.PostNotification(removedNotification);
             }
         },
 

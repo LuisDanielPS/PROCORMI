@@ -306,17 +306,41 @@ Public Class TaskDao
     Public Function PutTaskDAOAsFinished(ByVal pTaskEn As String) As Reply(Of TaskEN)
 
         Dim reply As New Reply(Of TaskEN)
+        Dim canFinish As Integer
         Try
             If pTaskEn Is Nothing Then
                 reply.ok = False
                 reply.msg = "El objeto de la tarea esta Vacio"
 
             ElseIf pTaskEn IsNot Nothing Then
-                sentence = "UPDATE task SET Id_Status = (SELECT s.Id_Status FROM status s where s.Status_Name = 'Finalizada') WHERE Id_Task = @Condition"
 
-                ConexionDAO.Instancia.ExecuteConsultCondition(sentence, pTaskEn)
-                reply.ok = True
-                reply.msg = "Se ha modificado finalizado la tarea"
+                ' chequeamos que las subtareas esten todas completadas
+                sentence =
+                    "SELECT (CASE when (select COUNT(*) as counter
+                        from sub_task where Id_Task = @filtro1 and not Id_Status = 2) - (select COUNT(*) as counter
+                        from sub_task where Id_Task = @filtro1 and Id_Status = 5) = 0 then 1 else 0 end) as canFinish "
+
+                Using dr1 As MySqlDataReader = ConexionDAO.Instancia.ExecuteConsultOneParameterString(sentence, pTaskEn)
+
+                    If dr1.Read Then
+                        Dim task As New TaskEN
+                        canFinish = dr1(0)
+
+                        If canFinish = 0 Then
+                            reply.ok = False
+                            reply.msg = "No se puede finalizar la tarea sin finalizar sus subtareas"
+                            Return reply
+                        End If
+
+                    End If
+
+                    sentence = "UPDATE task SET Id_Status = (SELECT s.Id_Status FROM status s where s.Status_Name = 'Finalizada') WHERE Id_Task = @Condition"
+
+                    ConexionDAO.Instancia.ExecuteConsultCondition(sentence, pTaskEn)
+                    reply.ok = True
+                    reply.msg = "Se ha modificado finalizado la tarea"
+
+                End Using
 
             End If
 

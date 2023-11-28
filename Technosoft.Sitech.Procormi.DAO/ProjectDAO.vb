@@ -363,7 +363,7 @@ Public Class ProjectDAO
                 reply.ok = True
                 reply.msg = "Se ha creado Correctamente  encontrado"
 
-                NotificationDAO.Instance.NotifyAssignedProject(pAddUserProject.User_Login, pAddUserProject.Id_Project)
+                '  NotificationDAO.Instance.NotifyAssignedProject(pAddUserProject.User_Login, pAddUserProject.Id_Project)
 
             End If
 
@@ -680,12 +680,12 @@ Public Class ProjectDAO
             ElseIf pIdProject <> 0 Then
 
                 ' notificar desasignado de proyecto
-                sentence = "SELECT User_Login from seg_usu_project where Id_Project = @filtro1"
-                Dim drUsers = ConexionDAO.Instancia.ExecuteConsultOneParameterInteger(sentence, pIdProject)
-                While (drUsers.Read)
-                    Dim currentUser As String = drUsers(0)
-                    NotificationDAO.Instance.NotifyUnassignedProject(currentUser, pIdProject)
-                End While
+                '  sentence = "SELECT User_Login from seg_usu_project where Id_Project = @filtro1"
+                '  Dim drUsers = ConexionDAO.Instancia.ExecuteConsultOneParameterInteger(sentence, pIdProject)
+                '  While (drUsers.Read)
+                '  Dim currentUser As String = drUsers(0)
+                ' NotificationDAO.Instance.NotifyUnassignedProject(currentUser, pIdProject)
+                '  End While
 
                 sentence = "DELETE FROM seg_usu_project WHERE Id_Project = @Condition"
                 ConexionDAO.Instancia.ExecuteConsultCondition(sentence, pIdProject)

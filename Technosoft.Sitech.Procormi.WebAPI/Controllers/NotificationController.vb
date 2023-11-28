@@ -15,6 +15,13 @@ Namespace Controllers
             Return reply
         End Function
 
+        <HttpPost>
+        Public Function PostNotification(notification As NotificationEN) As Reply(Of NotificationEN)
+            Dim reply As Reply(Of NotificationEN)
+            reply = NotificationBLL.Instance.PostNotification(notification)
+            Return reply
+        End Function
+
         <HttpPut>
         Public Function PutReadNotification(pIdNotification As Integer) As Reply(Of NotificationEN)
             Dim reply As Reply(Of NotificationEN)

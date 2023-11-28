@@ -88,33 +88,6 @@ Public Class NotificationDAO
     End Function
 
 
-    Public Function NotifyAssignedProject(ByVal pUser As String, ByVal pIdProject As Integer) As Reply(Of NotificationEN)
-        Dim reply As New Reply(Of NotificationEN)
-        Try
-            Dim notification = New NotificationEN()
-            notification.Action = "Agregado"
-            notification.Title = "Nuevo Proyecto"
-
-            sentence = "SELECT Project_Name from project where Id_Project = " & pIdProject
-            Using dr As MySqlDataReader = ConexionDAO.Instancia.ExecuteConsult(sentence)
-                If dr.Read Then
-                    notification.Message = "Ha sido agregado al proyecto: " + dr(0)
-                End If
-            End Using
-
-            notification.Usu_Login = pUser
-            notification.Type = "project"
-            notification.Type_Ref_Id = pIdProject
-
-            Return PostNotification(notification)
-        Catch ex As Exception
-            EscritorVisorEventos.Instancia().EscribirEvento(nameClass, MethodBase.GetCurrentMethod().Name, ex)
-            reply.ok = False
-            reply.msg = "NotifyAssignedProject: No fue posible ejecutar la consulta: " & ex.Message
-            Return reply
-        End Try
-    End Function
-
 
     Public Function NotifyAssignedSprint(ByVal pUser As String, ByVal pIdSprint As Integer) As Reply(Of NotificationEN)
         Dim reply As New Reply(Of NotificationEN)
@@ -171,33 +144,6 @@ Public Class NotificationDAO
         End Try
     End Function
 
-
-    Public Function NotifyUnassignedProject(ByVal pUser As String, ByVal pIdProject As Integer) As Reply(Of NotificationEN)
-        Dim reply As New Reply(Of NotificationEN)
-        Try
-            Dim notification = New NotificationEN()
-            notification.Action = "Eliminado"
-            notification.Title = "Eliminado del proyecto"
-
-            sentence = "SELECT Project_Name from project where Id_Project = " & pIdProject
-            Using dr As MySqlDataReader = ConexionDAO.Instancia.ExecuteConsult(sentence)
-                If dr.Read Then
-                    notification.Message = "Ya no formas parte de: " + dr(0)
-                End If
-            End Using
-
-            notification.Usu_Login = pUser
-            notification.Type = "project"
-            notification.Type_Ref_Id = pIdProject
-
-            Return PostNotification(notification)
-        Catch ex As Exception
-            EscritorVisorEventos.Instancia().EscribirEvento(nameClass, MethodBase.GetCurrentMethod().Name, ex)
-            reply.ok = False
-            reply.msg = "NotifyUnassignedProject: No fue posible ejecutar la consulta: " & ex.Message
-            Return reply
-        End Try
-    End Function
 
 
 

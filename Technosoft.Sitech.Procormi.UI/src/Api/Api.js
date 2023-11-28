@@ -14,6 +14,13 @@ export default {
         })
     },
 
+    PostNotification(notification){
+        return apicliente.post('Notification/PostNotification' , notification ,{
+            withCredentials: false,
+            headers: { 'Content-Type': 'application/json; charset=UTF-8' }
+        })
+    },
+
     ReadNotification(IdNotification) {
         return apicliente.put('Notification/PutReadNotification?pIdNotification=' +IdNotification, {
             withCredentials: false,
