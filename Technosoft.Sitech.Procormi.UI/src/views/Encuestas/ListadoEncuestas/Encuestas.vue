@@ -331,9 +331,10 @@ export default {
 
         DeletePoll: async function (id) {
             this.$swal({
-                position: 'top-end',
+                position: 'center',
                 text: '¿Seguro de que desea eliminar la encuesta?',
                 showDenyButton: true,
+                confirmButtonColor: 'green',
                 confirmButtonText: `Aceptar`,
                 denyButtonText: `Cancelar`,
             }).then(async (result) => {
@@ -346,7 +347,7 @@ export default {
                             .then(response => {
                                 if (response.data != null) {
                                     this.$swal.fire({
-                                        position: 'top-end',
+                                        position: 'center',
                                         text: response.data.msg,
                                         showConfirmButton: false,
                                         timer: 3000

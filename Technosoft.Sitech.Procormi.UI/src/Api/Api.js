@@ -359,6 +359,16 @@ export default {
         })
 
     },
+
+    GetSprintTask(IdSprint)
+    {
+        return apicliente.get('Sprint/GetSprintTask?pIdSprint='+ IdSprint, {
+            withCredentials: false,
+            headers: { 'Content-Type': 'application/json; charset=UTF-8' }
+        })
+
+    },
+   
     
     PutDisableSprintStatus(IdSprint)
     {

@@ -713,9 +713,6 @@ Public Class ProjectDAO
 
         Dim reply As New Reply(Of UsuarioEN)
 
-
-
-
         Try
 
             sentence = "SELECT usu_Login , usu_Password FROM seg_usu WHERE usu_Login = @filtro1 And usu_Password = @filtro2"

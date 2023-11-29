@@ -258,6 +258,8 @@ export default {
                 Id_State: 0,
                 Creation_Date: ""
             },
+            project_name_old:"",
+
             SegUsuProject: {
                 Id: 0,
                 User_Login: "",
@@ -680,6 +682,7 @@ export default {
         },
 
         async notifyUsersOnUserProjectModification() {
+            
             const currentUsersPerProjectResponse = await AdminApi.GetUserListProject(this.idProyecto);
             const currentUsernames = currentUsersPerProjectResponse.data.obj.map(user => user.Usu_Login);
             const currentDisplayedUsers = this.UserlistAdd.map(u => u.usu_Login);
@@ -710,10 +713,10 @@ export default {
                 await AdminApi.PostNotification(addedNotification);
             }
 
-            for (const username of removedUsersNotificationOnDisassignment) {
+            for (const username of removedUsersNotificationOnDisassignment) {                
                 const removedNotification = {
                     Title: 'Eliminado del proyecto',
-                    Message : `Ya no formas parte de: ${this.project.Project_Name}`,
+                    Message : `Ya no formas parte de: ${this.project_name_old}`,
                     Action: 'Eliminado',
                     Type: 'project',
                     Type_Ref_Id: this.project.Id_project,
@@ -801,6 +804,7 @@ export default {
                         Id_State: projectData.Id_State,
                         Creation_Date: projectData.Creation_Date
                     };
+                    this.project_name_old = this.project.Project_Name 
 
                     this.quill.root.innerHTML = this.project.Description_Project;
 

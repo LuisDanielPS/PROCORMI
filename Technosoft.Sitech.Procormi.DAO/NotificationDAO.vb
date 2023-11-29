@@ -88,7 +88,6 @@ Public Class NotificationDAO
     End Function
 
 
-
     Public Function NotifyAssignedSprint(ByVal pUser As String, ByVal pIdSprint As Integer) As Reply(Of NotificationEN)
         Dim reply As New Reply(Of NotificationEN)
         Try
@@ -143,8 +142,6 @@ Public Class NotificationDAO
             Return reply
         End Try
     End Function
-
-
 
 
     Public Function NotifySprintCompleted(ByVal pIdSprint As Integer) As Reply(Of NotificationEN)

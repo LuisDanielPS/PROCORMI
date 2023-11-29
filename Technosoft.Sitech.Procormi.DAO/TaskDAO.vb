@@ -314,11 +314,10 @@ Public Class TaskDao
 
             ElseIf pTaskEn IsNot Nothing Then
 
-                ' chequeamos que las subtareas esten todas completadas
                 sentence =
                     "SELECT (CASE when (select COUNT(*) as counter
                         from sub_task where Id_Task = @filtro1 and not Id_Status = 2) - (select COUNT(*) as counter
-                        from sub_task where Id_Task = @filtro1 and Id_Status = 5) = 0 then 1 else 0 end) as canFinish "
+                        from sub_task where Id_Task = @filtro1 and Id_Status = 5) = 0 then 1 else 0 end) as canFinish"
 
                 Using dr1 As MySqlDataReader = ConexionDAO.Instancia.ExecuteConsultOneParameterString(sentence, pTaskEn)
 

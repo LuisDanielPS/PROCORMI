@@ -119,6 +119,27 @@ Public Class SprintBLL
 
     End Function
 
+    Public Function GetSprintTaskBLL(ByVal pIdSprint As Integer) As Reply(Of SprintEN)
+
+        Dim reply As Reply(Of SprintEN) = Nothing
+
+        Try
+            If pIdSprint <> 0 Then
+
+                reply = SprintDAO.Instance.GetSprintTaskDAO(pIdSprint)
+
+            End If
+
+        Catch ex As Exception
+            EscritorVisorEventos.Instancia().EscribirEvento(nameClass, MethodBase.GetCurrentMethod().Name, ex)
+            reply.ok = False
+            reply.msg = "Error al tratar de realizar la búsqueda"
+        End Try
+
+        Return reply
+
+    End Function
+
     Public Function PostSprintBLL(ByVal pSprint As SprintEN) As Reply(Of SprintEN)
 
 

@@ -314,8 +314,6 @@ Public Class ProjectBLL
 
     End Function
 
-
-
     Public Function GetPasswordVerifyDeleteRowBLL(ByVal pUsuario As String, ByVal pPass As String) As Reply(Of UsuarioEN)
 
         Dim Usuario As String = ""

@@ -44,6 +44,15 @@ Namespace Controllers
 
         End Function
 
+        <HttpGet>
+        Public Function GetSprintTask(pIdSprint As Integer) As Reply(Of SprintEN)
+
+            Dim reply As Reply(Of SprintEN)
+            reply = SprintBLL.Instance.GetSprintTaskBLL(pIdSprint)
+            Return reply
+
+        End Function
+
         <HttpPost>
         Public Function PostSprint(pSprint As SprintEN) As Reply(Of SprintEN)
 

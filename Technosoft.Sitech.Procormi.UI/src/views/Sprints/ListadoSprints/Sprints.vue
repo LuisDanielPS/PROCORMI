@@ -345,8 +345,8 @@
                                             </select>
                                         </div>
 
-                                        <div v-if="recuperarUsuTipo() == 'Administrador'" class="col-lg-2 col-md-12 col-sm-12 order-1"
-                                            b-tooltip.hover title="Usuario">
+                                        <div v-if="recuperarUsuTipo() == 'Administrador'"
+                                            class="col-lg-2 col-md-12 col-sm-12 order-1" b-tooltip.hover title="Usuario">
                                             <div>
                                                 <a class="text-black fas fa-user"></a>
                                                 <label class="text-black p-3 Td">Usuario</label>
@@ -371,7 +371,8 @@
                                                 @keyup="aplyFilter(Filtros.fechaI, Filtros.fechaF, Filtros.estado, Filtros.usuario, Filtros.palabra)">
                                         </div>
 
-                                        <div class="col-lg-12 col-md-12 col-sm-12 order-3 align-self-end" style="margin-top: 20px; margin-bottom: 20px;" b-tooltip.hover title="Buscar">
+                                        <div class="col-lg-12 col-md-12 col-sm-12 order-3 align-self-end"
+                                            style="margin-top: 20px; margin-bottom: 20px;" b-tooltip.hover title="Buscar">
                                             <button type="button" class="btn btn-success" style="float: left"
                                                 @click="aplyFilter(Filtros.fechaI, Filtros.fechaF, Filtros.estado, Filtros.usuario, Filtros.palabra)"><span
                                                     class="fas fa-search"></span></button>
@@ -441,7 +442,8 @@
                                                 </tr>
                                             </thead>
                                             <tbody style="font-size: large;">
-                                                <tr v-for="sprint in paginateData" :key="sprint.Id_Sprint" class="SelectHover">
+                                                <tr v-for="sprint in paginateData" :key="sprint.Id_Sprint"
+                                                    class="SelectHover">
                                                     <td @click="verTareas(sprint.Id_Sprint)">
                                                         {{ sprint.Id_Sprint }}</td>
                                                     <td @click="verTareas(sprint.Id_Sprint)">
@@ -545,8 +547,8 @@ export default {
             currentSprint: null,
             hasChanges: false,
             modalShow: true,
-            sortBy: 'Id_Sprint', // Nueva columna de ordenación
-            sortOrder: 1, // 1 para ascendente, -1 para descendente
+            sortBy: 'Id_Sprint',
+            sortOrder: 1,
 
             Filtros: {
                 fechaI: "",
@@ -1194,15 +1196,16 @@ export default {
         getPasswordVerifyDeleteRow: async function () {
             let login = this.recuperarUsuLog()
 
-            if (this.verifyPassword.trim() === "") {
-                const error = this.$refs.error;
-                const error2 = this.$refs.error2;
-                error.textContent = "Debes de rellenar el campo";
-                error.style.visibility = "visible";
-                error2.textContent = "Debes de rellenar el campo";
-                error2.style.visibility = "visible";
-            }
             try {
+
+                if (this.verifyPassword.trim() === "") {
+                    const error = this.$refs.error;
+                    const error2 = this.$refs.error2;
+                    error.textContent = "Debe de insertar una contraseña";
+                    error.style.visibility = "visible";
+                    error2.textContent = "Debe de insertar una contraseña";
+                    error2.style.visibility = "visible";
+                }
 
                 const response = await AdminApi.GetPasswordVerifyDeleteRow(login, this.verifyPassword);
                 const message = response.data.ok;
@@ -1236,27 +1239,28 @@ export default {
         completeRowList: async function () {
 
             try {
+                const result = await AdminApi.GetSprintTask(this.idSprintDeleteVerify);
+                const canFinish = result.data.ok;
 
-                if (this.confimPassworsDelete == true) {
+                if (canFinish || (await this.confirmCompleteWithPendingTasks())) {
+                    this.confimPassworsDelete = true;
 
                     const response = await AdminApi.PutCompleteSprintStatus(this.idSprintDeleteVerify);
                     const message = response.data.ok;
+
                     if (message) {
-                        this.ActionEN.Action_Description = "Completó el sprint #" + this.idSprintDeleteVerify
+                        this.ActionEN.Action_Description = "Completó el sprint #" + this.idSprintDeleteVerify;
                         this.ActionEN.Action_User = this.recuperarUsuLog();
-                        await AdminApi.PostNewAction(this.ActionEN)
+                        await AdminApi.PostNewAction(this.ActionEN);
                     }
+
                     this.$swal({ icon: 'success', text: 'El Sprint se ha completado correctamente' });
                     setTimeout(() => {
-                        location.reload()
+                        location.reload();
                     }, 1000);
+
                     this.isButtonEnabled = false;
-
                 }
-                else {
-                    this.$swal({ icon: 'warning', text: 'La contraseña no es correcta' });
-                }
-
             } catch (error) {
                 this.$swal({ icon: 'error', text: 'Error al completar el Sprint' + error });
             }
@@ -1264,32 +1268,31 @@ export default {
         },
 
         deleteRowList: async function () {
-
             try {
 
-                if (this.confimPassworsDelete == true) {
+                const result = await AdminApi.GetSprintTask(this.idSprintDeleteVerify);
+                const canFinish = result.data.ok;
+
+                if (canFinish || (await this.confirmDeleteWithPassword())) {
                     const response = await AdminApi.PutDisableSprintStatus(this.idSprintDeleteVerify);
                     const message = response.data.ok;
+
                     if (message) {
-                        this.ActionEN.Action_Description = "Se eliminó el sprint #" + this.idSprintDeleteVerify
+                        this.ActionEN.Action_Description = "Se eliminó el sprint #" + this.idSprintDeleteVerify;
                         this.ActionEN.Action_User = this.recuperarUsuLog();
-                        await AdminApi.PostNewAction(this.ActionEN)
+                        await AdminApi.PostNewAction(this.ActionEN);
                     }
+
                     this.$swal({ icon: 'success', text: 'El Sprint se ha eliminado correctamente' });
                     setTimeout(() => {
-                        location.reload()
+                        location.reload();
                     }, 1000);
+
                     this.isButtonEnabled = false;
-
                 }
-                else {
-                    this.$swal({ icon: 'warning', text: 'La contraseña no es correcta' });
-                }
-
             } catch (error) {
                 this.$swal({ icon: 'error', text: 'Error al eliminar el Sprint' + error });
             }
-
         },
 
         verTareas: function (Id_Sprint) {
@@ -1323,8 +1326,30 @@ export default {
             this.isButtonEnabled = false;
         },
 
+        async confirmCompleteWithPendingTasks() {
+            const result = await this.showSwalConfirmation('Aún hay tareas pendientes, ¿seguro que desea completar el sprint?');
+            return result.isConfirmed;
+        },
+
+        async confirmDeleteWithPassword() {
+            const result = await this.showSwalConfirmation('¿Seguro de eliminar el sprint? Aún hay tareas pendientes');
+            return result.isConfirmed;
+        },
+
+        async showSwalConfirmation(text) {
+            return this.$swal({
+                position: 'center',
+                text: text,
+                showDenyButton: true,
+                confirmButtonColor: 'green',
+                confirmButtonText: `Si`,
+                denyButtonText: `No`,
+                reverseButtons: true,
+            });
+        },
+
         formatoFecha(fecha) {
-            if (!fecha) return ''; // Manejar el caso cuando la fecha es nula o indefinida
+            if (!fecha) return '';
 
             const options = { year: 'numeric', month: 'long', day: 'numeric' };
             return new Date(fecha).toLocaleDateString('es-ES', options);
@@ -1652,4 +1677,5 @@ ol {
     margin-bottom: 12px;
     margin-right: 1px;
     margin-left: 5px;
-}</style>
+}
+</style>

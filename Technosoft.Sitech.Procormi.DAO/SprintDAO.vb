@@ -177,7 +177,6 @@ Public Class SprintDAO
 
         Dim reply As New Reply(Of SprintEN)
 
-
         Try
 
             sentence = "SELECT * FROM Sprint WHERE Id_Sprint = @filtro1 "
@@ -265,6 +264,48 @@ Public Class SprintDAO
 
     End Function
 
+    Public Function GetSprintTaskDAO(ByVal pIdSprint As Integer) As Reply(Of SprintEN)
+
+        Dim reply As New Reply(Of SprintEN)
+
+        Try
+
+            sentence = "SELECT Id_Task
+                        FROM task
+                        WHERE Id_Sprint = @filtro1 AND Id_Status IN ('3', '4', '1')"
+
+            Using dr As MySqlDataReader = ConexionDAO.Instancia.ExecuteConsultOneParameterString(sentence, pIdSprint)
+
+                While dr.Read
+                    Dim sprint As New SprintEN
+                    sprint.Id_Sprint = dr(0)
+
+                    reply.obj = sprint
+
+                End While
+
+                If reply.obj IsNot Nothing Then
+                    reply.ok = False
+                    reply.msg = "Se puede completar el Sprint"
+                ElseIf reply.obj Is Nothing Then
+                    reply.ok = True
+                    reply.msg = "Tareas Activas"
+                End If
+
+            End Using
+
+        Catch ex As Exception
+            EscritorVisorEventos.Instancia().EscribirEvento(nameClass, MethodBase.GetCurrentMethod().Name, ex)
+            reply.ok = False
+            reply.msg = "No fue posible ejecutar la consulta: " & ex.Message
+            Return reply
+        End Try
+
+        Return reply
+
+
+    End Function
+
     Public Function PostSprintDAO(ByVal pSprintEn As SprintEN) As Reply(Of SprintEN)
 
         Dim reply As New Reply(Of SprintEN)
@@ -291,7 +332,6 @@ Public Class SprintDAO
                 reply.ok = True
                 reply.msg = "Sprint registrado con éxito"
 
-                ' notify user
                 sentence = "SELECT MAX(Id_Sprint) from sprint"
                 Dim dr = ConexionDAO.Instancia.ExecuteConsult(sentence)
                 If dr.Read Then
@@ -330,21 +370,18 @@ Public Class SprintDAO
 
             ElseIf pSprintEn IsNot Nothing Then
 
-                ' checar que el usuario del sprint ha sido modificado, para avisar al nuevo usuario y al viejo de temas de asignacion/desasignacion
                 sentence = "SELECT User_Login from sprint where Id_Sprint = @filtro1"
                 Using dr As MySqlDataReader = ConexionDAO.Instancia.ExecuteConsultOneParameterInteger(sentence, pSprintEn.Id_Sprint)
                     If dr.Read() Then
                         Dim currentUser As String = dr(0)
                         If currentUser.Equals(pSprintEn.User_Login) Then
-                            ' no hay cambios de usuario
+
                         Else
-                            NotificationDAO.Instance.NotifyAssignedSprint(pSprintEn.User_Login, pSprintEn.Id_Sprint)
                             NotificationDAO.Instance.NotifyUnassignedSprint(currentUser, pSprintEn.Id_Sprint)
                         End If
                     End If
                 End Using
 
-                ' procedemos con el update
                 sentence = "UPDATE sprint SET Sprint_Name = @parameter1, Start_Date = @parameter2, End_Date = @parameter3, User_Login = @parameter4  WHERE Id_Sprint = @Condition"
 
                 ConexionDAO.Instancia.ExecuteUpdateSprint(sentence, pSprintEn)
@@ -352,7 +389,7 @@ Public Class SprintDAO
                 reply.msg = "El Sprint se ha modificado correctamente"
 
                 updated = GetSprintDAO(pSprintEn.Id_Sprint).obj
-
+                NotificationDAO.Instance.NotifyAssignedSprint(pSprintEn.User_Login, pSprintEn.Id_Sprint)
                 NotificationDAO.Instance.NotifySprintDatesChanged(updated, current)
             End If
 
