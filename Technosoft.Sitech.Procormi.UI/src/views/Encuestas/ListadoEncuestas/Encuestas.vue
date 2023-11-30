@@ -582,9 +582,20 @@ export default {
         verificarLog: function () {
             let login = this.recuperarUsuLog()
             let nombre = this.recuperarUsuNombre()
+            let usutipo = this.recuperarUsuTipo()
+
             if (login == null || (nombre == undefined || nombre == null || nombre == '')) {
                 this.$router.push("/");
                 this.$swal({ icon: 'warning', text: 'Aún no ha iniciado sesión, por favor verifique' });
+            }
+
+            if (usutipo === "Operador") {
+
+                this.$router.push({ name: 'Inicio' });
+
+                this.$swal({ icon: 'warning', text: 'No tienes permiso para acceder' });
+
+
             }
 
         },

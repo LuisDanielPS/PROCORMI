@@ -382,6 +382,16 @@ export default {
         },
 
         validarEditar: function () {
+            let usutipo = this.recuperarUsuTipo()
+
+            if (usutipo === "Operador") {
+
+                this.$router.push({ name: 'Inicio' });
+
+                this.$swal({ icon: 'warning', text: 'No tienes permiso para acceder' });
+
+
+            }
             if (this.idEncuesta != 0) {
                 this.esEditar = true;
             } else {
@@ -693,4 +703,6 @@ export default {
     .filtrosCelularBoton {
         display: none;
     }
-}</style>
+}
+
+</style>

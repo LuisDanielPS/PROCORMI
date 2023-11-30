@@ -265,7 +265,7 @@
                                     <br />
                                     <div class="row">
                                         <div class="col-6" style="text-align: left;">
-                                            <p style="text-align: left;">Tiempo requerido: <b>{{ currentSubTask ?
+                                            <p style="text-align: left;">Tiempo restante: <b>{{ currentSubTask ?
                                                 currentSubTask.Required_Time : 0.0 }}
                                                 </b> horas</p>
                                         </div>
@@ -586,7 +586,7 @@
                             </div>
                         </div>
 
-                        <div class="col-lg-4 col-md-4 col-sm-12 row justify-content-center" style="margin-top: 40px;">
+                        <div v-if="recuperarUsuTipo() == 'Administrador'" class="col-lg-4 col-md-4 col-sm-12 row justify-content-center" style="margin-top: 40px;">
                             <div class="col-8 textoBlanco" style="text-align: center;">
                                 <router-link role="button" :to="{ name: 'Encuestas' }" class="textoBlanco textoEncuestas"
                                     style="text-decoration: none;" exact-active-class="active-link">Encuestas&nbsp;&nbsp;<i
@@ -594,7 +594,7 @@
                             </div>
                         </div>
 
-                        <div class="col-lg-4 col-md-4 col-sm-12 row justify-content-center" style="margin-top: 40px;">
+                        <div v-if="recuperarUsuTipo() == 'Administrador'" class="col-lg-4 col-md-4 col-sm-12 row justify-content-center" style="margin-top: 40px;">
                             <div class="col-8 textoBlanco" style="text-align: center;">
                                 <router-link role="button" :to="{ name: 'Reportes' }" class="textoBlanco textoEncuestas"
                                     style="text-decoration: none;" exact-active-class="active-link">Reportes&nbsp;&nbsp;<i
@@ -800,11 +800,14 @@
                                                             {{ subTask.Title }}
                                                         </div>
                                                     </div>
-                                                    <div>
-                                                        <div class="tablaPersonalizadaRow" style="min-width: 80px;">
+                                                    <div class="row">
+                                                        <div class="col-12 tablaPersonalizadaRow" style="min-width: 80px;">
                                                             <div style="min-width: 80px; float: left;">
                                                                 {{ subTask.Id_Status }}
                                                             </div>
+                                                        </div>
+                                                        <div v-if="subTask.Id_Status != 'Finalizada'" class="col-12 tablaPersonalizadaRow" style="min-width: 80px;">
+                                                            <div style="min-width: 80px; float: left;"><span class="far fa-clock"></span> {{ subTask.Required_Time }} hrs</div>
                                                         </div>
                                                     </div>
                                                     <div>
@@ -834,6 +837,10 @@
 
                                                 </div>
 
+                                            </div>
+
+                                            <div v-if="subtareas == true && remainingTime != 0" class="remainingTime">
+                                                <span class="far fa-clock"></span><b> Tiempo de trabajo restante de la tarea seleccionada: <span style="color: green;">{{ remainingTime }}</span><span v-if="remainingTime == 1"> hora</span><span v-if="remainingTime > 1"> horas</span></b>
                                             </div>
 
                                             <br />
@@ -938,7 +945,9 @@ export default {
 
 
             modalShowTask: false,
-            modalShowSubTask: false
+            modalShowSubTask: false,
+
+            remainingTime: 0
         }
     },
 
@@ -1096,7 +1105,6 @@ export default {
 
             errorCreateTaskName.style.display = "none";
             errorCreateTaskDescription.style.display = "none";
-            console.log("🚀 ~ file: Tareas.vue:1102 ~ validateTask ~ errorCreateTaskDescription:", errorCreateTaskDescription)
             errorUpdateTaskName.style.display = "none";
             errorUpdateTaskDescription.style.display = "none";
             errorUpdateTaskStatus.style.display = "none";
@@ -1130,7 +1138,7 @@ export default {
                 return errorCreateTaskDescription;
             }
 
-            if (isEdit && (task.Id_Status.trim() == '' || task.Id_Status.trim() == null || task.Id_Status.trim() == undefined)) {
+            if ((isEdit && (task.Id_Status.trim() == '' || task.Id_Status.trim() == null || task.Id_Status.trim() == undefined)) || (isEdit && task.Id_Status == "Activo")) {
 
                 errorUpdateTaskStatus.textContent = "Se tiene que completar el campo del estado de la tarea";
                 errorUpdateTaskStatus.style.visibility = "visible";
@@ -1376,7 +1384,7 @@ export default {
             this.taskIdUnderEdit = task.Id_Task;
             this.taskDescriptionUnderEdit = task.Description_Task;
             this.taskStateUnderEdit = task.Id_Status,
-                this.taskNameUnderEdit = task.Task_Name
+            this.taskNameUnderEdit = task.Task_Name
         },
 
         startTaskCreation() {
@@ -1397,14 +1405,16 @@ export default {
 
         startSubTaskCreation(task) {
             this.modalShowSubTask = true;
-            this.currentSelectedTaskId = task.Id_Task;
+            if (task != undefined){
+                this.currentSelectedTaskId = task.Id_Task;
 
-            // reset de campos
-            this.prioritySubTarea = '';
-            this.tituloSubTarea = '';
-            this.descriptionSubTarea = '';
-            this.statusSubTarea = '';
-            this.requiredTimeSubTarea = 0;
+                // reset de campos
+                this.prioritySubTarea = '';
+                this.tituloSubTarea = '';
+                this.descriptionSubTarea = '';
+                this.statusSubTarea = '';
+                this.requiredTimeSubTarea = 0;
+            }
         },
 
         selectCurrentTask(task) {
@@ -1814,12 +1824,22 @@ export default {
 
         async getSubTareasDesdeAPI(taskId) {
             try {
+                await this.restartTime()
                 const response = await AdminApi.GetAllSubTasksByTask(taskId);
-                const subTasks = response.data.obj;
+                if(response.data.obj != null && response.data.obj != undefined){
+                    const subTasks = response.data.obj;
+                    subTasks.forEach(async element => {
+                    this.remainingTime = this.remainingTime + element.Required_Time
+                })
                 this.subtareasPorTask[taskId] = subTasks;
+                }
             } catch (error) {
-                console.error({ message: 'Error al cargar las subtareas desde la API:', error, response });
+                console.error({ message: 'Error al cargar las subtareas desde la API:', error });
             }
+        },
+
+        restartTime: function () {
+            this.remainingTime = 0
         },
 
         async postTaskToAPI(tarea) {
@@ -2287,5 +2307,19 @@ ol {
 
 .listadoSubtareas:hover {
     background-color: #c7e0f7;
+}
+
+.remainingTime{
+    border: 1px solid #c5c5c5;
+    border-radius: 30px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+    margin-bottom: 10px;
+    margin-left: 10px;
+    text-align: center !important;
+    font-size: 18px;
+    margin-top: 10px;
+    margin-left: 4px;
+    margin-right: 4px;
+    min-width: 100vh !important;
 }
 </style>

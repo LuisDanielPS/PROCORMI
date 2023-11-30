@@ -238,7 +238,7 @@
 
                 <!--Menú Lateral /-->
 
-                <div class="w-100 listadoGeneral contenidoTabla">
+                <div class="w-100 listadoGeneral contenidoTablaGrande">
 
                     <!--Filtros responsive /-->
 
@@ -261,7 +261,7 @@
                             </div>
                         </div>
 
-                        <div class="col-lg-4 col-md-4 col-sm-12 row justify-content-center" style="margin-top: 40px;">
+                        <div v-if="recuperarUsuTipo() == 'Administrador'" class="col-lg-4 col-md-4 col-sm-12 row justify-content-center" style="margin-top: 40px;">
                             <div class="col-8 textoBlanco" style="text-align: center;">
                                 <router-link role="button" :to="{ name: 'Encuestas' }" class="textoBlanco textoEncuestas"
                                     style="text-decoration: none;" exact-active-class="active-link">Encuestas&nbsp;&nbsp;<i
@@ -269,7 +269,7 @@
                             </div>
                         </div>
 
-                        <div class="col-lg-4 col-md-4 col-sm-12 row justify-content-center" style="margin-top: 40px;">
+                        <div v-if="recuperarUsuTipo() == 'Administrador'" class="col-lg-4 col-md-4 col-sm-12 row justify-content-center" style="margin-top: 40px;">
                             <div class="col-8 textoBlanco" style="text-align: center;">
                                 <router-link role="button" :to="{ name: 'Reportes' }" class="textoBlanco textoEncuestas"
                                     style="text-decoration: none;" exact-active-class="active-link">Reportes&nbsp;&nbsp;<i
@@ -346,7 +346,7 @@
                                         </div>
 
                                         <div v-if="recuperarUsuTipo() == 'Administrador'"
-                                            class="col-lg-2 col-md-12 col-sm-12 order-1" b-tooltip.hover title="Usuario">
+                                            class="col-lg-3 col-md-12 col-sm-12" b-tooltip.hover title="Usuario">
                                             <div>
                                                 <a class="text-black fas fa-user"></a>
                                                 <label class="text-black p-3 Td">Usuario</label>
@@ -360,7 +360,20 @@
                                             </select>
                                         </div>
 
-                                        <div class="col-lg-2 col-md-12 col-sm-12 order-2 align-self-end">
+                                        <div v-if="recuperarUsuTipo() == 'Administrador'" class="col-lg-1 col-md-12 col-sm-12" b-tooltip.hover title="Buscar">
+                                            <button type="button" class="btn btn-success" style="float: right; min-width: 100% !important; margin-top: 45px;"
+                                                @click="aplyFilter(Filtros.fechaI, Filtros.fechaF, Filtros.estado, Filtros.usuario, Filtros.palabra)"><span
+                                                    class="fas fa-search"></span></button>
+                                        </div>
+
+                                        <div v-if="recuperarUsuTipo() == 'Administrador'" class="col-lg-12 col-md-12 col-sm-12 order-2 align-self-end" style="margin-top: 45px;">
+                                            <input autocomplete="off" maxlength="70" class="diseñoSelectLateral"
+                                                type="search" id="pClaveInput" placeholder="Búsqueda por nombre de Sprint"
+                                                v-model="Filtros.palabra"
+                                                @keyup="aplyFilter(Filtros.fechaI, Filtros.fechaF, Filtros.estado, Filtros.usuario, Filtros.palabra)">
+                                        </div>
+
+                                        <div v-if="recuperarUsuTipo() != 'Administrador'" class="col-lg-3 col-md-12 col-sm-12 order-2 align-self-end">
                                             <div>
                                                 <a class="text-black fas fa-pen-square"></a>
                                                 <label class="text-black p-3 Td">Búsqueda</label>
@@ -371,9 +384,12 @@
                                                 @keyup="aplyFilter(Filtros.fechaI, Filtros.fechaF, Filtros.estado, Filtros.usuario, Filtros.palabra)">
                                         </div>
 
-                                        <div class="col-lg-12 col-md-12 col-sm-12 order-3 align-self-end"
-                                            style="margin-top: 20px; margin-bottom: 20px;" b-tooltip.hover title="Buscar">
-                                            <button type="button" class="btn btn-success" style="float: left"
+                                        <div v-if="recuperarUsuTipo() != 'Administrador'" class="col-lg-1 col-md-12 col-sm-12 order-3 align-self-end" b-tooltip.hover title="Buscar">
+                                            <div>
+                                                <a class="text-black"></a>
+                                                <label class="text-black p-3 Td"></label>
+                                            </div>
+                                            <button type="button" class="btn btn-success" style="float: right; min-width: 100% !important;"
                                                 @click="aplyFilter(Filtros.fechaI, Filtros.fechaF, Filtros.estado, Filtros.usuario, Filtros.palabra)"><span
                                                     class="fas fa-search"></span></button>
                                         </div>
@@ -1332,7 +1348,7 @@ export default {
         },
 
         async confirmDeleteWithPassword() {
-            const result = await this.showSwalConfirmation('¿Seguro de eliminar el sprint? Aún hay tareas pendientes');
+            const result = await this.showSwalConfirmation('Aún hay tareas pendientes, ¿Seguro que desea eliminar el sprint?');
             return result.isConfirmed;
         },
 
@@ -1341,7 +1357,7 @@ export default {
                 position: 'center',
                 text: text,
                 showDenyButton: true,
-                confirmButtonColor: 'green',
+                confirmButtonColor: 'darkgreen',
                 confirmButtonText: `Si`,
                 denyButtonText: `No`,
                 reverseButtons: true,
@@ -1567,6 +1583,11 @@ ol {
     text-align: center;
     margin-top: 30px;
     margin-bottom: 30px;
+}
+
+.contenidoTablaGrande {
+    max-width: 2100px;
+    overflow-x: auto;
 }
 
 .contenidoTabla {

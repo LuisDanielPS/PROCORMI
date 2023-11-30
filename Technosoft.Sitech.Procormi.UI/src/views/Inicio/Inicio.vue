@@ -211,7 +211,7 @@
                             </div>
                         </div>
 
-                        <div class="col-lg-4 col-md-4 col-sm-12 row justify-content-center" style="margin-top: 40px;">
+                        <div v-if="recuperarUsuTipo() == 'Administrador'" class="col-lg-4 col-md-4 col-sm-12 row justify-content-center" style="margin-top: 40px;">
                             <div class="col-8 textoBlanco" style="text-align: center;">
                                 <router-link role="button" :to="{ name: 'Encuestas' }" class="textoBlanco textoEncuestas"
                                     style="text-decoration: none;" exact-active-class="active-link">Encuestas&nbsp;&nbsp;<i
@@ -219,7 +219,7 @@
                             </div>
                         </div>
 
-                        <div class="col-lg-4 col-md-4 col-sm-12 row justify-content-center" style="margin-top: 40px;">
+                        <div v-if="recuperarUsuTipo() == 'Administrador'" class="col-lg-4 col-md-4 col-sm-12 row justify-content-center" style="margin-top: 40px;">
                             <div class="col-8 textoBlanco" style="text-align: center;">
                                 <router-link role="button" :to="{ name: 'Reportes' }" class="textoBlanco textoEncuestas"
                                     style="text-decoration: none;" exact-active-class="active-link">Reportes&nbsp;&nbsp;<i
