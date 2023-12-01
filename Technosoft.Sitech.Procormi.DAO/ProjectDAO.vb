@@ -312,6 +312,48 @@ Public Class ProjectDAO
     End Function
 
 
+    Public Function GetProjectSprintDAO(ByVal pIdProject As Integer) As Reply(Of SprintEN)
+
+        Dim reply As New Reply(Of SprintEN)
+
+        Try
+
+            sentence = "SELECT Id_Project
+                        FROM sprint
+                        WHERE Id_Project = @filtro1 AND Id_Status IN ('3', '4', '1')"
+
+            Using dr As MySqlDataReader = ConexionDAO.Instancia.ExecuteConsultOneParameterString(sentence, pIdProject)
+
+                While dr.Read
+                    Dim sprint As New SprintEN
+                    sprint.Id_Project = dr(0)
+
+                    reply.obj = sprint
+
+                End While
+
+                If reply.obj IsNot Nothing Then
+                    reply.ok = False
+                    reply.msg = "Se puede completar el Projecto"
+                ElseIf reply.obj Is Nothing Then
+                    reply.ok = True
+                    reply.msg = "Sprints Activos"
+                End If
+
+            End Using
+
+        Catch ex As Exception
+            EscritorVisorEventos.Instancia().EscribirEvento(nameClass, MethodBase.GetCurrentMethod().Name, ex)
+            reply.ok = False
+            reply.msg = "No fue posible ejecutar la consulta: " & ex.Message
+            Return reply
+        End Try
+
+        Return reply
+
+
+    End Function
+
     Public Function PostProjectDAO(ByVal pProjectEn As ProjectEN) As Reply(Of ProjectEN)
 
         Dim reply As New Reply(Of ProjectEN)

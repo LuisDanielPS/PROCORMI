@@ -63,6 +63,16 @@ Namespace Controllers
         End Function
 
         <HttpGet>
+        Public Function GetProjectSprint(ByVal pIdProject As Integer) As Reply(Of SprintEN)
+
+            Dim reply As Reply(Of SprintEN) = New Reply(Of SprintEN)()
+            reply = ProjectBLL.Instance.GetProjectSprintBLL(pIdProject)
+            Return reply
+
+        End Function
+
+
+        <HttpGet>
         Public Function GetPasswordVerifyDeleteRow(Usu As String, Pass As String) As Reply(Of UsuarioEN)
 
             Dim reply As Reply(Of UsuarioEN) = New Reply(Of UsuarioEN)()
@@ -70,6 +80,8 @@ Namespace Controllers
             Return reply
 
         End Function
+
+
         <HttpPost>
         Public Function PostProject(pProject As ProjectEN) As Reply(Of ProjectEN)
 

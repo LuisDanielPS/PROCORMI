@@ -101,7 +101,8 @@
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h1 class="modal-title fs-5" id="completarSprint">Completar Proyecto</h1>
-                                <button @click="cerrarModalCompletar()" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                <button @click="cerrarModalCompletar()" type="button" class="btn-close"
+                                    data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
                                 <div>
@@ -146,7 +147,8 @@
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h1 class="modal-title fs-5" id="exampleModalLabel">Eliminar Proyecto</h1>
-                                <button @click="cerrarModalCompletar()" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                <button @click="cerrarModalCompletar()" type="button" class="btn-close"
+                                    data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
                                 <div>
@@ -211,7 +213,8 @@
                             </div>
                         </div>
 
-                        <div v-if="recuperarUsuTipo() == 'Administrador'" class="col-lg-4 col-md-4 col-sm-12 row justify-content-center" style="margin-top: 40px;">
+                        <div v-if="recuperarUsuTipo() == 'Administrador'"
+                            class="col-lg-4 col-md-4 col-sm-12 row justify-content-center" style="margin-top: 40px;">
                             <div class="col-8 textoBlanco" style="text-align: center;">
                                 <router-link role="button" :to="{ name: 'Encuestas' }" class="textoBlanco textoEncuestas"
                                     style="text-decoration: none;" exact-active-class="active-link">Encuestas&nbsp;&nbsp;<i
@@ -219,7 +222,8 @@
                             </div>
                         </div>
 
-                        <div v-if="recuperarUsuTipo() == 'Administrador'" class="col-lg-4 col-md-4 col-sm-12 row justify-content-center" style="margin-top: 40px;">
+                        <div v-if="recuperarUsuTipo() == 'Administrador'"
+                            class="col-lg-4 col-md-4 col-sm-12 row justify-content-center" style="margin-top: 40px;">
                             <div class="col-8 textoBlanco" style="text-align: center;">
                                 <router-link role="button" :to="{ name: 'Reportes' }" class="textoBlanco textoEncuestas"
                                     style="text-decoration: none;" exact-active-class="active-link">Reportes&nbsp;&nbsp;<i
@@ -320,23 +324,49 @@
                                         <table class="table table-stryped" style="text-align: center;">
                                             <thead>
                                                 <tr>
-                                                    <th class="col-1" style="min-width: 75px;"># Proyecto</th>
-                                                    <th class="col-4" style="min-width: 200px;">Nombre</th>
-                                                    <th class="col-3" style="min-width: 125px;">Fecha Creacion</th>
-                                                    <th class="col-2" style="min-width: 125px;">Estado</th>
+                                                    <th class="col-1" style="min-width: 75px;"
+                                                        @click="sortTable('Id_project')"># Proyecto
+                                                        <i class="fas"
+                                                            :class="{ 'fa-sort-up': sortBy === 'Id_project' && sortOrder === 1, 'fa-sort-down': sortBy === 'Id_project' && sortOrder === -1 }"
+                                                            style="cursor: pointer;"></i>
+                                                    </th>
+
+                                                    <th class="col-4" style="min-width: 200px;"
+                                                        @click="sortTable('Project_Name')">Nombre
+                                                        <i class="fas"
+                                                            :class="{ 'fa-sort-up': sortBy === 'Project_Name' && sortOrder === 1, 'fa-sort-down': sortBy === 'Project_Name' && sortOrder === -1 }"
+                                                            style="cursor: pointer;"></i>
+                                                    </th>
+
+                                                    <th class="col-3" style="min-width: 125px;"
+                                                        @click="sortTable('Creation_Date')">Fecha Creacion
+                                                        <i class="fas"
+                                                            :class="{ 'fa-sort-up': sortBy === 'Creation_Date' && sortOrder === 1, 'fa-sort-down': sortBy === 'Creation_Date' && sortOrder === -1 }"
+                                                            style="cursor: pointer;"></i>
+                                                    </th>
+                                             
+
+                                                    <th class="col-1" style="min-width: 125px; cursor: pointer;"
+                                                        @click="sortTable('Id_State')">
+                                                        Estado
+                                                        <i class="fas"
+                                                            :class="{ 'fa-sort-up': sortBy === 'Id_State' && sortOrder === 1, 'fa-sort-down': sortBy === 'Id_State' && sortOrder === -1 }"
+                                                            style="cursor: pointer;"></i>
+                                                    </th>
                                                     <th class="col-2" style="min-width: 200px;">Opciones</th>
                                                 </tr>
                                             </thead>
                                             <tbody style="font-size: large;">
-                                                <tr v-for="proyecto in paginateData" :key="proyecto.Id_project"  class="SelectHover">
+                                                <tr v-for="proyecto in paginateData" :key="proyecto.Id_project"
+                                                    class="SelectHover">
                                                     <td @click="verSprints(proyecto.Id_project)">{{
                                                         proyecto.Id_project }}</td>
                                                     <td @click="verSprints(proyecto.Id_project)">{{
                                                         proyecto.Project_Name }}</td>
                                                     <td @click="verSprints(proyecto.Id_project)">{{
                                                         $filters.FormatearFecha(proyecto.Creation_Date) }}</td>
-                                                    <td @click="verSprints(proyecto.Id_project)">{{
-                                                        proyecto.Id_State == 1 ? "Activo" : (proyecto.Id_State == 5 ?
+                                                    <td @click="verSprints(proyecto.Id_project)">
+                                                        {{ proyecto.Id_State == 1 ? "Activo" : (proyecto.Id_State == 5 ?
                                                             "Finalizado" : "Inactivo") }}</td>
                                                     <td class="text-white">
                                                         <button b-tooltip.hover title="Ver Proyecto"
@@ -348,8 +378,8 @@
 
 
                                                         <button b-tooltip.hover title="Completar Proyecto"
-                                                            data-bs-target="#completarProyecto" data-bs-toggle="modal" v-show="showElement"
-                                                            style="margin-left: 5px;"
+                                                            data-bs-target="#completarProyecto" data-bs-toggle="modal"
+                                                            v-show="showElement" style="margin-left: 5px;"
                                                             @click="saveIdProjectDelete(proyecto.Id_project)" type="button"
                                                             class="btn"
                                                             :class="{ 'btn-success': proyecto.Id_State != 5, 'btn-secondary': proyecto.Id_State == 5 }"
@@ -360,7 +390,7 @@
                                                         <button b-tooltip.hover title="Editar Proyecto" v-show="showElement"
                                                             style="margin-left: 5px;" type="button" class="btn"
                                                             :class="{ 'btn-warning': proyecto.Id_State != 5, 'btn-secondary': proyecto.Id_State == 5 }"
-                                                            :disabled="proyecto.Id_State == 5" 
+                                                            :disabled="proyecto.Id_State == 5"
                                                             @click="EditarProyecto(proyecto.Id_project)">
                                                             <span class="fas fa-pen text-white"></span>
                                                         </button>
@@ -421,7 +451,7 @@ export default {
                 Id_project: this.idProyecto,
                 Project_Name: "",
                 Description_Project: "",
-                Id_State: 0,
+                Id_State: "",
                 Creation_Date: ""
             },
             confimPassworsDelete: false,
@@ -451,6 +481,8 @@ export default {
                 Action_Description: "",
                 Action_User: ""
             },
+            sortBy: 'Id_project',
+            sortOrder: 1,
         }
     },
 
@@ -786,6 +818,34 @@ export default {
             }
         },
 
+        sortTable(column) {
+            if (column === this.sortBy) {
+                // Cambia el orden si se hace clic en la misma columna
+                this.sortOrder = -this.sortOrder;
+            } else {
+                // Cambia la columna de ordenación si se hace clic en una nueva columna
+                this.sortBy = column;
+                this.sortOrder = 1;
+            }
+
+            // Lógica para ordenar la tabla
+            this.paginateData.sort((a, b) => {
+                if (column === 'Id_project' || column === 'Id_State' ) {
+                    // Ordenar números directamente
+                    const valA = Number(a[column]);
+                    const valB = Number(b[column]);
+                    return (valA - valB) * this.sortOrder;
+                } else {
+                    // Ordenar alfabéticamente
+                    const valA = a[column].toLowerCase();
+                    const valB = b[column].toLowerCase();
+                    return (valA < valB ? -1 : (valA > valB ? 1 : 0)) * this.sortOrder;
+                }
+            });
+
+        }
+        ,
+
         getPasswordVerifyDeleteRow: async function () {
             let login = this.recuperarUsuLog()
             if (this.verifyPassword.trim() === "") {
@@ -858,7 +918,7 @@ export default {
         },
         cerrarModalCompletar: async function () {
 
-            this.verifyPassword="";
+            this.verifyPassword = "";
             const error = this.$refs.error;
             error.textContent = "";
             error.style.visibility = "hidden";
@@ -876,37 +936,68 @@ export default {
             try {
 
                 if (this.confimPassworsDelete) {
-                    const response = await AdminApi.PutDisableStatus(this.idProjectDeleteVerify);
-                    const mensage = response.data.ok;
-                    if (mensage) {
-                        this.ActionEN.Action_Description = "Eliminó el proyecto #" + this.idProjectDeleteVerify
-                        this.ActionEN.Action_User = this.recuperarUsuLog();
-                        await AdminApi.PostNewAction(this.ActionEN)
+                    const result = await AdminApi.GetProjectSprint(this.idProjectDeleteVerify);
+                    const canFinish = result.data.ok;
+
+                    if (canFinish || (await this.confirmDeleteWithPassword())) {
+
+                        const response = await AdminApi.PutDisableStatus(this.idProjectDeleteVerify);
+                        const mensage = response.data.ok;
+
+                        if (mensage) {
+                            this.ActionEN.Action_Description = "Eliminó el proyecto #" + this.idProjectDeleteVerify
+                            this.ActionEN.Action_User = this.recuperarUsuLog();
+                            await AdminApi.PostNewAction(this.ActionEN)
+                        }
+
+                        this.$swal({ icon: 'success', text: 'El proyecto se ha eliminado correctamente' });
+                        setTimeout(() => {
+                            location.reload();
+                        }, 1000);
+
+                        this.isButtonEnabled = false;
+
                     }
-                    location.reload()
+
 
                 }
-            
+
 
             } catch (error) {
                 console.error('Error al cargar los proyectos desde la API:', error);
             }
 
         }
+
         ,
         CompleteStatusProject: async function () {
 
             try {
+                const result = await AdminApi.GetProjectSprint(this.idProjectDeleteVerify);
+                const canFinish = result.data.ok;
 
                 if (this.confimPassworsDelete) {
+
                     const response = await AdminApi.PutCompleteStatus(this.idProjectDeleteVerify);
                     const mensage = response.data.ok;
-                    if (mensage) {
-                        this.ActionEN.Action_Description = "Finalizó el proyecto #" + this.idProjectDeleteVerify
-                        this.ActionEN.Action_User = this.recuperarUsuLog();
-                        await AdminApi.PostNewAction(this.ActionEN)
+
+                    if (canFinish || (await this.confirmCompleteWithPendingSprints())) {
+                        if (mensage) {
+                            this.ActionEN.Action_Description = "Finalizó el proyecto #" + this.idProjectDeleteVerify
+                            this.ActionEN.Action_User = this.recuperarUsuLog();
+                            await AdminApi.PostNewAction(this.ActionEN)
+                        }
+
+                        this.$swal({ icon: 'success', text: 'El proyecto se ha completado correctamente' });
+                        setTimeout(() => {
+                            location.reload();
+                        }, 1000);
+
+                        this.isButtonEnabled = false;
+                        location.reload()
                     }
-                    location.reload()
+
+
 
                 }
 
@@ -961,6 +1052,27 @@ export default {
 
         }
         ,
+        async confirmDeleteWithPassword() {
+            const result = await this.showSwalConfirmation('Aún hay sprints pendientes, ¿Seguro que desea eliminar el proyecto?');
+            return result.isConfirmed;
+        },
+        async confirmCompleteWithPendingSprints() {
+            const result = await this.showSwalConfirmation('Aún hay sprints pendientes, ¿Seguro que desea completar el proyecto?');
+            return result.isConfirmed;
+        },
+
+
+        async showSwalConfirmation(text) {
+            return this.$swal({
+                position: 'center',
+                text: text,
+                showDenyButton: true,
+                confirmButtonColor: 'darkgreen',
+                confirmButtonText: `Si`,
+                denyButtonText: `No`,
+                reverseButtons: true,
+            });
+        },
 
     },
 

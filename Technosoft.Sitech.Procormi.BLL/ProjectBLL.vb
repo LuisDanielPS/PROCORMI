@@ -153,6 +153,29 @@ Public Class ProjectBLL
         Return reply
 
     End Function
+    Public Function GetProjectSprintBLL(ByVal pIdProject As Integer) As Reply(Of SprintEN)
+
+
+        Dim reply As Reply(Of SprintEN) = Nothing
+
+        Try
+            If pIdProject <> 0 Then
+
+
+                reply = ProjectDAO.Instance.GetProjectSprintDAO(pIdProject)
+
+
+            End If
+
+        Catch ex As Exception
+            EscritorVisorEventos.Instancia().EscribirEvento(nameClass, MethodBase.GetCurrentMethod().Name, ex)
+            reply.ok = False
+            reply.msg = "Error al tratar de buscar la lista de sprint activos en el proyecto"
+        End Try
+
+        Return reply
+
+    End Function
 
     Public Function PostProjectBLL(ByVal pProject As ProjectEN) As Reply(Of ProjectEN)
 

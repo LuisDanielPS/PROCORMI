@@ -368,6 +368,15 @@ export default {
         })
 
     },
+    GetProjectSprint(pIdProject)
+    {
+        return apicliente.get('Project/GetProjectSprint?pIdProject='+ pIdProject, {
+            withCredentials: false,
+            headers: { 'Content-Type': 'application/json; charset=UTF-8' }
+        })
+
+    },
+   
    
     
     PutDisableSprintStatus(IdSprint)
