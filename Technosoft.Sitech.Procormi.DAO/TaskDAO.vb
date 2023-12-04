@@ -306,41 +306,16 @@ Public Class TaskDao
     Public Function PutTaskDAOAsFinished(ByVal pTaskEn As String) As Reply(Of TaskEN)
 
         Dim reply As New Reply(Of TaskEN)
-        Dim canFinish As Integer
         Try
             If pTaskEn Is Nothing Then
                 reply.ok = False
                 reply.msg = "El objeto de la tarea esta Vacio"
 
             ElseIf pTaskEn IsNot Nothing Then
-
-                sentence =
-                    "SELECT (CASE when (select COUNT(*) as counter
-                        from sub_task where Id_Task = @filtro1 and not Id_Status = 2) - (select COUNT(*) as counter
-                        from sub_task where Id_Task = @filtro1 and Id_Status = 5) = 0 then 1 else 0 end) as canFinish"
-
-                Using dr1 As MySqlDataReader = ConexionDAO.Instancia.ExecuteConsultOneParameterString(sentence, pTaskEn)
-
-                    If dr1.Read Then
-                        Dim task As New TaskEN
-                        canFinish = dr1(0)
-
-                        If canFinish = 0 Then
-                            reply.ok = False
-                            reply.msg = "No se puede finalizar la tarea sin finalizar sus subtareas"
-                            Return reply
-                        End If
-
-                    End If
-
-                    sentence = "UPDATE task SET Id_Status = (SELECT s.Id_Status FROM status s where s.Status_Name = 'Finalizada') WHERE Id_Task = @Condition"
-
-                    ConexionDAO.Instancia.ExecuteConsultCondition(sentence, pTaskEn)
-                    reply.ok = True
-                    reply.msg = "Se ha modificado finalizado la tarea"
-
-                End Using
-
+                sentence = "UPDATE task SET Id_Status = (SELECT s.Id_Status FROM status s where s.Status_Name = 'Finalizada') WHERE Id_Task = @Condition"
+                ConexionDAO.Instancia.ExecuteConsultCondition(sentence, pTaskEn)
+                reply.ok = True
+                reply.msg = "Se ha modificado finalizado la tarea"
             End If
 
         Catch ex As Exception
@@ -351,6 +326,49 @@ Public Class TaskDao
         End Try
 
         Return reply
+    End Function
+
+
+
+    Public Function GetTaskSubTasksDAO(ByVal pIdTask As Integer) As Reply(Of TaskEN)
+
+        Dim reply As New Reply(Of TaskEN)
+
+        Try
+
+            sentence = "SELECT Id_Sub_Task
+                        FROM sub_task
+                        WHERE Id_Task = @filtro1 AND Id_Status IN ('3', '4', '1')"
+
+            Using dr As MySqlDataReader = ConexionDAO.Instancia.ExecuteConsultOneParameterString(sentence, pIdTask)
+
+                While dr.Read
+                    Dim task As New TaskEN
+                    task.Id_Task = dr(0)
+                    reply.obj = task
+
+                End While
+
+                If reply.obj IsNot Nothing Then
+                    reply.ok = False
+                    reply.msg = "Se puede completar la tarea"
+                ElseIf reply.obj Is Nothing Then
+                    reply.ok = True
+                    reply.msg = "Subtareas Activas"
+                End If
+
+            End Using
+
+        Catch ex As Exception
+            EscritorVisorEventos.Instancia().EscribirEvento(nameClass, MethodBase.GetCurrentMethod().Name, ex)
+            reply.ok = False
+            reply.msg = "GetTaskSubTasksDAO: No fue posible ejecutar la consulta: " & ex.Message
+            Return reply
+        End Try
+
+        Return reply
+
+
     End Function
 
 

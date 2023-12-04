@@ -24,6 +24,15 @@ Namespace Controllers
 
         End Function
 
+        <HttpGet>
+        Public Function GetTaskSubtasks(pIdTask As Integer) As Reply(Of TaskEN)
+
+            Dim reply As Reply(Of TaskEN)
+            reply = TaskBLL.Instance.GetTaskSubTasksBLL(pIdTask)
+            Return reply
+
+        End Function
+
         <HttpPost>
         Public Function PostTask(pTask As TaskEN) As Reply(Of TaskEN)
 

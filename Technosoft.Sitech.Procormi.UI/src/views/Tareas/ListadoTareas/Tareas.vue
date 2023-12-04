@@ -53,6 +53,88 @@
                     </div>
                 </div>
 
+                    <!--Modal completar Sprint pregunta-->
+
+                <div class="modal fade" id="completarSprint" tabindex="-1" aria-labelledby="completarSprint"
+                    aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="completarSprint">Completar Sprint</h1>
+                                <button @click="resetTaskCreation()" type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div>
+                                    <p>¿Está seguro de que desea completar el sprint? Para confirmar, primero valide su
+                                        contraseña.</p>
+                                </div>
+                                <div>
+                                    <label><strong>(Nota: <u>No se podrá volver a activar el sprint una vez
+                                                completado</u>)</strong></label>
+                                    <br />
+                                    <div class="row" style="margin-top: 15px;">
+                                        <input v-model="verifyPassword" class="col-10"
+                                            style="margin-left: 10px; border-radius: 5px;" type="password" required
+                                            placeholder="Contraseña" maxlength="20">
+                                        <button @click="getPasswordVerifyDeleteRow()" type="button"
+                                            class="btn btn-success col-1" style="margin-left: 5px;"><span
+                                                class="fas fa-check"></span></button>
+                                        <p ref="error2" style="visibility: hidden;color: red;"></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal"
+                                    @click="resetTaskCreation()">Cancelar</button>
+                                <button @click="completeRowList()" class="btn btn-success"
+                                    :disabled="!isButtonEnabled">Aceptar</button>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--- Modal completar tarea -->
+
+                <div class="modal fade" id="finalizarTarea" tabindex="-1" aria-labelledby="finalizarTarea"
+                    aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="finalizarTarea">Completar Tarea</h1>
+                                <button @click="resetTaskCreation" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div>
+                                    <p>¿Está seguro de que desea completar la tarea?</p>
+                                </div>
+                                <div>
+                                    <label><strong>(Nota: <u>No se podrá volver a activar la tarea una vez
+                                                completado</u>)</strong></label>
+                                    <label>Digite su contraseña</label>
+                                    <br />
+                                    <div class="row" style="margin-top: 15px;">
+                                        <input v-model="verifyPassword" class="col-10"
+                                            style="margin-left: 10px; border-radius: 5px;" type="password" required
+                                            placeholder="Contraseña">
+                                        <button @click="getPasswordVerifyDeleteRow()" type="button"
+                                            class="btn btn-success col-1" style="margin-left: 5px;"><span
+                                                class="fas fa-check"></span></button>
+                                        <p ref="error" style="visibility: hidden;color: red;"></p>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="modal-footer">
+                                <button @click="resetTaskCreation" type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                                <button @click="finishTask()" :disabled="!confimPassworsDelete"
+                                    class="btn btn-success">Aceptar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <!--Modal editar Tarea-->
                 <div v-if="modalShowTask" class="modal fade" id="editarTarea" tabindex="-1" aria-labelledby="editarTarea"
                     aria-hidden="true">
@@ -95,7 +177,7 @@
                                         <select v-model="taskStateUnderEdit" required name="estado" id="estado"
                                             class="form-select text-black inputsGeneral" style="min-height: 48px;"
                                             @input="handleChanges">
-                                            <option v-for="status in statusOptions" :key="status" :value="status">{{ status
+                                            <option v-for="status in statusOptions.filter(s => s != 'Finalizada')" :key="status" :value="status">{{ status
                                             }}</option>
                                         </select>
                                     </div>
@@ -347,7 +429,7 @@
                                         <select v-model="statusSubTarea" required name="estado" id="estado"
                                             class="form-select text-black inputsGeneral" style="min-height: 48px;">
                                             <option value="">Seleccione una opción</option>
-                                            <option v-for="status in statusOptions" :key="status" :value="status">{{ status
+                                            <option v-for="status in statusOptions.filter(s => s != 'Finalizada')" :key="status" :value="status">{{ status
                                             }}</option>
                                         </select>
 
@@ -435,7 +517,7 @@
                                         <select v-model="statusSubTarea" required @input="handleChanges" name="estado"
                                             id="estado" class="form-select text-black inputsGeneral"
                                             style="min-height: 48px;">
-                                            <option v-for="status in statusOptions" :key="status" :value="status">{{ status
+                                            <option v-for="status in statusOptions.filter(s => s != 'Finalizada')" :key="status" :value="status">{{ status
                                             }}</option>
                                         </select>
                                     </div>
@@ -505,7 +587,7 @@
                 <!--Modal eliminar Subtarea-->
 
                 <!-- Modal finalizar tarea -->
-
+<!-- 
                 <div class="modal fade" id="finalizarTarea" tabindex="-1" aria-labelledby="finalizarTarea"
                     aria-hidden="true">
                     <div class="modal-dialog">
@@ -526,7 +608,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> -->
                 <!-- Modal finalizar tarea -->
 
                 <!-- Modal finalizar subtarea -->
@@ -747,7 +829,7 @@
                                                             class="btn"
                                                             :class="{ 'btn-success': tarea.Id_Status != 'Finalizada', 'btn-secondary': tarea.Id_Status == 'Finalizada'}"
                                                             style="margin-left: 5px;" data-bs-toggle="modal"
-                                                            data-bs-target="#finalizarTarea">
+                                                            data-bs-target="#completarSprint">
                                                             <span class="fas fa-check"></span>
                                                         </button>
                                                         <button b-tooltip.hover title="Editar Tarea"
@@ -762,7 +844,7 @@
                                                         </button>
                                                         <button b-tooltip.hover title="Eliminar Tarea"
                                                             v-if="recuperarUsuTipo() == 'Administrador'"
-                                                            @click="() => deleteTask(tarea)" type="button"
+                                                            @click="() => selectCurrentTask(tarea)" type="button"
                                                             class="btn btn-danger" style="margin-left: 5px;"
                                                             data-bs-toggle="modal" data-bs-target="#exampleModal">
                                                             <span class="fas fa-trash"></span>
@@ -914,6 +996,8 @@ export default {
             currentTask: null,
             currentSelectedTaskId: null,
 
+            isButtonEnabled: false,
+
             // opciones para estados y prioridades
             statusOptions: [],
             priorityOptions: [],
@@ -962,6 +1046,67 @@ export default {
             })
         },
 
+        completeRowList: async function () {
+
+            try {
+                const currentTaskId = this.currentTask.Id_Task;
+                const result = await AdminApi.GetTaskSubTasks(currentTaskId);
+                const canFinish = result.data.ok;
+
+                if (canFinish || (await this.confirmCompleteWithPendingSubTasks())) {
+                    this.confimPassworsDelete = true;
+
+                    const response = await AdminApi.PutTaskAsFinished(currentTaskId);
+                    const message = response.data.ok;
+
+                    if (message) {
+                        this.ActionEN.Action_Description = "Completó la tarea #" + currentTaskId;
+                        this.ActionEN.Action_User = this.recuperarUsuLog();
+                        await AdminApi.PostNewAction(this.ActionEN);
+                    }
+
+                    this.$swal({ icon: 'success', text: 'La tarea se ha completado correctamente' });
+                    setTimeout(() => {
+                        location.reload();
+                    }, 1000);
+
+                    this.isButtonEnabled = false;
+                }
+            } catch (error) {
+                this.$swal({ icon: 'error', text: 'Error al completar la tarea' + error });
+            }
+
+        },
+
+        deleteRowList: async function () {
+            try {
+                const currentTaskId = this.currentTask.Id_Task;
+                const result = await AdminApi.GetTaskSubTasks(currentTaskId);
+                const canFinish = result.data.ok;
+
+                if (canFinish || (await this.confirmDeleteWithPassword())) {
+                    const response = await AdminApi.PutTaskDisableStatus(currentTaskId);
+                    const message = response.data.ok;
+
+                    if (message) {
+                        this.ActionEN.Action_Description = "Se eliminó la tarea #" + currentTaskId;
+                        this.ActionEN.Action_User = this.recuperarUsuLog();
+                        await AdminApi.PostNewAction(this.ActionEN);
+                    }
+
+                    this.$swal({ icon: 'success', text: 'La tarea se ha eliminado correctamente' });
+                    setTimeout(() => {
+                        location.reload();
+                    }, 1000);
+
+                    this.isButtonEnabled = false;
+                }
+            } catch (error) {
+                this.$swal({ icon: 'error', text: 'Error al eliminar la tarea' + error });
+            }
+        },
+
+
         async editCurrentTask() {
             let modifiedTask = {
                 Task_Name: this.taskNameUnderEdit.trim(),
@@ -997,7 +1142,6 @@ export default {
                 }, 1000);
 
             } else {
-                console.error({ message: "Hubo un error al editar tarea", result });
             }
         },
 
@@ -1041,7 +1185,6 @@ export default {
                 }, 1000);
 
             } else {
-                console.error({ message: "Hubo un error al editar subtarea", result });
             }
         },
 
@@ -1057,33 +1200,6 @@ export default {
             if (priority == 'Media') return 'yellow'
             if (priority == 'Baja') return 'green'
             return 'gray'
-        },
-
-        deleteRowList: async function () {
-
-            try {
-
-                const id = this.currentTask.Id_Task;
-
-                if (this.confimPassworsDelete) {
-                    const response = await AdminApi.PutTaskDisableStatus(id);
-                    const mensage = response.data.ok;
-                    if (mensage) {
-                        this.ActionEN.Action_Description = "Eliminó la tarea #" + id
-                        this.ActionEN.Action_User = this.recuperarUsuLog();
-                        await AdminApi.PostNewAction(this.ActionEN)
-                    }
-                    location.reload()
-
-                }
-                else {
-                    this.$swal({ icon: 'warning', text: 'La contraseña que insertaste no es correcta' });
-                }
-
-            } catch (error) {
-                console.error({ message: 'Error al cargar las tareas desde la API:', error });
-            }
-
         },
 
         validateTask(task, isEdit) {
@@ -1304,8 +1420,11 @@ export default {
                 await AdminApi.PostNewAction(this.ActionEN)
             } else {
                 this.$swal({ icon: 'error', text: 'No se pudo finalizar la subtarea' });
-                console.error({ message: "Error al finalizar subtarea", response })
             }
+        },
+
+        async openFinishTaskModal() {
+            
         },
 
         async finishTask(taskId) {
@@ -1323,7 +1442,6 @@ export default {
 
             } else {
                 this.$swal({ icon: 'error', text: 'Existen subtareas pendientes' });
-                console.error({ message: "Error al finalizar tarea", response })
             }
         },
 
@@ -1419,6 +1537,7 @@ export default {
 
         selectCurrentTask(task) {
             this.currentTask = task;
+            this.isButtonEnabled = false;
         },
 
         selectCurrentSubTask(subTask) {
@@ -1432,6 +1551,9 @@ export default {
             if (response.data.ok) {
                 this.currentSubTask = null;
                 this.$swal({ icon: 'success', text: 'Se elimino la subtarea' });
+                setTimeout(() => {
+                        location.reload();
+                    }, 1000);
                 this.getSubTareasDesdeAPI(this.currentSelectedTaskId);
 
                 this.ActionEN.Action_Description = "Eliminó la subtarea #" + subTaskId
@@ -1482,7 +1604,6 @@ export default {
 
 
             } catch (error) {
-                console.error({ message: 'Error al cargar los proyectos desde la API:', error });
             }
 
         },
@@ -1610,8 +1731,8 @@ export default {
             try {
                 if (this.tareas.length == 0) {
                     const response = await AdminApi.GetAllTasksBySprint(idSprint);
-                    const Tasklist = response.data.obj;
-                    this.tareas = Tasklist;
+                    const Tasklist = response.data.obj || [];
+                    this.tareas = Tasklist; 
                     this.paginateData = [];
                     if (this.tareas.length < this.pageElements) {
                         for (let index = 0; index < this.tareas.length; index++) {
@@ -1635,7 +1756,7 @@ export default {
                     }
                 }
             } catch (error) {
-                console.error({ message: 'Error al cargar las tareas desde la API:', error });
+                
             }
         },
 
@@ -1746,7 +1867,7 @@ export default {
 
         cutPages: async function () {
             let pages = []
-            let numberOfPages = Math.ceil(this.tareas.length / this.pageElements)
+            let numberOfPages = Math.ceil((this.tareas == null ? 0 : this.tareas.length ) / this.pageElements)
             let actualPage = this.actualPage
             let numeration = 2
             let numerationSide = Math.floor(numeration / 2)
@@ -1834,7 +1955,6 @@ export default {
                 this.subtareasPorTask[taskId] = subTasks;
                 }
             } catch (error) {
-                console.error({ message: 'Error al cargar las subtareas desde la API:', error });
             }
         },
 
@@ -1863,10 +1983,9 @@ export default {
                         location.reload();
                     }, 1000);
                 } else {
-                    console.error({ message: 'Error al crear la tarea', response });
+
                 }
             } catch (error) {
-                console.error({ message: 'Error al crear tarea', error });
             }
         },
 
@@ -1898,10 +2017,8 @@ export default {
                         location.reload();
                     }, 1000);
                 } else {
-                    console.error({ message: 'Error al crear la subtarea', response });
                 }
             } catch (error) {
-                console.error({ message: 'Error al crear subtarea', error });
             }
         },
 
@@ -1920,6 +2037,29 @@ export default {
         handleChanges() {
             this.hasChanges = true;
         },
+
+        async confirmCompleteWithPendingSubTasks() {
+            const result = await this.showSwalConfirmation('Aún hay subtareas pendientes, ¿seguro que desea completar la tarea?');
+            return result.isConfirmed;
+        },
+
+        async confirmDeleteWithPassword() {
+            const result = await this.showSwalConfirmation('Aún hay subtareas pendientes, ¿Seguro que desea eliminar la tarea?');
+            return result.isConfirmed;
+        },
+
+        async showSwalConfirmation(text) {
+            return this.$swal({
+                position: 'center',
+                text: text,
+                showDenyButton: true,
+                confirmButtonColor: 'darkgreen',
+                confirmButtonText: `Si`,
+                denyButtonText: `No`,
+                reverseButtons: true,
+            });
+        },
+
     },
 
     mounted: async function () {

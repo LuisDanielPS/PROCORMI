@@ -53,6 +53,27 @@ Public Class TaskBLL
 
     End Function
 
+    Public Function GetTaskSubTasksBLL(ByVal pIdTask As Integer) As Reply(Of TaskEN)
+
+        Dim reply As Reply(Of TaskEN) = Nothing
+
+        Try
+            If pIdTask <> 0 Then
+
+                reply = TaskDao.Instance.GetTaskSubTasksDAO(pIdTask)
+
+            End If
+
+        Catch ex As Exception
+            EscritorVisorEventos.Instancia().EscribirEvento(nameClass, MethodBase.GetCurrentMethod().Name, ex)
+            reply.ok = False
+            reply.msg = "GetTaskSubTasksBLL: Error al tratar de realizar la búsqueda"
+        End Try
+
+        Return reply
+
+    End Function
+
     Public Function GetTaskAllReportUserBLL(ByVal pUsuLogin As String) As Reply(Of List(Of SpringTaskStatusReportVM))
 
         Dim reply As Reply(Of List(Of SpringTaskStatusReportVM)) = Nothing

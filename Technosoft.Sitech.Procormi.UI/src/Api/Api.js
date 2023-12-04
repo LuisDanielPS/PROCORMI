@@ -360,6 +360,15 @@ export default {
 
     },
 
+    GetTaskSubTasks(IdTask)
+    {
+        return apicliente.get('Task/GetTaskSubtasks?pIdTask='+ IdTask, {
+            withCredentials: false,
+            headers: { 'Content-Type': 'application/json; charset=UTF-8' }
+        })
+
+    },
+
     GetSprintTask(IdSprint)
     {
         return apicliente.get('Sprint/GetSprintTask?pIdSprint='+ IdSprint, {
