@@ -221,7 +221,7 @@
                                         <button @click="getPasswordVerifyDeleteRow()" type="button"
                                             class="btn btn-success col-1" style="margin-left: 5px;"><span
                                                 class="fas fa-check"></span></button>
-                                        <p ref="error" style="visibility: hidden;color: red;"></p>
+                                        <p ref="error1" style="visibility: hidden;color: red;"></p>
                                     </div>
                                 </div>
 
@@ -1211,7 +1211,7 @@ export default {
             const errorUpdateTaskName = this.$refs.errorUpdateTaskName;
             const errorUpdateTaskDescription = this.$refs.errorUpdateTaskDescription;
             
-            const error = this.$refs.error;
+            const error = this.$refs.error1;
             
             error.style.visibility = "hidden";
             errorCreateTaskName.style.visibility = "hidden";
@@ -1290,7 +1290,7 @@ export default {
             const errorUpdateSubTaskRequiredTime = this.$refs.errorUpdateSubTaskRequiredTime;
             const errorUpdateSubTaskPriority = this.$refs.errorUpdateSubTaskPriority;
 
-            const error = this.$refs.error;
+            const error = this.$refs.error1;
             
             error.style.visibility = "hidden";
             errorCreateSubTaskName.style.visibility = "hidden";
@@ -1576,12 +1576,14 @@ export default {
             try {
 
                 if (this.verifyPassword.trim() === "") {
-                    const error = this.$refs.error;
+                    const error = this.$refs.error1;
                     const error2 = this.$refs.error2;
                     error.textContent = "Debe de insertar una contraseña";
                     error.style.visibility = "visible";
+                    error.style.display="block";
                     error2.textContent = "Debe de insertar una contraseña";
                     error2.style.visibility = "visible";
+                    error2.style.display="block";
                 }
 
                 const response = await AdminApi.GetPasswordVerifyDeleteRow(login, this.verifyPassword);
@@ -1592,18 +1594,22 @@ export default {
                     this.confimPassworsDelete = true
                     this.$swal({ icon: 'success', text: 'Se verifico correctamente la contraseña' });
                     this.isButtonEnabled = true;
-                    const error = this.$refs.error;
+                    const error = this.$refs.error1;
                     const error2 = this.$refs.error2;
                     error.style.visibility = "hidden";
+                    error.style.display="block";
                     error2.style.visibility = "hidden";
+                    error2.style.display="block";
                 }
                 else if (message == false) {
-                    const error = this.$refs.error;
+                    const error = this.$refs.error1;
                     const error2 = this.$refs.error2;
                     error.textContent = "La contraseña es incorrecta";
                     error.style.visibility = "visible";
+                    error.style.display="block";
                     error2.textContent = "La contraseña es incorrecta";
                     error2.style.visibility = "visible";
+                    error2.style.display="block";
 
                 }
 
@@ -1637,6 +1643,8 @@ export default {
         },
 
         resetTaskCreation() {
+            
+            this.verifyPassword="";
             this.taskName = '';
             this.taskDescription = '';
 
@@ -1645,13 +1653,18 @@ export default {
             const errorUpdateTaskStatus = this.$refs.errorUpdateTaskStatus;
             const errorUpdateTaskName = this.$refs.errorUpdateTaskName;
             const errorUpdateTaskDescription = this.$refs.errorUpdateTaskDescription;
-            const error = this.$refs.error;
+
+            const error = this.$refs.error1;
+            const error2 = this.$refs.error2;
+
             errorCreateTaskName.style.visibility = "hidden";
             errorCreateTaskDescription.style.visibility = "hidden";
             errorUpdateTaskStatus.style.visibility = "hidden";
             errorUpdateTaskDescription.style.visibility = "hidden";
             errorUpdateTaskName.style.visibility = "hidden";
             error.style.visibility = "hidden";
+            error2.style.visibility = "hidden";
+            
 
             errorCreateTaskName.style.display = "none";
             errorCreateTaskDescription.style.display = "none";
@@ -1659,7 +1672,8 @@ export default {
             errorUpdateTaskDescription.style.display = "none";
             errorUpdateTaskStatus.style.display = "none";
             error.style.display = "none";
-            
+            error2.style.display = "none";
+ 
         },
 
         createSubTask() {
@@ -1688,7 +1702,7 @@ export default {
             this.prioritySubTarea = '';
             this.statusSubTarea = '';
 
-            const error = this.$refs.error;
+            const error = this.$refs.error1;
             const errorCreateSubTaskName = this.$refs.errorCreateSubTaskName;
             const errorCreateSubTaskDescription = this.$refs.errorCreateSubTaskDescription;
             const errorCreateSubTaskStatus = this.$refs.errorCreateSubTaskStatus;
