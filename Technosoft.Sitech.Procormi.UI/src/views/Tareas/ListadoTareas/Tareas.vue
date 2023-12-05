@@ -53,24 +53,24 @@
                     </div>
                 </div>
 
-                    <!--Modal completar Sprint pregunta-->
+                    <!--Modal completar tarea pregunta-->
 
-                <div class="modal fade" id="completarSprint" tabindex="-1" aria-labelledby="completarSprint"
+                <div class="modal fade" id="finalizarTarea" tabindex="-1" aria-labelledby="finalizarTarea"
                     aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h1 class="modal-title fs-5" id="completarSprint">Completar Sprint</h1>
+                                <h1 class="modal-title fs-5" id="finalizarTarea">Completar Tarea</h1>
                                 <button @click="resetTaskCreation()" type="button" class="btn-close" data-bs-dismiss="modal"
                                     aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
                                 <div>
-                                    <p>¿Está seguro de que desea completar el sprint? Para confirmar, primero valide su
+                                    <p>¿Está seguro de que desea completar la tarea? Para confirmar, primero valide su
                                         contraseña.</p>
                                 </div>
                                 <div>
-                                    <label><strong>(Nota: <u>No se podrá volver a activar el sprint una vez
+                                    <label><strong>(Nota: <u>No se podrá volver a activar la tarea una vez
                                                 completado</u>)</strong></label>
                                     <br />
                                     <div class="row" style="margin-top: 15px;">
@@ -95,7 +95,7 @@
                     </div>
                 </div>
 
-                <!--- Modal completar tarea -->
+                <!--- Modal completar tarea 
 
                 <div class="modal fade" id="finalizarTarea" tabindex="-1" aria-labelledby="finalizarTarea"
                     aria-hidden="true">
@@ -133,7 +133,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> -->
 
                 <!--Modal editar Tarea-->
                 <div v-if="modalShowTask" class="modal fade" id="editarTarea" tabindex="-1" aria-labelledby="editarTarea"
@@ -202,21 +202,22 @@
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h1 class="modal-title fs-5" id="exampleModalLabel">Eliminar Tarea</h1>
-                                <button @click="resetTaskCreation" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                <button @click="resetTaskCreation()" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
                                 <div>
-                                    <p>¿Está seguro de que desea eliminar la tarea?</p>
+                                    <p>¿Está seguro de que desea eliminar la tarea? Para confirmar, primero valide su
+                                        contraseña.</p>
                                 </div>
                                 <div>
-                                    <label><strong>(Nota: <u>No se podrá volver a activar la tarea una vez
-                                                completado</u>)</strong></label>
+                                    <label><strong>(Nota: <u>No se podrá recuperar la tarea una vez
+                                                eliminada</u>)</strong></label>
                                     <label>Digite su contraseña</label>
                                     <br />
                                     <div class="row" style="margin-top: 15px;">
                                         <input v-model="verifyPassword" class="col-10"
                                             style="margin-left: 10px; border-radius: 5px;" type="password" required
-                                            placeholder="Contraseña">
+                                            placeholder="Contraseña" maxlength="20">
                                         <button @click="getPasswordVerifyDeleteRow()" type="button"
                                             class="btn btn-success col-1" style="margin-left: 5px;"><span
                                                 class="fas fa-check"></span></button>
@@ -226,7 +227,7 @@
 
                             </div>
                             <div class="modal-footer">
-                                <button @click="resetTaskCreation" type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                                <button @click="resetTaskCreation()" type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
                                 <button @click="deleteRowList()" :disabled="!confimPassworsDelete"
                                     class="btn btn-success">Aceptar</button>
                             </div>
@@ -829,7 +830,7 @@
                                                             class="btn"
                                                             :class="{ 'btn-success': tarea.Id_Status != 'Finalizada', 'btn-secondary': tarea.Id_Status == 'Finalizada'}"
                                                             style="margin-left: 5px;" data-bs-toggle="modal"
-                                                            data-bs-target="#completarSprint">
+                                                            data-bs-target="#finalizarTarea">
                                                             <span class="fas fa-check"></span>
                                                         </button>
                                                         <button b-tooltip.hover title="Editar Tarea"
@@ -1569,41 +1570,45 @@ export default {
             return Cookies.get("usuarioLogin")
         },
 
-        getPasswordVerifyDeleteRow: async function () {
+       getPasswordVerifyDeleteRow: async function () {
             let login = this.recuperarUsuLog()
-            const error = this.$refs.error;
-            error.textContent = "";
-            error.style.display = "none";
-            if (this.verifyPassword.trim() === "") {
-                const error = this.$refs.error;
-                error.textContent = "Debes de rellenar el campo";
-                error.style.visibility = "visible";
-                error.style.display = "block";
-            }
 
             try {
+
+                if (this.verifyPassword.trim() === "") {
+                    const error = this.$refs.error;
+                    const error2 = this.$refs.error2;
+                    error.textContent = "Debe de insertar una contraseña";
+                    error.style.visibility = "visible";
+                    error2.textContent = "Debe de insertar una contraseña";
+                    error2.style.visibility = "visible";
+                }
+
                 const response = await AdminApi.GetPasswordVerifyDeleteRow(login, this.verifyPassword);
-                const mensage = response.data.ok;
+                const message = response.data.ok;
 
-                     if (mensage == true) {
+                if (message == true) {
 
-                        this.confimPassworsDelete = true
-                        this.$swal({ icon: 'success', text: 'Se verifico correctamente la contraseña' });
-                        this.isButtonEnabled = true;
-                        const error = this.$refs.error;
-                        error.style.visibility = "hidden";
-                        error.style.display = "none";
-                    }
-                    else if (mensage == false) {
-                        const error = this.$refs.error;
-                        error.textContent = "La contraseña es incorrecta";
-                        error.style.visibility = "visible";
-                        error.style.display = "block";
+                    this.confimPassworsDelete = true
+                    this.$swal({ icon: 'success', text: 'Se verifico correctamente la contraseña' });
+                    this.isButtonEnabled = true;
+                    const error = this.$refs.error;
+                    const error2 = this.$refs.error2;
+                    error.style.visibility = "hidden";
+                    error2.style.visibility = "hidden";
+                }
+                else if (message == false) {
+                    const error = this.$refs.error;
+                    const error2 = this.$refs.error2;
+                    error.textContent = "La contraseña es incorrecta";
+                    error.style.visibility = "visible";
+                    error2.textContent = "La contraseña es incorrecta";
+                    error2.style.visibility = "visible";
 
-                    }
-
+                }
 
             } catch (error) {
+                
             }
 
         },
