@@ -1685,7 +1685,7 @@ export default {
 
             const error = this.$refs.error;
             const errorCreateSubTaskName = this.$refs.errorCreateSubTaskName;
-            const errorCreateSubTaskDescription = this.$refs.errorCreateTaskDescription;
+            const errorCreateSubTaskDescription = this.$refs.errorCreateSubTaskDescription;
             const errorCreateSubTaskStatus = this.$refs.errorCreateSubTaskStatus;
             const errorCreateSubTaskRequiredTime = this.$refs.errorCreateSubTaskRequiredTime;
             const errorCreateSubTaskPriority = this.$refs.errorCreateSubTaskPriority;
