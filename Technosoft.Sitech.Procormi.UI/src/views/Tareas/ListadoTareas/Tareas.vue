@@ -243,7 +243,7 @@
 
                 <div class="modal fade" id="verTarea" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
                     aria-labelledby="verTarea" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-scrollable modal-xl">
+                    <div class="modal-dialog">
                         <div class="modal-content contenidoModal">
                             <div class="modal-header encabezadoModal">
                                 <div class="col-12">
@@ -251,7 +251,7 @@
                                         <div class="col-md-1 col-xs-1">
                                             <p> </p>
                                         </div>
-                                        <div class="col-md-10 col-xs-10">
+                                        <div class="col-md-10 col-xs-10" style="margin-top: 8px;">
                                             <h3 style="color: white; text-align: center;">Información de la Tarea</h3>
                                         </div>
                                         <div class="col-md-1 col-xs-1">
@@ -266,7 +266,7 @@
                             </div>
                             <br />
                             <div class="modal-body">
-                                <div class="col-md-12 col-xs-12" style="min-height: 350px; max-height: 400px">
+                                <div class="col-md-12 col-xs-12" style="max-height: 400px">
                                     <div class="row">
                                         <div class="col-12">
                                             <h1 style="text-align: center"><strong>{{ currentTask ? currentTask.Task_Name : ''
@@ -279,7 +279,7 @@
                                     </div>
                                     <hr>
                                     <br />
-                                    <div class="col-md-12 col-xs-12" style="min-height: 350px; max-height: 400px">
+                                    <div class="col-md-12 col-xs-12" style="max-height: 400px">
                                         <div class="row">
                                             <div class="col-12">
                                                 <h4 class="modal-title" style="text-align: center">
@@ -292,7 +292,7 @@
                                         <div class="row">
                                             <div class="col-12">
                                                 <div class="col-md-12 col-xs-12">
-                                                    <div style="text-align: justify;">
+                                                    <div style="text-align: center;">
                                                         {{ currentTask ? currentTask.Description_Task : '' }}
                                                     </div>
                                                 </div>
@@ -305,6 +305,9 @@
 
                                 </div>
                             </div>
+                            <div class="modal-footer row justify-content-center">
+                                <button type="button" class="btn btn-danger col-3" data-bs-dismiss="modal">Cerrar</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -315,7 +318,7 @@
 
                 <div class="modal fade" id="verSubTarea" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
                     aria-labelledby="verSubTarea" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-scrollable modal-xl">
+                    <div class="modal-dialog">
                         <div class="modal-content contenidoModal">
                             <div class="modal-header encabezadoModal">
                                 <div class="col-12">
@@ -323,7 +326,7 @@
                                         <div class="col-md-1 col-xs-1">
                                             <p> </p>
                                         </div>
-                                        <div class="col-md-10 col-xs-10">
+                                        <div class="col-md-10 col-xs-10" style="margin-top: 8px;">
                                             <h3 style="color: white; text-align: center;">Información de la Subtarea</h3>
                                         </div>
                                         <div class="col-md-1 col-xs-1">
@@ -338,7 +341,7 @@
                             </div>
                             <br />
                             <div class="modal-body">
-                                <div class="col-md-12 col-xs-12" style="min-height: 350px; max-height: 400px">
+                                <div class="col-md-12 col-xs-12" style="max-height: 400px">
                                     <div>
                                         <div class="col-12">
                                             <h1 style="text-align:center"><strong>{{ currentSubTask ? currentSubTask.Title :
@@ -348,20 +351,19 @@
                                     <br />
                                     <div class="row">
                                         <div class="col-6" style="text-align: left;">
-                                            <p style="text-align: left;">Tiempo restante: <b>{{ currentSubTask ?
-                                                currentSubTask.Required_Time : 0.0 }}
-                                                </b> horas</p>
+                                            <p style="text-align: left;"><b>Tiempo restante: {{ currentSubTask ?
+                                                currentSubTask.Required_Time : 0.0 }} horas</b></p>
                                         </div>
                                         <div class="col-6" style="text-align: right;">
-                                            <p style="text-align: right;">Estado actual: <b>{{ currentSubTask ?
+                                            <p style="text-align: right;"><b>Estado actual: {{ currentSubTask ?
                                                 currentSubTask.Id_Status : 0.0 }}</b></p>
                                         </div>
                                     </div>
                                     <hr>
-                                    <div class="col-md-12 col-xs-12" style="min-height: 350px; max-height: 400px">
+                                    <div class="col-md-12 col-xs-12" style="max-height: 400px">
                                         <div class="row">
                                             <div class="col-12">
-                                                <h4 class="modal-title" style="text-align: left">
+                                                <h4 class="modal-title" style="text-align: center">
                                                     <strong>Descripción</strong>
                                                 </h4>
                                             </div>
@@ -371,7 +373,7 @@
                                         <div class="row">
                                             <div class="col-12">
                                                 <div class="col-md-12 col-xs-12">
-                                                    <div style="text-align: justify;">
+                                                    <div style="text-align: center;">
                                                         {{ currentSubTask ? currentSubTask.Description : '' }}
                                                     </div>
                                                 </div>
@@ -381,6 +383,9 @@
                                     </div>
 
                                 </div>
+                            </div>
+                            <div class="modal-footer row justify-content-center">
+                                <button type="button" class="btn btn-danger col-3" data-bs-dismiss="modal">Cerrar</button>
                             </div>
                         </div>
                     </div>
@@ -803,9 +808,8 @@
                                                             class="fas fa-plus" data-bs-toggle="modal"
                                                             data-bs-target="#crearSubtarea"></a></div>
                                                 </div>
-                                                <div>
+                                                <div @click="() => mostrarSubtareas(tarea.Id_Task)">
                                                     <div class="tablaPersonalizadaRowPointer"
-                                                        @click="() => mostrarSubtareas(tarea.Id_Task)"
                                                         style="margin-bottom: 10px; float: left;">{{ tarea.Task_Name }}
                                                     </div>
                                                 </div>
@@ -1198,7 +1202,7 @@ export default {
 
         getPriorityColor(priority) {
             if (priority == 'Alta') return 'red'
-            if (priority == 'Media') return 'yellow'
+            if (priority == 'Media') return 'orange'
             if (priority == 'Baja') return 'green'
             return 'gray'
         },

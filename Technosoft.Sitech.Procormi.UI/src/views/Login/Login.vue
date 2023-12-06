@@ -15,9 +15,10 @@
                             <br />
                             <br />
                             <h5 class="alt-font font-weight-500 text-gradient-yellow-orange-black" align="center">Inicio de Sesión</h5>
-
+                            <label style="float: left; color: white; margin-top: 25px;">Usuario</label>
                             <input maxlength="20" class="small-input bg-white margin-20px-bottom required" style="border-radius: 10px; margin-top: 25px;" type="text" placeholder="Digite su usuario" v-model="Usuario">
                             <p ref="errorUser" style="visibility: hidden;color: red;"></p>
+                            <label style="float: left; color: white; margin-bottom: 25px;">Contraseña</label>
                             <div class="wrap-input" style="margin-top: 25px;">
                                 <span class="icon-eye" id="ojo" style="font-size: 20px" v-on:click="mostrarContrasena"><i class="fas fa-eye-slash" id="ojoTechado"></i></span>
                                 <input maxlength="20" class="small-input bg-white margin-20px-bottom required" style="border-radius: 10px;" type="password" placeholder="Digiste su contraseña" v-model="Clave" @keydown.enter="RealizarLogin">

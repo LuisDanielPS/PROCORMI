@@ -68,11 +68,17 @@
                                                 <h4 style="text-align: center; font-size: 25px; color: #0a3a66;">{{ poll.Name }}
                                                 </h4>
                                                 <br>
-                                                <p style="text-align: center; font-size: 15px; color: #000000;">{{
-                                                    QuitarHTML(poll.Description) }}</p>
+                                                <div style="text-align: center; font-size: 15px; color: #000000;" v-html="poll.Description"></div>
                                                 <br>
-                                                <p v-if="recuperarUsuLog() != '' && recuperarUsuLog() != null && recuperarUsuLog() != undefined" style="text-align: center; font-size: 15px; color: #000000;"><b>Link:</b> <a>{{
-                                                    fullLink }}</a></p>
+
+                                                <div v-if="(recuperarUsuLog() != '' && recuperarUsuLog() != null && recuperarUsuLog() != undefined) && recuperarUsuTipo() == 'Administrador'" style="text-align: center;">
+                                                    <p class="cardPersonalizado" style="text-align: center; font-size: 15px; color: #000000; cursor: default; padding: 15px;">
+                                                        <b>Enlace:</b>&nbsp;<a>{{ fullLink }}</a>
+                                                        <br>
+                                                    </p>
+                                                    <button type="button" class="btn btn-success" b-tooltip.hover title="Copiar enlace" @click="copiarLink()" style="cursor: pointer; margin-top: 15px;">Copiar&nbsp;&nbsp;<span class="fas fa-paperclip"></span></button>
+                                                </div>
+
                                                 <div>
                                                     <div>
                                                         <div class="cardPersonalizado" v-for="(question, index) in poll.Questions"
@@ -83,11 +89,25 @@
                                                                     style="text-align: center; font-size: 25px; background-color: #0a3a66; color: #fff; border-radius: 15px;">
                                                                     {{ question.TextQuestion }}</h5>
                                                                 <hr />
+
+                                                                <label v-if="question.Id_Question_Type == 1" style="font-size: medium; float: left;"><span
+                                                                        style="color: rgb(199, 0, 0);"><b>Tipo:</b></span>
+                                                                    Texto
+                                                                </label>
+                                                                <label v-if="question.Id_Question_Type == 2" style="font-size: medium; float: left;"><span
+                                                                        style="color: rgb(199, 0, 0);"><b>Tipo:</b></span>
+                                                                    Respuesta única
+                                                                </label>
+                                                                <label v-if="question.Id_Question_Type == 3" style="font-size: medium; float: left;"><span
+                                                                        style="color: rgb(199, 0, 0);"><b>Tipo:</b></span>
+                                                                    Selección múltiple
+                                                                </label>
+                                                                
                                                                 <input v-if="question.Id_Question_Type == 1"
-                                                                    style="border-radius: 15px; margin-bottom: 10px;"
+                                                                    style="border-radius: 15px; margin-bottom: 10px; margin-top: 25px"
                                                                     placeholder="Respuesta"
                                                                     @change="updateAnswerText(question, $event.target.value)"
-                                                                    maxlength="100" />
+                                                                    maxlength="150" />
                                                                 <span :ref="'ErrorTextInput' + question.Id_Question"
                                                                     style="visibility: hidden; color: red;"> ss</span>
                                                                 <br />
@@ -215,6 +235,27 @@ export default {
     },
 
     methods: {
+
+        copiarLink: function () {
+            const textarea = document.createElement('textarea');
+            textarea.value = this.fullLink;
+            document.body.appendChild(textarea);
+            textarea.select();
+
+            try {
+                document.execCommand('copy');
+                this.$swal.fire({
+                    icon: 'success',
+                    text: 'Enlace copiado en el portapapeles',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            } catch (err) {
+                console.error('Error al intentar copiar el enlace: ', err);
+            } finally {
+                document.body.removeChild(textarea);
+            }
+        },
 
         desplegarFiltros: function () {
             this.filtroDesplegar = !this.filtroDesplegar;

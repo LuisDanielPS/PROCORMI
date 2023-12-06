@@ -62,7 +62,7 @@ Public Class PollDAO
 
             reply.ok = True
             reply.obj = True
-            reply.msg = "Encuesta registrada con éxito. Puede consultar el link desde la sección de visualizar encuesta."
+            reply.msg = "Encuesta registrada con éxito. Puede obtener el enlace desde la sección de visualizar encuesta."
 
         Catch ex As Exception
 
@@ -340,7 +340,7 @@ Public Class PollDAO
             Dim query1 As String = "SELECT
             p.Id_Poll,
             q.TextQuestion,
-            GROUP_CONCAT(at.Text) AS AnswerTexts
+            GROUP_CONCAT(CONCAT(at.Text, '\n') SEPARATOR '\n') AS AnswerTexts
         FROM
             poll p
         JOIN

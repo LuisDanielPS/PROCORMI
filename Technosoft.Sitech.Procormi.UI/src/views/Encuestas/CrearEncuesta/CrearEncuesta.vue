@@ -67,7 +67,7 @@
                                         <div>
                                             <label class="margin-15px-bottom text-black"
                                                 style="font-size: large;">Título</label>
-                                            <input v-model="encuesta.Name" maxlength="50" class="small-input inputsGeneral"
+                                            <input v-model="encuesta.Name" maxlength="40" class="small-input inputsGeneral"
                                                 placeholder="Escriba el título de la encuesta" type="text">
                                         </div>
                                         <p ref="errorPollName" style="visibility: hidden;color: red;"></p>
@@ -82,8 +82,7 @@
                                                             style="min-height: 200px; border-bottom-left-radius: 15px; border-bottom-right-radius: 15px;">
                                                         </div>
                                                     </div>
-                                                    <p ref="errorPollDescription" style="visibility: hidden;color: red;">
-                                                    </p>
+                                                    <p ref="errorPollDescription" style="visibility: hidden;color: red;"></p>
                                                 </div>
                                             </div>
                                         </div>
@@ -97,8 +96,9 @@
                                         <br />
                                         <br />
                                         <div>
-                                            <h4 style="text-align: center; font-size: 25px; color: #0a3a66;">Agregar
-                                                preguntas</h4>
+                                            <h4 ref="AddQuestionText" style="text-align: center; font-size: 25px; color: #0a3a66;">
+                                                Agregar preguntas
+                                            </h4>
                                             <br />
                                             <br />
                                             <div class="row">
@@ -107,7 +107,7 @@
                                                         style="font-size: large;">Pregunta</label>
                                                     <textarea class="small-input inputsGeneral"
                                                         style="height: 35px !important;" placeholder="Escriba la pregunta"
-                                                        v-model="preguntaActual.TextQuestion"></textarea>
+                                                        v-model="preguntaActual.TextQuestion" maxlength="190"></textarea>
                                                 </div>
                                                 <br />
                                                 <br />
@@ -157,7 +157,7 @@
                                                     <button class="btn btn-primary botones" style="float: right;"
                                                         @click="agregarPregunta" b-tooltip.hover
                                                         title="Agregar pregunta a la lista"><span
-                                                            class="fas fa-plus"></span> Pregunta</button>
+                                                            class="fas fa-plus"></span> Agregar</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -177,7 +177,7 @@
                                                                 {{ pregunta.TextQuestion }}</h5>
                                                             <hr />
                                                             <input v-if="pregunta.Id_Question_Type === 1"
-                                                                style="border-radius: 15px; margin-bottom: 10px; background-color: rgb(241, 241, 241);"
+                                                                style="border-radius: 15px; margin-bottom: 25px; background-color: rgb(241, 241, 241);"
                                                                 disabled placeholder="Respuesta" />
                                                             <div
                                                                 v-if="pregunta.Id_Question_Type === 2 || pregunta.Id_Question_Type === 3">
@@ -193,21 +193,31 @@
                                                             <br />
                                                             <div class="row">
                                                                 <div class="col-6">
-                                                                    <label style="font-size: medium; float: left;"><span
-                                                                            style="color: rgb(199, 0, 0);"><b>Tipo</b></span>
-                                                                        {{ pregunta.Id_Question_Type }}</label>
+                                                                    <label v-if="pregunta.Id_Question_Type == 1" style="font-size: medium; float: left;"><span
+                                                                            style="color: rgb(199, 0, 0);"><b>Tipo:</b></span>
+                                                                        Texto
+                                                                    </label>
+                                                                    <label v-if="pregunta.Id_Question_Type == 2" style="font-size: medium; float: left;"><span
+                                                                            style="color: rgb(199, 0, 0);"><b>Tipo:</b></span>
+                                                                        Respuesta única
+                                                                    </label>
+                                                                    <label v-if="pregunta.Id_Question_Type == 3" style="font-size: medium; float: left;"><span
+                                                                            style="color: rgb(199, 0, 0);"><b>Tipo:</b></span>
+                                                                        Selección múltiple
+                                                                    </label>
                                                                 </div>
                                                                 <div class="col-6">
                                                                     <a class="fas fa-trash"
                                                                         style="font-size: medium; text-decoration: none; cursor: pointer; float: right; margin-right: 10px;"
                                                                         @click="EliminarPregunta(index)"></a>
                                                                     <a class="fas fa-pen"
-                                                                        style="font-size: medium; text-decoration: none; cursor: pointer; float: right; margin-right: 10px;"
+                                                                        style="font-size: medium; text-decoration: none; cursor: pointer; float: right; margin-right: 25px;"
                                                                         @click="EditarPregunta(index)"></a>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
+                                                    <p ref="errorPollEdit" style="visibility: hidden;color: red; margin-top: 25px;"></p>
                                                 </div>
                                             </div>
                                         </div>
@@ -250,6 +260,7 @@ import 'quill/dist/quill.snow.css'
 import Cookies from 'js-cookie';
 import AdminApi from '@/Api/Api';
 import CryptoJS from 'crypto-js';
+import router from '@/router/index'
 
 export default {
 
@@ -299,6 +310,11 @@ export default {
             await this.$root.CerrarMenuAplicaciones.call();
         },
 
+        quitarApostrofes(cadena) {
+            var cadenaNueva = cadena.replace(/'/g, '');
+            return cadenaNueva
+        },
+
         sendPoll: async function () {
             const errorPollName = this.$refs.errorPollName;
             const errorPollDescription = this.$refs.errorPollDescription;
@@ -309,7 +325,9 @@ export default {
             errorPollDescription.style.visibility = "hidden";
             errorQuestion.textContent = "";
             errorQuestion.style.visibility = "hidden";
-
+            const quilltext = this.quill.getText();
+            const maxLength = 1000;
+            
             let loader = this.$loading.show({
                 container: this.$refs.cuadroLoader,
                 opacity: 1
@@ -318,7 +336,7 @@ export default {
             if (description == "<p><br></p>") {
                 description = "";
             }
-            this.encuesta.Description = description
+            this.encuesta.Description = this.quitarApostrofes(description);
 
             if (this.encuesta.Name.trim() == "") {
                 loader.hide()
@@ -334,6 +352,18 @@ export default {
                 errorPollDescription.style.visibility = "visible";
                 return
 
+            } else if (quilltext.length > maxLength) {
+                loader.hide()
+                const maxLengthAux = maxLength - 50;
+                var truncatedText = quilltext.slice(0, maxLengthAux);
+                truncatedText = await this.quitarApostrofes(truncatedText);
+                this.quill.setText(truncatedText);
+                this.quill.focus();
+
+                errorPollDescription.textContent = "No se puede ingresar un valor superior a 1000 caracteres en la descripción";
+                errorPollDescription.style.visibility = "visible";
+                errorPollDescription.style.display = "Block";
+                return
             } else if (this.encuesta.Questions.length == 0) {
                 loader.hide()
 
@@ -356,6 +386,14 @@ export default {
                             this.ActionEN.Action_User = this.recuperarUsuLog();
                             await AdminApi.PostNewAction(this.ActionEN)
                             this.limpiarContenido()
+                            router.push({ name: 'Encuestas' })
+                        } else {
+                            this.$swal.fire({
+                                icon: 'error',
+                                position: 'center',
+                                text: response.data.msg,
+                                showConfirmButton: true
+                            })
                         }
                     })
 
@@ -367,6 +405,14 @@ export default {
                                 icon: 'success',
                                 position: 'center',
                                 text: response.data.msg,
+                                showConfirmButton: true
+                            })
+                            this.getPoll()
+                        } else {
+                            this.$swal.fire({
+                                icon: 'error',
+                                position: 'center',
+                                text: "No se pueden editar encuestas que ya han sido respondidas",
                                 showConfirmButton: true
                             })
                             this.getPoll()
@@ -412,7 +458,7 @@ export default {
         },
 
         async agregarPregunta() {
-
+            await this.reiniciarError4();
             const errorQuestion = this.$refs.errorQuestion;
             errorQuestion.style.visibility = "hidden";
             errorQuestion.textContent = "";
@@ -428,7 +474,31 @@ export default {
                         }
                     }
                     const nuevaPregunta = { Id_Question_Type: this.preguntaActual.Id_Question_Type, TextQuestion: this.preguntaActual.TextQuestion, Question_Options: this.preguntaActual.Question_Options };
+
+                    for (const element of this.encuesta.Questions) {
+                        if (element.TextQuestion == nuevaPregunta.TextQuestion) {
+                            errorQuestion.textContent = "La pregunta ya existe, por favor verifique";
+                            errorQuestion.style.visibility = "visible";
+                            return
+                        }
+                    }
+                    
+                    for (const element of nuevaPregunta.Question_Options) {
+                        var f = 0;
+                        for (let i = 0; i < nuevaPregunta.Question_Options.length; i++) {
+                            if (element.Option_Text == nuevaPregunta.Question_Options[i].Option_Text) {
+                                f = f + 1;
+                                if (f > 1) {
+                                    errorQuestion.textContent = "Hay opciones que se repiten, por favor verifique";
+                                    errorQuestion.style.visibility = "visible";
+                                    return
+                                }
+                            }
+                        }
+                    }
+                    nuevaPregunta.TextQuestion = await this.quitarApostrofes(this.preguntaActual.TextQuestion)
                     await this.encuesta.Questions.push(nuevaPregunta);
+
                     //this.preguntaActual.Id_Question_Type = 'Texto',
                     this.preguntaActual.TextQuestion = '',
                         this.preguntaActual.Question_Options = []
@@ -443,8 +513,7 @@ export default {
        
                 errorQuestion.textContent = "Por favor, digite una pregunta";
                 errorQuestion.style.visibility = "visible";
-
-                            return
+                return
             }
         },
 
@@ -452,7 +521,25 @@ export default {
             this.encuesta.Questions.splice(index, 1)
         },
 
+        reiniciarError4() {
+            const errorPollEdit = this.$refs.errorPollEdit;
+            if (errorPollEdit != undefined) {
+                errorPollEdit.textContent = "";
+                errorPollEdit.style.visibility = "hidden"; 
+            }
+        },
+
         EditarPregunta(index) {
+            const errorPollEdit = this.$refs.errorPollEdit;
+            errorPollEdit.textContent = "";
+            errorPollEdit.style.visibility = "hidden";
+
+            if (this.preguntaActual.TextQuestion != "" || this.preguntaActual.Question_Options.length > 0) {
+                errorPollEdit.textContent = "Hay una pregunta en proceso, debe agregarla o borrarla antes de poder editar";
+                errorPollEdit.style.visibility = "visible";
+                return
+            }
+
             var objeto = this.encuesta.Questions[index]
             var pregunta = objeto.TextQuestion
             var Id_Question_Type = objeto.Id_Question_Type
@@ -461,6 +548,8 @@ export default {
             this.preguntaActual.Id_Question_Type = Id_Question_Type
             this.preguntaActual.Question_Options = Question_Options
             this.encuesta.Questions.splice(index, 1)
+            const AddQuestionText = this.$refs.AddQuestionText;
+            AddQuestionText.scrollIntoView({ behavior: "smooth", block: "start" });
         },
 
         agregarOpcion() {

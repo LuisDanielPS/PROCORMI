@@ -639,7 +639,7 @@ export default {
                 } else {
 
 
-                    error.textContent = "No existe ningun proyecto asociado con el usuario";
+                    error.textContent = "No existe ningún proyecto asociado con el usuario";
                     error.style.visibility = "visible";
                 }
 
@@ -812,7 +812,7 @@ export default {
                     });
                 } else {
                     const error = this.$refs.error2;
-                    error.textContent = "No existe ningun sprint asociado con el usuario";
+                    error.textContent = "No existe ningún sprint asociado con el usuario";
                     error.style.visibility = "visible";
                 }
 
@@ -984,7 +984,7 @@ export default {
                     });
                 } else {
                    
-                    error.textContent = "No existe ningun tareas asociadas con el usuario";
+                    error.textContent = "No existen tareas asociadas con el usuario";
                     error.style.visibility = "visible";
 
                 }
@@ -1166,7 +1166,7 @@ export default {
                     });
                 } else {
                 
-                    error.textContent = "No existe ningun sub tareas asociadas con el usuario";
+                    error.textContent = "No existen subtareas asociadas con el usuario";
                     error.style.visibility = "visible";
                 }
 
@@ -1291,7 +1291,7 @@ export default {
                     worksheet.addRow(["Reporte de Encuesta", "Procormi"]);
                     const cell = worksheet.getCell('A1');
                     cell.width = 100;
-                    worksheet.addRow(["#Nombre de la encuesta", selectedPollObject.Name]);
+                    worksheet.addRow(["Nombre de la encuesta", selectedPollObject.Name]);
                     worksheet.addRow(["Pregunta", "Respuesta de Texto"]);
                     worksheet.getRow(1).eachCell((cell) => {
                         cell.fill = HeaderStyle.fill;
@@ -1308,7 +1308,8 @@ export default {
                         cell.border = HeaderStyle2.border;
                         cell.font = fontRowStyle;
                     });
-                    for (const item of this.dataListPoll) {
+                    
+                    /*for (const item of this.dataListPoll) {
 
 
                         if (item.Question_Type_Name === null && item.TextQuestionOptions === null) {
@@ -1321,11 +1322,31 @@ export default {
                             });
                         }
 
+                    }*/
+                    
+                    for (const item of this.dataListPoll) {
+                        if (item.Question_Type_Name === null && item.TextQuestionOptions === null) {
+                            const row = worksheet.addRow([item.TextQuestion, item.AnswerTexts]);
+
+                            row.eachCell({ includeEmpty: true }, (cell) => {
+                                cell.fill = rowStyle.fill;
+                                cell.border = rowStyle.border;
+
+                                cell.alignment = { wrapText: true };
+
+                                const lines = cell.text.split('\n');
+                                const maxLineLength = Math.max(...lines.map((line) => line.length));
+                                const lineHeight = 14;
+
+                                cell.height = Math.ceil(maxLineLength / cell.width) * lineHeight;
+                            });
+                        }
                     }
+
 
                     const worksheet2 = workbook.addWorksheet("Informe respuetas multiples y respuesta unica");
                     worksheet2.addRow(["Reporte de Encuesta", "Procormi"]);
-                    worksheet2.addRow(["#Nombre de la encuesta", selectedPollObject.Name]);
+                    worksheet2.addRow(["Nombre de la encuesta", selectedPollObject.Name]);
                     worksheet2.addRow(["Pregunta", "Tipo de opcion", "Opcion", "Cantidad de opcione seleccionadas"]);
                     worksheet2.getColumn(1).width = 60;
                     worksheet2.getColumn(1).alignment = { horizontal: 'center', vertical: 'middle' };

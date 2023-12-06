@@ -161,11 +161,6 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="right-content">
-                                                    <button type="button" class="btn btn-success"
-                                                        style="min-height: 48px; min-width: 48px; float: right;"><span
-                                                            class="fas fa-plus"></span></button>
-                                                </div>
                                             </div>
                                         </div>
                                         <div class="row" style="margin-top: 4%">
@@ -377,7 +372,7 @@ export default {
             if (quilltext.trim() == "") {
 
                 this.quill.focus();
-                errorDescription.textContent = "Se tiene que completar el  campo de la descripcion";
+                errorDescription.textContent = "Se tiene que completar el campo de la descripción";
                 errorDescription.style.visibility = "visible";
                 errorDescription.style.display = "Block";
                 return
@@ -390,7 +385,7 @@ export default {
                 this.quill.setText(truncatedText);
                 this.quill.focus();
 
-                errorDescription.textContent = "No se puede un valor superior ha 1000 caracteres en la descripcion";
+                errorDescription.textContent = "No se puede ingresar un valor superior a 1000 caracteres en la descripción";
                 errorDescription.style.visibility = "visible";
                 errorDescription.style.display = "Block";
                 return

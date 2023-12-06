@@ -9,7 +9,7 @@
                 <!--Modal Ver Proyecto-->
 
                 <div class="modal fade" id="staticBackdrop">
-                    <div class="modal-dialog modal-dialog-scrollable modal-xl">
+                    <div class="modal-dialog modal-lg">
                         <div class="modal-content contenidoModal">
                             <div class="modal-header encabezadoModal">
                                 <div class="col-12">
@@ -17,7 +17,7 @@
                                         <div class="col-md-1 col-xs-1">
                                             <p> </p>
                                         </div>
-                                        <div class="col-md-10 col-xs-10">
+                                        <div class="col-md-10 col-xs-10" style="margin-top: 8px;">
                                             <h3 style="color: white; text-align: center;">Información del Proyecto</h3>
                                         </div>
                                         <div class="col-md-1 col-xs-1">
@@ -33,7 +33,7 @@
                             </div>
                             <br />
                             <div class="modal-body">
-                                <div class="col-md-12 col-xs-12" style="min-height: 350px; max-height: 400px">
+                                <div class="col-md-12 col-xs-12" style="max-height: 400px">
                                     <div>
                                         <div class="col-12">
                                             <h1 style="text-align:center"><strong>{{ this.ViewProject.Project_Name
@@ -51,7 +51,7 @@
                                     </div>
                                     <hr>
                                     <br />
-                                    <div class="col-md-12 col-xs-12" style="min-height: 350px; max-height: 400px">
+                                    <div class="col-md-12 col-xs-12" style="max-height: 400px">
                                         <div class="row">
                                             <div class="col-12">
                                                 <h4 class="modal-title" style="text-align: center">
@@ -65,7 +65,7 @@
                                             <div class="col-12">
                                                 <div class="col-md-12 col-xs-12">
                                                     <div style="text-align: center;">
-                                                        <div style="text-align: left;"
+                                                        <div style="text-align: center;"
                                                             v-html="this.ViewProject.Description_Project"></div>
                                                     </div>
                                                 </div>
@@ -84,8 +84,9 @@
                             </div>
                             <div class="modal-footer row justify-content-center">
                                 <button @click="loadFileList(this.ViewProject.Id_project)" type="button"
-                                    class="btn btn-primary col-5" style="text-align: center;">Descargar archivos
+                                    class="btn btn-primary col-3" style="text-align: center;"><span class="fas fa-download"></span>&nbsp;
                                     adjuntos</button>
+                                    <button type="button" class="btn btn-danger col-3" data-bs-dismiss="modal">Cerrar</button>
                             </div>
                         </div>
                     </div>
@@ -358,7 +359,7 @@
                                             </thead>
                                             <tbody style="font-size: large;">
                                                 <tr v-for="proyecto in paginateData" :key="proyecto.Id_project"
-                                                    class="SelectHover">
+                                                    class="SelectHover" b-tooltip.hover title="Ver Sprints">
                                                     <td @click="verSprints(proyecto.Id_project)">{{
                                                         proyecto.Id_project }}</td>
                                                     <td @click="verSprints(proyecto.Id_project)">{{
@@ -369,7 +370,7 @@
                                                         {{ proyecto.Id_State == 1 ? "Activo" : (proyecto.Id_State == 5 ?
                                                             "Finalizado" : "Inactivo") }}</td>
                                                     <td class="text-white">
-                                                        <button b-tooltip.hover title="Ver Proyecto"
+                                                        <button b-tooltip.hover title="Ver Sprints"
                                                             @click="saveViewProjectModal(proyecto)" type="button"
                                                             class="btn btn-primary" data-bs-toggle="modal"
                                                             data-bs-target="#staticBackdrop" role="button">
@@ -1020,9 +1021,6 @@ export default {
         ,
 
         loadFileList: async function (idProject) {
-
-
-
             const response = await AdminApi.GetFileListProject(idProject);
             const fileListIndex = response.data.obj;
 

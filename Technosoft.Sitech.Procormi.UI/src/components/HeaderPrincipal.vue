@@ -577,6 +577,7 @@ body {
     display: none;
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
+    padding-right: 10px;
 }
 
 @media screen and (max-width: 900px) {
