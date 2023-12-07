@@ -618,7 +618,7 @@ export default {
                         this.$swal({ icon: 'success', text: 'Proyecto modificado con éxito' });
                         setTimeout(() => {
                             this.$router.push({ name: 'Inicio' });
-                        }, 2000);
+                        }, 1000);
                     } catch (error) {
                         console.error('Error al cargar los proyectos desde la API:', error);
                     }

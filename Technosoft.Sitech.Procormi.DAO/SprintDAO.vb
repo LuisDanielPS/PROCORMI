@@ -377,6 +377,7 @@ Public Class SprintDAO
                         If currentUser.Equals(pSprintEn.User_Login) Then
 
                         Else
+                            NotificationDAO.Instance.NotifyAssignedSprint(pSprintEn.User_Login, pSprintEn.Id_Sprint)
                             NotificationDAO.Instance.NotifyUnassignedSprint(currentUser, pSprintEn.Id_Sprint)
                         End If
                     End If
@@ -385,11 +386,11 @@ Public Class SprintDAO
                 sentence = "UPDATE sprint SET Sprint_Name = @parameter1, Start_Date = @parameter2, End_Date = @parameter3, User_Login = @parameter4  WHERE Id_Sprint = @Condition"
 
                 ConexionDAO.Instancia.ExecuteUpdateSprint(sentence, pSprintEn)
+
                 reply.ok = True
                 reply.msg = "El Sprint se ha modificado correctamente"
 
                 updated = GetSprintDAO(pSprintEn.Id_Sprint).obj
-                NotificationDAO.Instance.NotifyAssignedSprint(pSprintEn.User_Login, pSprintEn.Id_Sprint)
                 NotificationDAO.Instance.NotifySprintDatesChanged(updated, current)
             End If
 
@@ -400,11 +401,10 @@ Public Class SprintDAO
             Return reply
         End Try
 
-
         Return reply
 
-
     End Function
+
 
     Public Function PutCompleteSprintStatusDAO(ByVal pIdSprint As Integer) As Reply(Of SprintEN)
 

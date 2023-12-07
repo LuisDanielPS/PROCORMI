@@ -21,7 +21,7 @@
                             <div class="modal-body">
                                 <div>
                                     <label>Nombre<span style="color: red;"> *</span></label>
-                                    <br />
+                                    <br/>
                                     <div style="margin-top: 15px;">
                                         <input v-model="taskName" required style="border-radius: 5px;" type="text"
                                             maxLength="45" placeholder="Nombre">
@@ -35,8 +35,8 @@
                                         <div>
                                             <label class="margin-15px-bottom text-black">Descripción<span
                                                     style="color: red;"> *</span></label>
-                                            <div style="margin-top: 15px;">
-                                                <textarea v-model="taskDescription" required style="border-radius: 5px;"
+                                            <div>
+                                                <textarea v-model="taskDescription" required style="border-radius: 5px;resize: none"
                                                     type="textarea" maxLength="100" placeholder="Descripción"></textarea>
                                             </div>
                                             <p ref="errorCreateTaskDescription" style="visibility: hidden;color: red;"></p>
@@ -406,7 +406,7 @@
                             <div class="modal-body">
                                 <div>
                                     <label>Título<span style="color: red;"> *</span></label>
-                                    <br />
+                                    <br/>
                                     <div style="margin-top: 15px;">
                                         <input v-model="tituloSubTarea" required style="border-radius: 5px;" type="text"
                                             maxLength="45" placeholder="Nombre">
@@ -419,15 +419,14 @@
                                             <label class="margin-15px-bottom text-black">Descripción<span
                                                     style="color: red;"> *</span></label>
                                             <div>
-                                                <textarea v-model="descriptionSubTarea" required style="border-radius: 5px;"
-                                                    type="textarea" maxLength="100" placeholder="Descripción..."></textarea>
+                                                <textarea v-model="descriptionSubTarea" required style="border-radius: 5px; resize: none;"
+                                                    type="textarea" maxLength="100" placeholder="Descripción"></textarea>
                                             </div>
                                             <p ref="errorCreateSubTaskDescription" style="visibility: hidden;color: red;">
                                             </p>
                                         </div>
                                     </div>
                                 </div>
-                                <br />
                                 <div>
                                     <label>Estado<span style="color: red;"> *</span></label>
                                     <br />
@@ -438,11 +437,9 @@
                                             <option v-for="status in statusOptions.filter(s => s != 'Finalizada')" :key="status" :value="status">{{ status
                                             }}</option>
                                         </select>
-
                                     </div>
                                     <p ref="errorCreateSubTaskStatus" style="visibility: hidden;color: red;"></p>
                                 </div>
-                                <br />
                                 <div>
                                     <label>Tiempo requerido (horas)<span style="color: red;"> *</span></label>
                                     <br />
@@ -452,7 +449,6 @@
                                     </div>
                                     <p ref="errorCreateSubTaskRequiredTime" style="visibility: hidden;color: red;"></p>
                                 </div>
-                                <br />
                                 <div>
                                     <label>Prioridad<span style="color: red;"> *</span></label>
                                     <br />

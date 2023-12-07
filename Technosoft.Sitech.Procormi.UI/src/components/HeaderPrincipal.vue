@@ -34,11 +34,11 @@
                 <ul class="nav-menu" :class="{
                     'nav-menu_visible': menuDesplegableDerecho
                 }">
-                    <div class="nav-link textoBlanco" v-if="AgregarPublicacion" style="padding-top: 25px;">
+                    <div class="nav-link textoBlanco" v-if="AgregarPublicacion" style="padding-top: 25px; user-select: none;">
                         <p style="cursor: default;"><a class="text-gradient-yellow-orange-black"
                                 style="font-size: 16px;"><b>Usuario: {{ recuperarUsuNombre() }}</b></a></p>
                     </div>
-                    <div class="nav-link textoBlanco" v-if="AgregarPublicacion" style="padding-top: 25px;">
+                    <div class="nav-link textoBlanco" v-if="AgregarPublicacion" style="padding-top: 25px; user-select: none">
                         <p style="cursor: default;"><a class="text-gradient-yellow-orange-black"
                                 style="font-size: 16px; position: relative; top: -20px;"><b>Perfil:
                                     {{ recuperarUsuTipo() }}</b></a></p>
@@ -46,15 +46,11 @@
                             <hr />
                         </div>
                     </div>
-                    <div class="nav-link" style="color: white; padding-top: 25px;">
+                    <div class="nav-link" style="color: white; padding-top: 25px; user-select: none">
                         <p style="cursor: default;">Acerca de Procormi: Versión 1.0</p>
                     </div>
-                    <br />
-                    <!--<li v-if="esEncuesta" @click.prevent="cambiarAplicacion()" class="nav-link textoBlanco" style="padding-top: 20px;">
-                        <router-link role="button" :to="{ name: 'Inicio' }" class="nav-link textoBlanco" style="font-size: 17px;">Proyectos&nbsp;&nbsp;<i class="text-white fas fa-chart-line" style="cursor: pointer;"></i></router-link>
-                        <br />
-                    </li>-->
-                    <div style="display: flex; align-items: center; justify-content: center;">
+                    <br/>
+                    <div style="display: flex; align-items: center; justify-content: center; user-select: none;">
                         <div class="nav-link textoBlanco" style="margin-bottom: 25px;">
                             <a role="button" v-on:click="cerrarSesion" class="textoBlanco"
                                 style="font-size: 17px; text-decoration: none;">Cerrar Sesión&nbsp;&nbsp;<i
@@ -67,14 +63,14 @@
                 <ul class="nav-menuAplicaciones" :class="{
                     'nav-menuAplicaciones_visible': menuDesplegableAplicaciones
                 }">
-                    <div class="nav-link textoBlanco" v-if="AgregarPublicacion" style="padding-top: 15px;">
+                    <div class="nav-link textoBlanco" v-if="AgregarPublicacion" style="padding-top: 15px; user-select: none;">
                         <p style="cursor: default;">
                             <a class="text-gradient-yellow-orange-black"  style="font-size: 16px;"><b>Notificaciones</b></a>
                         </p>
                     </div>
                     <div>
-                        <div style="max-width: 100%;">
-                            <div class="textoBlanco" style="cursor: default;" v-for="notif in notifications" :key="notif.Id_Notification">
+                        <div style="max-width: 100%;user-select: none;">
+                            <div class="textoBlanco" style="cursor: default;" v-for="notif in notifications" :key="notif.Id_Notification" >
                                 <div class="notification-top" style="text-align: left;">
                                     <hr class="textoBlanco">
                                     <a style="text-decoration:none; color:white; font-weight: bold;"
