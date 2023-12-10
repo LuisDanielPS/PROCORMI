@@ -383,6 +383,19 @@ Public Class SprintDAO
                     End If
                 End Using
 
+
+                sentence = "SELECT Sprint_Name from sprint where Id_Sprint = @filtro1"
+                Using dr As MySqlDataReader = ConexionDAO.Instancia.ExecuteConsultOneParameterInteger(sentence, pSprintEn.Id_Sprint)
+                    If dr.Read() Then
+                        Dim sprintName As String = dr(0)
+                        If sprintName.Equals(pSprintEn.Sprint_Name) Then
+
+                        Else
+                            NotificationDAO.Instance.NotifySprintTitleChanged(pSprintEn.User_Login, pSprintEn.Id_Sprint, pSprintEn.Sprint_Name)
+                        End If
+                    End If
+                End Using
+
                 sentence = "UPDATE sprint SET Sprint_Name = @parameter1, Start_Date = @parameter2, End_Date = @parameter3, User_Login = @parameter4  WHERE Id_Sprint = @Condition"
 
                 ConexionDAO.Instancia.ExecuteUpdateSprint(sentence, pSprintEn)

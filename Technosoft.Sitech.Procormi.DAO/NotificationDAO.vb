@@ -116,6 +116,34 @@ Public Class NotificationDAO
     End Function
 
 
+    Public Function NotifySprintTitleChanged(ByVal pUser As String, ByVal pIdSprint As Integer, ByVal pNewName As String) As Reply(Of NotificationEN)
+        Dim reply As New Reply(Of NotificationEN)
+        Try
+            Dim notification = New NotificationEN()
+            notification.Action = "Cambio"
+            notification.Title = "Sprint renombrado"
+
+            sentence = "SELECT Sprint_Name from sprint where Id_Sprint = " & pIdSprint
+            Using dr As MySqlDataReader = ConexionDAO.Instancia.ExecuteConsult(sentence)
+                If dr.Read Then
+                    notification.Message = "Se cambio el sprint " + dr(0) + " al nombre de : " + pNewName
+                End If
+            End Using
+
+            notification.Usu_Login = pUser
+            notification.Type = "sprint"
+            notification.Type_Ref_Id = pIdSprint
+
+            Return PostNotification(notification)
+        Catch ex As Exception
+            EscritorVisorEventos.Instancia().EscribirEvento(nameClass, MethodBase.GetCurrentMethod().Name, ex)
+            reply.ok = False
+            reply.msg = "NotifySprintTitleChanged: No fue posible ejecutar la consulta: " & ex.Message
+            Return reply
+        End Try
+    End Function
+
+
     Public Function NotifyUnassignedSprint(ByVal pUser As String, ByVal pIdSprint As Integer) As Reply(Of NotificationEN)
         Dim reply As New Reply(Of NotificationEN)
         Try

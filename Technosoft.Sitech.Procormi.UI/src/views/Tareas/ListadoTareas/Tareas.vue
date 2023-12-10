@@ -1360,13 +1360,13 @@ export default {
 
             }
 
-            if (subTask.Required_Time === "" || subTask.Required_Time <= 0) {
+            if (subTask.Required_Time === "" || subTask.Required_Time <= 0 || subTask.Required_Time % 1 !== 0) {
 
-                errorCreateSubTaskRequiredTime.textContent = "El tiempo de la subtarea es requerido y debe ser mayor a 0";
+                errorCreateSubTaskRequiredTime.textContent = "El tiempo de la subtarea es requerido y debe ser mayor a 0, no acepta decimales";
                 errorCreateSubTaskRequiredTime.style.visibility = "visible";
                 errorCreateSubTaskRequiredTime.style.display = "block";
 
-                errorUpdateSubTaskRequiredTime.textContent = "El tiempo de la subtarea es requerido y debe ser mayor a 0";
+                errorUpdateSubTaskRequiredTime.textContent = "El tiempo de la subtarea es requerido y debe ser mayor a 0, no acepta decimales";
                 errorUpdateSubTaskRequiredTime.style.visibility = "visible";
                 errorUpdateSubTaskRequiredTime.style.display = "block";
 
@@ -1643,7 +1643,7 @@ export default {
         },
 
         resetTaskCreation() {
-            
+            this.hasChanges = false;
             this.verifyPassword="";
             this.taskName = '';
             this.taskDescription = '';
@@ -1696,6 +1696,8 @@ export default {
         },
 
         resetSubTaskCreation() {
+            this.hasChanges = false;
+
             this.tituloSubTarea = '';
             this.descriptionSubTarea = '';
             this.requiredTimeSubTarea = 0;
