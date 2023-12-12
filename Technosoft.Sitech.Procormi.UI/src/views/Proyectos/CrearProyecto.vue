@@ -68,7 +68,7 @@
                                                     *</span></label>
                                             <input v-model.trim="project.Project_Name" maxlength="100"
                                                 class="small-input inputsGeneral" ref="inputProjectName" type="text"
-                                                required>
+                                                required placeholder="Nombre del Proyecto">
                                             
                                             <p ref="errorProjectName" style="visibility: hidden;color: red;"></p>
                                         </div>
@@ -82,7 +82,6 @@
                                                         <div ref="Quill"
                                                             style="border: 1px solid gray; min-height: 200px; border-bottom-left-radius: 15px; border-bottom-right-radius: 15px;">
                                                         </div>
-                                                        <br>
                                                         <p ref="errorDescrition" style="visibility: hidden;color: red;padding:5 px;"> </p>
                                                     </div>
                                                 </div>
@@ -362,19 +361,20 @@ export default {
 
             if (this.project.Project_Name.trim() == "") {
                 
-                errorProjectName.textContent = "Se tiene que completar el campo del nombre del proyecto";
+                errorProjectName.textContent = "Por favor, ingrese el nombre del proyecto";
                 errorProjectName.style.visibility = "visible";
                 errorProjectName.style.display = "Block";
+                errorProjectName.scrollIntoView({ behavior: 'smooth', block: 'center' });                
                 return
             }
-
 
             if (quilltext.trim() == "") {
 
                 this.quill.focus();
-                errorDescription.textContent = "Se tiene que completar el campo de la descripción";
+                errorDescription.textContent = "Por favor, ingrese la descripción del proyecto";
                 errorDescription.style.visibility = "visible";
                 errorDescription.style.display = "Block";
+                errorDescription.scrollIntoView({ behavior: 'smooth', block: 'center' });  
                 return
             }
 
@@ -385,7 +385,7 @@ export default {
                 this.quill.setText(truncatedText);
                 this.quill.focus();
 
-                errorDescription.textContent = "No se puede ingresar un valor superior a 1000 caracteres en la descripción";
+                errorDescription.textContent = "La descripción no puede exceder los 1000 caracteres.";
                 errorDescription.style.visibility = "visible";
                 errorDescription.style.display = "Block";
                 return
@@ -394,9 +394,10 @@ export default {
             if (this.UserlistAdd.length == 0) {
 
           
-                errorUserList.textContent = "  Se tiene que agregar al menos un usuario";
+                errorUserList.textContent = "Por favor, ingrese un usuario";
                 errorUserList.style.visibility = "visible";
                 errorUserList.style.display = "Block";
+                errorUserList.scrollIntoView({ behavior: 'smooth', block: 'center' });  
                 return
             }
 
@@ -650,9 +651,8 @@ export default {
                     console.log(selectedUserObject)
                 }
                 else {
-                    this.$swal({ icon: 'warning', text: 'No se puede agregar dos veces el mismo usuario' });
+                    this.$swal({ icon: 'warning', text: 'Usuario duplicado. Favor seleccionar otro' });
                 }
-
 
                 this.selectedUser = null
             }
@@ -711,7 +711,7 @@ export default {
             for (const username of removedUsersNotificationOnDisassignment) {                
                 const removedNotification = {
                     Title: 'Eliminado del proyecto',
-                    Message : `Ya no formas parte de: ${this.project_name_old}`,
+                    Message : `Ya no formas parte del proyecto: ${this.project_name_old}`,
                     Action: 'Eliminado',
                     Type: 'project',
                     Type_Ref_Id: this.project.Id_project,

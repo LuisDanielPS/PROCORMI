@@ -27,7 +27,7 @@
                                     </div>
                                     <p ref="errorCreateSprintName" style="visibility: hidden;color: red;"></p>
                                 </div>
-                                <br />
+                                <br/>
                                 <div>
                                     <label>Fecha de Inicio<span style="color: red;"> *</span></label>
                                     <br />
@@ -459,7 +459,7 @@
                                             </thead>
                                             <tbody style="font-size: large;">
                                                 <tr v-for="sprint in paginateData" :key="sprint.Id_Sprint"
-                                                    class="SelectHover">
+                                                    class="SelectHover" b-tooltip.hover title="Ver Tareas">
                                                     <td @click="verTareas(sprint.Id_Sprint)">
                                                         {{ sprint.Id_Sprint }}</td>
                                                     <td @click="verTareas(sprint.Id_Sprint)">
@@ -903,7 +903,7 @@ export default {
                 this.$refs.inputSprintName.focus();
 
 
-                errorCreateSprintName.textContent = "No se ingresó el nombre del sprint";
+                errorCreateSprintName.textContent = "Por favor, ingrese el nombre del sprint";
                 errorCreateSprintName.style.visibility = "visible";
                 errorCreateSprintName.style.display = "block";
                 return errorCreateSprintName;
@@ -913,7 +913,7 @@ export default {
             if (this.sprint.Start_Date == "") {
                 this.$refs.inputStartDate.focus();
 
-                errorCreateStartDate.textContent = "Se tiene que elegir una fecha de inicio";
+                errorCreateStartDate.textContent = "Por favor, ingrese la fecha de inicio";
                 errorCreateStartDate.style.visibility = "visible";
                 errorCreateStartDate.style.display = "block";
                 return errorCreateStartDate;
@@ -923,7 +923,7 @@ export default {
             if (this.sprint.End_Date == "") {
                 this.$refs.inputEndDate.focus();
 
-                errorCreateEndDate.textContent = "Se tiene que elegir una fecha de finalización";
+                errorCreateEndDate.textContent = "Por favor, ingrese la fecha de finalización";
                 errorCreateEndDate.style.visibility = "visible";
                 errorCreateEndDate.style.display = "block";
                 return errorCreateEndDate;
@@ -936,7 +936,7 @@ export default {
                 this.$refs.inputDate.focus();
 
 
-                errorCreateEndDate.textContent = "La fecha de finalización no puede ser previa a la de inicio";
+                errorCreateEndDate.textContent = "La fecha de finalización debe ser posterior a la de inicio";
                 errorCreateEndDate.style.visibility = "visible";
                 errorCreateEndDate.style.display = "block";
                 return errorCreateEndDate;
@@ -946,7 +946,7 @@ export default {
                 this.$refs.inputUserLogin.focus();
 
 
-                errorCreateUserLogin.textContent = "Se tiene que elegir un usuario";
+                errorCreateUserLogin.textContent = "Por favor, ingrese un usuario";
                 errorCreateUserLogin.style.visibility = "visible";
                 errorCreateUserLogin.style.display = "block";
                 return errorCreateUserLogin;
@@ -1118,7 +1118,7 @@ export default {
             if (this.SprintNameEdit.trim() == "") {
                 this.$refs.EditarSprintName.focus();
 
-                errorUpdateSprintName.textContent = "No se ingresó el nombre del Sprint";
+                errorUpdateSprintName.textContent = "Por favor, ingrese el nombre del sprint";
                 errorUpdateSprintName.style.visibility = "visible";
                 errorUpdateSprintName.style.display = "block";
                 return errorUpdateSprintName;
@@ -1127,7 +1127,7 @@ export default {
             if (this.SprintStartDateEdit == "") {
                 this.$refs.EditarStartDate.focus();
 
-                errorUpdateStartDate.textContent = "Se tiene que elegir una fecha de inicio";
+                errorUpdateStartDate.textContent = "Por favor, ingrese la fecha de inicio";
                 errorUpdateStartDate.style.visibility = "visible";
                 errorUpdateStartDate.style.display = "block";
                 return errorUpdateStartDate;
@@ -1137,7 +1137,7 @@ export default {
             if (this.SprintEndDateEdit == "") {
                 this.$refs.EditarEndDate.focus();
 
-                errorUpdateEndtDate.textContent = "Se tiene que elegir una fecha de finalización";
+                errorUpdateEndtDate.textContent = "Por favor, ingrese la fecha de finalización";
                 errorUpdateEndtDate.style.visibility = "visible";
                 errorUpdateEndtDate.style.display = "block";
                 return errorUpdateEndtDate;
@@ -1151,7 +1151,7 @@ export default {
             if (editendDate < editstartDate) {
                 this.$refs.editDate.focus();
 
-                errorUpdateEndtDate.textContent = "La fecha de finalización no puede ser previa a la de inicio";
+                errorUpdateEndtDate.textContent = "La fecha de finalización debe ser posterior a la de inicio";
                 errorUpdateEndtDate.style.visibility = "visible";
                 errorUpdateEndtDate.style.display = "block";
                 return errorUpdateEndtDate;
@@ -1161,7 +1161,7 @@ export default {
             if (this.SprintUsuLoginEdit == "" || this.SprintUsuLoginEdit == null) {
                 this.$refs.EditarUserLogin.focus();
 
-                errorUpdateUserLogin.textContent = "Se tiene que elegir un usuario";
+                errorUpdateUserLogin.textContent = "Por favor, ingrese un usuario";
                 errorUpdateUserLogin.style.visibility = "visible";
                 errorUpdateUserLogin.style.display = "block";
                 return errorUpdateUserLogin;
@@ -1343,7 +1343,7 @@ export default {
         },
 
         async confirmCompleteWithPendingTasks() {
-            const result = await this.showSwalConfirmation('Aún hay tareas pendientes, ¿seguro que desea completar el sprint?');
+            const result = await this.showSwalConfirmation('Aún hay tareas pendientes, ¿Seguro que desea completar el sprint?');
             return result.isConfirmed;
         },
 

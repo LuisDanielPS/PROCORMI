@@ -106,7 +106,7 @@
                                                     <label class="margin-15px-bottom text-black"
                                                         style="font-size: large;">Pregunta</label>
                                                     <textarea class="small-input inputsGeneral"
-                                                        style="height: 35px !important;" placeholder="Escriba la pregunta"
+                                                        style="height: 35px !important; resize:none;" placeholder="Escriba la pregunta"
                                                         v-model="preguntaActual.TextQuestion" maxlength="190"></textarea>
                                                 </div>
                                                 <br />
@@ -145,8 +145,6 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <br />
-                                            <br />
                                             <div class="row justify-content-center">
                                                 <div class="col-6">
 
@@ -341,15 +339,17 @@ export default {
             if (this.encuesta.Name.trim() == "") {
                 loader.hide()
 
-                errorPollName.textContent = "Por favor, digite el título de la encuesta";
+                errorPollName.textContent = "Por favor, ingrese el título de la encuesta";
                 errorPollName.style.visibility = "visible";
+                errorPollName.scrollIntoView({ behavior: 'smooth', block: 'center' });  
                 return
 
 
             } else if (this.encuesta.Description.trim() == "") {
                 loader.hide()
-                errorPollDescription.textContent = "Por favor, digite la descripción de la encuesta";
+                errorPollDescription.textContent = "Por favor, ingrese la descripción de la encuesta";
                 errorPollDescription.style.visibility = "visible";
+                errorPollDescription.scrollIntoView({ behavior: 'smooth', block: 'center' });  
                 return
 
             } else if (quilltext.length > maxLength) {
@@ -367,7 +367,7 @@ export default {
             } else if (this.encuesta.Questions.length == 0) {
                 loader.hide()
 
-                errorQuestion.textContent = "Por favor, digite al menos una pregunta";
+                errorQuestion.textContent = "Por favor, ingrese una pregunta";
                 errorQuestion.style.visibility = "visible";
                 return
             }
@@ -467,7 +467,7 @@ export default {
                 if ((this.preguntaActual.Id_Question_Type != 1 && this.preguntaActual.Question_Options.length > 0) || this.preguntaActual.Id_Question_Type == 1) {
                     if (this.preguntaActual.Id_Question_Type != 1) {
                         if (this.preguntaActual.Question_Options[0].Option_Text == "") {
-                            errorQuestion.textContent = "Debe agregar al menos una opción";
+                            errorQuestion.textContent = "Por favor, ingrese una opción";
                             errorQuestion.style.visibility = "visible";
 
                             return
@@ -477,7 +477,7 @@ export default {
 
                     for (const element of this.encuesta.Questions) {
                         if (element.TextQuestion == nuevaPregunta.TextQuestion) {
-                            errorQuestion.textContent = "La pregunta ya existe, por favor verifique";
+                            errorQuestion.textContent = "Existe una pregunta duplicada. Por favor ingrese una nueva";
                             errorQuestion.style.visibility = "visible";
                             return
                         }
@@ -489,7 +489,7 @@ export default {
                             if (element.Option_Text == nuevaPregunta.Question_Options[i].Option_Text) {
                                 f = f + 1;
                                 if (f > 1) {
-                                    errorQuestion.textContent = "Hay opciones que se repiten, por favor verifique";
+                                    errorQuestion.textContent = "Existe una respuesta duplicada. Por favor ingrese una nueva";
                                     errorQuestion.style.visibility = "visible";
                                     return
                                 }
@@ -504,7 +504,7 @@ export default {
                         this.preguntaActual.Question_Options = []
                 } else {
                     
-                    errorQuestion.textContent = "Debe agregar al menos una opción";
+                    errorQuestion.textContent = "Por favor, ingrese una opción";
                     errorQuestion.style.visibility = "visible";
 
                     return

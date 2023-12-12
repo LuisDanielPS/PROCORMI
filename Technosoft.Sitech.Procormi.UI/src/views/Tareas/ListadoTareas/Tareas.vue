@@ -36,7 +36,7 @@
                                             <label class="margin-15px-bottom text-black">Descripción<span
                                                     style="color: red;"> *</span></label>
                                             <div>
-                                                <textarea v-model="taskDescription" required style="border-radius: 5px;resize: none"
+                                                <textarea v-model="taskDescription" required style="border-radius: 5px; resize: none"
                                                     type="textarea" maxLength="100" placeholder="Descripción"></textarea>
                                             </div>
                                             <p ref="errorCreateTaskDescription" style="visibility: hidden;color: red;"></p>
@@ -147,12 +147,13 @@
                             <div class="modal-body">
                                 <div>
                                     <label>Nombre<span style="color: red;"> *</span></label>
-                                    <br />
+                                    <br/>
                                     <div style="margin-top: 15px;">
                                         <input v-model="taskNameUnderEdit" required @input="handleChanges"
                                             style="border-radius: 5px;" maxLength="45" type="text" placeholder="Nombre">
                                     </div>
                                     <p ref="errorUpdateTaskName" style="visibility: hidden;color: red;"></p>
+                                    <br/>
                                 </div>
                                 <div class="row">
                                     <div class="col-12">
@@ -162,7 +163,7 @@
                                             <div>
                                                 <textarea v-model="taskDescriptionUnderEdit" required @input="handleChanges"
                                                     style="border-radius: 5px;" maxLength="100" type="textarea"
-                                                    placeholder="Descripcion..."></textarea>
+                                                    placeholder="Descripción"></textarea>
                                             </div>
                                             <p ref="errorUpdateTaskDescription" style="visibility: hidden;color: red;"></p>
                                         </div>
@@ -352,7 +353,7 @@
                                     <div class="row">
                                         <div class="col-6" style="text-align: left;">
                                             <p style="text-align: left;"><b>Tiempo restante: {{ currentSubTask ?
-                                                currentSubTask.Required_Time : 0.0 }} horas</b></p>
+                                                currentSubTask.Required_Time : 0.0 }} hora(s)</b></p>
                                         </div>
                                         <div class="col-6" style="text-align: right;">
                                             <p style="text-align: right;"><b>Estado actual: {{ currentSubTask ?
@@ -504,7 +505,7 @@
                                             <div>
                                                 <textarea v-model="descriptionSubTarea" @input="handleChanges" required
                                                     style="border-radius: 5px;" type="textarea" maxLength="100"
-                                                    placeholder="Descripción..."></textarea>
+                                                    placeholder="Descripción"></textarea>
                                             </div>
                                             <p ref="errorUpdateSubTaskDescription" style="visibility: hidden;color: red;">
                                             </p>
@@ -1230,11 +1231,11 @@ export default {
 
             if (task.Task_Name.trim() == "") {
 
-                errorCreateTaskName.textContent = "Se tiene que completar el campo del nombre de la tarea";
+                errorCreateTaskName.textContent = "Por favor, ingrese el nombre de la tarea";
                 errorCreateTaskName.style.visibility = "visible";
                 errorCreateTaskName.style.display = "block";
 
-                errorUpdateTaskName.textContent = "Se tiene que completar el campo del nombre de la tarea";
+                errorUpdateTaskName.textContent = "Por favor, ingrese el nombre de la tarea";
                 errorUpdateTaskName.style.visibility = "visible";
                 errorUpdateTaskName.style.display = "block";
 
@@ -1243,11 +1244,11 @@ export default {
 
             if (task.Description_Task.trim() == "") {
 
-                errorCreateTaskDescription.textContent = "Se tiene que completar el campo de descripcion de la tarea";
+                errorCreateTaskDescription.textContent = "Por favor, ingrese la descripción de la tarea";
                 errorCreateTaskDescription.style.visibility = "visible";
                 errorCreateTaskDescription.style.display = "block";
 
-                errorUpdateTaskDescription.textContent = "Se tiene que completar el campo de descripcion de la tarea";
+                errorUpdateTaskDescription.textContent = "Por favor, ingrese la descripción de la tarea";
                 errorUpdateTaskDescription.style.visibility = "visible";
                 errorUpdateTaskDescription.style.display = "block";
 
@@ -1257,7 +1258,7 @@ export default {
 
             if ((isEdit && (task.Id_Status.trim() == '' || task.Id_Status.trim() == null || task.Id_Status.trim() == undefined)) || (isEdit && task.Id_Status == "Activo")) {
 
-                errorUpdateTaskStatus.textContent = "Se tiene que completar el campo del estado de la tarea";
+                errorUpdateTaskStatus.textContent = "Por favor, ingrese el estado de la tarea";
                 errorUpdateTaskStatus.style.visibility = "visible";
                 errorUpdateTaskStatus.style.display = "block";
                 return errorUpdateTaskStatus;
@@ -1321,11 +1322,11 @@ export default {
             if (subTask.Title.trim() == "") {
 
 
-                errorCreateSubTaskName.textContent = "Se tiene que completar el campo del titulo de la subtarea";
+                errorCreateSubTaskName.textContent = "Por favor, ingrese el nombre de la subtarea";
                 errorCreateSubTaskName.style.visibility = "visible";
                 errorCreateSubTaskName.style.display = "block";
 
-                errorUpdateSubTaskName.textContent = "Se tiene que completar el campo del titulo de la subtarea";
+                errorUpdateSubTaskName.textContent = "Por favor, ingrese el nombre de la subtarea";
                 errorUpdateSubTaskName.style.visibility = "visible";
                 errorUpdateSubTaskName.style.display = "block";
 
@@ -1334,11 +1335,11 @@ export default {
 
             if (subTask.Description.trim() == "") {
 
-                errorCreateSubTaskDescription.textContent = "Se tiene que completar el campo de la descripción de la subtarea";
+                errorCreateSubTaskDescription.textContent = "Por favor, ingrese la descripción de la subtarea";
                 errorCreateSubTaskDescription.style.visibility = "visible";
                 errorCreateSubTaskDescription.style.display = "block";
 
-                errorUpdateSubTaskDescription.textContent = "Se tiene que completar el campo de la descripción de la subtarea";
+                errorUpdateSubTaskDescription.textContent = "Por favor, ingrese la descripción de la subtarea";
                 errorUpdateSubTaskDescription.style.visibility = "visible";
                 errorUpdateSubTaskDescription.style.display = "block";
 
@@ -1348,11 +1349,11 @@ export default {
             }
 
             if (subTask.Id_Status == '' || subTask.Id_Status == null || subTask.Id_Status == undefined) {
-                errorCreateSubTaskStatus.textContent = "Se tiene que completar el campo del estado de la subtarea";
+                errorCreateSubTaskStatus.textContent = "Por favor, ingrese el estado de la subtarea";
                 errorCreateSubTaskStatus.style.visibility = "visible";
                 errorCreateSubTaskStatus.style.display = "block";
 
-                errorUpdateSubTaskStatus.textContent = "Se tiene que completar el campo del estado de la subtarea";
+                errorUpdateSubTaskStatus.textContent = "Por favor, ingrese el estado de la subtarea";
                 errorUpdateSubTaskStatus.style.visibility = "visible";
                 errorUpdateSubTaskStatus.style.display = "block";
 
@@ -1362,11 +1363,11 @@ export default {
 
             if (subTask.Required_Time === "" || subTask.Required_Time <= 0 || subTask.Required_Time % 1 !== 0) {
 
-                errorCreateSubTaskRequiredTime.textContent = "El tiempo de la subtarea es requerido y debe ser mayor a 0, no acepta decimales";
+                errorCreateSubTaskRequiredTime.textContent = "El tiempo de la subtarea es obligatorio y debe ser mayor a 0. (No se aceptan valores decimales)";
                 errorCreateSubTaskRequiredTime.style.visibility = "visible";
                 errorCreateSubTaskRequiredTime.style.display = "block";
 
-                errorUpdateSubTaskRequiredTime.textContent = "El tiempo de la subtarea es requerido y debe ser mayor a 0, no acepta decimales";
+                errorUpdateSubTaskRequiredTime.textContent = "El tiempo de la subtarea es obligatorio y debe ser mayor a 0. (No se aceptan valores decimales)";
                 errorUpdateSubTaskRequiredTime.style.visibility = "visible";
                 errorUpdateSubTaskRequiredTime.style.display = "block";
 
@@ -1377,11 +1378,11 @@ export default {
             if (subTask.Id_Priority == '' || subTask.Id_Priority == null || subTask.Id_Priority == undefined) {
 
 
-                errorCreateSubTaskPriority.textContent = "Se tiene que completar el campo de la prioridad de la subtarea";
+                errorCreateSubTaskPriority.textContent = "Por favor, ingrese la prioridad de la subtarea";
                 errorCreateSubTaskPriority.style.visibility = "visible";
                 errorCreateSubTaskPriority.style.display = "block";
 
-                errorUpdateSubTaskPriority.textContent = "Se tiene que completar el campo de la prioridad de la subtarea";
+                errorUpdateSubTaskPriority.textContent = "Por favor, ingrese la prioridad de la subtarea";
                 errorUpdateSubTaskPriority.style.visibility = "visible";
                 errorUpdateSubTaskPriority.style.display = "block";
 
@@ -2060,7 +2061,7 @@ export default {
         },
 
         async confirmCompleteWithPendingSubTasks() {
-            const result = await this.showSwalConfirmation('Aún hay subtareas pendientes, ¿seguro que desea completar la tarea?');
+            const result = await this.showSwalConfirmation('Aún hay subtareas pendientes, ¿Seguro que desea completar la tarea?');
             return result.isConfirmed;
         },
 

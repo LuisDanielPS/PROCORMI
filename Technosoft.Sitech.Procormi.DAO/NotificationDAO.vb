@@ -115,46 +115,17 @@ Public Class NotificationDAO
         End Try
     End Function
 
-
-    Public Function NotifySprintTitleChanged(ByVal pUser As String, ByVal pIdSprint As Integer, ByVal pNewName As String) As Reply(Of NotificationEN)
-        Dim reply As New Reply(Of NotificationEN)
-        Try
-            Dim notification = New NotificationEN()
-            notification.Action = "Cambio"
-            notification.Title = "Sprint renombrado"
-
-            sentence = "SELECT Sprint_Name from sprint where Id_Sprint = " & pIdSprint
-            Using dr As MySqlDataReader = ConexionDAO.Instancia.ExecuteConsult(sentence)
-                If dr.Read Then
-                    notification.Message = "Se cambio el sprint " + dr(0) + " al nombre de : " + pNewName
-                End If
-            End Using
-
-            notification.Usu_Login = pUser
-            notification.Type = "sprint"
-            notification.Type_Ref_Id = pIdSprint
-
-            Return PostNotification(notification)
-        Catch ex As Exception
-            EscritorVisorEventos.Instancia().EscribirEvento(nameClass, MethodBase.GetCurrentMethod().Name, ex)
-            reply.ok = False
-            reply.msg = "NotifySprintTitleChanged: No fue posible ejecutar la consulta: " & ex.Message
-            Return reply
-        End Try
-    End Function
-
-
     Public Function NotifyUnassignedSprint(ByVal pUser As String, ByVal pIdSprint As Integer) As Reply(Of NotificationEN)
         Dim reply As New Reply(Of NotificationEN)
         Try
             Dim notification = New NotificationEN()
-            notification.Action = "DESASIGNADO"
-            notification.Title = "Desasignacion de sprint"
+            notification.Action = "Eliminado"
+            notification.Title = "Eliminado de sprint"
 
             sentence = "SELECT Sprint_Name from sprint where Id_Sprint = " & pIdSprint
             Using dr As MySqlDataReader = ConexionDAO.Instancia.ExecuteConsult(sentence)
                 If dr.Read Then
-                    notification.Message = "El sprint " + dr(0) + " te ha sido desasignado"
+                    notification.Message = "Se le ha eliminado del sprint: " + dr(0)
                 End If
             End Using
 
@@ -183,7 +154,7 @@ Public Class NotificationDAO
             sentence = "SELECT Sprint_Name, User_Login from sprint where Id_Sprint = " & pIdSprint
             Using dr As MySqlDataReader = ConexionDAO.Instancia.ExecuteConsult(sentence)
                 If dr.Read Then
-                    notification.Message = "El sprint " + dr(0) + " ha finalizado"
+                    notification.Message = "El sprint: " + dr(0) + " ha concluido"
                     pUser = dr(1)
                 End If
             End Using
@@ -214,7 +185,7 @@ Public Class NotificationDAO
             sentence = "SELECT  Project_Name, su.User_Login from project p  join seg_usu_project su on su.Id_Project = p.Id_Project where  p.Id_Project = " & pIdProject
             Using dr As MySqlDataReader = ConexionDAO.Instancia.ExecuteConsult(sentence)
                 While dr.Read
-                    notification.Message = "El proyecto " + dr(0) + " ha finalizado"
+                    notification.Message = "El proyecto " + dr(0) + " ha concluido"
                     pUser = dr(1)
 
                     notification.Usu_Login = pUser
@@ -241,7 +212,7 @@ Public Class NotificationDAO
         Try
             Dim pUser As String = ""
             Dim notification = New NotificationEN()
-            notification.Action = "MODIFICATION"
+            notification.Action = "Cambio de Fechas"
             notification.Title = "Cambios en sprint"
 
             If (pUpdatedSprint.Equals(pCurrentSprint)) Then
@@ -252,11 +223,11 @@ Public Class NotificationDAO
             Using dr As MySqlDataReader = ConexionDAO.Instancia.ExecuteConsult(sentence)
                 If dr.Read Then
                     If (Not pUpdatedSprint.Start_Date.Equals(pCurrentSprint.Start_Date) And Not pUpdatedSprint.End_Date.Equals(pCurrentSprint.End_Date)) Then
-                        notification.Message = "La fecha de inicio y fin han cambiado del sprint " + dr(0)
+                        notification.Message = "Las fechas de inicio y finalización del sprint han cambiado: " + dr(0)
                     ElseIf Not pUpdatedSprint.End_Date.Equals(pCurrentSprint.End_Date) Then
-                        notification.Message = "La fecha de fin ha cambiado del sprint " + dr(0)
+                        notification.Message = "La fecha de finalización del sprint: " + dr(0) + " ha cambiado"
                     ElseIf Not pUpdatedSprint.Start_Date.Equals(pCurrentSprint.Start_Date) Then
-                        notification.Message = "La fecha de inicio ha cambiado del sprint " + dr(0)
+                        notification.Message = "La fecha de inicio del sprint: " + dr(0) + " ha cambiado"
                     End If
                     pUser = dr(1)
                 End If

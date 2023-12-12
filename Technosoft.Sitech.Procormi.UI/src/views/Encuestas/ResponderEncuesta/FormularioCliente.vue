@@ -3,56 +3,62 @@
         <HeaderPrincipal />
         <div class="posicion0" v-on:click="cerrarMenu()">
             <div class="d-flex">
-                <MenuLateral v-if="recuperarUsuLog() != '' && recuperarUsuLog() != null && recuperarUsuLog() != undefined" />
+                <MenuLateral
+                    v-if="recuperarUsuLog() != '' && recuperarUsuLog() != null && recuperarUsuLog() != undefined" />
                 <div class="w-100">
 
-                <!--Filtros responsive /-->
+                    <!--Filtros responsive /-->
 
-                <div v-if="recuperarUsuLog() != '' && recuperarUsuLog() != null && recuperarUsuLog() != undefined">
-                    <div class="row justify-content-center filtrosCelularBotones">
-                        <div class="col-5"></div>
-                        <div class="col-2 filtrosCelularBoton" v-if="!filtroDesplegar" v-on:click="desplegarFiltros()">
-                            <a class="text-gradient-yellow-orange-black fas fa-bars"></a>
+                    <div v-if="recuperarUsuLog() != '' && recuperarUsuLog() != null && recuperarUsuLog() != undefined">
+                        <div class="row justify-content-center filtrosCelularBotones">
+                            <div class="col-5"></div>
+                            <div class="col-2 filtrosCelularBoton" v-if="!filtroDesplegar" v-on:click="desplegarFiltros()">
+                                <a class="text-gradient-yellow-orange-black fas fa-bars"></a>
+                            </div>
+                            <div class="col-5"></div>
                         </div>
-                        <div class="col-5"></div>
+
+                        <div class="filtrosCelular row justify-content-center" v-if="filtroDesplegar">
+
+                            <div class="col-lg-4 col-md-4 col-sm-12 row justify-content-center" style="margin-top: 40px;">
+                                <div class="col-8 textoBlanco" style="text-align: center; min-width: 150px;">
+                                    <router-link role="button" :to="{ name: 'Inicio' }" class="textoBlanco textoEncuestas"
+                                        style="text-decoration: none;"
+                                        exact-active-class="active-link">Proyectos&nbsp;&nbsp;<i
+                                            class="text-white fas fa-project-diagram"
+                                            style="cursor: pointer; font-size: 14px;"></i></router-link>
+                                </div>
+                            </div>
+
+                            <div v-if="recuperarUsuTipo() == 'Administrador'"
+                                class="col-lg-4 col-md-4 col-sm-12 row justify-content-center" style="margin-top: 40px;">
+                                <div class="col-8 textoBlanco" style="text-align: center; min-width: 150px;">
+                                    <router-link role="button" :to="{ name: 'Encuestas' }"
+                                        class="textoBlanco textoEncuestas" style="text-decoration: none;"
+                                        exact-active-class="active-link">Encuestas&nbsp;&nbsp;<i
+                                            class="text-white fas fa-chart-line" style="cursor: pointer;"></i></router-link>
+                                </div>
+                            </div>
+
+                            <div v-if="recuperarUsuTipo() == 'Administrador'"
+                                class="col-lg-4 col-md-4 col-sm-12 row justify-content-center" style="margin-top: 40px;">
+                                <div class="col-8 textoBlanco" style="text-align: center;">
+                                    <router-link role="button" :to="{ name: 'Reportes' }" class="textoBlanco textoEncuestas"
+                                        style="text-decoration: none;"
+                                        exact-active-class="active-link">Reportes&nbsp;&nbsp;<i
+                                            class="text-white far fa-file-alt" style="cursor: pointer;"></i></router-link>
+                                </div>
+                            </div>
+
+                            <div style="text-align: center; font-size: large; padding-top: 40px; cursor: pointer; margin-left: 20px;"
+                                v-if="filtroDesplegar" v-on:click="desplegarFiltros()">
+                                <a class="text-white fas fa-angle-up" style="text-decoration: none;"></a>
+                            </div>
+
+                        </div>
                     </div>
 
-                    <div class="filtrosCelular row justify-content-center" v-if="filtroDesplegar">
-
-                        <div class="col-lg-4 col-md-4 col-sm-12 row justify-content-center" style="margin-top: 40px;">
-                            <div class="col-8 textoBlanco" style="text-align: center; min-width: 150px;">
-                                <router-link role="button" :to="{ name: 'Inicio' }" class="textoBlanco textoEncuestas"
-                                    style="text-decoration: none;" exact-active-class="active-link">Proyectos&nbsp;&nbsp;<i
-                                        class="text-white fas fa-project-diagram"
-                                        style="cursor: pointer; font-size: 14px;"></i></router-link>
-                            </div>
-                        </div>
-
-                        <div v-if="recuperarUsuTipo() == 'Administrador'" class="col-lg-4 col-md-4 col-sm-12 row justify-content-center" style="margin-top: 40px;">
-                            <div class="col-8 textoBlanco" style="text-align: center; min-width: 150px;">
-                                <router-link role="button" :to="{ name: 'Encuestas' }" class="textoBlanco textoEncuestas"
-                                    style="text-decoration: none;" exact-active-class="active-link">Encuestas&nbsp;&nbsp;<i
-                                        class="text-white fas fa-chart-line" style="cursor: pointer;"></i></router-link>
-                            </div>
-                        </div>
-
-                        <div v-if="recuperarUsuTipo() == 'Administrador'" class="col-lg-4 col-md-4 col-sm-12 row justify-content-center" style="margin-top: 40px;">
-                            <div class="col-8 textoBlanco" style="text-align: center;">
-                                <router-link role="button" :to="{ name: 'Reportes' }" class="textoBlanco textoEncuestas"
-                                    style="text-decoration: none;" exact-active-class="active-link">Reportes&nbsp;&nbsp;<i
-                                        class="text-white far fa-file-alt" style="cursor: pointer;"></i></router-link>
-                            </div>
-                        </div>
-
-                        <div style="text-align: center; font-size: large; padding-top: 40px; cursor: pointer; margin-left: 20px;"
-                            v-if="filtroDesplegar" v-on:click="desplegarFiltros()">
-                            <a class="text-white fas fa-angle-up" style="text-decoration: none;"></a>
-                        </div>
-
-                    </div>
-                </div>
-
-                <!--Filtros responsive /-->
+                    <!--Filtros responsive /-->
 
                     <div class="col-12" style="margin-top: 30px;">
                         <h4 style="text-align: center; font-size: 25px; color: #0a3a66;">Responder encuesta</h4>
@@ -65,24 +71,31 @@
                                         <!--Preguntas-->
                                         <form @submit.prevent="SendAnswer()">
                                             <div>
-                                                <h4 style="text-align: center; font-size: 25px; color: #0a3a66;">{{ poll.Name }}
+                                                <h4 style="text-align: center; font-size: 25px; color: #0a3a66;">{{
+                                                    poll.Name }}
                                                 </h4>
                                                 <br>
-                                                <div style="text-align: center; font-size: 15px; color: #000000;" v-html="poll.Description"></div>
+                                                <div style="text-align: center; font-size: 15px; color: #000000;"
+                                                    v-html="poll.Description"></div>
                                                 <br>
 
-                                                <div v-if="(recuperarUsuLog() != '' && recuperarUsuLog() != null && recuperarUsuLog() != undefined) && recuperarUsuTipo() == 'Administrador'" style="text-align: center;">
-                                                    <p class="cardPersonalizado" style="text-align: center; font-size: 15px; color: #000000; cursor: default; padding: 15px;">
+                                                <div v-if="(recuperarUsuLog() != '' && recuperarUsuLog() != null && recuperarUsuLog() != undefined) && recuperarUsuTipo() == 'Administrador'"
+                                                    style="text-align: center;">
+                                                    <p class="cardPersonalizado"
+                                                        style="text-align: center; font-size: 15px; color: #000000; cursor: default; padding: 15px;">
                                                         <b>Enlace:</b>&nbsp;<a>{{ fullLink }}</a>
                                                         <br>
                                                     </p>
-                                                    <button type="button" class="btn btn-success" b-tooltip.hover title="Copiar enlace" @click="copiarLink()" style="cursor: pointer; margin-top: 15px;">Copiar&nbsp;&nbsp;<span class="fas fa-paperclip"></span></button>
+                                                    <button type="button" class="btn btn-success" b-tooltip.hover
+                                                        title="Copiar enlace" @click="copiarLink()"
+                                                        style="cursor: pointer; margin-top: 15px;">Copiar&nbsp;&nbsp;<span
+                                                            class="fas fa-paperclip"></span></button>
                                                 </div>
 
                                                 <div>
                                                     <div>
-                                                        <div class="cardPersonalizado" v-for="(question, index) in poll.Questions"
-                                                            :key="index">
+                                                        <div class="cardPersonalizado"
+                                                            v-for="(question, index) in poll.Questions" :key="index">
                                                             <div class="cardInside">
 
                                                                 <h5
@@ -90,19 +103,22 @@
                                                                     {{ question.TextQuestion }}</h5>
                                                                 <hr />
 
-                                                                <label v-if="question.Id_Question_Type == 1" style="font-size: medium; float: left;"><span
+                                                                <label v-if="question.Id_Question_Type == 1"
+                                                                    style="font-size: medium; float: left;"><span
                                                                         style="color: rgb(199, 0, 0);"><b>Tipo:</b></span>
                                                                     Texto
                                                                 </label>
-                                                                <label v-if="question.Id_Question_Type == 2" style="font-size: medium; float: left;"><span
+                                                                <label v-if="question.Id_Question_Type == 2"
+                                                                    style="font-size: medium; float: left;"><span
                                                                         style="color: rgb(199, 0, 0);"><b>Tipo:</b></span>
                                                                     Respuesta única
                                                                 </label>
-                                                                <label v-if="question.Id_Question_Type == 3" style="font-size: medium; float: left;"><span
+                                                                <label v-if="question.Id_Question_Type == 3"
+                                                                    style="font-size: medium; float: left;"><span
                                                                         style="color: rgb(199, 0, 0);"><b>Tipo:</b></span>
                                                                     Selección múltiple
                                                                 </label>
-                                                                
+
                                                                 <input v-if="question.Id_Question_Type == 1"
                                                                     style="border-radius: 15px; margin-bottom: 10px; margin-top: 25px"
                                                                     placeholder="Respuesta"
@@ -116,7 +132,8 @@
                                                                 <div
                                                                     v-if="question.Id_Question_Type == 2 || question.Id_Question_Type == 3">
                                                                     <h5 class="margin-5px-bottom"
-                                                                        style="font-size: 20px; color: #0a3a66;">Opciones</h5>
+                                                                        style="font-size: 20px; color: #0a3a66;">Opciones
+                                                                    </h5>
                                                                     <br />
                                                                     <div v-if="question.Id_Question_Type == 2">
                                                                         <div class="form-check"
@@ -138,24 +155,26 @@
 
                                                                         </div>
                                                                         <span :ref="'ErrorRadioBox' + question.Id_Question"
-                                                                            style="visibility: hidden; color: red;">aa </span>
+                                                                            style="visibility: hidden; color: red;">aa
+                                                                        </span>
                                                                     </div>
                                                                     <div v-if="question.Id_Question_Type == 3">
                                                                         <div class="form-check"
                                                                             v-for="(option, index) in question.Question_Options"
                                                                             :key="index">
-                                                                            <input :name="question.Id_Question" type="checkbox"
+                                                                            <input :name="question.Id_Question"
+                                                                                type="checkbox"
                                                                                 @change="updateAnswerOptionsCheckBox(option, question)"
                                                                                 class="estiloRadios" id="opcion1">
                                                                             <label class="form-check-label">
                                                                                 {{ option.Option_Text }}
                                                                             </label>
 
-                                                                        
+
 
                                                                         </div>
                                                                         <span :ref="'ErrorCheckBox' + question.Id_Question"
-                                                                                style="visibility: hidden; color: red;"> </span>
+                                                                            style="visibility: hidden; color: red;"> </span>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -172,7 +191,8 @@
                                             <div class="row justify-content-end">
                                                 <div class="col-12">
                                                     <button type="submit" class="btn btn-success"
-                                                        style="min-width: 150px !important; font-size: 20px; float: right;">Enviar respuestas
+                                                        style="min-width: 150px !important; font-size: 20px; float: right;">Enviar
+                                                        respuestas
                                                     </button>
                                                 </div>
                                             </div>
@@ -320,7 +340,7 @@ export default {
 
                 if ((item.Id_Question_Type === 1 && item.AnswerText === null || item.Id_Question_Type === 1 && item.AnswerText.Text === "") ||
                     (item.Id_Question_Type === 2 && item.AnswerOptions === null) ||
-                    (item.Id_Question_Type === 3 && item.AnswerOptions === null || item.Id_Question_Type === 3 && item.AnswerOptions.length === 0 )) {
+                    (item.Id_Question_Type === 3 && item.AnswerOptions === null || item.Id_Question_Type === 3 && item.AnswerOptions.length === 0)) {
                     const errorMsg = (item.Id_Question_Type === 1) ? "La respuesta no puede estar vacía" :
                         ((item.Id_Question_Type === 2) ? "Selecciona una opción" : "Selecciona al menos una opción");
 
@@ -337,23 +357,10 @@ export default {
 
             if (this.valid) {  // Realizar el post solo si es válido
                 await AdminApi.PostSendAnswer(this.poll)
-                    .then(response => {
-                        if (response.data.obj == true) {
-                            this.$swal.fire({
-                                icon: 'success',
-                                position: 'center',
-                                text: response.data.msg,
-                                showConfirmButton: true
-                            });
-
-                            router.push({ name: 'MensajeEncuesta' })
-                            //this.limpiarContenido()
-                        }
-                    });
+                router.push({ name: 'MensajeEncuesta' })
             }
         }
         ,
-
 
         updateAnswerOptions(opcion, question) {
 
@@ -367,7 +374,6 @@ export default {
             };
 
             question.AnswerOptions.push(newAnswerOption);
-    
 
         }
         ,
@@ -389,13 +395,13 @@ export default {
                 };
 
                 question.AnswerOptions.push(newAnswerOption);
-      
+
             } else {
                 question.AnswerOptions.splice(existingOptionIndex, 1);
-               
+
             }
 
-           
+
         }
         ,
         updateAnswerText(question, value) {
@@ -633,6 +639,4 @@ input:valid+.error-message {
     .filtrosCelularBoton {
         display: none;
     }
-}
-
-</style>
+}</style>

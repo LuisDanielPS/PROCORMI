@@ -363,6 +363,7 @@ Public Class SprintDAO
 
         Try
             current = GetSprintDAO(pSprintEn.Id_Sprint).obj
+            Dim currentUser As String = ""
 
             If pSprintEn Is Nothing Then
                 reply.ok = False
@@ -373,25 +374,11 @@ Public Class SprintDAO
                 sentence = "SELECT User_Login from sprint where Id_Sprint = @filtro1"
                 Using dr As MySqlDataReader = ConexionDAO.Instancia.ExecuteConsultOneParameterInteger(sentence, pSprintEn.Id_Sprint)
                     If dr.Read() Then
-                        Dim currentUser As String = dr(0)
+                        currentUser = dr(0)
                         If currentUser.Equals(pSprintEn.User_Login) Then
 
                         Else
-                            NotificationDAO.Instance.NotifyAssignedSprint(pSprintEn.User_Login, pSprintEn.Id_Sprint)
                             NotificationDAO.Instance.NotifyUnassignedSprint(currentUser, pSprintEn.Id_Sprint)
-                        End If
-                    End If
-                End Using
-
-
-                sentence = "SELECT Sprint_Name from sprint where Id_Sprint = @filtro1"
-                Using dr As MySqlDataReader = ConexionDAO.Instancia.ExecuteConsultOneParameterInteger(sentence, pSprintEn.Id_Sprint)
-                    If dr.Read() Then
-                        Dim sprintName As String = dr(0)
-                        If sprintName.Equals(pSprintEn.Sprint_Name) Then
-
-                        Else
-                            NotificationDAO.Instance.NotifySprintTitleChanged(pSprintEn.User_Login, pSprintEn.Id_Sprint, pSprintEn.Sprint_Name)
                         End If
                     End If
                 End Using
@@ -405,6 +392,9 @@ Public Class SprintDAO
 
                 updated = GetSprintDAO(pSprintEn.Id_Sprint).obj
                 NotificationDAO.Instance.NotifySprintDatesChanged(updated, current)
+                If Not currentUser.Equals(pSprintEn.User_Login) Then
+                    NotificationDAO.Instance.NotifyAssignedSprint(pSprintEn.User_Login, pSprintEn.Id_Sprint)
+                End If
             End If
 
         Catch ex As Exception
