@@ -286,9 +286,9 @@ export default {
         },
 
         getPoll: async function () {
-            //let id = this.$route.params.encuesta
-            var url = window.location.href;
-            let id = url.substring(url.lastIndexOf('/') + 1);
+            let id = this.$route.params.encuesta
+            //var url = window.location.href;
+            //let id = url.substring(url.lastIndexOf('/') + 1);
 
 
             await AdminApi.getLink()

@@ -22,7 +22,7 @@
                                         </div>
                                         <div class="col-md-1 col-xs-1">
                                             <button
-                                                style="border: none; background-color: transparent; min-height: 15px; min-width: 25px; font-size: 30px;"
+                                                style="border: none; background-color: transparent; min-height: 15px; min-width: 25px; font-size: 30px; color: white;"
                                                 type="button" data-bs-dismiss="modal">&times;
                                             </button>
                                         </div>
@@ -44,7 +44,7 @@
                                         <br />
                                         <div class="row">
                                             <div class="col-12" style="text-align: right;">
-                                                <p style="text-align: right;">Fecha: <b>{{ this.ViewProject.Creation_Date }}
+                                                <p style="text-align: right;">Fecha: <b>{{ $filters.FormatearFechaHora(this.ViewProject.Creation_Date) }}
                                                     </b></p>
                                             </div>
                                         </div>
@@ -65,8 +65,9 @@
                                             <div class="col-12">
                                                 <div class="col-md-12 col-xs-12">
                                                     <div style="text-align: center;">
-                                                        <div style="text-align: center;"
-                                                            v-html="this.ViewProject.Description_Project"></div>
+                                                        <div style="text-align: center; max-height: 20vh; overflow-y: auto;"
+                                                            v-html="this.ViewProject.Description_Project">
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -82,7 +83,7 @@
 
                                 </div>
                             </div>
-                            <div class="modal-footer row justify-content-center">
+                            <div class="modal-footer justify-content-center">
                                 <button @click="loadFileList(this.ViewProject.Id_project)" type="button"
                                     class="btn btn-primary col-3" style="text-align: center;"><span class="fas fa-download"></span>&nbsp;
                                     adjuntos</button>

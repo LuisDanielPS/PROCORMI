@@ -157,7 +157,7 @@
                                             <tbody style="font-size: large;">
                                                 <tr v-for="poll in paginateData" :key="poll.Id_Poll">
                                                     <td>{{ $filters.CortarTexto(poll.Name, 20) }}</td>
-                                                    <td><p>{{ QuitarHTML($filters.CortarTexto(poll.Description, 25)) }}</p></td>
+                                                    <td><p>{{ QuitarHTML($filters.CortarTexto(poll.Description, 30)) }}</p></td>
                                                     <td>{{ $filters.FormatearFecha(poll.Creation_Date) }}</td>
                                                     <td class="text-white">
                                                         <button class="btn btn-primary" role="button" b-tooltip.hover title="Ver Encuesta" @click="VerEncuesta(poll.Id_Poll)">

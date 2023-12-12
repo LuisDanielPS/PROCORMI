@@ -257,7 +257,7 @@
                                         </div>
                                         <div class="col-md-1 col-xs-1">
                                             <button
-                                                style="border: none; background-color: transparent; min-height: 15px; min-width: 25px; font-size: 30px;"
+                                                style="border: none; background-color: transparent; min-height: 15px; min-width: 25px; font-size: 30px; color: white;"
                                                 type="button" data-bs-dismiss="modal">&times;</button>
                                         </div>
                                     </div>
@@ -273,9 +273,8 @@
                                             <h1 style="text-align: center"><strong>{{ currentTask ? currentTask.Task_Name : ''
                                             }}</strong></h1>
                                         </div>
-                                        <div class="col-12" style="text-align: right;">
-                                            <p style="text-align: right;">Estado: <b>{{ currentTask ? currentTask.Id_Status : ''
-                                            }}</b></p>
+                                        <div class="col-12" style="text-align: center; margin-top: 15px;">
+                                            <p style="text-align: center;"><b>Estado: {{ currentTask ? currentTask.Id_Status : '' }}</b></p>
                                         </div>
                                     </div>
                                     <hr>
@@ -306,7 +305,7 @@
 
                                 </div>
                             </div>
-                            <div class="modal-footer row justify-content-center">
+                            <div class="modal-footer justify-content-center">
                                 <button type="button" class="btn btn-danger col-3" data-bs-dismiss="modal">Cerrar</button>
                             </div>
                         </div>
@@ -332,7 +331,7 @@
                                         </div>
                                         <div class="col-md-1 col-xs-1">
                                             <button
-                                                style="border: none; background-color: transparent; min-height: 15px; min-width: 25px; font-size: 30px;"
+                                                style="border: none; background-color: transparent; min-height: 15px; min-width: 25px; font-size: 30px; color: white;"
                                                 type="button" data-bs-dismiss="modal">&times;</button>
                                         </div>
                                     </div>
@@ -385,7 +384,7 @@
 
                                 </div>
                             </div>
-                            <div class="modal-footer row justify-content-center">
+                            <div class="modal-footer justify-content-center">
                                 <button type="button" class="btn btn-danger col-3" data-bs-dismiss="modal">Cerrar</button>
                             </div>
                         </div>
